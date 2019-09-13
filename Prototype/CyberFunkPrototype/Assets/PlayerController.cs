@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float dash_speed;
     [SerializeField] private int maxDash;
     [SerializeField] private float DashTime;
+    [SerializeField] private Color OutofDashColor = Color.cyan;
 
     [SerializeField] public bool GodMode;
 
@@ -159,7 +160,7 @@ public class PlayerController : MonoBehaviour
 
         if(remainingDash == 0)
         {
-            GetComponent<SpriteRenderer>().color = Color.cyan;
+            GetComponent<SpriteRenderer>().color = OutofDashColor;
         }
         else
         {
