@@ -69,6 +69,11 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Dead();
+        }
+
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             Weapon = WeaponType.MachineGun;
