@@ -18,6 +18,8 @@ public class SpawnSystem : MonoBehaviour
     public float m_mapWidth;
     public float m_mapHeight;
 
+    public GameObject CurrentBeacon;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,11 +46,15 @@ public class SpawnSystem : MonoBehaviour
     void Update()
     {
         SpawnObjectFromPool("Enemy");
-        SpawnObjectFromPool("Beacon");
-    }
 
+        GameObject bc = SpawnObjectFromPool("Beacon");
+        if (bc != null)
+        {
+            CurrentBeacon = bc;
+        }
+    }
     //Function to Spawn Enemy
-    public void SpawnObjectFromPool (string tag)
+    public GameObject SpawnObjectFromPool (string tag)
     {
         if (!m_pools.ContainsKey(tag))
         {
@@ -78,9 +84,10 @@ public class SpawnSystem : MonoBehaviour
             }
 
             m_pools[tag].Enqueue(objectToSpawn);
+            return objectToSpawn;
         }
 
-
+        return null;
     }
 
     public GameObject GetObjectFromPool(string tag)
