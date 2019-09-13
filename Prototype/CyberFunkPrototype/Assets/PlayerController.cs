@@ -5,6 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
+    enum WeaponType
+    {
+        Laser,
+        MachineGun
+    }
+    [SerializeField] private WeaponType Weapon = WeaponType.MachineGun;
+
+    //machine gun
+    [SerializeField] private float firerate = 10;
+    [SerializeField] private float bulletSpeed = 10;
+    private float timer = 0;
+
     //Movement 
     [SerializeField] private float move_speed;
     [SerializeField] private float jump_speed;
@@ -28,27 +40,52 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb;
     private mouseCursor mc;
-    private GameObject Laser;
+    [SerializeField] private GameObject Laser;
+    private SpawnSystem spawner;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         mc = GameObject.Find("dot").GetComponent<mouseCursor>();
-        Laser = GameObject.Find("Laser").gameObject;
+        spawner = GameObject.Find("Spawner").GetComponent<SpawnSystem>();
 
         startGravityScale = rb.gravityScale;
     }
 
     private void Update()
     {
-        if (Input.GetMouseButton(0))
+        moveVelocity = 0;
+
+        switch (Weapon)
         {
-            Laser.SetActive(true);
+            case WeaponType.Laser:
+                if (Input.GetMouseButton(0))
+                {
+                    Laser.SetActive(true);
+                }
+                else
+                {
+                    Laser.SetActive(false);
+                }
+                break;
+            case WeaponType.MachineGun:
+                if (Input.GetMouseButton(0))
+                {
+                    if (timer <= 0)
+                    {
+                        GameObject Bullet = spawner.GetObjectFromPool("Bullet");
+                        Vector2 cursorPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                        Bullet.transform.position = this.transform.position;
+                        Bullet.GetComponent<Rigidbody2D>().velocity = (cursorPos - (Vector2)this.transform.position).normalized * bulletSpeed;
+                        timer = 1 / firerate;
+                    }
+                }
+                timer -= Time.deltaTime;
+                break;
+            default:
+                break;
         }
-        else
-        {
-            Laser.SetActive(false);
-        }
+
 
         //Jumping
         if (Input.GetKeyDown(KeyCode.Space))
@@ -95,8 +132,6 @@ public class PlayerController : MonoBehaviour
         {
             GetComponent<SpriteRenderer>().color = Color.white;
         }
-
-        moveVelocity = 0;
 
         if ((grounded || jump || ((rb.velocity.y == 0) && remainingDash == 0)) && !dash)
         {

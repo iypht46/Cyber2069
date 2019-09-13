@@ -47,10 +47,18 @@ MonoBehaviour:
   - m_tag: Enemy
     m_prefab: {fileID: 5600271438979974155, guid: 3fc0d91cdd76aab49a9628951b689aa5,
       type: 3}
-    size: 100
+    size: 200
   - m_tag: Beacon
     m_prefab: {fileID: 5519021994061207838, guid: d81849af5494cd247814b65cc7e5996e,
       type: 3}
     size: 1
+  - m_tag: Effect
+    m_prefab: {fileID: 7574240313909797053, guid: 01ee0dc48f375dc42a0c3cb71a0b4d90,
+      type: 3}
+    size: 100
+  - m_tag: Bullet
+    m_prefab: {fileID: 6786943548930979478, guid: 1c2b981eb84abc94386a8d3a5d9b70d6,
+      type: 3}
+    size: 100
   m_mapWidth: 180
   m_mapHeight: 90
