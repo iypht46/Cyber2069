@@ -69,6 +69,16 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            Weapon = WeaponType.MachineGun;
+            Laser.SetActive(false);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            Weapon = WeaponType.Laser;
+        }
+
         moveVelocity = 0;
 
         switch (Weapon)
