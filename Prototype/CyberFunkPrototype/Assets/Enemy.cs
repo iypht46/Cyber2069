@@ -8,6 +8,8 @@ public class Enemy : MonoBehaviour
     Rigidbody2D rb;
     HP hp;
 
+    private UI ui;
+
     [SerializeField] private float move_speed;
     [SerializeField] private float hit_damage;
 
@@ -16,6 +18,7 @@ public class Enemy : MonoBehaviour
         Player = GameObject.Find("Player").gameObject;
         rb = GetComponent<Rigidbody2D>();
         hp = GetComponent<HP>();
+        ui = GameObject.Find("UI").GetComponent<UI>();
     }
 
     void Update()
@@ -33,6 +36,7 @@ public class Enemy : MonoBehaviour
 
     public void Dead()
     {
+        ui.score += ui.EnemyScore;
         GameObject.Find("Spawner").GetComponent<SpawnSystem>().GetObjectFromPool("Effect").transform.position = this.transform.position;
         hp.StartCoroutine(hp.Dead(1));
     }
