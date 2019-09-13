@@ -83,4 +83,26 @@ public class SpawnSystem : MonoBehaviour
 
     }
 
+    public GameObject GetObjectFromPool(string tag)
+    {
+        if (!m_pools.ContainsKey(tag))
+        {
+            Debug.LogWarning(tag + " Pool does not exist");
+        }
+        else
+        {
+
+            //Get object from pool
+            GameObject objectToSpawn = m_pools[tag].Dequeue();
+
+            if (objectToSpawn.activeInHierarchy == false)
+            {
+                objectToSpawn.SetActive(true);
+            }
+
+            m_pools[tag].Enqueue(objectToSpawn);
+            return objectToSpawn;
+        }
+        return null;
+    }
 }

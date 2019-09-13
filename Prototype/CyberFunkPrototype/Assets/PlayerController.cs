@@ -64,7 +64,6 @@ public class PlayerController : MonoBehaviour
                 remainingDashTime = DashTime;
 
                 angle = Mathf.Atan2(mc.cursorPos.y - transform.position.y, mc.cursorPos.x - transform.position.x);
-                Debug.Log(angle);
                 dash = true;
                 rb.gravityScale = 0;
             }

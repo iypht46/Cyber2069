@@ -30,6 +30,7 @@ public class Enemy : MonoBehaviour
     public void Dead()
     {
         gameObject.SetActive(false);
+        GameObject.Find("Spawner").GetComponent<SpawnSystem>().GetObjectFromPool("Effect").transform.position = this.transform.position;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
