@@ -10,7 +10,16 @@ public class PlayerController : MonoBehaviour
         Laser,
         MachineGun
     }
+
+    enum DashControlMode
+    {
+        Cursor,
+        Key
+    }
     [SerializeField] private WeaponType Weapon = WeaponType.MachineGun;
+    [SerializeField] private DashControlMode DashMode = DashControlMode.Key;
+    private Vector2 inputDirection = Vector2.zero;
+    private Vector2 tempDashDirection = Vector2.zero;
 
     //machine gun
     [SerializeField] private float firerate = 10;
@@ -86,6 +95,28 @@ public class PlayerController : MonoBehaviour
                 break;
         }
 
+        //Left Right Movement
+        float x = 0;
+        float y = 0;
+        if (Input.GetKey(KeyCode.A))
+        {
+            moveVelocity = -move_speed;
+            x -= 1;
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            moveVelocity = move_speed;
+            x += 1;
+        }
+        if (Input.GetKey(KeyCode.W))
+        {
+            y += 1;
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            y -= 1;
+        }
+        inputDirection = new Vector2(x, y);
 
         //Jumping
         if (Input.GetKeyDown(KeyCode.Space))
@@ -101,19 +132,10 @@ public class PlayerController : MonoBehaviour
                 remainingDashTime = DashTime;
 
                 angle = Mathf.Atan2(mc.cursorPos.y - transform.position.y, mc.cursorPos.x - transform.position.x);
+                tempDashDirection = inputDirection;
                 dash = true;
                 rb.gravityScale = 0;
             }
-        }
-
-        //Left Right Movement
-        if (Input.GetKey(KeyCode.A))
-        {
-            moveVelocity = -move_speed;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            moveVelocity = move_speed;
         }
     }
 
@@ -164,12 +186,24 @@ public class PlayerController : MonoBehaviour
         {
             remainingDashTime -= Time.deltaTime;
 
-            float newX = dash_speed * Mathf.Cos(angle);
-            float newY = dash_speed * Mathf.Sin(angle);
-            Debug.Log(newX);
-            Debug.Log(newY);
+            switch (DashMode)
+            {
+                case DashControlMode.Cursor:
+                    float newX = dash_speed * Mathf.Cos(angle);
+                    float newY = dash_speed * Mathf.Sin(angle);
+                    //Debug.Log(newX);
+                    //Debug.Log(newY);
 
-            rb.velocity = new Vector2(newX * 1.5f, newY);
+                    rb.velocity = new Vector2(newX * 1.5f, newY);
+                    break;
+                case DashControlMode.Key:
+                    if (tempDashDirection != Vector2.zero)
+                    {
+                        rb.velocity = tempDashDirection.normalized * dash_speed;
+                    }
+                    break;
+            }
+
         }
     }
 

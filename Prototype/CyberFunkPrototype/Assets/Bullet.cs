@@ -7,10 +7,11 @@ public class Bullet : MonoBehaviour
 {
     [SerializeField] private UnityEvent ContactEvent;
     [SerializeField] private int Damage = 1;
+    [SerializeField] private float lifeTime = 2;
 
     private void FixedUpdate()
     {
-        Invoke("Deactive", 5);
+        Invoke("Deactive",lifeTime);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
