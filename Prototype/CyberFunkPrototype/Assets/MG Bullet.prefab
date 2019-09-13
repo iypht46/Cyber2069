@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 6786943548930979478}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.61615, y: 0.4375, z: 0.07421875}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -110,6 +110,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   Damage: 1
+  lifeTime: 2
 --- !u!50 &6786943548930979476
 Rigidbody2D:
   serializedVersion: 4

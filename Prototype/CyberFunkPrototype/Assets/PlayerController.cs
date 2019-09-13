@@ -135,6 +135,10 @@ public class PlayerController : MonoBehaviour
                 remainingDashTime = DashTime;
 
                 angle = Mathf.Atan2(mc.cursorPos.y - transform.position.y, mc.cursorPos.x - transform.position.x);
+                if(inputDirection.x == 0)
+                {
+                    inputDirection.y = 1;
+                }
                 tempDashDirection = inputDirection;
                 dash = true;
                 trail.emitting = true;
