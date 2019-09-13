@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     float angle;
 
     //Grounded Vars
-    [SerializeField] bool grounded = true;
+    [SerializeField] public bool grounded = true;
     [SerializeField] bool jump = false;
     [SerializeField] bool dash = false;
 
@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
         startGravityScale = rb.gravityScale;
     }
 
-    void Update()
+    private void Update()
     {
         if (Input.GetMouseButton(0))
         {
@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
         {
             Laser.SetActive(false);
         }
-        
+
         //Jumping
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -69,6 +69,19 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        //Left Right Movement
+        if (Input.GetKey(KeyCode.A))
+        {
+            moveVelocity = -move_speed;
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            moveVelocity = move_speed;
+        }
+    }
+
+    void FixedUpdate()
+    {
         if (dash)
         {
             Dash();
@@ -84,16 +97,6 @@ public class PlayerController : MonoBehaviour
         }
 
         moveVelocity = 0;
-
-        //Left Right Movement
-        if (Input.GetKey(KeyCode.A))
-        {
-            moveVelocity = -move_speed;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            moveVelocity = move_speed;
-        }
 
         if ((grounded || jump || ((rb.velocity.y == 0) && remainingDash == 0)) && !dash)
         {

@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Beacon.cs" />
+    <Compile Include="Assets\CamSizeOnHeight.cs" />
     <Compile Include="Assets\Enemy.cs" />
     <Compile Include="Assets\HP.cs" />
     <Compile Include="Assets\Laser.cs" />
