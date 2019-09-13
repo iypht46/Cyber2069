@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int maxDash;
     [SerializeField] private float DashTime;
 
+    [SerializeField] public bool GodMode;
+
     int remainingDash;
     float remainingDashTime;
     float moveVelocity;
@@ -19,22 +22,34 @@ public class PlayerController : MonoBehaviour
     float angle;
 
     //Grounded Vars
-    [SerializeField] bool grounded = true;
+    [SerializeField] public bool grounded = true;
     [SerializeField] bool jump = false;
     [SerializeField] bool dash = false;
 
     private Rigidbody2D rb;
     private mouseCursor mc;
+    private GameObject Laser;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         mc = GameObject.Find("dot").GetComponent<mouseCursor>();
+        Laser = GameObject.Find("Laser").gameObject;
+
         startGravityScale = rb.gravityScale;
     }
 
-    void Update()
+    private void Update()
     {
+        if (Input.GetMouseButton(0))
+        {
+            Laser.SetActive(true);
+        }
+        else
+        {
+            Laser.SetActive(false);
+        }
+
         //Jumping
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -49,12 +64,24 @@ public class PlayerController : MonoBehaviour
                 remainingDashTime = DashTime;
 
                 angle = Mathf.Atan2(mc.cursorPos.y - transform.position.y, mc.cursorPos.x - transform.position.x);
-                Debug.Log(angle);
                 dash = true;
                 rb.gravityScale = 0;
             }
         }
 
+        //Left Right Movement
+        if (Input.GetKey(KeyCode.A))
+        {
+            moveVelocity = -move_speed;
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            moveVelocity = move_speed;
+        }
+    }
+
+    void FixedUpdate()
+    {
         if (dash)
         {
             Dash();
@@ -70,16 +97,6 @@ public class PlayerController : MonoBehaviour
         }
 
         moveVelocity = 0;
-
-        //Left Right Movement
-        if (Input.GetKey(KeyCode.A))
-        {
-            moveVelocity = -move_speed;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            moveVelocity = move_speed;
-        }
 
         if ((grounded || jump || ((rb.velocity.y == 0) && remainingDash == 0)) && !dash)
         {
@@ -119,6 +136,11 @@ public class PlayerController : MonoBehaviour
 
             rb.velocity = new Vector2(newX * 1.5f, newY);
         }
+    }
+
+    public void Dead()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
 }

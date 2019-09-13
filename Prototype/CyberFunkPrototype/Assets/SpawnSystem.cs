@@ -43,7 +43,8 @@ public class SpawnSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        SpawnObjectFromPool("Enemy");
+        SpawnObjectFromPool("Beacon");
     }
 
     //Function to Spawn Enemy
@@ -59,19 +60,22 @@ public class SpawnSystem : MonoBehaviour
             //Get object from pool
             GameObject objectToSpawn = m_pools[tag].Dequeue();
 
-            //Random Position in map
-            Vector3 position;
-            float posX, posY;
+            if (objectToSpawn.activeInHierarchy == false)
+            {
+                //Random Position in map
+                Vector3 position;
+                float posX, posY;
 
-            //Random X and Y position
-            posX = Random.Range(-(m_mapWidth / 2), (m_mapWidth / 2));
-            posY = Random.Range(0, m_mapHeight);
-            position = new Vector3(posX, posY);
+                //Random X and Y position
+                posX = Random.Range(-(m_mapWidth / 2), (m_mapWidth / 2));
+                posY = Random.Range(0, m_mapHeight);
+                position = new Vector3(posX, posY);
 
-            //Set object position and set it active
-            objectToSpawn.transform.position = position;
-            objectToSpawn.transform.rotation = transform.rotation;
-            objectToSpawn.SetActive(true);
+                //Set object position and set it active
+                objectToSpawn.transform.position = position;
+                objectToSpawn.transform.rotation = transform.rotation;
+                objectToSpawn.SetActive(true);
+            }
 
             m_pools[tag].Enqueue(objectToSpawn);
         }
@@ -79,4 +83,26 @@ public class SpawnSystem : MonoBehaviour
 
     }
 
+    public GameObject GetObjectFromPool(string tag)
+    {
+        if (!m_pools.ContainsKey(tag))
+        {
+            Debug.LogWarning(tag + " Pool does not exist");
+        }
+        else
+        {
+
+            //Get object from pool
+            GameObject objectToSpawn = m_pools[tag].Dequeue();
+
+            if (objectToSpawn.activeInHierarchy == false)
+            {
+                objectToSpawn.SetActive(true);
+            }
+
+            m_pools[tag].Enqueue(objectToSpawn);
+            return objectToSpawn;
+        }
+        return null;
+    }
 }
