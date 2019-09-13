@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float dash_speed;
     [SerializeField] private int maxDash;
     [SerializeField] private float DashTime;
+
+    [SerializeField] public bool GodMode;
 
     int remainingDash;
     float remainingDashTime;
@@ -25,16 +28,28 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb;
     private mouseCursor mc;
+    private GameObject Laser;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         mc = GameObject.Find("dot").GetComponent<mouseCursor>();
+        Laser = GameObject.Find("Laser").gameObject;
+
         startGravityScale = rb.gravityScale;
     }
 
     void Update()
     {
+        if (Input.GetMouseButton(0))
+        {
+            Laser.SetActive(true);
+        }
+        else
+        {
+            Laser.SetActive(false);
+        }
+        
         //Jumping
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -119,6 +134,11 @@ public class PlayerController : MonoBehaviour
 
             rb.velocity = new Vector2(newX * 1.5f, newY);
         }
+    }
+
+    public void Dead()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
 }
