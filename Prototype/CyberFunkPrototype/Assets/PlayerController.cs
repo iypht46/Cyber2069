@@ -51,12 +51,15 @@ public class PlayerController : MonoBehaviour
     private mouseCursor mc;
     [SerializeField] private GameObject Laser;
     private SpawnSystem spawner;
+    private TrailRenderer trail;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         mc = GameObject.Find("dot").GetComponent<mouseCursor>();
         spawner = GameObject.Find("Spawner").GetComponent<SpawnSystem>();
+        trail = GetComponent<TrailRenderer>();
+        trail.emitting = false;
 
         startGravityScale = rb.gravityScale;
     }
@@ -134,6 +137,7 @@ public class PlayerController : MonoBehaviour
                 angle = Mathf.Atan2(mc.cursorPos.y - transform.position.y, mc.cursorPos.x - transform.position.x);
                 tempDashDirection = inputDirection;
                 dash = true;
+                trail.emitting = true;
                 rb.gravityScale = 0;
             }
         }
@@ -176,8 +180,10 @@ public class PlayerController : MonoBehaviour
 
     void Dash()
     {
-        if(remainingDashTime <= 0)
+
+        if (remainingDashTime <= 0)
         {
+            trail.emitting = false;
             dash = false;
             remainingDash--;
             rb.gravityScale = startGravityScale;
