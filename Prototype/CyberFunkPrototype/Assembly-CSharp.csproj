@@ -73,6 +73,7 @@
     <Compile Include="Assets\mouseCursor.cs" />
     <Compile Include="Assets\PlayerController.cs" />
     <Compile Include="Assets\SpawnSystem.cs" />
+    <Compile Include="Assets\UI.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>D:/Projects/University/Cyberfunk/Prototype/CyberFunkPrototype/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
