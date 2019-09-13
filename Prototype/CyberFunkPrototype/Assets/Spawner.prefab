@@ -60,5 +60,10 @@ MonoBehaviour:
     m_prefab: {fileID: 6786943548930979478, guid: 1c2b981eb84abc94386a8d3a5d9b70d6,
       type: 3}
     size: 100
+  - m_tag: BeaconEffect
+    m_prefab: {fileID: 2480421846259473254, guid: 19135018ca3134c4e9079d194299515a,
+      type: 3}
+    size: 2
   m_mapWidth: 180
   m_mapHeight: 90
+  CurrentBeacon: {fileID: 0}

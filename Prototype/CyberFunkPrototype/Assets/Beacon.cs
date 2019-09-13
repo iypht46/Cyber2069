@@ -6,12 +6,16 @@ public class Beacon : MonoBehaviour
 {
     private UI ui;
     private HP player;
+    private HP hp;
+    private SpawnSystem spawner;
 
     // Start is called before the first frame update
     void Start()
     {
         ui = GameObject.Find("UI").GetComponent<UI>();
         player = GameObject.Find("Player").GetComponent<HP>();
+        hp = GetComponent<HP>();
+        spawner = GameObject.Find("Spawner").GetComponent<SpawnSystem>();
     }
 
     // Update is called once per frame
@@ -22,8 +26,10 @@ public class Beacon : MonoBehaviour
 
     public void Dead()
     {
+        GameObject effect = spawner.GetObjectFromPool("BeaconEffect");
+        effect.transform.position = this.transform.position;
         player.hp = player.Maxhp;
         ui.score += ui.BeaconScore;
-        gameObject.SetActive(false);
+        hp.StartCoroutine(hp.Dead(1));
     }
 }
