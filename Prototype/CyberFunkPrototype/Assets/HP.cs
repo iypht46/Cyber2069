@@ -9,17 +9,28 @@ public class HP : MonoBehaviour
     public float Maxhp;
     public float hp;
     public bool invincible = false;
+    public bool isDead = false;
+
+    SpriteRenderer sr;
+
+    private void Awake()
+    {
+        sr = GetComponent<SpriteRenderer>();
+    }
 
     void OnEnable()
     {
+        sr.enabled = true;
         hp = Maxhp;
+        isDead = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(hp <= 0)
+        if(!isDead && hp <= 0)
         {
+            isDead = true;
             dead.Invoke();
         }
     }
@@ -30,5 +41,12 @@ public class HP : MonoBehaviour
         {
             hp -= damage;
         }
+    }
+
+    public IEnumerator Dead(float time)
+    {
+        sr.enabled = false;
+        yield return new WaitForSeconds(time);
+        gameObject.SetActive(false);
     }
 }

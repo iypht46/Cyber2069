@@ -793,6 +793,11 @@ PrefabInstance:
       propertyPath: OutofDashColor.b
       value: 0.016898155
       objectReference: {fileID: 0}
+    - target: {fileID: 1913858082922715277, guid: e385bffbf83384648ba40267648fa3fd,
+        type: 3}
+      propertyPath: Weapon
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1913858081708663472, guid: e385bffbf83384648ba40267648fa3fd,
         type: 3}
       propertyPath: m_IsActive

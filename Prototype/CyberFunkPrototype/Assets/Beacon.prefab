@@ -135,7 +135,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  Maxhp: 10
+  Maxhp: 50
   hp: 0
   invincible: 0
 --- !u!114 &-6454368129459422651
