@@ -37,7 +37,7 @@ public class Enemy : MonoBehaviour
     {
         if(other.gameObject.tag == "Player" && !other.GetComponent<PlayerController>().GodMode)
         {
-            other.GetComponent<HP>().hp -= hit_damage;
+            other.GetComponent<HP>().TakeDamage(hit_damage);
             gameObject.SetActive(false);
         }
     }

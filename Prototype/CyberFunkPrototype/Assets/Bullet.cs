@@ -18,7 +18,7 @@ public class Bullet : MonoBehaviour
     {
         if (collision.CompareTag("Enemy"))
         {
-            collision.GetComponent<HP>().hp -= Damage;
+            collision.GetComponent<HP>().TakeDamage(Damage);
             ContactEvent.Invoke();
         }
     }

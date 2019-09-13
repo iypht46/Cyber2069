@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] bool jump = false;
     [SerializeField] bool dash = false;
 
+    private HP hp;
     private Rigidbody2D rb;
     private mouseCursor mc;
     [SerializeField] private GameObject Laser;
@@ -55,6 +56,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        hp = GetComponent<HP>();
         rb = GetComponent<Rigidbody2D>();
         mc = GameObject.Find("dot").GetComponent<mouseCursor>();
         spawner = GameObject.Find("Spawner").GetComponent<SpawnSystem>();
@@ -140,6 +142,7 @@ public class PlayerController : MonoBehaviour
                     inputDirection.y = 1;
                 }
                 tempDashDirection = inputDirection;
+                hp.invincible = true;
                 dash = true;
                 trail.emitting = true;
                 rb.gravityScale = 0;
@@ -187,6 +190,7 @@ public class PlayerController : MonoBehaviour
 
         if (remainingDashTime <= 0)
         {
+            hp.invincible = false;
             trail.emitting = false;
             dash = false;
             remainingDash--;

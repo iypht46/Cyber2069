@@ -22,7 +22,7 @@ public class LaserCollider : MonoBehaviour
 
         if (other.tag == "Enemy")
         {
-            other.GetComponent<HP>().hp -= laser.LaserDMG;
+            other.GetComponent<HP>().TakeDamage(laser.LaserDMG);
         }
     }
 
@@ -31,7 +31,7 @@ public class LaserCollider : MonoBehaviour
 
         if (other.tag == "Enemy")
         {
-            other.GetComponent<HP>().hp -= laser.LaserDMG;
+            other.GetComponent<HP>().TakeDamage(laser.LaserDMG);
         }
 
     }

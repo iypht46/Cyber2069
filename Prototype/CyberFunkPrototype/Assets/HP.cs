@@ -8,6 +8,7 @@ public class HP : MonoBehaviour
     public UnityEvent dead;
     public float Maxhp;
     public float hp;
+    public bool invincible = false;
 
     void OnEnable()
     {
@@ -23,4 +24,11 @@ public class HP : MonoBehaviour
         }
     }
 
+    public void TakeDamage(float damage)
+    {
+        if (!invincible)
+        {
+            hp -= damage;
+        }
+    }
 }
