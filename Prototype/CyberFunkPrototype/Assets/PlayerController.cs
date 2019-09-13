@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour
         mc = GameObject.Find("dot").GetComponent<mouseCursor>();
         spawner = GameObject.Find("Spawner").GetComponent<SpawnSystem>();
         trail = GetComponent<TrailRenderer>();
-        trail.emitting = false;
+        //trail.emitting = false;
 
         startGravityScale = rb.gravityScale;
     }
@@ -155,7 +155,7 @@ public class PlayerController : MonoBehaviour
                 tempDashDirection = inputDirection;
                 hp.invincible = true;
                 dash = true;
-                trail.emitting = true;
+                //trail.emitting = true;
                 rb.gravityScale = 0;
             }
         }
@@ -202,7 +202,7 @@ public class PlayerController : MonoBehaviour
         if (remainingDashTime <= 0)
         {
             hp.invincible = false;
-            trail.emitting = false;
+            //trail.emitting = false;
             dash = false;
             remainingDash--;
             rb.gravityScale = startGravityScale;
