@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
     bool jump = false;
     bool dash = false;
 
-    [SerializeField] bool AD_input = false;
+    bool AD_input = false;
 
     private HP hp;
     private Rigidbody2D rb;
