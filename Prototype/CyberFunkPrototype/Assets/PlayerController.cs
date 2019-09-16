@@ -36,6 +36,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] public bool GodMode;
 
+    public bool MomemtumOn;
+
     int remainingDash;
     float remainingDashTime;
     float moveVelocity;
@@ -43,10 +45,11 @@ public class PlayerController : MonoBehaviour
 
     float angle;
 
-    //Grounded Vars
-    [SerializeField] public bool grounded = true;
-    [SerializeField] bool jump = false;
-    [SerializeField] bool dash = false;
+    public bool grounded = true;
+    bool jump = false;
+    bool dash = false;
+
+    [SerializeField] bool AD_input = false;
 
     private HP hp;
     private Rigidbody2D rb;
@@ -129,6 +132,16 @@ public class PlayerController : MonoBehaviour
             moveVelocity = move_speed;
             x += 1;
         }
+
+        if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+        {
+            AD_input = true;
+        }
+        else
+        {
+            AD_input = false;
+        }
+
         if (Input.GetKey(KeyCode.W))
         {
             y += 1;
@@ -182,9 +195,19 @@ public class PlayerController : MonoBehaviour
             GetComponent<SpriteRenderer>().color = Color.white;
         }
 
-        if ((grounded || jump || ((rb.velocity.y == 0) && remainingDash == 0)) && !dash)
+        if (MomemtumOn)
         {
-            rb.velocity = new Vector2(moveVelocity, rb.velocity.y);
+            if (grounded || jump || (!dash && AD_input))
+            {
+                rb.velocity = new Vector2(moveVelocity, rb.velocity.y);
+            }
+        }
+        else
+        {
+            if (grounded || jump || !dash)
+            {
+                rb.velocity = new Vector2(moveVelocity, rb.velocity.y);
+            }
         }
 
     }
