@@ -385,7 +385,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Weapon: 1
-  DashMode: 1
+  DashMode: 2
   ControlMode: 1
   firerate: 40
   bulletSpeed: 50

@@ -14,7 +14,8 @@ public class PlayerController : MonoBehaviour
     enum DashControlMode
     {
         Cursor,
-        Key
+        Key,
+        LROnly
     }
 
     enum PlayerControlMode
@@ -66,6 +67,7 @@ public class PlayerController : MonoBehaviour
 
     private HP hp;
     private Rigidbody2D rb;
+    private Collider2D cl;
     private mouseCursor mc;
     [SerializeField] private GameObject Laser;
     private SpawnSystem spawner;
@@ -75,6 +77,7 @@ public class PlayerController : MonoBehaviour
     {
         hp = GetComponent<HP>();
         rb = GetComponent<Rigidbody2D>();
+        cl = this.GetComponent<Collider2D>();
         mc = GameObject.Find("dot").GetComponent<mouseCursor>();
         spawner = GameObject.Find("Spawner").GetComponent<SpawnSystem>();
         trail = GetComponent<TrailRenderer>();
@@ -165,7 +168,14 @@ public class PlayerController : MonoBehaviour
         }
         inputDirection = new Vector2(x, y);
 
-
+        //through platform
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            cl.isTrigger = true;
+        }
+        else if (Input.GetKeyUp(KeyCode.S)) {
+            cl.isTrigger = false;
+        }
         
         if (ControlMode == PlayerControlMode.V1)
         {
@@ -184,10 +194,10 @@ public class PlayerController : MonoBehaviour
                     remainingDashTime = DashTime;
 
                     angle = Mathf.Atan2(mc.cursorPos.y - transform.position.y, mc.cursorPos.x - transform.position.x);
-                    if (inputDirection.x == 0)
-                    {
-                        inputDirection.y = 1;
-                    }
+                    //if (inputDirection.x == 0)
+                    //{
+                    //    inputDirection.y = 1;
+                    //}
                     tempDashDirection = inputDirection;
                     hp.invincible = true;
                     dash = true;
@@ -216,10 +226,10 @@ public class PlayerController : MonoBehaviour
                     remainingDashTime = DashTime;
 
                     angle = Mathf.Atan2(mc.cursorPos.y - transform.position.y, mc.cursorPos.x - transform.position.x);
-                    if (inputDirection.x == 0)
-                    {
-                        inputDirection.y = 1;
-                    }
+                    //if (inputDirection.x == 0)
+                    //{
+                    //    inputDirection.y = 1;
+                    //}
                     tempDashDirection = inputDirection;
                     hp.invincible = true;
                     dash = true;
@@ -248,10 +258,10 @@ public class PlayerController : MonoBehaviour
                     remainingDashTime = DashTime;
 
                     angle = Mathf.Atan2(mc.cursorPos.y - transform.position.y, mc.cursorPos.x - transform.position.x);
-                    if (inputDirection.x == 0)
-                    {
-                        inputDirection.y = 1;
-                    }
+                    //if (inputDirection.x == 0)
+                    //{
+                    //    inputDirection.y = 1;
+                    //}
                     tempDashDirection = inputDirection;
                     hp.invincible = true;
                     dash = true;
@@ -338,6 +348,13 @@ public class PlayerController : MonoBehaviour
                 case DashControlMode.Key:
                     if (tempDashDirection != Vector2.zero)
                     {
+                        rb.velocity = tempDashDirection.normalized * dash_speed;
+                    }
+                    break;
+                case DashControlMode.LROnly:
+                    if (tempDashDirection != Vector2.zero)
+                    {
+                        tempDashDirection.y = 0;
                         rb.velocity = tempDashDirection.normalized * dash_speed;
                     }
                     break;
