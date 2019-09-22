@@ -8,7 +8,8 @@ public class PlayerController : MonoBehaviour
     enum WeaponType
     {
         Laser,
-        MachineGun
+        MachineGun,
+        GrenadeLauncher
     }
 
     enum DashControlMode
@@ -31,12 +32,17 @@ public class PlayerController : MonoBehaviour
     private Vector2 inputDirection = Vector2.zero;
     private Vector2 tempDashDirection = Vector2.zero;
 
-    //machine gun
-    [SerializeField] private float firerate = 10;
-    [SerializeField] private float bulletSpeed = 10;
-    private float timer = 0;
+    [Header("Machine Gun Setting")]
+    [SerializeField] private float mg_firerate = 10;
+    [SerializeField] private float mg_bulletSpeed = 10;
+    private float mg_timer = 0;
 
-    //Movement 
+    [Header("Grenade Launcher Setting")]
+    [SerializeField] private float gl_firerate = 10;
+    [SerializeField] private float gl_bulletSpeed = 10;
+    private float gl_timer = 0;
+
+    [Header("Movement Setting")]
     [SerializeField] private float move_speed;
     [SerializeField] private float jump_speed;
     [SerializeField] private float dash_speed;
@@ -102,6 +108,10 @@ public class PlayerController : MonoBehaviour
         {
             Weapon = WeaponType.Laser;
         }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            Weapon = WeaponType.GrenadeLauncher;
+        }
 
         moveVelocity = 0;
 
@@ -120,16 +130,30 @@ public class PlayerController : MonoBehaviour
             case WeaponType.MachineGun:
                 if (Input.GetMouseButton(0))
                 {
-                    if (timer <= 0)
+                    if (mg_timer <= 0)
                     {
                         GameObject Bullet = spawner.GetObjectFromPool("Bullet");
                         Vector2 cursorPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                         Bullet.transform.position = this.transform.position;
-                        Bullet.GetComponent<Rigidbody2D>().velocity = (cursorPos - (Vector2)this.transform.position).normalized * bulletSpeed;
-                        timer = 1 / firerate;
+                        Bullet.GetComponent<Rigidbody2D>().velocity = (cursorPos - (Vector2)this.transform.position).normalized * mg_bulletSpeed;
+                        mg_timer = 1 / mg_firerate;
                     }
                 }
-                timer -= Time.deltaTime;
+                mg_timer -= Time.deltaTime;
+                break;
+            case WeaponType.GrenadeLauncher:
+                if (Input.GetMouseButton(0))
+                {
+                    if (gl_timer <= 0)
+                    {
+                        GameObject Bullet = spawner.GetObjectFromPool("Grenade");
+                        Vector2 cursorPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                        Bullet.transform.position = this.transform.position;
+                        Bullet.GetComponent<Rigidbody2D>().velocity = (cursorPos - (Vector2)this.transform.position).normalized * gl_bulletSpeed;
+                        gl_timer = 1 / gl_firerate;
+                    }
+                }
+                gl_timer -= Time.deltaTime;
                 break;
             default:
                 break;
