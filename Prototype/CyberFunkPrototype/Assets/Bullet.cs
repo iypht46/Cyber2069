@@ -25,6 +25,7 @@ public class Bullet : MonoBehaviour
 
     void Deactive()
     {
+        CancelInvoke();
         this.gameObject.SetActive(false);
     }
 }

@@ -46,6 +46,7 @@ public class SpawnSystem : MonoBehaviour
     void Update()
     {
         SpawnObjectFromPool("Enemy");
+        SpawnObjectFromPool("SuicideBomber");
 
         GameObject bc = SpawnObjectFromPool("Beacon");
         if (bc != null)
@@ -53,7 +54,12 @@ public class SpawnSystem : MonoBehaviour
             CurrentBeacon = bc;
         }
     }
-    //Function to Spawn Enemy
+    /// <summary>
+    /// Function to Spawn object within area
+    /// </summary>
+    /// <param name="tag"></param>
+    /// <returns></returns>
+
     public GameObject SpawnObjectFromPool (string tag)
     {
         if (!m_pools.ContainsKey(tag))
@@ -90,6 +96,11 @@ public class SpawnSystem : MonoBehaviour
         return null;
     }
 
+    /// <summary>
+    /// Retrun activated object from pool
+    /// </summary>
+    /// <param name="tag"></param>
+    /// <returns></returns>
     public GameObject GetObjectFromPool(string tag)
     {
         if (!m_pools.ContainsKey(tag))

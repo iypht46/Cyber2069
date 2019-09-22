@@ -67,12 +67,14 @@
     <Compile Include="Assets\Bullet.cs" />
     <Compile Include="Assets\CamSizeOnHeight.cs" />
     <Compile Include="Assets\Enemy.cs" />
+    <Compile Include="Assets\Explosion.cs" />
     <Compile Include="Assets\HP.cs" />
     <Compile Include="Assets\Laser.cs" />
     <Compile Include="Assets\LaserCollider.cs" />
     <Compile Include="Assets\mouseCursor.cs" />
     <Compile Include="Assets\PlayerController.cs" />
     <Compile Include="Assets\SpawnSystem.cs" />
+    <Compile Include="Assets\SuicideBomber.cs" />
     <Compile Include="Assets\UI.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>D:/Projects/University/Cyberfunk/Prototype/CyberFunkPrototype/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
