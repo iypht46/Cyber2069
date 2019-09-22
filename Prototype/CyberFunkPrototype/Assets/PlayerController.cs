@@ -14,10 +14,20 @@ public class PlayerController : MonoBehaviour
     enum DashControlMode
     {
         Cursor,
-        Key
+        Key,
+        LROnly
     }
+
+    enum PlayerControlMode
+    {
+        V1,
+        V2,
+        V3
+    }
+
     [SerializeField] private WeaponType Weapon = WeaponType.MachineGun;
     [SerializeField] private DashControlMode DashMode = DashControlMode.Key;
+    [SerializeField] private PlayerControlMode ControlMode = PlayerControlMode.V1;
     private Vector2 inputDirection = Vector2.zero;
     private Vector2 tempDashDirection = Vector2.zero;
 
@@ -30,26 +40,34 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float move_speed;
     [SerializeField] private float jump_speed;
     [SerializeField] private float dash_speed;
+    [SerializeField] private int maxJump;
     [SerializeField] private int maxDash;
+    [SerializeField] private int maxDashJump;
     [SerializeField] private float DashTime;
     [SerializeField] private Color OutofDashColor = Color.cyan;
 
     [SerializeField] public bool GodMode;
 
+    public bool MomemtumOn;
+
+    int remainingJump;
     int remainingDash;
+    int remainingDashJump;
     float remainingDashTime;
     float moveVelocity;
     float startGravityScale;
 
     float angle;
 
-    //Grounded Vars
-    [SerializeField] public bool grounded = true;
-    [SerializeField] bool jump = false;
-    [SerializeField] bool dash = false;
+    public bool grounded = true;
+    bool jump = false;
+    bool dash = false;
+
+    bool AD_input = false;
 
     private HP hp;
     private Rigidbody2D rb;
+    private Collider2D cl;
     private mouseCursor mc;
     [SerializeField] private GameObject Laser;
     private SpawnSystem spawner;
@@ -59,6 +77,7 @@ public class PlayerController : MonoBehaviour
     {
         hp = GetComponent<HP>();
         rb = GetComponent<Rigidbody2D>();
+        cl = this.GetComponent<Collider2D>();
         mc = GameObject.Find("dot").GetComponent<mouseCursor>();
         spawner = GameObject.Find("Spawner").GetComponent<SpawnSystem>();
         trail = GetComponent<TrailRenderer>();
@@ -129,6 +148,16 @@ public class PlayerController : MonoBehaviour
             moveVelocity = move_speed;
             x += 1;
         }
+
+        if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+        {
+            AD_input = true;
+        }
+        else
+        {
+            AD_input = false;
+        }
+
         if (Input.GetKey(KeyCode.W))
         {
             y += 1;
@@ -139,29 +168,107 @@ public class PlayerController : MonoBehaviour
         }
         inputDirection = new Vector2(x, y);
 
-        //Jumping
-        if (Input.GetKeyDown(KeyCode.Space))
+        //through platform
+        if (Input.GetKeyDown(KeyCode.S))
         {
-            if (grounded && !jump)
+            cl.isTrigger = true;
+        }
+        else if (Input.GetKeyUp(KeyCode.S)) {
+            cl.isTrigger = false;
+        }
+        
+        if (ControlMode == PlayerControlMode.V1)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                rb.velocity = new Vector2(rb.velocity.x, jump_speed);
-                jump = true;
-            }
-            else if (remainingDash > 0 && !grounded && !dash)
-            {
-                jump = false;
-                remainingDashTime = DashTime;
-
-                angle = Mathf.Atan2(mc.cursorPos.y - transform.position.y, mc.cursorPos.x - transform.position.x);
-                if(inputDirection.x == 0)
+                if (grounded && !jump)
                 {
-                    inputDirection.y = 1;
+                    rb.velocity = new Vector2(rb.velocity.x, jump_speed);
+                    jump = true;
                 }
-                tempDashDirection = inputDirection;
-                hp.invincible = true;
-                dash = true;
-                //trail.emitting = true;
-                rb.gravityScale = 0;
+                else if (remainingDash > 0 && !grounded && !dash)
+                {
+                    jump = false;
+
+                    remainingDash--;
+                    remainingDashTime = DashTime;
+
+                    angle = Mathf.Atan2(mc.cursorPos.y - transform.position.y, mc.cursorPos.x - transform.position.x);
+                    //if (inputDirection.x == 0)
+                    //{
+                    //    inputDirection.y = 1;
+                    //}
+                    tempDashDirection = inputDirection;
+                    hp.invincible = true;
+                    dash = true;
+                    //trail.emitting = true;
+                    rb.gravityScale = 0;
+                }
+            }
+        }
+        else if (ControlMode == PlayerControlMode.V2)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                if (remainingDashJump > 0)
+                {
+                    remainingDashJump--;
+                    rb.velocity = new Vector2(rb.velocity.x, jump_speed);
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                if (remainingDashJump > 0 && !grounded && !dash)
+                {
+
+                    remainingDashJump--;
+                    remainingDashTime = DashTime;
+
+                    angle = Mathf.Atan2(mc.cursorPos.y - transform.position.y, mc.cursorPos.x - transform.position.x);
+                    //if (inputDirection.x == 0)
+                    //{
+                    //    inputDirection.y = 1;
+                    //}
+                    tempDashDirection = inputDirection;
+                    hp.invincible = true;
+                    dash = true;
+                    //trail.emitting = true;
+                    rb.gravityScale = 0;
+                }
+
+            }
+        }else if (ControlMode == PlayerControlMode.V3)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                if (remainingJump > 0)
+                {
+                    remainingJump--;
+                    rb.velocity = new Vector2(rb.velocity.x, jump_speed);
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                if (remainingDash > 0 && !grounded && !dash)
+                {
+
+                    remainingDash--;
+                    remainingDashTime = DashTime;
+
+                    angle = Mathf.Atan2(mc.cursorPos.y - transform.position.y, mc.cursorPos.x - transform.position.x);
+                    //if (inputDirection.x == 0)
+                    //{
+                    //    inputDirection.y = 1;
+                    //}
+                    tempDashDirection = inputDirection;
+                    hp.invincible = true;
+                    dash = true;
+                    //trail.emitting = true;
+                    rb.gravityScale = 0;
+                }
+
             }
         }
     }
@@ -173,7 +280,7 @@ public class PlayerController : MonoBehaviour
             Dash();
         }
 
-        if(remainingDash == 0)
+        if(remainingDash == 0 || remainingJump == 0 || remainingDashJump == 0)
         {
             GetComponent<SpriteRenderer>().color = OutofDashColor;
         }
@@ -182,9 +289,19 @@ public class PlayerController : MonoBehaviour
             GetComponent<SpriteRenderer>().color = Color.white;
         }
 
-        if ((grounded || jump || ((rb.velocity.y == 0) && remainingDash == 0)) && !dash)
+        if (MomemtumOn)
         {
-            rb.velocity = new Vector2(moveVelocity, rb.velocity.y);
+            if (grounded || jump || (!dash && AD_input))
+            {
+                rb.velocity = new Vector2(moveVelocity, rb.velocity.y);
+            }
+        }
+        else
+        {
+            if (grounded || jump || !dash)
+            {
+                rb.velocity = new Vector2(moveVelocity, rb.velocity.y);
+            }
         }
 
     }
@@ -194,6 +311,8 @@ public class PlayerController : MonoBehaviour
         grounded = true;
         jump = false;
         remainingDash = maxDash;
+        remainingJump = maxJump;
+        remainingDashJump = maxDashJump;
 
     }
     void OnCollisionExit2D()
@@ -209,8 +328,8 @@ public class PlayerController : MonoBehaviour
             hp.invincible = false;
             //trail.emitting = false;
             dash = false;
-            remainingDash--;
             rb.gravityScale = startGravityScale;
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y/2);
         }
         else
         {
@@ -229,6 +348,13 @@ public class PlayerController : MonoBehaviour
                 case DashControlMode.Key:
                     if (tempDashDirection != Vector2.zero)
                     {
+                        rb.velocity = tempDashDirection.normalized * dash_speed;
+                    }
+                    break;
+                case DashControlMode.LROnly:
+                    if (tempDashDirection != Vector2.zero)
+                    {
+                        tempDashDirection.y = 0;
                         rb.velocity = tempDashDirection.normalized * dash_speed;
                     }
                     break;

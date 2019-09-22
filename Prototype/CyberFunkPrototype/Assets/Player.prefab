@@ -385,19 +385,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Weapon: 1
-  DashMode: 1
+  DashMode: 2
+  ControlMode: 1
   firerate: 40
   bulletSpeed: 50
   move_speed: 20
   jump_speed: 20
-  dash_speed: 30
+  dash_speed: 50
+  maxJump: 10
   maxDash: 10
+  maxDashJump: 20
   DashTime: 0.1
-  OutofDashColor: {r: 0, g: 1, b: 0.016898155, a: 1}
+  OutofDashColor: {r: 0, g: 1, b: 0.029119253, a: 1}
   GodMode: 0
+  MomemtumOn: 0
   grounded: 1
-  jump: 0
-  dash: 0
   Laser: {fileID: 1913858081708663472}
 --- !u!114 &-3563769889000092297
 MonoBehaviour:
