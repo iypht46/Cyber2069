@@ -807,6 +807,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 1913858082922715277, guid: e385bffbf83384648ba40267648fa3fd,
+        type: 3}
+      propertyPath: GodMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1913858082922715274, guid: e385bffbf83384648ba40267648fa3fd,
         type: 3}
       propertyPath: m_LocalPosition.x
