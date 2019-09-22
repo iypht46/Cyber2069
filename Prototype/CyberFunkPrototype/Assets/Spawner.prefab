@@ -72,6 +72,10 @@ MonoBehaviour:
     m_prefab: {fileID: 8599772576882252370, guid: 62b7e1ddc9ad7e941a8cf8f437fe9291,
       type: 3}
     size: 30
+  - m_tag: SuicideBomber
+    m_prefab: {fileID: 691697636809350516, guid: b5ed7bd353727b443991131b9eee54c1,
+      type: 3}
+    size: 20
   m_mapWidth: 180
   m_mapHeight: 90
   CurrentBeacon: {fileID: 0}

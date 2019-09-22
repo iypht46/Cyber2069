@@ -68,7 +68,7 @@ public class SuicideBomber : MonoBehaviour
         {
             timer -= Time.deltaTime;
 
-            if (timer <= 0)
+            if (timer <= 0 && !hp.isDead)
             {
                 if (!setPosition)
                 {
@@ -87,8 +87,9 @@ public class SuicideBomber : MonoBehaviour
                 {
                     rb.velocity = Vector2.zero;
                     Explode.Invoke();
+                    hp.StartCoroutine(hp.Dead(1));
                 }
-                
+
             }
             else
             {

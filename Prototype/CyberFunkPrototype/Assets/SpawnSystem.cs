@@ -46,6 +46,7 @@ public class SpawnSystem : MonoBehaviour
     void Update()
     {
         SpawnObjectFromPool("Enemy");
+        SpawnObjectFromPool("SuicideBomber");
 
         GameObject bc = SpawnObjectFromPool("Beacon");
         if (bc != null)
