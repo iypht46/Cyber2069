@@ -122,6 +122,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Core\EC\Components\Component.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\MeshRenderer.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\Rigidbody.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\Transform.hpp" />
