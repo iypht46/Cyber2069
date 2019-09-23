@@ -12,10 +12,12 @@ public class HP : MonoBehaviour
     public bool isDead = false;
 
     SpriteRenderer sr;
+    private UI ui;
 
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
+        ui = GameObject.Find("UI").GetComponent<UI>();
     }
 
     void OnEnable()
@@ -39,6 +41,10 @@ public class HP : MonoBehaviour
     {
         if (!invincible)
         {
+            if (this.CompareTag("Player"))
+            {
+                ui.ResetCombo();
+            }
             hp -= damage;
         }
     }

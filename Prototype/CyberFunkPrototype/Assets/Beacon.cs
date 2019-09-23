@@ -29,7 +29,8 @@ public class Beacon : MonoBehaviour
         GameObject effect = spawner.GetObjectFromPool("BeaconEffect");
         effect.transform.position = this.transform.position;
         player.hp = player.Maxhp;
-        ui.score += ui.BeaconScore;
+        ui.AddScore(ui.BeaconScore);
+        ui.IncreaseCombo(1);
         hp.StartCoroutine(hp.Dead(1));
     }
 }

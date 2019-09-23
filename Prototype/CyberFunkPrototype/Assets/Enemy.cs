@@ -36,7 +36,8 @@ public class Enemy : MonoBehaviour
 
     public void Dead()
     {
-        ui.score += ui.EnemyScore;
+        ui.AddScore(ui.EnemyScore);
+        ui.IncreaseCombo(1);
         GameObject.Find("Spawner").GetComponent<SpawnSystem>().GetObjectFromPool("Effect").transform.position = this.transform.position;
         hp.StartCoroutine(hp.Dead(1));
     }

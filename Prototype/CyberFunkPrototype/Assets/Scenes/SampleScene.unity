@@ -666,6 +666,16 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2733593703231215625, guid: 913780a678fc6314f9edcfd532a99ed5,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 2733593703231215625, guid: 913780a678fc6314f9edcfd532a99ed5,
+        type: 3}
+      propertyPath: m_FontData.m_MinSize
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 913780a678fc6314f9edcfd532a99ed5, type: 3}
 --- !u!1 &730075108
@@ -809,11 +819,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1913858082922715277, guid: e385bffbf83384648ba40267648fa3fd,
         type: 3}
-      propertyPath: GodMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1913858082922715277, guid: e385bffbf83384648ba40267648fa3fd,
-        type: 3}
       propertyPath: Weapon
       value: 2
       objectReference: {fileID: 0}
@@ -886,6 +891,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_BackGroundColor.b
       value: 0.23584908
+      objectReference: {fileID: 0}
+    - target: {fileID: -3563769889000092297, guid: e385bffbf83384648ba40267648fa3fd,
+        type: 3}
+      propertyPath: invincible
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e385bffbf83384648ba40267648fa3fd, type: 3}
@@ -2002,6 +2012,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6966705202333048010, guid: 9fa4f75da96a79d48b5518a5fe6f19a0,
+        type: 3}
+      propertyPath: m_objectsToSpawn.Array.data[7].size
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9fa4f75da96a79d48b5518a5fe6f19a0, type: 3}
