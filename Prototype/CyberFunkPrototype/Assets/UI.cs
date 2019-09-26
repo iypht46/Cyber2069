@@ -21,6 +21,7 @@ public class UI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Time.timeScale = 0;
         scorevalue = 0;
         combovalue = 1;
         Score = GameObject.Find("ScoreText").GetComponent<Text>();
@@ -76,5 +77,10 @@ public class UI : MonoBehaviour
         Combo.fontSize = 40;
         combovalue += value;
         combotimer = 0;
+    }
+
+    public void Continue()
+    {
+        Time.timeScale = 1;
     }
 }
