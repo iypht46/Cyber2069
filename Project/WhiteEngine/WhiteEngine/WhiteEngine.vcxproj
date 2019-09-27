@@ -127,9 +127,13 @@
     <ClInclude Include="Sources\Core\EC\Components\Rigidbody.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\Transform.hpp" />
     <ClInclude Include="Sources\Core\EC\GameObject.hpp" />
+    <ClInclude Include="Sources\Core\World.hpp" />
+    <ClInclude Include="Sources\Graphic\Window.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\Core\EC\GameObject.cpp" />
+    <ClCompile Include="Sources\Core\World.cpp" />
+    <ClCompile Include="Sources\main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
