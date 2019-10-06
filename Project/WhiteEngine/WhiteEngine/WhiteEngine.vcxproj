@@ -131,6 +131,7 @@
     <ClInclude Include="Sources\Graphic\Window.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Core\EC\Components\Component.cpp" />
     <ClCompile Include="Sources\Core\EC\GameObject.cpp" />
     <ClCompile Include="Sources\Core\World.cpp" />
     <ClCompile Include="Sources\main.cpp" />
