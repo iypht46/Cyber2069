@@ -21,9 +21,9 @@ namespace Input
 		g_mousePosition.x = xpos;
 		g_mousePosition.y = ypos;
 
-		std::cout << "Mouse POS: " << g_mousePosition.x << " / " << g_mousePosition.y << std::endl;
+		/*std::cout << "Mouse POS: " << g_mousePosition.x << " / " << g_mousePosition.y << std::endl;
 
-		std::cout << "Prev Mouse POS: " << g_prevMousePosition.x << " / " << g_prevMousePosition.y << std::endl;
+		std::cout << "Prev Mouse POS: " << g_prevMousePosition.x << " / " << g_prevMousePosition.y << std::endl;*/
 	}
 
 	void UpdateAllInputState()
@@ -51,7 +51,7 @@ namespace Input
 	void Update(void)
 	{
 		//Debug
-		std::cout << "Update Input System" << std::endl;
+		//std::cout << "Update Input System" << std::endl;
 
 		//Update Key
 
