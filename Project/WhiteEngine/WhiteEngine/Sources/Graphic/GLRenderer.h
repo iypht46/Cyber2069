@@ -7,6 +7,8 @@
 #include <vector>
 #include <string>
 #include "glm/glm.hpp"
+#include "SDL_surface.h"
+#include "SDL_image.h"
 
 using namespace std;
 
@@ -54,6 +56,6 @@ public:
 	GLuint GetColorUniformId();
 	GLuint GetModeUniformId();
 
-	//GLuint LoadTexture(string path);
+	GLuint LoadTexture(string path);
 
 };

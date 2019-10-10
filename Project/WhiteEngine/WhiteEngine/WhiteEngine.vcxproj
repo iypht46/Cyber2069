@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{F777A932-80C9-4398-820F-FCA0F950097D}</ProjectGuid>
     <RootNamespace>WhiteEngine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -130,7 +130,9 @@
     <ClInclude Include="Sources\Core\GameInfo.h" />
     <ClInclude Include="Sources\Core\World.hpp" />
     <ClInclude Include="Sources\Graphic\Camera.hpp" />
+    <ClInclude Include="Sources\Graphic\GLRenderer.h" />
     <ClInclude Include="Sources\Graphic\GraphicCore.hpp" />
+    <ClInclude Include="Sources\Graphic\Shader.h" />
     <ClInclude Include="Sources\Graphic\Window.hpp" />
     <ClInclude Include="Sources\Input\Input.hpp" />
   </ItemGroup>
@@ -139,10 +141,16 @@
     <ClCompile Include="Sources\Core\EC\GameObject.cpp" />
     <ClCompile Include="Sources\Core\GameInfo.cpp" />
     <ClCompile Include="Sources\Core\World.cpp" />
+    <ClCompile Include="Sources\Graphic\GLRenderer.cpp" />
     <ClCompile Include="Sources\Graphic\GraphicCore.cpp" />
+    <ClCompile Include="Sources\Graphic\Shader.cpp" />
     <ClCompile Include="Sources\Graphic\Window.cpp" />
     <ClCompile Include="Sources\Input\Input.cpp" />
     <ClCompile Include="Sources\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sources\Graphic\Shader\fragment.shd" />
+    <None Include="Sources\Graphic\Shader\vertext.shd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

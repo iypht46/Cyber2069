@@ -245,16 +245,18 @@ GLuint GLRenderer::GetModeUniformId()
 	return this->modeUniformId;
 }
 
-/*GLuint GLRenderer::LoadTexture(string path)
+GLuint GLRenderer::LoadTexture(string path)
 {
 	glActiveTexture(GL_TEXTURE0);
 	SDL_Surface *image = IMG_Load(path.c_str());
+
 	if (image == NULL)
 	{
 		cerr << "IMG_Load: " << SDL_GetError() << endl;
 		return -1;
 	}
-	unsigned int texture;
+
+	GLuint texture;
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
 
@@ -274,4 +276,4 @@ GLuint GLRenderer::GetModeUniformId()
 	SDL_FreeSurface(image);
 
 	return texture;
-}*/
+}
