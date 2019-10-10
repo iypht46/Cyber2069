@@ -19,8 +19,12 @@ namespace Graphic
 
 	void Render(void)
 	{
-		g_renderer->Render();
-		glfwSwapBuffers(Window::GetWindow());
+		if (!Window::ShouldClose())
+		{
+			g_renderer->Render();
+			Window::SwapBuffer();
+			glfwPollEvents();
+		}
 	}
 
 	void Terminate(void)

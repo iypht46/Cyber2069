@@ -22,11 +22,15 @@ namespace Graphic
 		////////////Window Interface////////////
 		void SetWindowShouldClose(bool i);
 
-		GLFWwindow* GetWindow();
+		GLFWwindow* GetWindow(void);
 
-		int GetWidth();
+		int GetWidth(void);
 
-		int GetHeight();
+		int GetHeight(void);
+
+		void SwapBuffer(void);
+
+		bool ShouldClose(void);
 
 	}
 }
