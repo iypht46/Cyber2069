@@ -1,3 +1,5 @@
+#include <glm/glm.hpp>
+
 #include "Graphic/Window.hpp"
 
 using namespace glm;
@@ -15,19 +17,37 @@ namespace Graphic
 		const glm::uvec2 windowResArr[] = { {1280, 720}, {1366,768}, {1600, 900}, {1920, 1080} };
 		glm::uvec2 windowRes;
 
+
+		void RecenterWindow(void)
+		{
+			const GLFWvidmode* vidMode = glfwGetVideoMode(glfwMonitor);
+
+			int posX = (glm::abs(vidMode->width - (windowRes.x)) * 0.15f);
+			int posY = (glm::abs(vidMode->height - (windowRes.y)) * 0.15f);
+
+			glfwSetWindowPos(glfwWindow, posX, posY);
+
+		}
+
 		void SetWindowMode(WindowMode mode)
 		{
+			const GLFWvidmode* vidMode = glfwGetVideoMode(glfwMonitor);
 			switch (mode)
 			{
 			case Graphic::Window::WindowMode::WINDOWED:
+
 				glfwSetWindowMonitor(glfwWindow, nullptr, 0, 0, windowRes.x, windowRes.y, c_refreshRate);
+				RecenterWindow();
+
 				break;
 			case Graphic::Window::WindowMode::FULLSCREEN:
-				const GLFWvidmode* vidMode = glfwGetVideoMode(glfwMonitor);
+				
 				glfwSetWindowMonitor(glfwWindow, glfwMonitor, 0, 0, windowRes.x, windowRes.y, c_refreshRate);
 				break;
 			}
 		}
+
+		
 
 		void SetWindowShouldClose(bool i)
 		{
@@ -49,6 +69,17 @@ namespace Graphic
 			return windowRes.y;
 		}
 
+		void SwapBuffer()
+		{
+			//Flip Buffers and Draw
+			glfwSwapBuffers(glfwWindow);
+		}
+
+		bool ShouldClose()
+		{
+			return static_cast<bool>(glfwWindowShouldClose(glfwWindow));
+		}
+
 		void window_close_callback(GLFWwindow* window)
 		{
 			SetWindowShouldClose(true);
@@ -63,8 +94,7 @@ namespace Graphic
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-			
+			glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
 			//Create new full screen window
 			glfwWindow = glfwCreateWindow(windowRes.x, windowRes.y, title, NULL, NULL);
@@ -80,6 +110,8 @@ namespace Graphic
 
 			glfwMakeContextCurrent(glfwWindow);
 
+			
+
 			if (glewInit() != GLEW_OK)
 			{
 				//Print Error
@@ -91,9 +123,9 @@ namespace Graphic
 			glfwMonitor = glfwGetPrimaryMonitor();
 			SetWindowMode(mode);
 
-			glfwSetWindowCloseCallback(glfwWindow, window_close_callback);
-
 			glfwSetWindowAspectRatio(glfwWindow, windowRes.x, windowRes.y);
+			glfwSwapInterval(1);
+			glfwSetWindowCloseCallback(glfwWindow, window_close_callback);
 		}
 
 		void Terminate(void)
