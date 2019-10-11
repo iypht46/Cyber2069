@@ -91,6 +91,8 @@ namespace Input
 	glm::vec2 GetMousePosition();
 	glm::vec2 GetMouseOffset();
 
+	KeyState GetMouseState(MouseKeyCode);
+
 	////////////Key Interface////////////
 	bool GetKeyUp(KeyCode);
 	bool GetKeyUp(int);
@@ -101,6 +103,7 @@ namespace Input
 	bool GetKeyHold(KeyCode);
 	bool GetKeyHold(int);
 
+	KeyState GetKeyState(KeyCode);
 	////////////System Interface////////////
 	void Init(void);
 	void Update(void);

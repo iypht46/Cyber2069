@@ -1,6 +1,8 @@
 #pragma once
 
 #include <chrono>
+#include "Input/Input.hpp"
+#include "Graphic/Window.hpp"
 
 namespace World
 {
@@ -19,5 +21,9 @@ namespace World
 		float m_frameRate = 1.0f / m_deltaTime;
 
 		std::chrono::time_point<std::chrono::high_resolution_clock> m_frameStartTime;
+
+		void GameShouldClose(void);
 	};
+
+	
 }

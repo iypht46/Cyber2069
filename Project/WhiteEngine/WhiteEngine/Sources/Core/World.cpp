@@ -63,6 +63,7 @@ namespace World
 		{
 			FixedUpdate(g_gameInfo->m_deltaTime);
 			Update(g_gameInfo->m_deltaTime);
+			g_gameInfo->GameShouldClose();
 		}
 	}
 

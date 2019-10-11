@@ -69,6 +69,16 @@ namespace Graphic
 			return windowRes.y;
 		}
 
+		int GetMouseInput(int key)
+		{
+			return glfwGetMouseButton(glfwWindow, key);
+		}
+
+		int GetKeyboardInput(int key)
+		{
+			return glfwGetKey(glfwWindow, key);
+		}
+
 		void SwapBuffer()
 		{
 			//Flip Buffers and Draw
@@ -130,6 +140,7 @@ namespace Graphic
 
 		void Terminate(void)
 		{
+			SetWindowShouldClose(true);
 			glfwDestroyWindow(glfwWindow);
 		}
 	}

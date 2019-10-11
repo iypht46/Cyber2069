@@ -32,6 +32,10 @@ namespace Graphic
 
 		bool ShouldClose(void);
 
+		int GetMouseInput(int);
+
+		int GetKeyboardInput(int);
+
 	}
 }
 
