@@ -20,7 +20,7 @@ namespace Core
 		s_engineLogger->set_level(spdlog::level::level_enum::trace);
 		s_clientLogger->set_level(spdlog::level::level_enum::trace);
 
-		ENGINE_INFO("Logger System Initialized");
+		ENGINE_WARN("Logger System Initialized");
 	}
 
 }
