@@ -3,6 +3,7 @@
 #include "Graphic/GraphicCore.hpp"
 #include "Core/GameInfo.h"
 #include "Input/Input.hpp"
+#include "EC/Components/Animation.hpp"
 
 namespace World
 {
@@ -12,6 +13,8 @@ namespace World
 
 	//Game Info Var
 	static GameInfo* g_gameInfo;
+
+	Animation* test;
 
 	//Physic Scene
 	//static PhysicScene* g_physicScene;
@@ -29,6 +32,9 @@ namespace World
 		Graphic::Init();
 		//Input
 		Input::Init();
+
+		test = new Animation();
+		test->printSpriteSheet();
 
 	}
 
@@ -52,6 +58,8 @@ namespace World
 		//Update All Systems
 		//Update Input
 		Input::Update();
+
+		//Core
 
 		//Update Graphic
 		Graphic::Render();
