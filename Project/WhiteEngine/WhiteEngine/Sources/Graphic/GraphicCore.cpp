@@ -1,10 +1,12 @@
 #include "Graphic/GraphicCore.hpp"
 
+#include "Core/Logger.hpp"
+
 namespace Graphic
 {
 	void Init(void)
 	{
-		std::cout << "Initialize Graphic System" << std::endl;
+		//ENGINE_INFO()
 		Window::Init("White Engine", Window::WindowMode::WINDOWED);
 
 		////////////OpenGL////////////
@@ -13,8 +15,7 @@ namespace Graphic
 		g_renderer->SetOrthoProjection(-1.f, 1.f, -1.f, 1.f);
 		g_renderer->SetClearColor(1.0f, 0.0f, 0.0f);
 
-		std::cout << "Initialize OpenGL" << std::endl;
-		
+		ENGINE_WARN("Graphic System Initialized");
 	}
 
 	void Render(void)
@@ -33,5 +34,7 @@ namespace Graphic
 		Window::Terminate();
 		//Terminate Glfw
 		glfwTerminate();
+
+		ENGINE_WARN("Graphic System Terminated");
 	}
 }

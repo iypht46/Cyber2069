@@ -4,6 +4,7 @@
 //System Headers
 #include "Input/Input.hpp"
 #include "Graphic/Window.hpp"
+#include "Core/Logger.hpp"
 
 using namespace Graphic;
 using namespace glm;
@@ -326,15 +327,15 @@ namespace Input
 		{
 			if (Input::GetKeyUp(keyCode))
 			{
-				std::cout << "GetKeyUp:       " << keyboardCodeName[index] << '\n';
+				ENGINE_INFO("GetKeyUp  :       {}", keyboardCodeName[index]);
 			}
 			if (Input::GetKeyHold(keyCode))
 			{
-				std::cout << "GetKeyHold:     " << keyboardCodeName[index] << '\n';
+				ENGINE_INFO("GetKeyHold:       {}", keyboardCodeName[index]);
 			}
 			if (Input::GetKeyDown(keyCode))
 			{
-				std::cout << "GetKeyDown:     " << keyboardCodeName[index] << '\n';
+				ENGINE_INFO("GetKeyDown:       {}", keyboardCodeName[index]);
 			}
 
 			++index;
@@ -346,15 +347,15 @@ namespace Input
 		{
 			if (Input::GetMouseUp(keyCode))
 			{
-				std::cout << "GetMouseUp:       " << mouseKeyCodeName[index] << '\n';
+				ENGINE_INFO("GetMouseUp  :       {}", mouseKeyCodeName[index]);
 			}
 			if (Input::GetMouseHold(keyCode))
 			{
-				std::cout << "GetMouseHold:     " << mouseKeyCodeName[index] << '\n';
+				ENGINE_INFO("GetMouseHold:       {}", mouseKeyCodeName[index]);
 			}
 			if (Input::GetMouseDown(keyCode))
 			{
-				std::cout << "GetMouseDown:     " << mouseKeyCodeName[index] << '\n';
+				ENGINE_INFO("GetMouseDown:       {}", mouseKeyCodeName[index]);
 			}
 
 			++index;
@@ -364,8 +365,8 @@ namespace Input
 	void Init(void)
 	{
 		//Debug
-		std::cout << "Initialize Input System" << std::endl;
-
+		//std::cout << "Initialize Input System" << std::endl;
+		ENGINE_WARN("Input System Initialized");
 	}
 
 	void Update(void)
@@ -386,7 +387,7 @@ namespace Input
 	void Terminate(void)
 	{
 		//Debug
-		std::cout << "Terminate Input System" << std::endl;
+		ENGINE_WARN("Input System Terminated");
 	}
 
 

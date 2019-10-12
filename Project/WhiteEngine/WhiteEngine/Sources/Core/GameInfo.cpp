@@ -21,9 +21,6 @@ namespace World
 
 	void GameInfo::GameShouldClose()
 	{
-		if (Input::GetKeyDown(Input::KeyCode::KEY_ESCAPE))
-		{
 			m_shouldClose = true;
-		}
 	}
 }
