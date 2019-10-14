@@ -4,7 +4,7 @@
 
 //Headers
 #include "Component.hpp"
-class Animation
+class Animator
 {
 protected:
 	int currFrame;
@@ -20,13 +20,13 @@ protected:
 	int offSetY;
 	std::unordered_map<std::string, std::string> animState;
 public:
-	Animation();
+	Animator();
 	void animUpdate();
 	void printSpriteSheet();
 	void setAnimFrame(std::string s);
 	int getCurrFrame();
 	int getNumFrame();
 	int getOffSetY();
-	~Animation();
+	~Animator();
 };
 

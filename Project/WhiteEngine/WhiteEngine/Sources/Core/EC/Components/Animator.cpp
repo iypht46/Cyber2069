@@ -1,8 +1,8 @@
-#include "Animation.hpp"
+#include "Animator.hpp"
 
 
 
-Animation::Animation()
+Animator::Animator()
 {
 	currFrame = 0;
 	numFrame = 0;
@@ -16,7 +16,7 @@ Animation::Animation()
 }
 
 
-void Animation::animUpdate() {
+void Animator::animUpdate() {
 	if (currFrame < numFrame) {
 		for (int i = currFrame; i < numFrame; i++) {
 			std::cout << spriteSheet[offSetY][i] << "\t";
@@ -30,7 +30,7 @@ void Animation::animUpdate() {
 
 }
 
-void Animation::printSpriteSheet() {
+void Animator::printSpriteSheet() {
 	
 	for (int i = 0; i < 5; i++) {
 		for (int j = 0; j < 7; j++) {
@@ -41,7 +41,7 @@ void Animation::printSpriteSheet() {
 
 }
 
-void Animation::setAnimFrame(std::string s) {
+void Animator::setAnimFrame(std::string s) {
 	if (animState.at("Idle") == s) {
 		offSetY = 0;
 		numFrame = 7;
@@ -64,19 +64,19 @@ void Animation::setAnimFrame(std::string s) {
 	}
 }
 
-int Animation::getCurrFrame() {
+int Animator::getCurrFrame() {
 	return currFrame;
 }
 
-int Animation::getNumFrame() {
+int Animator::getNumFrame() {
 	return numFrame;
 }
 
 
-int Animation::getOffSetY() {
+int Animator::getOffSetY() {
 	return offSetY;
 }
 
-Animation::~Animation()
+Animator::~Animator()
 {
 }

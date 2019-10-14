@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Graphic/Window.hpp"
-#include "Core/EC/Components/Animation.hpp"
+#include "Core/EC/Components/Animator.hpp"
 #include <glm/glm.hpp>
 #include <iostream>
 

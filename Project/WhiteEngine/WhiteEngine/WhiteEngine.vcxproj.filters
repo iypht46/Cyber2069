@@ -54,7 +54,7 @@
     <ClInclude Include="Sources\Graphic\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Core\EC\Components\Animation.hpp">
+    <ClInclude Include="Sources\Core\EC\Components\Animator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -89,7 +89,7 @@
     <ClCompile Include="Sources\Graphic\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Core\EC\Components\Animation.cpp">
+    <ClCompile Include="Sources\Core\EC\Components\Animator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

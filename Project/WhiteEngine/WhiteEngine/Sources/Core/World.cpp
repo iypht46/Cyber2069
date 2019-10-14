@@ -3,7 +3,7 @@
 #include "Graphic/GraphicCore.hpp"
 #include "Core/GameInfo.h"
 #include "Input/Input.hpp"
-#include "EC/Components/Animation.hpp"
+#include "EC/Components/Animator.hpp"
 
 namespace World
 {
@@ -14,7 +14,7 @@ namespace World
 	//Game Info Var
 	static GameInfo* g_gameInfo;
 
-	Animation test;
+	Animator test;
 
 	//Physic Scene
 	//static PhysicScene* g_physicScene;

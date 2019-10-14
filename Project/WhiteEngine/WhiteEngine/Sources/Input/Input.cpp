@@ -141,7 +141,7 @@ namespace Input
 	//Declare
 	KeyStateMap g_keyStateMap;
 	MouseStateMap g_mouseStateMap;
-	Animation test;
+	Animator test;
 
 	////////////Update Function////////////
 
