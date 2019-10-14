@@ -44,16 +44,18 @@ void Transform::UpdateWorldPosition() {
 		float angleBetweenParent = degrees(atan2(relativePosition.y, relativePosition.x));
 		float parentRotation = radians(parent->GetRotation());
 
-		m_position = parent->GetPosition() + length(relativePosition) * vec3(cos(radians(parentRotation + angleBetweenParent)), sin(radians(parentRotation + angleBetweenParent)), m_localPosition.z - parent->GetLocalPosition()));
+		vec3 worldPosDirection(cos(radians(parentRotation + angleBetweenParent)), sin(radians(parentRotation + angleBetweenParent)), m_localPosition.z - parent->GetLocalPosition());
+
+		m_position = parent->GetPosition() + (length(relativePosition) * worldPosDirection);
 	}
 	else {
 		m_position = m_localPosition;
 	}
 
-	//update child position
-	//for (Transform* child : children) {
-	//	child->UpdateWorldPosition();
-	//}
+	//update children position
+	for (Transform* child : children) {
+		child->UpdateWorldPosition();
+	}
 }
 
 ///**
@@ -84,11 +86,11 @@ void Transform::UpdateRotation() {
 		m_rotation = m_localRotation;
 	}
 
-	//update child roataion and position
-	//for (Transform* child : children) {
-	//	child->UpdateRotation();
-	//	child->UpdateWorldPosition();
-	//}
+	//update children rotation and position
+	for (Transform* child : children) {
+		child->UpdateRotation();
+		child->UpdateWorldPosition();
+	}
 }
 
 void Transform::SetPosition(glm::vec3 position) {
@@ -105,10 +107,10 @@ void Transform::SetPosition(glm::vec3 position) {
 		m_localPosition = position;
 	}
 
-	//update child position
-	//for (Transform* child : children) {
-	//	child->UpdateWorldPosition();
-	//}
+	//update children position
+	for (Transform* child : children) {
+		child->UpdateWorldPosition();
+	}
 }
 
 void Transform::SetLocalPosition(glm::vec3 localposition) {
@@ -149,11 +151,11 @@ void Transform::SetRotation(float rotation) {
 		m_localRotation = m_rotation;
 	}
 
-	//update child roataion and position
-	//for (Transform* child : children) {
-	//	child->UpdateRotation();
-	//	child->UpdateWorldPosition();
-	//}
+	//update children roataion and position
+	for (Transform* child : children) {
+		child->UpdateRotation();
+		child->UpdateWorldPosition();
+	}
 }
 
 void Transform::SetLocalRotation(float localrotation) {
