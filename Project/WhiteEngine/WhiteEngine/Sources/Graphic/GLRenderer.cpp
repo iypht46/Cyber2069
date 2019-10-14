@@ -9,7 +9,6 @@ using namespace std;
 GLRenderer *GLRenderer::instance = nullptr;
 
 GLRenderer* GLRenderer::GetInstance() {
-
 	return instance;
 }
 
@@ -17,13 +16,17 @@ GLRenderer::GLRenderer(int w, int h)
 {
 	this->winWidth = w;
 	this->winHeight = h;
-	projectionMatrix = glm::ortho(-1.f, 1.f, -1.f, 1.f);
+	//projectionMatrix = glm::ortho(-1.0, 1.0, -1.0, 1.0);
 	glViewport(0, 0, winWidth, winHeight);
 
 	if (instance == nullptr) 
 	{
 		instance = this;
 	}
+
+	
+
+	
 }
 
 bool GLRenderer::InitGL(string vertexShaderFile, string fragmentShaderFile)
@@ -121,6 +124,12 @@ bool GLRenderer::Initialize(string vertexShaderFile, string fragmentShaderFile)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	SquareMeshVbo* sqMesh = new SquareMeshVbo();
+	sqMesh->LoadData();
+	this->AddMesh(SquareMeshVbo::MESH_NAME, sqMesh);
+
+	test = new MeshRenderer("Sources/blank.png");
+
 	return true;
 
 }
@@ -133,42 +142,50 @@ void GLRenderer::Render()
 	// Update window with OpenGL rendering
 
 	glUseProgram(gProgramId);
+
+	this->PrintProgramLog(gProgramId);
 	//Set up matrix uniform
 
-	/*if (pMatrixId != -1) {
+	if (pMatrixId != -1) {
 		glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix));
+	}
+	else
+	{
+		cout << "pMatrixId = -1\n";
 	}
 
 	glm::mat4 camera = glm::mat4(1.0);
 
-	for (DrawableObject *obj : objList) {
+	/*for (DrawableObject *obj : objList) {
 		obj->Render(camera);
 	}*/
+
+	test->Render(camera);
 
 	//Unbind program
 	glUseProgram(NULL);
 }
 
-/*void GLRenderer::SetMeshAttribId(MeshVbo * mesh)
+void GLRenderer::SetMeshAttribId(MeshVbo * mesh)
 {
 	mesh->SetAttribId(gPos2DLocation, gTex2DLocation);
-}*/
+}
 
-/*void GLRenderer::AddMesh(string name, MeshVbo * mesh)
+void GLRenderer::AddMesh(string name, MeshVbo * mesh)
 {
 	SetMeshAttribId(mesh);
 	Mesh[name] = mesh;
-}*/
+}
 
-/*MeshVbo * GLRenderer::GetMesh(string name)
+MeshVbo * GLRenderer::GetMesh(string name)
 {
 	if (Mesh.find(name) == Mesh.end()) {
 		return nullptr;
 	}
 	else {
-		return shapes[name];
+		return Mesh[name];
 	}
-}*/
+}
 
 void GLRenderer::PrintProgramLog(GLuint program)
 {

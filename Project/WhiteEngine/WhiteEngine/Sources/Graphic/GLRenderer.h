@@ -9,6 +9,9 @@
 #include "glm/glm.hpp"
 #include "SDL_surface.h"
 #include "SDL_image.h"
+#include "Graphic/SquareMeshVbo.h"
+
+#include "Core/EC/Components/MeshRenderer.hpp"
 
 using namespace std;
 
@@ -27,14 +30,16 @@ protected:
 	GLuint modeUniformId = -1;
 
 	GLuint gProgramId;
-	int gPos2DLocation;
-	int gTex2DLocation;
+	int gPos2DLocation = -1;
+	int gTex2DLocation = -1;
 	void PrintProgramLog(GLuint program);
 	bool Initialize(string vertexShaderFile, string fragmentShaderFile);
 	Shader *vertexShader;
 	Shader *fragmentShader;
-	//map <string, MeshVbo*> Mesh;
-	//void SetMeshAttribId(MeshVbo * shape);
+	map <string, MeshVbo*> Mesh;
+	void SetMeshAttribId(MeshVbo * shape);
+
+	MeshRenderer* test;
 
 public:
 	void Render();
@@ -42,8 +47,8 @@ public:
 	GLRenderer(int w, int h);
 	bool InitGL(string vertexShaderFile, string fragmentShaderFile);
 
-	//void AddMesh(string name, MeshVbo* shape);
-	//MeshVbo * GetMesh(string name);
+	void AddMesh(string name, MeshVbo* shape);
+	MeshVbo * GetMesh(string name);
 
 	~GLRenderer();
 
