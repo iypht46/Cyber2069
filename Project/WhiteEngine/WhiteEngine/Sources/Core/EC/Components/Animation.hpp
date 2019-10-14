@@ -18,12 +18,12 @@ protected:
 		{25, 26, 27, 0, 0, 0, 0} ,
 	};
 	int offSetY;
-	std::unordered_map<std::string, int> animState;
+	std::unordered_map<std::string, std::string> animState;
 public:
 	Animation();
 	void animUpdate();
 	void printSpriteSheet();
-	int setAnimFrame();
+	void setAnimFrame(std::string s);
 	int getCurrFrame();
 	int getNumFrame();
 	int getOffSetY();

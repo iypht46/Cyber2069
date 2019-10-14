@@ -14,7 +14,7 @@ namespace World
 	//Game Info Var
 	static GameInfo* g_gameInfo;
 
-	Animation* test;
+	Animation test;
 
 	//Physic Scene
 	//static PhysicScene* g_physicScene;
@@ -33,8 +33,9 @@ namespace World
 		//Input
 		Input::Init();
 
-		test = new Animation();
-		test->printSpriteSheet();
+		
+		test.setAnimFrame("Idle");
+		test.printSpriteSheet();
 
 	}
 
@@ -58,11 +59,12 @@ namespace World
 		//Update All Systems
 		//Update Input
 		Input::Update();
-
 		//Core
 
 		//Update Graphic
 		Graphic::Render();
+
+		test.animUpdate();
 	}
 
 	void Loop(void)

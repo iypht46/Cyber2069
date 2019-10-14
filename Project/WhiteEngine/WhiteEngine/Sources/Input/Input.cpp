@@ -141,6 +141,7 @@ namespace Input
 	//Declare
 	KeyStateMap g_keyStateMap;
 	MouseStateMap g_mouseStateMap;
+	Animation test;
 
 	////////////Update Function////////////
 
@@ -326,15 +327,26 @@ namespace Input
 		{
 			if (Input::GetKeyUp(keyCode))
 			{
+				test.setAnimFrame("Idle");
 				std::cout << "GetKeyUp:       " << keyboardCodeName[index] << '\n';
+				test.animUpdate();
+				
 			}
 			if (Input::GetKeyHold(keyCode))
 			{
+				test.setAnimFrame("Running");
 				std::cout << "GetKeyHold:     " << keyboardCodeName[index] << '\n';
+				test.animUpdate();
+				
 			}
 			if (Input::GetKeyDown(keyCode))
 			{
+				//test.setAnimFrame("Jumping");
+				test.setAnimFrame("Dash");
 				std::cout << "GetKeyDown:     " << keyboardCodeName[index] << '\n';
+				test.animUpdate();
+				
+				
 			}
 
 			++index;
