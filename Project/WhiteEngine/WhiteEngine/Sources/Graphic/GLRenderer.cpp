@@ -16,17 +16,12 @@ GLRenderer::GLRenderer(int w, int h)
 {
 	this->winWidth = w;
 	this->winHeight = h;
-	//projectionMatrix = glm::ortho(-1.0, 1.0, -1.0, 1.0);
 	glViewport(0, 0, winWidth, winHeight);
 
 	if (instance == nullptr) 
 	{
 		instance = this;
 	}
-
-	
-
-	
 }
 
 bool GLRenderer::InitGL(string vertexShaderFile, string fragmentShaderFile)
@@ -113,6 +108,18 @@ bool GLRenderer::Initialize(string vertexShaderFile, string fragmentShaderFile)
 		cout << "mode is not a valid glsl uniform variable" << endl;
 		return false;
 	}
+	offSetXId = glGetUniformLocation(gProgramId, "offsetX");
+	if (modeUniformId == -1)
+	{
+		cout << "offsetX is not a valid glsl uniform variable" << endl;
+		return false;
+	}
+	offSetYId = glGetUniformLocation(gProgramId, "offsetY");
+	if (modeUniformId == -1)
+	{
+		cout << "offsetY is not a valid glsl uniform variable" << endl;
+		return false;
+	}
 
 
 	glEnableVertexAttribArray(gPos2DLocation);
@@ -123,12 +130,6 @@ bool GLRenderer::Initialize(string vertexShaderFile, string fragmentShaderFile)
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	SquareMeshVbo* sqMesh = new SquareMeshVbo();
-	sqMesh->LoadData();
-	this->AddMesh(SquareMeshVbo::MESH_NAME, sqMesh);
-
-	test = new MeshRenderer("Sources/blank.png");
 
 	return true;
 
@@ -156,6 +157,10 @@ void GLRenderer::Render()
 
 	glm::mat4 camera = glm::mat4(1.0);
 
+
+	//--------Render Object Here--------
+
+	
 	/*for (DrawableObject *obj : objList) {
 		obj->Render(camera);
 	}*/
@@ -169,22 +174,6 @@ void GLRenderer::Render()
 void GLRenderer::SetMeshAttribId(MeshVbo * mesh)
 {
 	mesh->SetAttribId(gPos2DLocation, gTex2DLocation);
-}
-
-void GLRenderer::AddMesh(string name, MeshVbo * mesh)
-{
-	SetMeshAttribId(mesh);
-	Mesh[name] = mesh;
-}
-
-MeshVbo * GLRenderer::GetMesh(string name)
-{
-	if (Mesh.find(name) == Mesh.end()) {
-		return nullptr;
-	}
-	else {
-		return Mesh[name];
-	}
 }
 
 void GLRenderer::PrintProgramLog(GLuint program)
@@ -260,6 +249,16 @@ GLuint GLRenderer::GetColorUniformId()
 GLuint GLRenderer::GetModeUniformId()
 {
 	return this->modeUniformId;
+}
+
+GLuint GLRenderer::GetOffsetXUniformId() 
+{
+	return this->offSetXId;
+}
+
+GLuint GLRenderer::GetOffsetYUniformId()
+{
+	return this->offSetYId;
 }
 
 GLuint GLRenderer::LoadTexture(string path)

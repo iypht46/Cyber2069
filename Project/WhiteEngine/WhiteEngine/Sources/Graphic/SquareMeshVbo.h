@@ -10,5 +10,5 @@ public:
 	SquareMeshVbo();
 	virtual string GetMeshName();
 	virtual void Render();
-	virtual void LoadData();
+	virtual void LoadData(float NumframeX, float NumFrameY);
 };

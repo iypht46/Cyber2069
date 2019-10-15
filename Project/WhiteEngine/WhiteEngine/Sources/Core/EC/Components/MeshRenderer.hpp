@@ -12,7 +12,7 @@ private:
 	MeshVbo* mesh;
 
 public:
-	MeshRenderer(std::string texture_path);
+	MeshRenderer(std::string texture_path, float NumframeX, float NumFrameY);
 	~MeshRenderer();
 	void SetTexture(std::string path);
 	void Render(glm::mat4 globalModelTransform);
