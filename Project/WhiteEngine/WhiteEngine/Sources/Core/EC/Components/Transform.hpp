@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include <glfw3.h>
 #include <glm/glm.hpp>
 //#include <glm/gtc/quaternion.hpp>
 //#include <glm/gtx/quaternion.hpp>
@@ -9,10 +8,12 @@
 
 using namespace std;
 
-class Transform :public Component {
+class Component;
+
+class Transform : public Component {
 private:
 	Transform* parent;
-	vector<Transform*> children;
+	std::vector<Transform*> children;
 
 	glm::vec3 m_position;
 	glm::vec3 m_scale;

@@ -22,11 +22,11 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{F777A932-80C9-4398-820F-FCA0F950097D}</ProjectGuid>
     <RootNamespace>WhiteEngine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -122,20 +122,51 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Core\Logger.hpp" />
+    <ClInclude Include="Sources\Core\EC\Components\Animator.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\Component.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\MeshRenderer.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\Rigidbody.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\Transform.hpp" />
     <ClInclude Include="Sources\Core\EC\GameObject.hpp" />
+    <ClInclude Include="Sources\Core\GameInfo.h" />
+    <ClInclude Include="Sources\Core\Message\IMessageHandler.hpp" />
+    <ClInclude Include="Sources\Core\Message\Message.hpp" />
+    <ClInclude Include="Sources\Core\Message\MessageObjects.hpp" />
+    <ClInclude Include="Sources\Core\Message\MessageType.hpp" />
     <ClInclude Include="Sources\Core\World.hpp" />
+    <ClInclude Include="Sources\Graphic\Camera.hpp" />
+    <ClInclude Include="Sources\Graphic\GLRenderer.h" />
+    <ClInclude Include="Sources\Graphic\GraphicCore.hpp" />
+    <ClInclude Include="Sources\Graphic\MeshVbo.h" />
+    <ClInclude Include="Sources\Graphic\Shader.h" />
+    <ClInclude Include="Sources\Graphic\SquareMeshVbo.h" />
     <ClInclude Include="Sources\Graphic\Window.hpp" />
+    <ClInclude Include="Sources\Input\Input.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Core\Logger.cpp" />
+    <ClCompile Include="Sources\Core\EC\Components\Animator.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Component.cpp" />
+    <ClCompile Include="Sources\Core\EC\Components\MeshRenderer.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Transform.cpp" />
     <ClCompile Include="Sources\Core\EC\GameObject.cpp" />
+    <ClCompile Include="Sources\Core\GameInfo.cpp" />
+    <ClCompile Include="Sources\Core\Message\IMessageHandler.cpp" />
+    <ClCompile Include="Sources\Core\Message\MessageObjects.cpp" />
     <ClCompile Include="Sources\Core\World.cpp" />
+    <ClCompile Include="Sources\Graphic\GLRenderer.cpp" />
+    <ClCompile Include="Sources\Graphic\GraphicCore.cpp" />
+    <ClCompile Include="Sources\Graphic\MeshVbo.cpp" />
+    <ClCompile Include="Sources\Graphic\Shader.cpp" />
+    <ClCompile Include="Sources\Graphic\SquareMeshVbo.cpp" />
+    <ClCompile Include="Sources\Graphic\Window.cpp" />
+    <ClCompile Include="Sources\Input\Input.cpp" />
     <ClCompile Include="Sources\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sources\Graphic\Shader\fragment.shd" />
+    <None Include="Sources\Graphic\Shader\vertext.shd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
