@@ -23,4 +23,9 @@ namespace World
 	{
 			m_shouldClose = true;
 	}
+
+	void GameInfo::HandleMessage(const Core::GameCloseMessage& msg)
+	{
+		GameShouldClose();
+	}
 }

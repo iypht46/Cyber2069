@@ -3,11 +3,12 @@
 #include <chrono>
 #include "Input/Input.hpp"
 #include "Graphic/Window.hpp"
+#include "Core/Message/IMessageHandler.hpp"
 
 namespace World
 {
 	constexpr float DEFAULT_FRAMERATE = 60.0f;
-	struct GameInfo
+	struct GameInfo : Core::IMessageHandler
 	{
 	public:
 		//Methods
@@ -22,7 +23,11 @@ namespace World
 
 		std::chrono::time_point<std::chrono::high_resolution_clock> m_frameStartTime;
 
+		
 		void GameShouldClose(void);
+
+		//IMessage
+		virtual void HandleMessage(const Core::GameCloseMessage&);
 	};
 
 	

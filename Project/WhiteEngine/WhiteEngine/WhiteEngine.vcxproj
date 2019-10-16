@@ -129,6 +129,10 @@
     <ClInclude Include="Sources\Core\EC\Components\Transform.hpp" />
     <ClInclude Include="Sources\Core\EC\GameObject.hpp" />
     <ClInclude Include="Sources\Core\GameInfo.h" />
+    <ClInclude Include="Sources\Core\Message\IMessageHandler.hpp" />
+    <ClInclude Include="Sources\Core\Message\Message.hpp" />
+    <ClInclude Include="Sources\Core\Message\MessageObjects.hpp" />
+    <ClInclude Include="Sources\Core\Message\MessageType.hpp" />
     <ClInclude Include="Sources\Core\World.hpp" />
     <ClInclude Include="Sources\Graphic\Camera.hpp" />
     <ClInclude Include="Sources\Graphic\GLRenderer.h" />
@@ -145,6 +149,8 @@
     <ClCompile Include="Sources\Core\EC\Components\MeshRenderer.cpp" />
     <ClCompile Include="Sources\Core\EC\GameObject.cpp" />
     <ClCompile Include="Sources\Core\GameInfo.cpp" />
+    <ClCompile Include="Sources\Core\Message\IMessageHandler.cpp" />
+    <ClCompile Include="Sources\Core\Message\MessageObjects.cpp" />
     <ClCompile Include="Sources\Core\World.cpp" />
     <ClCompile Include="Sources\Graphic\GLRenderer.cpp" />
     <ClCompile Include="Sources\Graphic\GraphicCore.cpp" />
