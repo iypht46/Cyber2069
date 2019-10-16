@@ -149,6 +149,7 @@
     <ClCompile Include="Sources\Core\EC\Components\Animator.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Component.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\MeshRenderer.cpp" />
+    <ClCompile Include="Sources\Core\EC\Components\Transform.cpp" />
     <ClCompile Include="Sources\Core\EC\GameObject.cpp" />
     <ClCompile Include="Sources\Core\GameInfo.cpp" />
     <ClCompile Include="Sources\Core\Message\IMessageHandler.cpp" />
