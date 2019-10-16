@@ -1,4 +1,5 @@
 #include "Core/Message/MessageObjects.hpp"
+#include "Core/Message/IMessageHandler.hpp"
 
 namespace Core
 {

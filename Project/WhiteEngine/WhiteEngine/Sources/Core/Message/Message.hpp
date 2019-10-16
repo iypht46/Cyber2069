@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Message/IMessageHandler.hpp"
+//
 
 #define MSG_GENERATE_DC()	\
 virtual void SendMessage(IMessageHandler&) const override;
@@ -15,6 +15,7 @@ namespace Core
 {
 	//Forward Declaration
 	enum class MessageType;
+	class IMessageHandler;
 
 	struct Message
 	{
@@ -25,6 +26,7 @@ namespace Core
 
 		//For Sending Message
 		virtual void SendMessage(IMessageHandler&) const = 0;
+	
 	};
 
 }
