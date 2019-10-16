@@ -5,6 +5,7 @@
 #include "Core/GameInfo.h"
 #include "Core/Logger.hpp"
 #include "Input/Input.hpp"
+#include "EC/Components/Animator.hpp"
 
 namespace World
 {
@@ -14,6 +15,8 @@ namespace World
 
 	//Game Info Var
 	static GameInfo* g_gameInfo;
+
+	Animator test;
 
 	//Physic Scene
 	//static PhysicScene* g_physicScene;
@@ -26,7 +29,7 @@ namespace World
 		//Physics
 		//g_physicScene = new PhysicScene();
 		//Core
-		
+
 		//Runtime
 		Core::Logger::Init();
 		Graphic::Init();
@@ -35,6 +38,9 @@ namespace World
 		Input::Init();
 
 		ENGINE_WARN("Engine Initialized");
+		test.setAnimFrame("Idle");
+		test.printSpriteSheet();
+
 	}
 
 	void FixedUpdate(float dt)
@@ -57,9 +63,12 @@ namespace World
 		//Update All Systems
 		//Update Input
 		Input::Update();
+		//Core
 
 		//Update Graphic
 		Graphic::Render();
+
+		test.animUpdate();
 	}
 
 	void Loop(void)
@@ -68,7 +77,7 @@ namespace World
 		{
 			FixedUpdate(g_gameInfo->m_deltaTime);
 			Update(g_gameInfo->m_deltaTime);
-			
+
 
 			if (Input::GetKeyDown(Input::KeyCode::KEY_ESCAPE))
 			{
@@ -93,5 +102,3 @@ namespace World
 	}
 
 }
-
-

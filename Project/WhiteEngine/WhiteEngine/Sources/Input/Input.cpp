@@ -138,7 +138,7 @@ namespace Input
 	//Type Def
 	using KeyStateMap = std::unordered_map<KeyCode, KeyState>;
 	using MouseStateMap = std::unordered_map<MouseKeyCode, KeyState>;
-	
+
 	//Declare
 	KeyStateMap g_keyStateMap;
 	MouseStateMap g_mouseStateMap;
