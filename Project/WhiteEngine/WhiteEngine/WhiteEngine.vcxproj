@@ -133,19 +133,24 @@
     <ClInclude Include="Sources\Graphic\Camera.hpp" />
     <ClInclude Include="Sources\Graphic\GLRenderer.h" />
     <ClInclude Include="Sources\Graphic\GraphicCore.hpp" />
+    <ClInclude Include="Sources\Graphic\MeshVbo.h" />
     <ClInclude Include="Sources\Graphic\Shader.h" />
+    <ClInclude Include="Sources\Graphic\SquareMeshVbo.h" />
     <ClInclude Include="Sources\Graphic\Window.hpp" />
     <ClInclude Include="Sources\Input\Input.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\Core\Logger.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Component.cpp" />
+    <ClCompile Include="Sources\Core\EC\Components\MeshRenderer.cpp" />
     <ClCompile Include="Sources\Core\EC\GameObject.cpp" />
     <ClCompile Include="Sources\Core\GameInfo.cpp" />
     <ClCompile Include="Sources\Core\World.cpp" />
     <ClCompile Include="Sources\Graphic\GLRenderer.cpp" />
     <ClCompile Include="Sources\Graphic\GraphicCore.cpp" />
+    <ClCompile Include="Sources\Graphic\MeshVbo.cpp" />
     <ClCompile Include="Sources\Graphic\Shader.cpp" />
+    <ClCompile Include="Sources\Graphic\SquareMeshVbo.cpp" />
     <ClCompile Include="Sources\Graphic\Window.cpp" />
     <ClCompile Include="Sources\Input\Input.cpp" />
     <ClCompile Include="Sources\main.cpp" />

@@ -10,12 +10,16 @@ namespace Graphic
 		Window::Init("White Engine", Window::WindowMode::WINDOWED);
 
 		////////////OpenGL////////////
-		g_renderer = new GLRenderer(Window::GetWidth(), Window::GetWidth());
+		g_renderer = new GLRenderer(Window::GetWidth(), Window::GetHeight());
+
 		g_renderer->InitGL("Sources/Graphic/Shader/vertext.shd", "Sources/Graphic/Shader/fragment.shd");
-		g_renderer->SetOrthoProjection(-1.f, 1.f, -1.f, 1.f);
-		g_renderer->SetClearColor(1.0f, 0.0f, 0.0f);
+		g_renderer->SetOrthoProjection(-Window::GetWidth() / 2, Window::GetWidth() / 2, -Window::GetHeight() / 2, Window::GetHeight() / 2);
+		g_renderer->SetClearColor(0.2f, 0.3f, 0.3f);
 
 		ENGINE_WARN("Graphic System Initialized");
+
+		g_renderer->test = new MeshRenderer("Sources/Rabbit.png", 1, 1);
+
 	}
 
 	void Render(void)
