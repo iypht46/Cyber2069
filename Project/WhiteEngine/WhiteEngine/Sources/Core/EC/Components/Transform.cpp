@@ -31,7 +31,8 @@ glm::vec3 Transform::Right() {
 }
 
 glm::mat4 Transform::GetModelMatrix() {
-
+	//temp
+	return mat4(1);
 }
 
 /**
@@ -44,8 +45,8 @@ void Transform::UpdateWorldPosition() {
 		float angleBetweenParent = degrees(atan2(relativePosition.y, relativePosition.x));
 		float parentRotation = radians(parent->GetRotation());
 
-		vec3 worldPosDirection(cos(radians(parentRotation + angleBetweenParent)), sin(radians(parentRotation + angleBetweenParent)), m_localPosition.z - parent->GetLocalPosition());
-
+		vec3 worldPosDirection(cos(radians(parentRotation + angleBetweenParent)), sin(radians(parentRotation + angleBetweenParent)), m_localPosition.z - parent->GetPosition().z);
+		worldPosDirection /= worldPosDirection.length();
 		m_position = parent->GetPosition() + (length(relativePosition) * worldPosDirection);
 	}
 	else {
