@@ -1,9 +1,9 @@
 #pragma once
 
+#include <iostream>
 #include <vector>
 #include <string>
 #include "Components/Component.hpp"
-#include "Components/Transform.hpp"
 
 class Component;
 class Transform;

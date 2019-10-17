@@ -1,10 +1,12 @@
 #include "Graphic/GraphicCore.hpp"
 
+#include "Core/Logger.hpp"
+
 namespace Graphic
 {
 	void Init(void)
 	{
-		std::cout << "Initialize Graphic System" << std::endl;
+		//ENGINE_INFO()
 		Window::Init("White Engine", Window::WindowMode::WINDOWED);
 
 		////////////OpenGL////////////
@@ -14,10 +16,10 @@ namespace Graphic
 		g_renderer->SetOrthoProjection(-Window::GetWidth() / 2, Window::GetWidth() / 2, -Window::GetHeight() / 2, Window::GetHeight() / 2);
 		g_renderer->SetClearColor(0.2f, 0.3f, 0.3f);
 
-		std::cout << "Initialize OpenGL" << std::endl;
+		ENGINE_WARN("Graphic System Initialized");
 
 		g_renderer->test = new MeshRenderer("Sources/Rabbit.png", 1, 1);
-		
+
 	}
 
 	void Render(void)
@@ -36,5 +38,7 @@ namespace Graphic
 		Window::Terminate();
 		//Terminate Glfw
 		glfwTerminate();
+
+		ENGINE_WARN("Graphic System Terminated");
 	}
 }

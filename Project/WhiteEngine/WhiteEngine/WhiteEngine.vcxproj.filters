@@ -54,10 +54,28 @@
     <ClInclude Include="Sources\Graphic\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Core\Logger.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Sources\Graphic\MeshVbo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Graphic\SquareMeshVbo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Core\Message\MessageType.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Core\Message\IMessageHandler.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Core\Message\Message.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Core\Message\MessageObjects.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Core\EC\Components\Animator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -92,6 +110,9 @@
     <ClCompile Include="Sources\Graphic\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Core\Logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Sources\Core\EC\Components\MeshRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -99,6 +120,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Graphic\SquareMeshVbo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Core\Message\MessageObjects.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Core\Message\IMessageHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Core\EC\Components\Animator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Core\EC\Components\Transform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

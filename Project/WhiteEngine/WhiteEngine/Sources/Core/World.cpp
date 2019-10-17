@@ -1,8 +1,11 @@
 //System Headers
 #include "Core/World.hpp"
+
 #include "Graphic/GraphicCore.hpp"
 #include "Core/GameInfo.h"
+#include "Core/Logger.hpp"
 #include "Input/Input.hpp"
+#include "EC/Components/Animator.hpp"
 
 namespace World
 {
@@ -12,6 +15,8 @@ namespace World
 
 	//Game Info Var
 	static GameInfo* g_gameInfo;
+
+	Animator test;
 
 	//Physic Scene
 	//static PhysicScene* g_physicScene;
@@ -25,10 +30,16 @@ namespace World
 		//g_physicScene = new PhysicScene();
 		//Core
 
-		//Renderer and Windows
+		//Runtime
+		Core::Logger::Init();
 		Graphic::Init();
+
 		//Input
 		Input::Init();
+
+		ENGINE_WARN("Engine Initialized");
+		test.setAnimFrame("Idle");
+		test.printSpriteSheet();
 
 	}
 
@@ -52,9 +63,12 @@ namespace World
 		//Update All Systems
 		//Update Input
 		Input::Update();
+		//Core
 
 		//Update Graphic
 		Graphic::Render();
+
+		test.animUpdate();
 	}
 
 	void Loop(void)
@@ -63,6 +77,12 @@ namespace World
 		{
 			FixedUpdate(g_gameInfo->m_deltaTime);
 			Update(g_gameInfo->m_deltaTime);
+
+
+			if (Input::GetKeyDown(Input::KeyCode::KEY_ESCAPE))
+			{
+				g_gameInfo->GameShouldClose();
+			}
 		}
 	}
 
@@ -78,9 +98,7 @@ namespace World
 		//Terminate Physics
 		//delete g_physicScene;
 		//Terminate Game Info
-		delete g_gameInfo;
+		ENGINE_WARN("Engine Terminated");
 	}
 
 }
-
-

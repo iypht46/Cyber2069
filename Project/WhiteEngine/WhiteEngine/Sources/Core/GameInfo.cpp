@@ -18,4 +18,14 @@ namespace World
 		m_deltaTime = std::chrono::duration<float>(std::chrono::high_resolution_clock::now() - m_frameStartTime).count();
 		m_frameRate = 1.0f / m_deltaTime;
 	}
+
+	void GameInfo::GameShouldClose()
+	{
+			m_shouldClose = true;
+	}
+
+	void GameInfo::HandleMessage(const Core::GameCloseMessage& msg)
+	{
+		GameShouldClose();
+	}
 }
