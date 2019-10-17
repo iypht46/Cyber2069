@@ -122,7 +122,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Sources\Core\EC\Components\Animator.hpp" />
+    <ClInclude Include="Sources\Core\Animator\AnimationController.hpp" />
+    <ClInclude Include="Sources\Core\Animator\Animator.hpp" />
+    <ClInclude Include="Sources\Core\EC\Components\Animation.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\Component.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\MeshRenderer.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\Rigidbody.hpp" />
@@ -138,7 +140,9 @@
     <ClInclude Include="Sources\Input\Input.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Sources\Core\EC\Components\Animator.cpp" />
+    <ClCompile Include="Sources\Core\Animator\AnimationController.cpp" />
+    <ClCompile Include="Sources\Core\Animator\Animator.cpp" />
+    <ClCompile Include="Sources\Core\EC\Components\Animation.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Component.cpp" />
     <ClCompile Include="Sources\Core\EC\GameObject.cpp" />
     <ClCompile Include="Sources\Core\GameInfo.cpp" />
