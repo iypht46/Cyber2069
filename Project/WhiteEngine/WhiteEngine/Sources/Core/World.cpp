@@ -5,7 +5,7 @@
 #include "Core/GameInfo.h"
 #include "Core/Logger.hpp"
 #include "Input/Input.hpp"
-#include "EC/Components/Animator.hpp"
+#include "EC/Components/Animation.hpp"
 
 namespace World
 {
@@ -16,7 +16,7 @@ namespace World
 	//Game Info Var
 	static GameInfo* g_gameInfo;
 
-	Animator test;
+	Animation test;
 
 	//Physic Scene
 	//static PhysicScene* g_physicScene;
@@ -39,7 +39,6 @@ namespace World
 
 		ENGINE_WARN("Engine Initialized");
 		test.setAnimFrame("Idle");
-		test.printSpriteSheet();
 
 	}
 
