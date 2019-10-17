@@ -15,6 +15,9 @@ MeshRenderer::MeshRenderer(std::string texture_path,float NumframeX,float NumFra
 	mesh = new SquareMeshVbo();
 	mesh->LoadData(NumframeX, NumFrameY);
 	GLRenderer::GetInstance()->SetMeshAttribId(mesh);
+
+	anim = new Animator();
+	anim->setAnimFrame("Running");
 }
 
 void MeshRenderer::SetTexture(std::string path)
@@ -67,8 +70,9 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 		glUniform1i(modeId, 1);
 
 		//-------Animation--------
-		glUniform1f(offsetXId, 0);
-		glUniform1f(offsetYId, 0);
+		anim->animUpdate();
+		glUniform1f(offsetXId, anim->getCurrFrame() /7.0f);
+		glUniform1f(offsetYId, anim->getOffSetY() /5.0f);
 
 
 		glBindTexture(GL_TEXTURE_2D, texture);

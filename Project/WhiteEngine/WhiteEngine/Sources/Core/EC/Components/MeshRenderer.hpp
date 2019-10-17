@@ -3,6 +3,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "Component.hpp"
+#include "Animator.hpp"
 #include "Graphic/MeshVbo.h"
 
 class MeshRenderer : public Component
@@ -10,6 +11,8 @@ class MeshRenderer : public Component
 private:
 	unsigned int texture;
 	MeshVbo* mesh;
+
+	Animator* anim;
 
 public:
 	MeshRenderer(std::string texture_path, float NumframeX, float NumFrameY);
