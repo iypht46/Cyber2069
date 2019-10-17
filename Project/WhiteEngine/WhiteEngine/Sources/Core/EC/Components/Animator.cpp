@@ -7,6 +7,9 @@ Animator::Animator()
 	currFrame = 0;
 	numFrame = 0;
 	offSetY = 0;
+
+	tmpDeley = 0;
+
 	animState["Idle"] = "Idle";
 	animState["Running"] = "Running";
 	animState["Die"] = "Die";
@@ -17,15 +20,25 @@ Animator::Animator()
 
 
 void Animator::animUpdate() {
-	if (currFrame < numFrame) {
-		for (int i = currFrame; i < numFrame; i++) {
+	
+	if (currFrame < numFrame - 1) {
+		/*for (int i = currFrame; i < numFrame; i++) {
 			std::cout << spriteSheet[offSetY][i] << "\t";
 			currFrame++;
+		}*/
+		tmpDeley++;
+
+		if (tmpDeley == 10)
+		{
+			tmpDeley = 0;
+			currFrame += 1;
+			std::cout << currFrame << "\t";
 		}
 	}
-	else {
-		std::cout << std::endl;
+	else 
+	{
 		currFrame = 0;
+		std::cout << currFrame << "\t";
 	}
 
 }
@@ -52,11 +65,11 @@ void Animator::setAnimFrame(std::string s) {
 	}
 	else if (animState.at("Die") == s) {
 		offSetY = 2;
-		numFrame = 6;
+		numFrame = 7;
 	}
 	else if (animState.at("Jumping") == s) {
 		offSetY = 3;
-		numFrame = 6;
+		numFrame = 4;
 	}
 	else if (animState.at("Dash") == s) {
 		offSetY = 4;

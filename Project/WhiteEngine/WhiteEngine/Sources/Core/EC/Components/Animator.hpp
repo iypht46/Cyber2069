@@ -19,6 +19,8 @@ protected:
 	};
 	int offSetY;
 	std::unordered_map<std::string, std::string> animState;
+
+	int tmpDeley;
 public:
 	Animator();
 	void animUpdate();
