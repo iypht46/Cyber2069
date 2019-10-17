@@ -2,6 +2,10 @@
 
 using namespace glm;
 
+Transform::Transform() {
+	
+}
+
 glm::vec3 Transform::GetPosition() {
 	return m_position;
 }		  

@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "Components/Component.hpp"
+#include "Components/Transform.hpp"
 
 class Component;
 class Transform;
@@ -16,10 +16,12 @@ protected:
 
 	int m_objectID;
 	
-	Transform* m_transform;
+	Transform m_transform;
 	std::vector<Component*> m_components;
 
 public:
+	GameObject();
+
 	void SetActive(bool activestate);
 
 	virtual void OnAwake() {};

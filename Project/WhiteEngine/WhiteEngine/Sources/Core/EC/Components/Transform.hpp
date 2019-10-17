@@ -32,6 +32,8 @@ private:
 	//updatelocalscale
 	//updatelocalrotation
 public:
+	Transform();
+
 	glm::vec3 GetPosition();
 	glm::vec3 GetLocalPosition();
 	glm::vec3 GetScale();
