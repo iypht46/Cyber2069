@@ -5,7 +5,7 @@
 #include "Core/GameInfo.h"
 #include "Core/Logger.hpp"
 #include "Input/Input.hpp"
-#include "EC/Components/Animator.hpp"
+#include "Core/Animator/Animator.hpp"
 #include "EC/Components/MeshRenderer.hpp"
 
 #include "Factory.h"
@@ -23,7 +23,9 @@ namespace World
 	//====================================
 	//TESTING ONLY, DON'T FORGET TO REMOVE
 	//====================================
-	Animator test;
+	GameObject* Rabbit;
+
+
 	//====================================
 
 	//Physic Scene
@@ -46,8 +48,15 @@ namespace World
 		Input::Init();
 
 		ENGINE_WARN("Engine Initialized");
-		test.setAnimFrame("Idle");
-		test.printSpriteSheet();
+
+		Rabbit->AddComponent<MeshRenderer>();
+
+		
+		//dynamic_cast<MeshRenderer*>(Rabbit.GetComponent<MeshRenderer*>())->CreateMesh(7, 5);
+
+		Rabbit->GetComponent<MeshRenderer>()->CreateMesh(7, 5);
+
+		Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_PlayerBody_Vversion02.png");
 
 	}
 
@@ -64,10 +73,11 @@ namespace World
 
 			accumulator -= c_targetDT;
 		}
-		Factory<GameObject>::Create();
+		
+		/*Factory<GameObject>::Create();
 		std::vector<GameObject*> a = Factory<GameObject>::getCollection();
 		a.back()->AddComponent<MeshRenderer>();
-		std::cout << Factory<MeshRenderer>::getCollection().size() << std::endl;
+		std::cout << Factory<MeshRenderer>::getCollection().size() << std::endl;*/
 	}
 
 	void Update(float dt)
@@ -79,8 +89,6 @@ namespace World
 
 		//Update Graphic
 		Graphic::Render();
-
-		test.animUpdate();
 	}
 
 	void Loop(void)

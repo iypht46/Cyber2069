@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include "Components/Transform.hpp"
+#include "Core/Factory.h"
 
 class Component;
 
@@ -33,7 +34,7 @@ public:
 	void AddComponent();
 
 	template <class T>
-	Component* GetComponent();
+	T* GetComponent();
 	//GameObject* GetGameObject();
 	//void SetGameObject(GameObject* obj);
 };
@@ -45,10 +46,12 @@ void GameObject::AddComponent() {
 }
 
 template<class T>
-Component* GameObject::GetComponent() {
+T* GameObject::GetComponent() {
+
 	for (Component* component : m_components) {
-		if (dynamic_cast<T>(component)) {
-			return component;
+		if (dynamic_cast<T*>(component)) {
+			T* tmp = dynamic_cast<T*>(component);
+			return tmp;
 		}
 	}
 }
