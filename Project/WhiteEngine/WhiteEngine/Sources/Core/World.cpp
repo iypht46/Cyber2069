@@ -16,7 +16,11 @@ namespace World
 	//Game Info Var
 	static GameInfo* g_gameInfo;
 
+	//====================================
+	//TESTING ONLY, DON'T FORGET TO REMOVE
+	//====================================
 	Animator test;
+	//====================================
 
 	//Physic Scene
 	//static PhysicScene* g_physicScene;

@@ -1,5 +1,5 @@
 #include "Animator.hpp"
-
+#include <iostream>
 
 
 Animator::Animator()

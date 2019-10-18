@@ -18,7 +18,7 @@ namespace Graphic
 
 		ENGINE_WARN("Graphic System Initialized");
 
-		g_renderer->test = new MeshRenderer("Sources/Mockup_PlayerBody_Vversion02.png", 7, 5);
+		//g_renderer->test = new MeshRenderer("Sources/Mockup_PlayerBody_Vversion02.png", 7, 5);
 
 	}
 

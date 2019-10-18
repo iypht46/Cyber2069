@@ -122,6 +122,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Core\Factory.h" />
+    <ClInclude Include="Sources\Core\FactoryCollection.h" />
     <ClInclude Include="Sources\Core\Logger.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\Animator.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\Component.hpp" />
@@ -145,6 +147,7 @@
     <ClInclude Include="Sources\Input\Input.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Core\FactoryCollection.cpp" />
     <ClCompile Include="Sources\Core\Logger.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Animator.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Component.cpp" />

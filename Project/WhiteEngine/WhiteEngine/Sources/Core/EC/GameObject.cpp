@@ -1,4 +1,10 @@
 #include "GameObject.hpp"
+#include "../Factory.h"
+
+template<class T>
+void GameObject::AddComponent() {
+	Factory<T>::Create();
+}
 
 template<class T>
 Component* GameObject::GetComponent() {

@@ -6,7 +6,6 @@
 #include "Components/Transform.hpp"
 
 class Component;
-class Transform;
 
 class GameObject
 {
@@ -20,8 +19,6 @@ protected:
 	std::vector<Component*> m_components;
 
 public:
-	GameObject();
-
 	void SetActive(bool activestate);
 
 	virtual void OnAwake() {};
@@ -30,6 +27,9 @@ public:
 	virtual void OnUpdate(float dt) {};
 	virtual void OnFixedUpdate(float dt) {};
 	virtual void OnDisable() {};
+
+	template <class T>
+	void AddComponent();
 
 	template <class T>
 	Component* GetComponent();

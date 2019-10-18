@@ -8,8 +8,6 @@
 
 using namespace std;
 
-class Component;
-
 class Transform : public Component {
 private:
 	Transform* parent;
