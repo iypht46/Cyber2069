@@ -49,14 +49,29 @@ namespace World
 
 		ENGINE_WARN("Engine Initialized");
 
+		//GameObject
+		Rabbit = new GameObject();
+
+		//Add Renderer
 		Rabbit->AddComponent<MeshRenderer>();
-
-		
-		//dynamic_cast<MeshRenderer*>(Rabbit.GetComponent<MeshRenderer*>())->CreateMesh(7, 5);
-
 		Rabbit->GetComponent<MeshRenderer>()->CreateMesh(7, 5);
-
 		Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_PlayerBody_Vversion02.png");
+
+		//Add Animator
+		Animation* Running = new Animation();
+
+		Running->setStartPosition(0, 1);
+		Running->setEndPosition(4, 1);
+
+		AnimationController* RabbitController = new AnimationController();
+		RabbitController->setSheetSize(glm::vec2(7, 5));
+		RabbitController->AddState(Running);
+
+		Rabbit->AddComponent<Animator>();
+		Rabbit->GetComponent<Animator>()->AssignController(RabbitController);
+		Rabbit->GetComponent<Animator>()->setCurrentState(0);
+
+		Rabbit->m_transform.SetScale(glm::vec3(100, 100, 1));
 
 	}
 
@@ -86,6 +101,8 @@ namespace World
 		//Update Input
 		Input::Update();
 		//Core
+
+		Rabbit->GetComponent<Animator>()->animUpdate();
 
 		//Update Graphic
 		Graphic::Render();

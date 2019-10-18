@@ -7,6 +7,9 @@
 
 #include "Core/Animator/Animator.hpp"
 
+class GameObject;
+class Component;
+
 class MeshRenderer : public Component
 {
 private:
