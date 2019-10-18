@@ -16,8 +16,18 @@ MeshRenderer::MeshRenderer(std::string texture_path,float NumframeX,float NumFra
 	mesh->LoadData(NumframeX, NumFrameY);
 	GLRenderer::GetInstance()->SetMeshAttribId(mesh);
 
+	Animation* Running = new Animation();
+
+	Running->setStartPosition(0, 1);
+	Running->setEndPosition(4, 1);
+
+	AnimationController* RabbitController = new AnimationController();
+	RabbitController->setSheetSize(glm::vec2(7, 5));
+	RabbitController->AddState(Running);
+
 	anim = new Animator();
-	anim->setAnimFrame("Running");
+	anim->AssignController(RabbitController);
+	anim->setCurrentState(0);
 }
 
 void MeshRenderer::SetTexture(std::string path)
@@ -71,9 +81,11 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 
 		//-------Animation--------
 		anim->animUpdate();
-		glUniform1f(offsetXId, anim->getCurrFrame() /7.0f);
-		glUniform1f(offsetYId, anim->getOffSetY() /5.0f);
+		glUniform1f(offsetXId, anim->GetCurrentUVFrame().x);
+		glUniform1f(offsetYId, anim->GetCurrentUVFrame().y);
 
+		/*glUniform1f(offsetXId, 0);
+		glUniform1f(offsetYId, 0);*/
 
 		glBindTexture(GL_TEXTURE_2D, texture);
 		squareMesh->Render();
