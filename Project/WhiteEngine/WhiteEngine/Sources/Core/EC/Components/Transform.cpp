@@ -2,6 +2,14 @@
 
 using namespace glm;
 
+Transform::Transform() {
+	m_position = vec3(0, 0, 0);
+	m_scale = vec3(1, 1, 1);
+	m_rotation = 0;
+
+	parent = nullptr;
+}
+
 glm::vec3 Transform::GetPosition() {
 	return m_position;
 }		  

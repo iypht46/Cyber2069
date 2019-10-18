@@ -2,6 +2,9 @@
 #include "Graphic/SquareMeshVbo.h"
 #include "Graphic/GLRenderer.h"
 
+MeshRenderer::MeshRenderer() {
+
+}
 
 MeshRenderer::~MeshRenderer()
 {

@@ -5,7 +5,11 @@
 #include "Core/GameInfo.h"
 #include "Core/Logger.hpp"
 #include "Input/Input.hpp"
-#include "EC/Components/Animation.hpp"
+#include "EC/Components/Animator.hpp"
+#include "EC/Components/MeshRenderer.hpp"
+
+#include "Factory.h"
+#include "Core/EC/GameObject.hpp"
 
 namespace World
 {
@@ -16,7 +20,11 @@ namespace World
 	//Game Info Var
 	static GameInfo* g_gameInfo;
 
-	Animation test;
+	//====================================
+	//TESTING ONLY, DON'T FORGET TO REMOVE
+	//====================================
+	Animator test;
+	//====================================
 
 	//Physic Scene
 	//static PhysicScene* g_physicScene;
@@ -39,6 +47,7 @@ namespace World
 
 		ENGINE_WARN("Engine Initialized");
 		test.setAnimFrame("Idle");
+		test.printSpriteSheet();
 
 	}
 
@@ -55,6 +64,10 @@ namespace World
 
 			accumulator -= c_targetDT;
 		}
+		Factory<GameObject>::Create();
+		std::vector<GameObject*> a = Factory<GameObject>::getCollection();
+		a.back()->AddComponent<MeshRenderer>();
+		std::cout << Factory<MeshRenderer>::getCollection().size() << std::endl;
 	}
 
 	void Update(float dt)

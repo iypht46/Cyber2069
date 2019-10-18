@@ -8,8 +8,6 @@
 
 using namespace std;
 
-class Component;
-
 class Transform : public Component {
 private:
 	Transform* parent;
@@ -32,6 +30,8 @@ private:
 	//updatelocalscale
 	//updatelocalrotation
 public:
+	Transform();
+
 	glm::vec3 GetPosition();
 	glm::vec3 GetLocalPosition();
 	glm::vec3 GetScale();
