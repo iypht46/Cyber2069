@@ -30,8 +30,8 @@ void MeshRenderer::SetTexture(std::string path)
 
 void  MeshRenderer::CreateMesh(float NumframeX, float NumFrameY)
 {
-	mesh = new SquareMeshVbo();
-	mesh->LoadData(NumframeX, NumFrameY);
+	this->mesh = new SquareMeshVbo();
+	this->mesh->LoadData(NumframeX, NumFrameY);
 	GLRenderer::GetInstance()->SetMeshAttribId(mesh);
 }
 
@@ -72,16 +72,18 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 		{
 			glUniform1f(offsetXId, GetGameObject()->GetComponent<Animator>()->GetCurrentUVFrame().x);
 			glUniform1f(offsetYId, GetGameObject()->GetComponent<Animator>()->GetCurrentUVFrame().y);
+
 		}
 		else {
 			glUniform1f(offsetXId, 0.0f);
 			glUniform1f(offsetYId, 0.0f);
+
 		}
 
 		/*glUniform1f(offsetXId, 0);
 		glUniform1f(offsetYId, 0);*/
 
-		glBindTexture(GL_TEXTURE_2D, texture);
+		glBindTexture(GL_TEXTURE_2D, this->texture);
 		squareMesh->Render();
 	}
 }

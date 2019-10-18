@@ -24,6 +24,7 @@ namespace World
 	//TESTING ONLY, DON'T FORGET TO REMOVE
 	//====================================
 	GameObject* Rabbit;
+	GameObject* Bg;
 
 
 	//====================================
@@ -37,15 +38,18 @@ namespace World
 		{
 			Rabbit->m_transform.Translate(glm::vec3(0.0f, 10.0f, 0.0f));
 		}
-		else if (Input::GetKeyHold(Input::KeyCode::KEY_A))
+		
+		if (Input::GetKeyHold(Input::KeyCode::KEY_A))
 		{
 			Rabbit->m_transform.Translate(glm::vec3(-10.0f, 0.0f, 0.0f));
 		}
-		else if (Input::GetKeyHold(Input::KeyCode::KEY_S))
+		
+		if (Input::GetKeyHold(Input::KeyCode::KEY_S))
 		{
 			Rabbit->m_transform.Translate(glm::vec3(0.0f, -10.0f, 0.0f));
 		}
-		else if (Input::GetKeyHold(Input::KeyCode::KEY_D))
+		
+		if (Input::GetKeyHold(Input::KeyCode::KEY_D))
 		{
 			Rabbit->m_transform.Translate(glm::vec3(10.0f, 0.0f, 0.0f));
 		}
@@ -71,8 +75,14 @@ namespace World
 
 		//GameObject
 		Rabbit = new GameObject();
+		Bg = new GameObject();
 
 		//Add Renderer
+		
+		/*Bg->AddComponent<MeshRenderer>();
+		Bg->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+		Bg->GetComponent<MeshRenderer>()->SetTexture("Sources/mockup_BG.png");*/
+
 		Rabbit->AddComponent<MeshRenderer>();
 		Rabbit->GetComponent<MeshRenderer>()->CreateMesh(7, 5);
 		Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_PlayerBody_Vversion02.png");
@@ -91,8 +101,9 @@ namespace World
 		Rabbit->GetComponent<Animator>()->AssignController(RabbitController);
 		Rabbit->GetComponent<Animator>()->setCurrentState(0);
 
-		Rabbit->m_transform.SetPosition(glm::vec3(100, 100, 0));
 		Rabbit->m_transform.SetScale(glm::vec3(100, 100, 1));
+		
+		Bg->m_transform.SetScale(glm::vec3(500, 500, 1));
 
 	}
 
