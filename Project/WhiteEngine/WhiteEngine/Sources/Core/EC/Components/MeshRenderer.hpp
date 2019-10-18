@@ -15,6 +15,7 @@ private:
 	Animator* anim;
 
 public:
+	MeshRenderer();
 	MeshRenderer(std::string texture_path, float NumframeX, float NumFrameY);
 	~MeshRenderer();
 	void SetTexture(std::string path);

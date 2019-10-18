@@ -13,6 +13,9 @@ public:
 };
 
 template <class T>
+std::vector<T*> Factory<T>::m_Collection;
+
+template <class T>
 T* Factory<T>::Create() {
 	T* newT = new T();
 	m_Collection.push_back(newT);

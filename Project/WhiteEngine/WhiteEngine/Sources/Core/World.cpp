@@ -6,6 +6,10 @@
 #include "Core/Logger.hpp"
 #include "Input/Input.hpp"
 #include "EC/Components/Animator.hpp"
+#include "EC/Components/MeshRenderer.hpp"
+
+#include "Factory.h"
+#include "Core/EC/GameObject.hpp"
 
 namespace World
 {
@@ -60,6 +64,10 @@ namespace World
 
 			accumulator -= c_targetDT;
 		}
+		Factory<GameObject>::Create();
+		std::vector<GameObject*> a = Factory<GameObject>::getCollection();
+		a.back()->AddComponent<MeshRenderer>();
+		std::cout << Factory<MeshRenderer>::getCollection().size() << std::endl;
 	}
 
 	void Update(float dt)
