@@ -31,6 +31,26 @@ namespace World
 	//Physic Scene
 	//static PhysicScene* g_physicScene;
 
+	void DebugInput()
+	{
+		if (Input::GetKeyHold(Input::KeyCode::KEY_W))
+		{
+			Rabbit->m_transform.Translate(glm::vec3(0.0f, 10.0f, 0.0f));
+		}
+		else if (Input::GetKeyHold(Input::KeyCode::KEY_A))
+		{
+			Rabbit->m_transform.Translate(glm::vec3(-10.0f, 0.0f, 0.0f));
+		}
+		else if (Input::GetKeyHold(Input::KeyCode::KEY_S))
+		{
+			Rabbit->m_transform.Translate(glm::vec3(0.0f, -10.0f, 0.0f));
+		}
+		else if (Input::GetKeyHold(Input::KeyCode::KEY_D))
+		{
+			Rabbit->m_transform.Translate(glm::vec3(10.0f, 0.0f, 0.0f));
+		}
+	}
+
 	void Init(void)
 	{
 		g_gameInfo = &(GameInfo::GetInstance());
@@ -71,6 +91,7 @@ namespace World
 		Rabbit->GetComponent<Animator>()->AssignController(RabbitController);
 		Rabbit->GetComponent<Animator>()->setCurrentState(0);
 
+		Rabbit->m_transform.SetPosition(glm::vec3(100, 100, 0));
 		Rabbit->m_transform.SetScale(glm::vec3(100, 100, 1));
 
 	}
@@ -101,6 +122,7 @@ namespace World
 		//Update Input
 		Input::Update();
 		//Core
+		DebugInput();
 
 		Rabbit->GetComponent<Animator>()->animUpdate();
 

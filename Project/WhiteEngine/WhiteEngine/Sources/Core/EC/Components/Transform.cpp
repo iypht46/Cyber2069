@@ -40,7 +40,7 @@ glm::vec3 Transform::Right() {
 
 glm::mat4 Transform::GetModelMatrix() {
 	//transformation
-	mat4 transformMatrices(1);
+	/*mat4 transformMatrices(1);
 	transformMatrices[0].x = m_position.x;
 	transformMatrices[0].y = m_position.y;
 	transformMatrices[0].z = m_position.z;
@@ -58,7 +58,14 @@ glm::mat4 Transform::GetModelMatrix() {
 	transformMatrices[1].y = m_scale.y;
 	transformMatrices[2].z = m_scale.z;
 
-	return mat4(1.0f) * ScaleMatrices * RotationMatrices * transformMatrices;
+	return mat4(1.0f) * ScaleMatrices * RotationMatrices * transformMatrices;*/
+
+	glm::mat4 rMat = glm::rotate(glm::mat4(1.0f), m_rotation, glm::vec3(0.0f, 0.0f, 1.0f));
+	glm::mat4 sMat = glm::scale(glm::mat4(1.0f), m_scale);
+	glm::mat4 tMat = glm::translate(glm::mat4(1.0f), m_position);
+	glm::mat4 transform = tMat * sMat * rMat;
+
+	return transform;
 }
 
 /**
