@@ -3,8 +3,9 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "Component.hpp"
-#include "Animator.hpp"
 #include "Graphic/MeshVbo.h"
+
+#include "Core/Animator/Animator.hpp"
 
 class MeshRenderer : public Component
 {

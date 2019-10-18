@@ -18,6 +18,8 @@ public:
 	glm::vec2 getStartPosition();
 	glm::vec2 getEndPosition();
 	void setState(std::string s);
+	void setStartPosition(int startPosX,int startPosY);
+	void setEndPosition(int endPosX, int endPosY);
 	bool isLooping();
 	~Animation();
 };
