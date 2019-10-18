@@ -75,7 +75,13 @@
     <ClInclude Include="Sources\Core\Message\MessageObjects.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Core\EC\Components\Animator.hpp">
+    <ClInclude Include="Sources\Core\EC\Components\Animation.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Core\Animator\AnimationController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Core\Animator\Animator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -128,7 +134,13 @@
     <ClCompile Include="Sources\Core\Message\IMessageHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Core\EC\Components\Animator.cpp">
+    <ClCompile Include="Sources\Core\EC\Components\Animation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Core\Animator\AnimationController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Core\Animator\Animator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Core\EC\Components\Transform.cpp">

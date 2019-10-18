@@ -31,7 +31,26 @@ glm::vec3 Transform::Right() {
 }
 
 glm::mat4 Transform::GetModelMatrix() {
+	//transformation
+	mat4 transformMatrices(1);
+	transformMatrices[0].x = m_position.x;
+	transformMatrices[0].y = m_position.y;
+	transformMatrices[0].z = m_position.z;
 
+	//rotation
+	mat4 RotationMatrices(1);
+	RotationMatrices[0][0] = cos(radians(m_rotation));
+	RotationMatrices[0][1] = -sin(radians(m_rotation));
+	RotationMatrices[1][0] = sin(radians(m_rotation));
+	RotationMatrices[1][1] = cos(radians(m_rotation));
+
+	//scale
+	mat4 ScaleMatrices(1);
+	transformMatrices[0].x = m_scale.x;
+	transformMatrices[1].y = m_scale.y;
+	transformMatrices[2].z = m_scale.z;
+
+	return mat4(1.0f) * ScaleMatrices * RotationMatrices * transformMatrices;
 }
 
 /**
@@ -44,8 +63,8 @@ void Transform::UpdateWorldPosition() {
 		float angleBetweenParent = degrees(atan2(relativePosition.y, relativePosition.x));
 		float parentRotation = radians(parent->GetRotation());
 
-		vec3 worldPosDirection(cos(radians(parentRotation + angleBetweenParent)), sin(radians(parentRotation + angleBetweenParent)), m_localPosition.z - parent->GetLocalPosition());
-
+		vec3 worldPosDirection(cos(radians(parentRotation + angleBetweenParent)), sin(radians(parentRotation + angleBetweenParent)), m_localPosition.z - parent->GetPosition().z);
+		worldPosDirection /= worldPosDirection.length();
 		m_position = parent->GetPosition() + (length(relativePosition) * worldPosDirection);
 	}
 	else {
