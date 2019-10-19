@@ -1,11 +1,16 @@
 #include "MeshRenderer.hpp"
 #include "Graphic/SquareMeshVbo.h"
 #include "Graphic/GLRenderer.h"
+#include "Core/EC/GameObject.hpp"
 
+MeshRenderer::MeshRenderer() 
+{
+}
 
 MeshRenderer::~MeshRenderer()
 {
 }
+
 
 MeshRenderer::MeshRenderer(std::string texture_path,float NumframeX,float NumFrameY)
 {
@@ -15,11 +20,19 @@ MeshRenderer::MeshRenderer(std::string texture_path,float NumframeX,float NumFra
 	mesh = new SquareMeshVbo();
 	mesh->LoadData(NumframeX, NumFrameY);
 	GLRenderer::GetInstance()->SetMeshAttribId(mesh);
+
 }
 
 void MeshRenderer::SetTexture(std::string path)
 {
 	texture = GLRenderer::GetInstance()->LoadTexture(path);
+}
+
+void  MeshRenderer::CreateMesh(float NumframeX, float NumFrameY)
+{
+	this->mesh = new SquareMeshVbo();
+	this->mesh->LoadData(NumframeX, NumFrameY);
+	GLRenderer::GetInstance()->SetMeshAttribId(mesh);
 }
 
 void MeshRenderer::Render(glm::mat4 globalModelTransform)
@@ -45,20 +58,7 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 
 	vector<glm::mat4> matrixStack;
 
-	
-	//-------Transform--------
-	glm::mat4 transform = glm::mat4(1.0);
-		
-	glm::vec3 pos = glm::vec3(0.0, 0.0, 0.0);
-	glm::vec3 size = glm::vec3(100.0, 100.0, 1.0);
-
-	transform = glm::translate(transform, glm::vec3(pos.x, pos.y, 0));
-	transform = glm::scale(transform, glm::vec3(size.x, size.y, 1));
-	
-	glm::mat4 currentMatrix = transform;
-	//-----------------------------------
-
-	//glm::mat4 currentMatrix = this->getTransform();
+	glm::mat4 currentMatrix = GetGameObject()->m_transform.GetModelMatrix();
 
 	if (squareMesh != nullptr)
 	{
@@ -67,11 +67,23 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 		glUniform1i(modeId, 1);
 
 		//-------Animation--------
-		glUniform1f(offsetXId, 0);
-		glUniform1f(offsetYId, 0);
 
+		if (GetGameObject()->GetComponent<Animator>() != nullptr) 
+		{
+			glUniform1f(offsetXId, GetGameObject()->GetComponent<Animator>()->GetCurrentUVFrame().x);
+			glUniform1f(offsetYId, GetGameObject()->GetComponent<Animator>()->GetCurrentUVFrame().y);
 
-		glBindTexture(GL_TEXTURE_2D, texture);
+		}
+		else {
+			glUniform1f(offsetXId, 0.0f);
+			glUniform1f(offsetYId, 0.0f);
+
+		}
+
+		/*glUniform1f(offsetXId, 0);
+		glUniform1f(offsetYId, 0);*/
+
+		glBindTexture(GL_TEXTURE_2D, this->texture);
 		squareMesh->Render();
 	}
 }

@@ -14,11 +14,11 @@ namespace Graphic
 
 		g_renderer->InitGL("Sources/Graphic/Shader/vertext.shd", "Sources/Graphic/Shader/fragment.shd");
 		g_renderer->SetOrthoProjection(-Window::GetWidth() / 2, Window::GetWidth() / 2, -Window::GetHeight() / 2, Window::GetHeight() / 2);
-		g_renderer->SetClearColor(0.2f, 0.3f, 0.3f);
+		g_renderer->SetClearColor(72.0f/255.0f, 42.0f / 255.0f, 109.0f / 255.0f);
 
 		ENGINE_WARN("Graphic System Initialized");
 
-		g_renderer->test = new MeshRenderer("Sources/Rabbit.png", 1, 1);
+		//g_renderer->test = new MeshRenderer("Sources/Mockup_PlayerBody_Vversion02.png", 7, 5);
 
 	}
 
