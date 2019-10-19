@@ -7,6 +7,7 @@ namespace Core
 {
 	//Forward Declaration
 	class Collider;
+	class Transform;
 
 	class Rigidbody : public Component
 	{

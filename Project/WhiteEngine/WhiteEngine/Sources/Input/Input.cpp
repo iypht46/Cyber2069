@@ -11,9 +11,10 @@ using namespace glm;
 
 namespace Input
 {
+	//Variables
 	vec2 g_mousePosition;
-
 	vec2 g_prevMousePosition;
+	bool g_inputDebug;
 
 	//Keyboard array for update loop
 	KeyCode keyCodeEnumArr[] =
@@ -362,10 +363,10 @@ namespace Input
 		}
 	}
 
-	void Init(void)
+	void Init(bool isDebug)
 	{
 		//Debug
-		//std::cout << "Initialize Input System" << std::endl;
+		g_inputDebug = isDebug;
 		ENGINE_WARN("Input System Initialized");
 	}
 
@@ -380,8 +381,11 @@ namespace Input
 		//Update Mouse
 		UpdateMousePosition();
 
-
-		DebugInputKey();
+		if (g_inputDebug)
+		{
+			DebugInputKey();
+		}
+		
 	}
 
 	void Terminate(void)

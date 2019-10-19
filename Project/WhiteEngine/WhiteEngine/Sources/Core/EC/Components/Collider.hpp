@@ -16,6 +16,7 @@ namespace Core
 
 	using LayerBit = std::bitset<8>;
 	class Rigidbody;
+	class Transform;
 
 	class Collider : public Component
 	{

@@ -16,6 +16,7 @@ namespace World
 	//Constants
 	constexpr float c_maxFrameRate = 60.0f;
 	constexpr float c_targetDT = 1.0f / c_maxFrameRate;
+	bool g_isDebug;
 
 	//Game Info Var
 	static GameInfo* g_gameInfo;
@@ -25,40 +26,41 @@ namespace World
 	//====================================
 	GameObject* Rabbit;
 	GameObject* Bg;
-
+#define MOVE_SPEED 300.0f
 
 	//====================================
 
 	//Physic Scene
 	//static PhysicScene* g_physicScene;
 
-	void DebugInput()
+	void DebugInput(float dt)
 	{
+
 		if (Input::GetKeyHold(Input::KeyCode::KEY_W))
 		{
-			Rabbit->m_transform.Translate(glm::vec3(0.0f, 10.0f, 0.0f));
+			Rabbit->m_transform.Translate(glm::vec3(0.0f, MOVE_SPEED * dt, 0.0f));
 		}
 		
 		if (Input::GetKeyHold(Input::KeyCode::KEY_A))
 		{
-			Rabbit->m_transform.Translate(glm::vec3(-10.0f, 0.0f, 0.0f));
+			Rabbit->m_transform.Translate(glm::vec3(-MOVE_SPEED * dt, 0.0f, 0.0f));
 		}
 		
 		if (Input::GetKeyHold(Input::KeyCode::KEY_S))
 		{
-			Rabbit->m_transform.Translate(glm::vec3(0.0f, -10.0f, 0.0f));
+			Rabbit->m_transform.Translate(glm::vec3(0.0f, -MOVE_SPEED * dt, 0.0f));
 		}
 		
 		if (Input::GetKeyHold(Input::KeyCode::KEY_D))
 		{
-			Rabbit->m_transform.Translate(glm::vec3(10.0f, 0.0f, 0.0f));
+			Rabbit->m_transform.Translate(glm::vec3(MOVE_SPEED * dt, 0.0f, 0.0f));
 		}
 	}
 
 	void Init(void)
 	{
 		g_gameInfo = &(GameInfo::GetInstance());
-
+		g_isDebug = false;
 		//Initialize All System
 		//Physics
 		//g_physicScene = new PhysicScene();
@@ -69,7 +71,8 @@ namespace World
 		Graphic::Init();
 
 		//Input
-		Input::Init();
+		//Bool for debugging
+		Input::Init(false);
 
 		ENGINE_WARN("Engine Initialized");
 
@@ -111,14 +114,16 @@ namespace World
 	{
 		//Update Physics Scene
 		static float accumulator = 0.0f;
+		int i = 0;
 		accumulator += dt;
 
 		while (accumulator > c_targetDT)
 		{
 			//Update Physic
 			//g_physicScene->Update(c_targetDT);
-
+			//ENGINE_INFO("FixedUpdate: {}", dt);
 			accumulator -= c_targetDT;
+			i++;
 		}
 		
 		/*Factory<GameObject>::Create();
@@ -133,7 +138,7 @@ namespace World
 		//Update Input
 		Input::Update();
 		//Core
-		DebugInput();
+		DebugInput(dt);
 
 		Rabbit->GetComponent<Animator>()->animUpdate();
 
@@ -145,6 +150,8 @@ namespace World
 	{
 		while (!g_gameInfo->m_shouldClose)
 		{
+			g_gameInfo->StartFrame();
+
 			FixedUpdate(g_gameInfo->m_deltaTime);
 			Update(g_gameInfo->m_deltaTime);
 
@@ -153,6 +160,8 @@ namespace World
 			{
 				g_gameInfo->GameShouldClose();
 			}
+
+			g_gameInfo->EndFrame();
 		}
 	}
 
