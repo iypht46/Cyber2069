@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 #include "Core/EC/Components/Component.hpp"
+#include "Core/EC/Components/Collider.hpp"
 
 namespace Core
 {
@@ -28,7 +29,9 @@ namespace Core
 	public:
 		//Rigidbody Interface
 		void Initialize(Collider&);
+		void Initialize(float, float);
 		void SetKinematic(bool);
+		Rigidbody();
 		~Rigidbody();
 
 		//Inherit Interface

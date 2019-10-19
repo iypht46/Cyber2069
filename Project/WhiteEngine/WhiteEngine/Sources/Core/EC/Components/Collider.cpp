@@ -1,14 +1,10 @@
 #include "Core/EC/Components/Collider.hpp"
 #include "Core/EC/GameObject.hpp"
+#include "Core/EC/Components/Rigidbody.hpp"
 
 namespace Core
 {
 	//////////////Base Collider/////////////
-
-	void Collider::AttachRigidbody(Rigidbody& rigid)
-	{
-		m_rigidbody = &rigid;
-	}
 
 	void Collider::SetTrigger(bool i)
 	{
@@ -25,40 +21,88 @@ namespace Core
 		return m_isStatic;
 	}
 
+
 	//////////////Box Collider//////////////
-	BoxCollider::BoxCollider(glm::vec2 size) : Collider(ColliderType::BOX) 
+	void BoxCollider::SetBox(float hW, float hH)
 	{
-		m_size = size;
-		float halfW = size.x / 2;
-		float halfH = size.y / 2;
+		//Set Transform
+		//m_transform = m_gameObject->GetTransform();
+		//Set Rigidbody
+		Rigidbody* rigid = m_gameObject->GetComponent<Rigidbody>();
+
+		if (rigid)
+		{
+			m_rigidbody = rigid;
+			m_isStatic = false;
+		}
+		else
+		{
+			m_isStatic = true;
+		}
+
+		//Set Box Size
+		m_width = hW * 2.0f;
+		m_height = hH * 2.0f;
 		//Lower Left
-		m_vertices[0] = glm::vec2(-halfW, -halfH);
+		m_vertices[0] = glm::vec2(-hW, -hH);
 		//Lower Right
-		m_vertices[1] = glm::vec2(halfW, -halfH);
+		m_vertices[1] = glm::vec2(hW, -hH);
 		//Upper Right
-		m_vertices[2] = glm::vec2(halfW, halfH);
+		m_vertices[2] = glm::vec2(hW, hH);
 		//Upper Left
-		m_vertices[3] = glm::vec2(-halfW, halfH);
+		m_vertices[3] = glm::vec2(-hW, hH);
+
 	}
 
-	BoxCollider::BoxCollider(glm::vec2 size, Rigidbody& rigid) : Collider(ColliderType::BOX)
+	void BoxCollider::SetBox(float hW, float hH, Rigidbody* rigid)
 	{
+		//Set Transform
+		//m_transform = m_gameObject->GetTransform();
+		//Set Rigidbody
+		m_rigidbody = rigid;
 		//Set Box Size
-		m_size = size;
-		float halfW = size.x / 2;
-		float halfH = size.y / 2;
+		m_width = hW * 2.0f;
+		m_height = hH * 2.0f;
 		//Lower Left
-		m_vertices[0] = glm::vec2(-halfW, -halfH);
+		m_vertices[0] = glm::vec2(-hW, -hH);
 		//Lower Right
-		m_vertices[1] = glm::vec2(halfW, -halfH);
+		m_vertices[1] = glm::vec2(hW, -hH);
 		//Upper Right
-		m_vertices[2] = glm::vec2(halfW, halfH);
+		m_vertices[2] = glm::vec2(hW, hH);
 		//Upper Left
-		m_vertices[3] = glm::vec2(-halfW, halfH);
+		m_vertices[3] = glm::vec2(-hW, hH);
 
-		//Attach Rigidbody
-		AttachRigidbody(rigid);
+		//Set Static
+		m_isStatic = false;
 		
+	}
+
+	void BoxCollider::OnAwake()
+	{
+	}
+
+	void BoxCollider::OnEnable()
+	{
+	}
+
+	void BoxCollider::OnStart()
+	{
+	}
+
+	void BoxCollider::OnDisable()
+	{
+	}
+
+	void BoxCollider::OnUpdate(float dt)
+	{
+	}
+
+	void BoxCollider::OnFixedUpdate(float dt)
+	{
+	}
+
+	void BoxCollider::OnDestroy()
+	{
 	}
 
 	//////////////Circle Collider///////////

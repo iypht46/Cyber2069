@@ -77,8 +77,9 @@ namespace World
 		ENGINE_WARN("Engine Initialized");
 
 		//GameObject
-		Rabbit = new GameObject();
-		Bg = new GameObject();
+		Rabbit = Factory<GameObject>::Create();
+		Bg = Factory<GameObject>::Create();
+		//auto = Factory<GameObject>::Create()
 
 		//Add Renderer
 		
@@ -109,21 +110,19 @@ namespace World
 		Bg->m_transform.SetScale(glm::vec3(500, 500, 1));
 
 	}
-
+	int count = 0;
 	void FixedUpdate(float dt)
 	{
 		//Update Physics Scene
 		static float accumulator = 0.0f;
-		int i = 0;
 		accumulator += dt;
 
-		while (accumulator > c_targetDT)
+		while (accumulator >= c_targetDT)
 		{
 			//Update Physic
 			//g_physicScene->Update(c_targetDT);
 			//ENGINE_INFO("FixedUpdate: {}", dt);
 			accumulator -= c_targetDT;
-			i++;
 		}
 		
 		/*Factory<GameObject>::Create();
@@ -132,6 +131,7 @@ namespace World
 		std::cout << Factory<MeshRenderer>::getCollection().size() << std::endl;*/
 	}
 
+	
 	void Update(float dt)
 	{
 		//Update All Systems
@@ -144,12 +144,14 @@ namespace World
 
 		//Update Graphic
 		Graphic::Render();
+	
 	}
 
 	void Loop(void)
 	{
 		while (!g_gameInfo->m_shouldClose)
 		{
+			
 			g_gameInfo->StartFrame();
 
 			FixedUpdate(g_gameInfo->m_deltaTime);

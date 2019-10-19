@@ -20,11 +20,9 @@ namespace Core
 
 	class Collider : public Component
 	{
-	private:
+	protected:
 		Transform* m_transform;
 		Rigidbody* m_rigidbody;
-
-	protected:
 		bool m_isStatic = true;
 		bool m_isTrigger;
 
@@ -38,20 +36,19 @@ namespace Core
 		~Collider() {};
 		//Collider Interface
 		void SetTrigger(bool);
-		void AttachRigidbody(Rigidbody&);
 		ColliderType GetType();
 		bool IsStatic();
 		//Virtual
-		virtual void SetOrient() = 0;
+		virtual void SetOrient() {};
 
 		//Inherit Interface
-		virtual void OnAwake() = 0;
-		virtual void OnEnable() = 0;
-		virtual void OnDisable() = 0;
-		virtual void OnStart() = 0;
-		virtual void OnUpdate(float dt) = 0;
-		virtual void OnFixedUpdate(float dt) = 0;
-		virtual void OnDestroy() = 0;
+		virtual void OnAwake() {}
+		virtual void OnEnable() {}
+		virtual void OnDisable() {}
+		virtual void OnStart() {}
+		virtual void OnUpdate(float dt) {}
+		virtual void OnFixedUpdate(float dt) {}
+		virtual void OnDestroy() {}
 
 	};
 
@@ -59,21 +56,24 @@ namespace Core
 	{
 	private:
 		glm::vec2 m_vertices[BOX_VERTICES];
-		glm::vec2 m_size;
+		float m_width;
+		float m_height;
 	public:
-		BoxCollider(glm::vec2);
-		BoxCollider(glm::vec2, Rigidbody&);
+		//Constructor
+		BoxCollider() : Collider(ColliderType::BOX) {}
+		void SetBox(float, float);
+		void SetBox(float, float, Rigidbody*);
+
 		//Box Collider Interface
 
-
 		//Inherit Interface
-		virtual void OnAwake() = 0;
-		virtual void OnEnable() = 0;
-		virtual void OnDisable() = 0;
-		virtual void OnStart() = 0;
-		virtual void OnUpdate(float dt) = 0;
-		virtual void OnFixedUpdate(float dt) = 0;
-		virtual void OnDestroy() = 0;
+		virtual void OnAwake();
+		virtual void OnEnable();
+		virtual void OnDisable();
+		virtual void OnStart();
+		virtual void OnUpdate(float dt);
+		virtual void OnFixedUpdate(float dt);
+		virtual void OnDestroy();
 	};
 }
 
