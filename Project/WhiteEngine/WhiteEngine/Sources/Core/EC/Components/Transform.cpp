@@ -68,6 +68,11 @@ glm::mat4 Transform::GetModelMatrix() {
 	return transform;
 }
 
+void Transform::SetParent(Transform* newParent) {
+	parent = newParent;
+	parent->children.push_back(this);
+}
+
 /**
  *update world position according to parent rotation and local position
  */

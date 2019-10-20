@@ -44,6 +44,8 @@ public:
 
 	glm::mat4 GetModelMatrix();
 
+	void SetParent(Transform* newParent);
+
 	void SetPosition(glm::vec3 position);
 	void SetLocalPosition(glm::vec3 localposition);
 	void Translate(glm::vec3 translation);
