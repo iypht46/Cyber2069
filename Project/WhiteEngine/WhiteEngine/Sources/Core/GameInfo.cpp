@@ -28,14 +28,16 @@ namespace World
 		//but if not then we delay until this frame time reach the expected time.
 		if (delayTime.count() > 0.0f)
 		{
+			
 			SDL_Delay(static_cast<Uint32>(delayTime.count()));
+			
 		}
 
 		//Assign the delta time for this frame
 		m_deltaTime = FloatDuration(Clock::now() - m_frameStartTime).count();
 		//Set the framerate
 		m_frameRate = 1.0f / m_deltaTime;
-		//ENGINE_INFO("Framerate: {}", m_frameRate);
+		
 	}
 
 	void GameInfo::GameShouldClose()
