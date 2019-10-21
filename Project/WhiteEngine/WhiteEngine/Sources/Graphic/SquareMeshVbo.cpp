@@ -27,11 +27,8 @@ void SquareMeshVbo::LoadData(float NumframeX, float NumFrameY)
 
 	glGenVertexArrays(1, &(this->posVaoId));
 
-
 	glGenBuffers(1, &(this->posVboId));
 	glGenBuffers(1, &(this->texVboId));
-
-	glBindVertexArray(this->posVaoId);
 
 	//Create VBO
 	glBindBuffer(GL_ARRAY_BUFFER, this->posVboId);
@@ -54,6 +51,8 @@ string SquareMeshVbo::GetMeshName()
 
 void SquareMeshVbo::Render()
 {
+	glBindVertexArray(this->posVaoId);
+
 	if (this->posAttribId != -1) {
 		glBindBuffer(GL_ARRAY_BUFFER, this->posVboId);
 		glVertexAttribPointer(this->posAttribId, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), NULL);
@@ -65,6 +64,5 @@ void SquareMeshVbo::Render()
 		glEnableVertexAttribArray(1);
 	}
 
-	glBindVertexArray(this->posVaoId);
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
