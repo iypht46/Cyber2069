@@ -41,17 +41,17 @@ namespace World
 		{
 			Rabbit->m_transform.Translate(glm::vec3(0.0f, MOVE_SPEED * dt, 0.0f));
 		}
-		
+
 		if (Input::GetKeyHold(Input::KeyCode::KEY_A))
 		{
 			Rabbit->m_transform.Translate(glm::vec3(-MOVE_SPEED * dt, 0.0f, 0.0f));
 		}
-		
+
 		if (Input::GetKeyHold(Input::KeyCode::KEY_S))
 		{
 			Rabbit->m_transform.Translate(glm::vec3(0.0f, -MOVE_SPEED * dt, 0.0f));
 		}
-		
+
 		if (Input::GetKeyHold(Input::KeyCode::KEY_D))
 		{
 			Rabbit->m_transform.Translate(glm::vec3(MOVE_SPEED * dt, 0.0f, 0.0f));
@@ -98,7 +98,7 @@ namespace World
 		Child = new GameObject();
 
 		//Add Renderer
-		
+
 		/*Bg->AddComponent<MeshRenderer>();
 		Bg->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 		Bg->GetComponent<MeshRenderer>()->SetTexture("Sources/mockup_BG.png");*/
@@ -131,32 +131,31 @@ namespace World
 
 		Child->m_transform.SetScale(glm::vec3(100, 100, 1));
 		Child->m_transform.SetLocalPosition(glm::vec3(100, 100, 0));
-		
+
 		Bg->m_transform.SetScale(glm::vec3(500, 500, 1));
 
 	}
-
+	int count = 0;
 	void FixedUpdate(float dt)
 	{
 		//Update Physics Scene
 		static float accumulator = 0.0f;
-		int i = 0;
 		accumulator += dt;
 
-		while (accumulator > c_targetDT)
+		while (accumulator >= c_targetDT)
 		{
 			//Update Physic
 			//g_physicScene->Update(c_targetDT);
 			//ENGINE_INFO("FixedUpdate: {}", dt);
 			accumulator -= c_targetDT;
-			i++;
 		}
-		
+
 		/*Factory<GameObject>::Create();
 		std::vector<GameObject*> a = Factory<GameObject>::getCollection();
 		a.back()->AddComponent<MeshRenderer>();
 		std::cout << Factory<MeshRenderer>::getCollection().size() << std::endl;*/
 	}
+
 
 	void Update(float dt)
 	{
@@ -170,12 +169,14 @@ namespace World
 
 		//Update Graphic
 		Graphic::Render();
+
 	}
 
 	void Loop(void)
 	{
 		while (!g_gameInfo->m_shouldClose)
 		{
+
 			g_gameInfo->StartFrame();
 
 			FixedUpdate(g_gameInfo->m_deltaTime);

@@ -31,7 +31,7 @@ public:
 	virtual void OnDisable() {};
 
 	template <class T>
-	void AddComponent();
+	T* AddComponent();
 
 	template <class T>
 	T* GetComponent();
@@ -40,18 +40,22 @@ public:
 };
 
 template<class T>
-void GameObject::AddComponent() {
-	m_components.push_back(Factory<T>::Create());
+T* GameObject::AddComponent() {
+	T* component = Factory<T>::Create();
+	m_components.push_back(component);
 	m_components.back()->SetGameObject(this);
+
+	return component;
 }
 
 template<class T>
 T* GameObject::GetComponent() {
 
-	for (Component* component : m_components) {
-		if (dynamic_cast<T*>(component)) {
-			T* tmp = dynamic_cast<T*>(component);
-			return tmp;
+	for (Component* component : m_components) 
+	{
+		if (dynamic_cast<T*>(component))
+		{
+			return dynamic_cast<T*>(component);
 		}
 	}
 
