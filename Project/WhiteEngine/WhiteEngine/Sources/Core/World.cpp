@@ -26,6 +26,7 @@ namespace World
 	//====================================
 	GameObject* Rabbit;
 	GameObject* Bg;
+	GameObject* Child;
 #define MOVE_SPEED 300.0f
 
 	//====================================
@@ -55,6 +56,21 @@ namespace World
 		{
 			Rabbit->m_transform.Translate(glm::vec3(MOVE_SPEED * dt, 0.0f, 0.0f));
 		}
+
+		if (Input::GetKeyHold(Input::KeyCode::KEY_F))
+		{
+			Child->m_transform.Translate(glm::vec3(MOVE_SPEED * dt, 0.0f, 0.0f));
+		}
+
+		if (Input::GetKeyHold(Input::KeyCode::KEY_Q))
+		{
+			Rabbit->m_transform.Rotate(0.1f);
+		}
+
+		if (Input::GetKeyHold(Input::KeyCode::KEY_E))
+		{
+			Rabbit->m_transform.Rotate(-0.1f);
+		}
 	}
 
 	void Init(void)
@@ -79,6 +95,7 @@ namespace World
 		//GameObject
 		Rabbit = new GameObject();
 		Bg = new GameObject();
+		Child = new GameObject();
 
 		//Add Renderer
 		
@@ -89,6 +106,12 @@ namespace World
 		Rabbit->AddComponent<MeshRenderer>();
 		Rabbit->GetComponent<MeshRenderer>()->CreateMesh(7, 5);
 		Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_PlayerBody_Vversion02.png");
+
+		Child->AddComponent<MeshRenderer>();
+		Child->GetComponent<MeshRenderer>()->CreateMesh(7, 5);
+		Child->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_PlayerBody_Vversion02.png");
+
+		Child->m_transform.SetParent(&Rabbit->m_transform);
 
 		//Add Animator
 		Animation* Running = new Animation();
@@ -104,7 +127,10 @@ namespace World
 		Rabbit->GetComponent<Animator>()->AssignController(RabbitController);
 		Rabbit->GetComponent<Animator>()->setCurrentState(0);
 
-		Rabbit->m_transform.SetScale(glm::vec3(100, 100, 1));
+		Rabbit->m_transform.SetScale(glm::vec3(500, 500, 1));
+
+		Child->m_transform.SetScale(glm::vec3(100, 100, 1));
+		Child->m_transform.SetLocalPosition(glm::vec3(100, 100, 0));
 		
 		Bg->m_transform.SetScale(glm::vec3(500, 500, 1));
 
