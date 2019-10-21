@@ -1,6 +1,7 @@
 #include "Graphic/GraphicCore.hpp"
 
 #include "Core/Logger.hpp"
+#include "Graphic/Camera.hpp"
 
 namespace Graphic
 {
@@ -10,11 +11,13 @@ namespace Graphic
 		Window::Init("White Engine", Window::WindowMode::WINDOWED);
 
 		////////////OpenGL////////////
-		g_renderer = new GLRenderer(Window::GetWidth(), Window::GetHeight());
+		g_renderer = GLRenderer::GetInstance();
 
 		g_renderer->InitGL("Sources/Graphic/Shader/vertext.shd", "Sources/Graphic/Shader/fragment.shd");
 		g_renderer->SetOrthoProjection(-Window::GetWidth() / 2, Window::GetWidth() / 2, -Window::GetHeight() / 2, Window::GetHeight() / 2);
 		g_renderer->SetClearColor(72.0f/255.0f, 42.0f / 255.0f, 109.0f / 255.0f);
+
+		Graphic::getCamera()->ResetCam();
 
 		ENGINE_WARN("Graphic System Initialized");
 
