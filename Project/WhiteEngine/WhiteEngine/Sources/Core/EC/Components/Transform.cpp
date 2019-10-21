@@ -1,4 +1,6 @@
 #include "Transform.hpp"
+#include "../../Logger.hpp"
+#include <iostream>
 
 using namespace glm;
 
@@ -60,7 +62,7 @@ glm::mat4 Transform::GetModelMatrix() {
 
 	return mat4(1.0f) * ScaleMatrices * RotationMatrices * transformMatrices;*/
 
-	glm::mat4 rMat = glm::rotate(glm::mat4(1.0f), m_rotation, glm::vec3(0.0f, 0.0f, 1.0f));
+	glm::mat4 rMat = glm::rotate(glm::mat4(1.0f), radians(m_rotation), glm::vec3(0.0f, 0.0f, 1.0f));
 	glm::mat4 sMat = glm::scale(glm::mat4(1.0f), m_scale);
 	glm::mat4 tMat = glm::translate(glm::mat4(1.0f), m_position);
 	glm::mat4 transform = tMat * sMat * rMat;
@@ -79,13 +81,14 @@ void Transform::SetParent(Transform* newParent) {
 void Transform::UpdateWorldPosition() {
 	//update world position
 	if (parent != nullptr) {
-		vec3 relativePosition = m_position - parent->m_position;
-		float angleBetweenParent = degrees(atan2(relativePosition.y, relativePosition.x));
-		float parentRotation = radians(parent->GetRotation());
 
-		vec3 worldPosDirection(cos(radians(parentRotation + angleBetweenParent)), sin(radians(parentRotation + angleBetweenParent)), m_localPosition.z - parent->GetPosition().z);
-		worldPosDirection /= worldPosDirection.length();
-		m_position = parent->GetPosition() + (length(relativePosition) * worldPosDirection);
+		float x = m_localPosition.x;
+		float y = m_localPosition.y;
+		float angle = radians(parent->GetRotation());
+
+		vec3 worldPosDirection((x*cos(angle)) - (y*sin(angle)), (x*sin(angle)) + (y*cos(angle)), 0);
+
+		m_position = parent->GetPosition() + worldPosDirection;
 	}
 	else {
 		m_position = m_localPosition;

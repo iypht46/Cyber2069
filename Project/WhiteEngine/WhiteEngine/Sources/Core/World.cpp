@@ -57,19 +57,32 @@ namespace World
 			Rabbit->m_transform.Translate(glm::vec3(MOVE_SPEED * dt, 0.0f, 0.0f));
 		}
 
+		//child
+		if (Input::GetKeyHold(Input::KeyCode::KEY_H))
+		{
+			Child->m_transform.SetLocalPosition(Child->m_transform.GetLocalPosition() + glm::vec3(MOVE_SPEED * dt, 0.0f, 0.0f));
+		}
 		if (Input::GetKeyHold(Input::KeyCode::KEY_F))
 		{
-			Child->m_transform.Translate(glm::vec3(MOVE_SPEED * dt, 0.0f, 0.0f));
+			Child->m_transform.SetLocalPosition(Child->m_transform.GetLocalPosition() + glm::vec3(-MOVE_SPEED * dt, 0.0f, 0.0f));
+		}
+		if (Input::GetKeyHold(Input::KeyCode::KEY_T))
+		{
+			Child->m_transform.SetLocalPosition(Child->m_transform.GetLocalPosition() + glm::vec3(0.0f, MOVE_SPEED * dt, 0.0f));
+		}
+		if (Input::GetKeyHold(Input::KeyCode::KEY_G))
+		{
+			Child->m_transform.SetLocalPosition(Child->m_transform.GetLocalPosition() + glm::vec3(0.0f, -MOVE_SPEED * dt, 0.0f));
 		}
 
 		if (Input::GetKeyHold(Input::KeyCode::KEY_Q))
 		{
-			Rabbit->m_transform.Rotate(0.1f);
+			Rabbit->m_transform.Rotate(1.0f);
 		}
 
 		if (Input::GetKeyHold(Input::KeyCode::KEY_E))
 		{
-			Rabbit->m_transform.Rotate(-0.1f);
+			Rabbit->m_transform.Rotate(1.0f);
 		}
 	}
 
@@ -130,7 +143,7 @@ namespace World
 		Rabbit->m_transform.SetScale(glm::vec3(500, 500, 1));
 
 		Child->m_transform.SetScale(glm::vec3(100, 100, 1));
-		Child->m_transform.SetLocalPosition(glm::vec3(100, 100, 0));
+		Child->m_transform.SetPosition(glm::vec3(100, 100, 0));
 		
 		Bg->m_transform.SetScale(glm::vec3(500, 500, 1));
 
