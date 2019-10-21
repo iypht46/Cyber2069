@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{F777A932-80C9-4398-820F-FCA0F950097D}</ProjectGuid>
     <RootNamespace>WhiteEngine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -122,6 +122,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Core\EC\Components\Collider.hpp" />
+    <ClInclude Include="Sources\Core\Factory.h" />
+    <ClInclude Include="Sources\Core\FactoryCollection.h" />
     <ClInclude Include="Sources\Core\Logger.hpp" />
     <ClInclude Include="Sources\Core\Animator\AnimationController.hpp" />
     <ClInclude Include="Sources\Core\Animator\Animator.hpp" />
@@ -147,6 +150,9 @@
     <ClInclude Include="Sources\Input\Input.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Core\EC\Components\Collider.cpp" />
+    <ClCompile Include="Sources\Core\EC\Components\Rigidbody.cpp" />
+    <ClCompile Include="Sources\Core\FactoryCollection.cpp" />
     <ClCompile Include="Sources\Core\Logger.cpp" />
     <ClCompile Include="Sources\Core\Animator\AnimationController.cpp" />
     <ClCompile Include="Sources\Core\Animator\Animator.cpp" />

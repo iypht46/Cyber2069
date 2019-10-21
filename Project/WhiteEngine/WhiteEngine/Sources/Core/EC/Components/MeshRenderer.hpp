@@ -7,6 +7,9 @@
 
 #include "Core/Animator/Animator.hpp"
 
+class GameObject;
+class Component;
+
 class MeshRenderer : public Component
 {
 private:
@@ -16,8 +19,10 @@ private:
 	Animator* anim;
 
 public:
+	MeshRenderer();
 	MeshRenderer(std::string texture_path, float NumframeX, float NumFrameY);
 	~MeshRenderer();
+	void CreateMesh(float NumframeX, float NumFrameY);
 	void SetTexture(std::string path);
 	void Render(glm::mat4 globalModelTransform);
 

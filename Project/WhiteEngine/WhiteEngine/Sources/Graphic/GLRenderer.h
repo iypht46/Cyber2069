@@ -11,7 +11,7 @@
 #include "SDL_image.h"
 #include "Graphic/SquareMeshVbo.h"
 
-#include "Core/EC/Components/MeshRenderer.hpp"
+//#include "Core/EC/Components/MeshRenderer.hpp"
 
 using namespace std;
 
@@ -63,6 +63,6 @@ public:
 
 	GLuint LoadTexture(string path);
 
-	MeshRenderer* test;
+	//MeshRenderer* test;
 
 };

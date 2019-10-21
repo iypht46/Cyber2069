@@ -2,7 +2,10 @@
 #include "GLRenderer.h"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
+#include "Core/Factory.h"
 #include <vector>
+
+#include "Core/EC/Components/MeshRenderer.hpp"
 
 using namespace std;
 
@@ -160,12 +163,11 @@ void GLRenderer::Render()
 
 	//--------Render Object Here--------
 
-	
-	/*for (DrawableObject *obj : objList) {
+	for (MeshRenderer *obj : Factory<MeshRenderer>::getCollection()) {
 		obj->Render(camera);
-	}*/
+	}
 
-	test->Render(camera);
+	//test->Render(camera);
 
 	//Unbind program
 	glUseProgram(NULL);

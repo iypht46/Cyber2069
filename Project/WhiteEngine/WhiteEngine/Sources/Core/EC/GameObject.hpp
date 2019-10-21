@@ -3,10 +3,10 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "Components/Component.hpp"
+#include "Components/Transform.hpp"
+#include "Core/Factory.h"
 
 class Component;
-class Transform;
 
 class GameObject
 {
@@ -16,10 +16,11 @@ protected:
 
 	int m_objectID;
 	
-	Transform* m_transform;
 	std::vector<Component*> m_components;
 
 public:
+	Transform m_transform;
+
 	void SetActive(bool activestate);
 
 	virtual void OnAwake() {};
@@ -30,7 +31,29 @@ public:
 	virtual void OnDisable() {};
 
 	template <class T>
-	Component* GetComponent();
+	void AddComponent();
+
+	template <class T>
+	T* GetComponent();
 	//GameObject* GetGameObject();
 	//void SetGameObject(GameObject* obj);
 };
+
+template<class T>
+void GameObject::AddComponent() {
+	m_components.push_back(Factory<T>::Create());
+	m_components.back()->SetGameObject(this);
+}
+
+template<class T>
+T* GameObject::GetComponent() {
+
+	for (Component* component : m_components) {
+		if (dynamic_cast<T*>(component)) {
+			T* tmp = dynamic_cast<T*>(component);
+			return tmp;
+		}
+	}
+
+	return nullptr;
+}

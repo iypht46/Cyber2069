@@ -1,14 +1,13 @@
 #pragma once
 #include <vector>
 #include <glm/glm.hpp>
+#include "glm/gtc/matrix_transform.hpp"
 //#include <glm/gtc/quaternion.hpp>
 //#include <glm/gtx/quaternion.hpp>
 
 #include "Component.hpp"
 
 using namespace std;
-
-class Component;
 
 class Transform : public Component {
 private:
@@ -32,6 +31,8 @@ private:
 	//updatelocalscale
 	//updatelocalrotation
 public:
+	Transform();
+
 	glm::vec3 GetPosition();
 	glm::vec3 GetLocalPosition();
 	glm::vec3 GetScale();
