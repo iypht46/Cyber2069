@@ -15,7 +15,7 @@ out vec2 TexCoord;
 
 void main()
 {
-   gl_Position = pMatrix* mMatrix * vec4( pos2D.x, pos2D.y, 0, 1 );
+   gl_Position = mMatrix * vec4( pos2D.x, pos2D.y, 0, 1 );
    OutColor = color;
 
    TexCoord = inTexCoord;

@@ -3,6 +3,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "Core/Factory.h"
+#include "Window.hpp"
 #include <vector>
 
 #include "Core/EC/Components/MeshRenderer.hpp"
@@ -12,6 +13,10 @@ using namespace std;
 GLRenderer *GLRenderer::instance = nullptr;
 
 GLRenderer* GLRenderer::GetInstance() {
+	if (instance == nullptr)
+	{
+		instance = new GLRenderer(Graphic::Window::GetWidth(), Graphic::Window::GetHeight());
+	}
 	return instance;
 }
 
@@ -21,10 +26,6 @@ GLRenderer::GLRenderer(int w, int h)
 	this->winHeight = h;
 	glViewport(0, 0, winWidth, winHeight);
 
-	if (instance == nullptr) 
-	{
-		instance = this;
-	}
 }
 
 bool GLRenderer::InitGL(string vertexShaderFile, string fragmentShaderFile)
@@ -150,13 +151,13 @@ void GLRenderer::Render()
 	this->PrintProgramLog(gProgramId);
 	//Set up matrix uniform
 
-	if (pMatrixId != -1) {
+	/*if (pMatrixId != -1) {
 		glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix));
 	}
 	else
 	{
 		cout << "pMatrixId = -1\n";
-	}
+	}*/
 
 	glm::mat4 camera = glm::mat4(1.0);
 
@@ -231,6 +232,11 @@ void GLRenderer::SetViewPort(int x, int y, int w, int h)
 void GLRenderer::SetClearColor(float r, float g, float b)
 {
 	glClearColor(r, g, b, 1.0);
+}
+
+glm::mat4 GLRenderer::GetprojectionMatrix() 
+{
+	return projectionMatrix;
 }
 
 GLuint GLRenderer::GetModelMatrixAttrId()
