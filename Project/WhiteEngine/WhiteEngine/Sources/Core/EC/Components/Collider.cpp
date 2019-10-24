@@ -43,14 +43,6 @@ namespace Core
 		//Set Box Size
 		m_width = hW * 2.0f;
 		m_height = hH * 2.0f;
-		//Lower Left
-		m_vertices[0] = glm::vec2(-hW, -hH);
-		//Lower Right
-		m_vertices[1] = glm::vec2(hW, -hH);
-		//Upper Right
-		m_vertices[2] = glm::vec2(hW, hH);
-		//Upper Left
-		m_vertices[3] = glm::vec2(-hW, hH);
 
 	}
 
@@ -63,14 +55,6 @@ namespace Core
 		//Set Box Size
 		m_width = hW * 2.0f;
 		m_height = hH * 2.0f;
-		//Lower Left
-		m_vertices[0] = glm::vec2(-hW, -hH);
-		//Lower Right
-		m_vertices[1] = glm::vec2(hW, -hH);
-		//Upper Right
-		m_vertices[2] = glm::vec2(hW, hH);
-		//Upper Left
-		m_vertices[3] = glm::vec2(-hW, hH);
 
 		//Set Static
 		m_isStatic = false;

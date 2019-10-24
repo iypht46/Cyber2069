@@ -13,9 +13,6 @@ namespace Core
 	class Rigidbody : public Component
 	{
 	private:
-		//Body Type
-		bool m_isKinematic;
-
 		//Body Settings
 		glm::vec2 m_position;
 		glm::vec2 m_velocity;

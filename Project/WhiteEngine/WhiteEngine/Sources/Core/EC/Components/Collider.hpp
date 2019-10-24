@@ -55,7 +55,6 @@ namespace Core
 	class BoxCollider : public Collider
 	{
 	private:
-		glm::vec2 m_vertices[BOX_VERTICES];
 		float m_width;
 		float m_height;
 	public:

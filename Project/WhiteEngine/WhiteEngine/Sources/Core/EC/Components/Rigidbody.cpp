@@ -24,11 +24,6 @@ namespace Core
 
 	}
 
-	void Rigidbody::SetKinematic(bool i)
-	{
-		m_isKinematic = i;
-	}
-
 	void Rigidbody::OnAwake()
 	{	 
 	}	 
