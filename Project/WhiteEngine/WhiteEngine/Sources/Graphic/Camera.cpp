@@ -88,7 +88,7 @@ namespace Graphic
 
 	glm::mat4 CameraObject::CalculateViewMatrix(glm::vec3 position, glm::vec3 dir) 
 	{
-
+		return glm::mat4(1.0f);
 	}
 
 }

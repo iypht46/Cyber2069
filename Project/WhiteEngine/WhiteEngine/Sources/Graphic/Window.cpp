@@ -100,7 +100,7 @@ namespace Graphic
 
 		void Init(const char* title, WindowMode mode)
 		{
-			windowRes = windowResArr[0];
+			windowRes = windowResArr[1];
 
 			//Init and Configure GLFW:
 			glfwInit();

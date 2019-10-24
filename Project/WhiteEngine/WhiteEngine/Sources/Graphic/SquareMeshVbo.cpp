@@ -36,8 +36,6 @@ void SquareMeshVbo::LoadData(float NumframeX, float NumFrameY)
 	glBindBuffer(GL_ARRAY_BUFFER, this->texVboId);
 	glBufferData(GL_ARRAY_BUFFER, 2 * 4 * sizeof(GLfloat), texData, GL_STATIC_DRAW);
 
-
-	printf("Load Data\n");
 }
 
 SquareMeshVbo::SquareMeshVbo()
