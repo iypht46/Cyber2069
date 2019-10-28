@@ -122,6 +122,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Physic\PhysicScene.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\Collider.hpp" />
     <ClInclude Include="Sources\Core\Factory.h" />
     <ClInclude Include="Sources\Core\FactoryCollection.h" />
@@ -150,6 +151,7 @@
     <ClInclude Include="Sources\Input\Input.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Physic\PhysicScene.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Collider.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Rigidbody.cpp" />
     <ClCompile Include="Sources\Core\FactoryCollection.cpp" />

@@ -1,61 +1,55 @@
 #include "Core/EC/Components/Rigidbody.hpp"
 #include "Core/EC/GameObject.hpp"
 
-namespace Core
+
+Rigidbody::Rigidbody()
 {
-	void Rigidbody::Initialize(Collider& c)
-	{
-		m_collider = &c;
-	}
+	m_position = glm::vec3(0, 0, 0);
+	m_orientation = 0.0f;
+}
 
-	//Create BoxCollider
-	void Rigidbody::Initialize(float hW, float hH)
-	{
-		//Create new box collider
-		BoxCollider* col = m_gameObject->AddComponent<BoxCollider>();
-		//Init Box
-		col->SetBox(hW, hH, this);
-		//Set Collider
-		m_collider = col;
-	}
+//Create BoxCollider
+void Rigidbody::Init(float hW, float hH)
+{
+	//Create new box collider
+	BoxCollider* col = m_gameObject->AddComponent<BoxCollider>();
+	//Init Box
+	col->Init(hW, hH, this);
+	//Set Collider
+	m_collider = col;
+	m_transform = &m_gameObject->m_transform;
+}
 
-	Rigidbody::~Rigidbody()
-	{
+Rigidbody::~Rigidbody()
+{
+	
+}
 
-	}
-
-	void Rigidbody::SetKinematic(bool i)
-	{
-		m_isKinematic = i;
-	}
-
-	void Rigidbody::OnAwake()
-	{	 
-	}	 
-		 
-	void Rigidbody::OnEnable()
-	{	 
-	}	 
-		 
-	void Rigidbody::OnStart()
-	{	 
-	}	 
-		 
-	void Rigidbody::OnDisable()
-	{	 
-	}	 
-		 
-	void Rigidbody::OnUpdate(float dt)
-	{	
-	}	
-		
-	void Rigidbody::OnFixedUpdate(float dt)
-	{	 
-	}	 
-		 
-	void Rigidbody::OnDestroy()
-	{
-	}
-
+void Rigidbody::OnAwake()
+{	 
+}	 
+	 
+void Rigidbody::OnEnable()
+{	 
+}	 
+	 
+void Rigidbody::OnStart()
+{	 
+}	 
+	 
+void Rigidbody::OnDisable()
+{	 
+}	 
+	 
+void Rigidbody::OnUpdate(float dt)
+{	
+}	
+	
+void Rigidbody::OnFixedUpdate(float dt)
+{	 
+}	 
+	 
+void Rigidbody::OnDestroy()
+{
 }
 

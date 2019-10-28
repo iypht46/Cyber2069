@@ -4,8 +4,7 @@
 #include "Core/EC/Components/Component.hpp"
 #include "Core/EC/Components/Collider.hpp"
 
-namespace Core
-{
+
 	//Forward Declaration
 	class Collider;
 	class Transform;
@@ -13,12 +12,10 @@ namespace Core
 	class Rigidbody : public Component
 	{
 	private:
-		//Body Type
-		bool m_isKinematic;
-
 		//Body Settings
-		glm::vec2 m_position;
-		glm::vec2 m_velocity;
+		glm::vec3 m_position;
+		glm::vec3 m_velocity;
+		glm::vec3 m_acceleration;
 		float m_orientation;
 		float m_mass;
 		float m_gravityScale;
@@ -28,9 +25,7 @@ namespace Core
 		Transform* m_transform;
 	public:
 		//Rigidbody Interface
-		void Initialize(Collider&);
-		void Initialize(float, float);
-		void SetKinematic(bool);
+		void Init(float, float);
 		Rigidbody();
 		~Rigidbody();
 
@@ -44,4 +39,3 @@ namespace Core
 		virtual void OnDestroy();
 
 	};
-}

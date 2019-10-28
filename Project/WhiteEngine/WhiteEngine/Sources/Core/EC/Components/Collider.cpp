@@ -2,8 +2,7 @@
 #include "Core/EC/GameObject.hpp"
 #include "Core/EC/Components/Rigidbody.hpp"
 
-namespace Core
-{
+
 	//////////////Base Collider/////////////
 
 	void Collider::SetTrigger(bool i)
@@ -23,7 +22,7 @@ namespace Core
 
 
 	//////////////Box Collider//////////////
-	void BoxCollider::SetBox(float hW, float hH)
+	void BoxCollider::Init(float hW, float hH)
 	{
 		//Set Transform
 		//m_transform = m_gameObject->GetTransform();
@@ -43,18 +42,10 @@ namespace Core
 		//Set Box Size
 		m_width = hW * 2.0f;
 		m_height = hH * 2.0f;
-		//Lower Left
-		m_vertices[0] = glm::vec2(-hW, -hH);
-		//Lower Right
-		m_vertices[1] = glm::vec2(hW, -hH);
-		//Upper Right
-		m_vertices[2] = glm::vec2(hW, hH);
-		//Upper Left
-		m_vertices[3] = glm::vec2(-hW, hH);
 
 	}
 
-	void BoxCollider::SetBox(float hW, float hH, Rigidbody* rigid)
+	void BoxCollider::Init(float hW, float hH, Rigidbody* rigid)
 	{
 		//Set Transform
 		//m_transform = m_gameObject->GetTransform();
@@ -63,14 +54,6 @@ namespace Core
 		//Set Box Size
 		m_width = hW * 2.0f;
 		m_height = hH * 2.0f;
-		//Lower Left
-		m_vertices[0] = glm::vec2(-hW, -hH);
-		//Lower Right
-		m_vertices[1] = glm::vec2(hW, -hH);
-		//Upper Right
-		m_vertices[2] = glm::vec2(hW, hH);
-		//Upper Left
-		m_vertices[3] = glm::vec2(-hW, hH);
 
 		//Set Static
 		m_isStatic = false;
@@ -108,6 +91,5 @@ namespace Core
 	//////////////Circle Collider///////////
 
 
-}
 
 
