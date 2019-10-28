@@ -82,7 +82,14 @@ namespace Physic
 
 	void PhysicScene::Remove(Collider* col, Layer layer)
 	{
+		Colliders::iterator it = std::find(m_colliders[layer].begin(), m_colliders[layer].end(), col);
+		if (it == m_colliders[layer].end())
+		{
+			ENGINE_ERROR("Collider not found in layer: {}", layer);
+			return;
+		}
 
+		m_colliders[layer].erase(it);
 	}
 
 	void PhysicScene::Remove(Collider* col, std::string layerName)
@@ -93,14 +100,7 @@ namespace Physic
 			return;
 		}
 
-		Colliders::iterator it = std::find(m_colliders[layer].begin(), m_colliders[layer].end(), col);
-		if (it == m_colliders[layer].end())
-		{
-			ENGINE_ERROR("Collider not found in layer: {}", layerName);
-			return;
-		}
-
-		m_colliders[layer].erase(it);
+		Remove(col, layer);
 	}
 
 	void PhysicScene::SetLayerCollisions(Layer layer, Layer layerToCollide)
@@ -177,11 +177,10 @@ namespace Physic
 		}
 	}
 
-	std::string PhysicScene::GetStringFromLayer(Layer layer)
-	{/*
-		m_layerCollision
-		for (auto layerString : )*/
-	}
+	/*std::string PhysicScene::GetStringFromLayer(Layer layer)
+	{
+		
+	}*/
 }
 
 

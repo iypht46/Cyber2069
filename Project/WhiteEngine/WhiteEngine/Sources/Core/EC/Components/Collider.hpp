@@ -63,7 +63,7 @@
 		void Init(float, float, Rigidbody*);
 
 		//Box Collider Interface
-		virtual void Update(float) const;
+		//virtual void Update(float) const;
 		
 
 		//Inherit Interface

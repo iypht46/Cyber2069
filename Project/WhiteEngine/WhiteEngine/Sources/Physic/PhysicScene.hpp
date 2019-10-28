@@ -111,7 +111,7 @@ namespace Physic
 		//Get layer enum from layer string map
 		Layer GetLayerFromString(std::string);
 		//Get string from layer
-		std::string GetStringFromLayer(Layer);
+		//std::string GetStringFromLayer(Layer);
 
 		PhysicScene() {}
 		~PhysicScene() {}
