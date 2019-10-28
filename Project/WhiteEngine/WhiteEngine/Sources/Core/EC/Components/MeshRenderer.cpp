@@ -1,6 +1,7 @@
 #include "MeshRenderer.hpp"
 #include "Graphic/SquareMeshVbo.h"
 #include "Graphic/GLRenderer.h"
+#include "Graphic/Camera.hpp"
 #include "Core/EC/GameObject.hpp"
 
 MeshRenderer::MeshRenderer() 
@@ -58,11 +59,13 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 
 	vector<glm::mat4> matrixStack;
 
-	glm::mat4 currentMatrix = GetGameObject()->m_transform.GetModelMatrix();
+	glm::mat4 modelMatrix = GetGameObject()->m_transform.GetModelMatrix();
+	glm::mat4 projectionMatrix = Graphic::getCamera()->GetProjectionMatrix();
+	glm::mat4 viewMatrix = Graphic::getCamera()->GetViewMatrix();
 
 	if (squareMesh != nullptr)
 	{
-		currentMatrix = globalModelTransform * currentMatrix;
+		glm::mat4 currentMatrix = projectionMatrix * viewMatrix * modelMatrix;
 		glUniformMatrix4fv(modelMatixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
 		glUniform1i(modeId, 1);
 

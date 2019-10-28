@@ -20,6 +20,8 @@ class GLRenderer
 protected:
 	static GLRenderer * instance;
 
+	GLRenderer(int w, int h);
+
 	int winWidth;
 	int winHeight;
 	glm::mat4 projectionMatrix;
@@ -43,7 +45,6 @@ protected:
 public:
 	void Render();
 	static GLRenderer* GetInstance();
-	GLRenderer(int w, int h);
 	bool InitGL(string vertexShaderFile, string fragmentShaderFile);
 
 	~GLRenderer();
@@ -53,6 +54,8 @@ public:
 	void SetOrthoProjection(float left, float right, float bottom, float top);
 	void SetViewPort(int x, int y, int w, int h);
 	void SetClearColor(float r, float g, float b);
+
+	glm::mat4 GetprojectionMatrix();
 
 	GLuint GetModelMatrixAttrId();
 	GLuint GetProjectionMatrixAttrId();
