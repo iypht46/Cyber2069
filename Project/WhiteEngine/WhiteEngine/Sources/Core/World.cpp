@@ -144,38 +144,6 @@ namespace World
 		}
 	}
 
-	void CreateEnemy()
-	{
-		Delay++;
-
-		if (Delay == 1)
-		{
-			Delay = 0;
-			Factory<GameObject>::Create();
-
-			Factory<GameObject>::getCollection().back()->AddComponent<MeshRenderer>();
-			Factory<GameObject>::getCollection().back()->GetComponent<MeshRenderer>()->CreateMesh(6, 1);
-			Factory<GameObject>::getCollection().back()->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_Enemy_Flyer_Vversion01.png");
-
-			Factory<GameObject>::getCollection().back()->AddComponent<Animator>();
-			Factory<GameObject>::getCollection().back()->GetComponent<Animator>()->AssignController(EnemCon);
-			Factory<GameObject>::getCollection().back()->GetComponent<Animator>()->setCurrentState(0);
-
-			Factory<GameObject>::getCollection().back()->m_transform.SetScale(glm::vec3(ENEMY_SIZE, ENEMY_SIZE, 1.0F));
-
-			int rand_x = (rand() % Graphic::Window::GetWidth()) - Graphic::Window::GetWidth() / 2;
-			int rand_y = (rand() % Graphic::Window::GetHeight()) - Graphic::Window::GetHeight() / 2;
-
-			Factory<GameObject>::getCollection().back()->m_transform.SetPosition(glm::vec3(rand_x, rand_y, 1.0F));
-
-			enemyNum++;
-
-			ENGINE_INFO("Enemy Num is {}", enemyNum);
-		}
-
-
-	}
-
 	void Init(void)
 	{
 		srand(time(NULL));
@@ -203,7 +171,7 @@ namespace World
 
 		//Add Renderer
 
-		/*Bg->AddComponent<MeshRenderer>();
+		Bg->AddComponent<MeshRenderer>();
 		Bg->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 		Bg->GetComponent<MeshRenderer>()->SetTexture("Sources/mockup_BG.png");
 
@@ -248,7 +216,7 @@ namespace World
 		Bg->m_transform.SetScale(glm::vec3(500, 500, 1));
 
 		Rabbit->m_transform.SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
-
+		/*
 		Fly = new Animation();
 		Fly->setStartPosition(0,0);
 		Fly->setEndPosition(5, 0);
@@ -257,9 +225,9 @@ namespace World
 
 		EnemCon->setSheetSize(glm::vec2(6, 1));
 		EnemCon->AddState(Fly);
-
+		*/
 	}
-	int count = 0;
+
 	void FixedUpdate(float dt)
 	{
 		//Update Physics Scene
@@ -289,7 +257,6 @@ namespace World
 		//Core
 		DebugInput(dt);
 
-		CreateEnemy();
 
 		for (int i = 0; i < Factory<Animator>::getCollection().size(); i++)
 		{
