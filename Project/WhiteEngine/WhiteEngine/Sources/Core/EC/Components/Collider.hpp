@@ -1,10 +1,8 @@
 #pragma once
-#include <bitset>
 #include <glm/glm.hpp>
 #include "Core/EC/Components/Component.hpp"
 
-namespace Core
-{
+
 #define BOX_VERTICES 4
 
 	enum class ColliderType : int
@@ -14,7 +12,6 @@ namespace Core
 		CIRCLE
 	};
 
-	using LayerBit = std::bitset<8>;
 	class Rigidbody;
 	class Transform;
 
@@ -26,7 +23,6 @@ namespace Core
 		bool m_isStatic = true;
 		bool m_isTrigger;
 
-		LayerBit m_layerBit;
 		ColliderType m_colliderType;
 	public:
 		
@@ -38,8 +34,11 @@ namespace Core
 		void SetTrigger(bool);
 		ColliderType GetType();
 		bool IsStatic();
+		Rigidbody* GetRigidBody();
+
 		//Virtual
 		virtual void SetOrient() {};
+		virtual void Update(float) const {}
 
 		//Inherit Interface
 		virtual void OnAwake() {}
@@ -60,10 +59,12 @@ namespace Core
 	public:
 		//Constructor
 		BoxCollider() : Collider(ColliderType::BOX) {}
-		void SetBox(float, float);
-		void SetBox(float, float, Rigidbody*);
+		void Init(float, float);
+		void Init(float, float, Rigidbody*);
 
 		//Box Collider Interface
+		virtual void Update(float) const;
+		
 
 		//Inherit Interface
 		virtual void OnAwake();
@@ -74,6 +75,5 @@ namespace Core
 		virtual void OnFixedUpdate(float dt);
 		virtual void OnDestroy();
 	};
-}
 
 

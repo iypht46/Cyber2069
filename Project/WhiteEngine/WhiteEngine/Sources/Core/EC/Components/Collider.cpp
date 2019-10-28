@@ -2,8 +2,7 @@
 #include "Core/EC/GameObject.hpp"
 #include "Core/EC/Components/Rigidbody.hpp"
 
-namespace Core
-{
+
 	//////////////Base Collider/////////////
 
 	void Collider::SetTrigger(bool i)
@@ -23,7 +22,7 @@ namespace Core
 
 
 	//////////////Box Collider//////////////
-	void BoxCollider::SetBox(float hW, float hH)
+	void BoxCollider::Init(float hW, float hH)
 	{
 		//Set Transform
 		//m_transform = m_gameObject->GetTransform();
@@ -46,7 +45,7 @@ namespace Core
 
 	}
 
-	void BoxCollider::SetBox(float hW, float hH, Rigidbody* rigid)
+	void BoxCollider::Init(float hW, float hH, Rigidbody* rigid)
 	{
 		//Set Transform
 		//m_transform = m_gameObject->GetTransform();
@@ -92,6 +91,5 @@ namespace Core
 	//////////////Circle Collider///////////
 
 
-}
 
 
