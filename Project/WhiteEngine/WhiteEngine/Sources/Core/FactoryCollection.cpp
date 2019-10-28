@@ -3,7 +3,7 @@
 #include "Factory.h"
 
 //essential component
-#include "Core/Animator/Animator.hpp"
+#include "EC/Components/Animator.hpp"
 #include "EC/Components/MeshRenderer.hpp"
 #include "EC/Components/Rigidbody.hpp"
 #include "EC/Components/Transform.hpp"

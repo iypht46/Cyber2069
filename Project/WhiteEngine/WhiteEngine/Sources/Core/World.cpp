@@ -6,7 +6,7 @@
 #include "Core/GameInfo.h"
 #include "Core/Logger.hpp"
 #include "Input/Input.hpp"
-#include "Core/Animator/Animator.hpp"
+#include "EC/Components/Animator.hpp"
 #include "EC/Components/MeshRenderer.hpp"
 
 #include "Factory.h"

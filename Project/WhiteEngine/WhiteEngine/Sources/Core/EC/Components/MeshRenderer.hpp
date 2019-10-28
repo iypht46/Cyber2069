@@ -5,7 +5,7 @@
 #include "Component.hpp"
 #include "Graphic/MeshVbo.h"
 
-#include "Core/Animator/Animator.hpp"
+#include "Core/EC/Components/Animator.hpp"
 
 class GameObject;
 class Component;

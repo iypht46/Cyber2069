@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "AnimationController.hpp"
+#include "../../Animator/AnimationController.hpp"
 
 class Animator : public Component
 {

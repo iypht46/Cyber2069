@@ -18,3 +18,7 @@ GameObject* Component::GetGameObject() {
 void Component::SetGameObject(GameObject* obj) {
 	m_gameObject = obj;
 }
+
+Component::~Component() {
+
+}
