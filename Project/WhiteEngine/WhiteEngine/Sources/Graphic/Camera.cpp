@@ -86,9 +86,9 @@ namespace Graphic
 		return m_view;
 	}
 
-	glm::mat4 CameraObject::CalculateViewMatrix(glm::vec3 position, glm::vec3 dir) 
+	/*glm::mat4 CameraObject::CalculateViewMatrix(glm::vec3 position, glm::vec3 dir) 
 	{
 
-	}
+	}*/
 
 }

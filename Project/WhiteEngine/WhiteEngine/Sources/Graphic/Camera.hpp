@@ -40,7 +40,7 @@ namespace Graphic
 		glm::mat4& GetViewMatrix(void);
 
 		//Static Method
-		static glm::mat4 CalculateViewMatrix(glm::vec3 position, glm::vec3 dir);
+		//static glm::mat4 CalculateViewMatrix(glm::vec3 position, glm::vec3 dir);
 		//static glm::mat4 CalculateProjectionMatrix(float size, float aspect, )
 
 	};

@@ -164,6 +164,9 @@
     <ClCompile Include="Sources\Core\FactoryCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Graphic\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Sources\Graphic\Shader\fragment.shd" />

@@ -143,13 +143,8 @@ namespace World
 		Rabbit->m_transform.SetScale(glm::vec3(500, 500, 1));
 
 		Child->m_transform.SetScale(glm::vec3(100, 100, 1));
-<<<<<<< HEAD
 		Child->m_transform.SetPosition(glm::vec3(100, 100, 0));
-		
-=======
 		Child->m_transform.SetLocalPosition(glm::vec3(100, 100, 0));
-
->>>>>>> 7b6c6fed81ee8b1dc841140d1c27494f6abe5f78
 		Bg->m_transform.SetScale(glm::vec3(500, 500, 1));
 
 	}

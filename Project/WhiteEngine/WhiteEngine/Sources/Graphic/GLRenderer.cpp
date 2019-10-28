@@ -94,12 +94,12 @@ bool GLRenderer::Initialize(string vertexShaderFile, string fragmentShaderFile)
 	}
 
 	//Set up uniform id attribute
-	pMatrixId = glGetUniformLocation(gProgramId, "pMatrix");
+	/*pMatrixId = glGetUniformLocation(gProgramId, "pMatrix");
 	if (pMatrixId == -1)
 	{
 		cout << "pMatrix is not a valid glsl uniform variable" << endl;
 		return false;
-	}
+	}*/
 	mMatrixId = glGetUniformLocation(gProgramId, "mMatrix");
 	if (mMatrixId == -1)
 	{
