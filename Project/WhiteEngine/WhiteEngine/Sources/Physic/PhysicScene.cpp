@@ -177,10 +177,20 @@ namespace Physic
 		}
 	}
 
-	/*std::string PhysicScene::GetStringFromLayer(Layer layer)
+	std::string PhysicScene::GetStringFromLayer(Layer layer)
 	{
-		
-	}*/
+		for (auto it = m_layerString.begin(); it != m_layerString.end(); ++it)
+		{
+			if (it->second == layer)
+			{
+				return it->first;
+			}
+		}
+
+		std::string layerName = "Physic Layer " + static_cast<int>(layer);
+		ENGINE_ERROR("{}, is not map to any named", layerName);
+		return layerName;
+	}
 }
 
 
