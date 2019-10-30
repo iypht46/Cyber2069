@@ -13,18 +13,19 @@
 namespace Physic
 {
 	
+#define LAYER_BIT 8
 
-	enum class Layer : int
+	enum class Layer : unsigned
 	{
-		LAYER_INVALID = 0,
-		PHYSIC_LAYER_1,
-		PHYSIC_LAYER_2,
-		PHYSIC_LAYER_3,
-		PHYSIC_LAYER_4,
-		PHYSIC_LAYER_5,
-		PHYSIC_LAYER_6,
-		PHYSIC_LAYER_7,
-		PHYSIC_LAYER_8
+		LAYER_INVALID = 0x00,
+		PHYSIC_LAYER_1 = 0x01,
+		PHYSIC_LAYER_2 = 0x02,
+		PHYSIC_LAYER_3 = 0x03,
+		PHYSIC_LAYER_4 = 0x04,
+		PHYSIC_LAYER_5 = 0x05,
+		PHYSIC_LAYER_6 = 0x06,
+		PHYSIC_LAYER_7 = 0x07,
+		PHYSIC_LAYER_8 = 0x08
 	};
 
 	struct CollisionPair
@@ -62,7 +63,7 @@ namespace Physic
 		}
 	};
 
-	using LayerBit = std::bitset<8>;
+	using LayerBit = std::bitset<LAYER_BIT>;
 	using Colliders = std::vector<Collider*>;
 	using ColliderMap = std::unordered_map<Layer, Colliders>;
 	using CollisionLayer = std::unordered_map<Layer, LayerBit>;
@@ -73,7 +74,8 @@ namespace Physic
 	{
 	private:
 		ColliderMap m_colliders;
-		CollisionLayer m_layerCollision;
+		CollisionLayer m_collisionLayer;
+		CollisionPairs m_collisionPairs;
 		LayerStringMap m_layerString;
 	public:
 		//Main update loop
@@ -84,6 +86,12 @@ namespace Physic
 
 		//Resolve layer collision pair
 		void ResolveLayerCollision();
+
+		//Check for and remove duplicate collision pair
+		void CheckDuplicatePair();
+
+		//Check collision of a layer with another one
+		void CheckCollisionLayer(Layer, Layer);
 
 		//Interface
 		//Add collider to layer
@@ -113,7 +121,7 @@ namespace Physic
 		//Get string from layer
 		std::string GetStringFromLayer(Layer);
 
-		PhysicScene() {}
+		PhysicScene();
 		~PhysicScene() {}
 	};
 }

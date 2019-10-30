@@ -18,7 +18,7 @@ namespace Physic
 
 	LayerBit GetLayerInBit(Layer layer)
 	{
-		switch (layer)
+		/*switch (layer)
 		{
 		case Physic::Layer::PHYSIC_LAYER_1:
 			return LayerBit(1);
@@ -38,7 +38,9 @@ namespace Physic
 			return LayerBit(8);
 		default:
 			return LayerBit(0);
-		}
+		}*/
+
+		return LayerBit(static_cast<unsigned>(layer));
 	}
 
 	void PhysicScene::Update(float dt)
@@ -47,6 +49,7 @@ namespace Physic
 		UpdateLayerCollision();
 
 		//Check for duplicate pair
+		CheckDuplicatePair();
 
 		//Resolve Collision
 		ResolveLayerCollision();
@@ -54,15 +57,63 @@ namespace Physic
 
 	void PhysicScene::UpdateLayerCollision()
 	{
-		for (auto layer : layerEnumArr)
+		//Loop throuch every layer
+		for (auto mainLayer : layerEnumArr)
 		{
+			//Set main layer
+			LayerBit mainLayerBit = m_collisionLayer[mainLayer];
 
+			if (mainLayerBit.count() == 0)
+			{
+				//Loop through main layer bit to get layer to check with
+				for (auto layerToCheck : layerEnumArr)
+				{
+					//Get layerToCheck in LayerBit type
+					LayerBit layerToCheckBit = GetLayerInBit(layerToCheck);
+
+					//Check mainLayerBit with layerToCheckBit
+					if ((mainLayerBit & layerToCheckBit) == layerToCheckBit)
+					{
+						//Get vector of collider from main layer
+						Colliders* mainLayerCol = &m_colliders[mainLayer];
+						//Get vector of collider from layer to check
+						Colliders* layerToCheckCol = &m_colliders[layerToCheck];
+
+						//Check collision of main collider with layer to check
+
+					}
+				}
+			}
+			
 		}
 	}
 
 	void PhysicScene::ResolveLayerCollision()
 	{
+		if (m_collisionPairs.size() != 0)
+		{
+			for (auto colPair = m_collisionPairs.begin(); colPair != m_collisionPairs.end(); ++colPair)
+			{
+				//Resolve collision pair
+				//TODO: Create result struct that will be pass into the collider
+				//TODO: Generate collision result struct for the pair
+			}
+		}
+	}
 
+	void PhysicScene::CheckDuplicatePair()
+	{
+		for (auto it = m_collisionPairs.begin(); it != m_collisionPairs.end(); ++it)
+		{
+			CollisionPairs::iterator iterator = std::find(it+1, m_collisionPairs.end(), it);
+			
+			if (it == m_collisionPairs.end())
+			{
+				continue;
+			}
+
+			m_collisionPairs.erase(iterator);
+		}
 	}
 
 	void PhysicScene::Add(Collider* col, Layer layer)
@@ -72,12 +123,13 @@ namespace Physic
 
 	void PhysicScene::Add(Collider* col, std::string layerName)
 	{
-		if (m_layerString.find(layerName) == m_layerString.end())
+		Layer layer = GetLayerFromString(layerName);
+		if (layer == Layer::LAYER_INVALID)
 		{
 			return;
 		}
 		
-		m_colliders[m_layerString[layerName]].push_back(col);
+		Add(col, layer);
 	}
 
 	void PhysicScene::Remove(Collider* col, Layer layer)
@@ -105,7 +157,7 @@ namespace Physic
 
 	void PhysicScene::SetLayerCollisions(Layer layer, Layer layerToCollide)
 	{
-		m_layerCollision[layer].set(static_cast<uint32_t>(layerToCollide));
+		m_collisionLayer[layer].set(static_cast<uint32_t>(layerToCollide));
 	}
 
 	void PhysicScene::SetLayerCollisions(std::string layer, std::string layerToCollide)
@@ -126,7 +178,7 @@ namespace Physic
 
 	void PhysicScene::ResetLayerCollisions(Layer layer, Layer layerToCollide)
 	{
-		m_layerCollision[layer].set(static_cast<uint32_t>(layerToCollide), false);
+		m_collisionLayer[layer].set(static_cast<uint32_t>(layerToCollide), false);
 	}
 
 	void PhysicScene::ResetLayerCollisions(std::string layer, std::string layerToCollide)
@@ -146,7 +198,7 @@ namespace Physic
 
 	LayerBit PhysicScene::GetLayerCollisions(Layer layer)
 	{
-		return m_layerCollision[layer];
+		return m_collisionLayer[layer];
 	}
 
 	LayerBit PhysicScene::GetLayerCollisions(std::string layerName)
@@ -159,7 +211,7 @@ namespace Physic
 		}
 		else
 		{
-			return m_layerCollision[m_layerString[layerName]];
+			return m_collisionLayer[m_layerString[layerName]];
 		}
 	}
 
@@ -187,9 +239,15 @@ namespace Physic
 			}
 		}
 
-		std::string layerName = "Physic Layer " + static_cast<int>(layer);
+		std::string layerName = "INV";
 		ENGINE_ERROR("{}, is not map to any named", layerName);
 		return layerName;
+	}
+
+	PhysicScene::PhysicScene()
+	{
+		//To prevent wrong layer string
+		m_layerString["INV"] = Layer::LAYER_INVALID;
 	}
 }
 

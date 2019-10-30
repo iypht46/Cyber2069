@@ -20,39 +20,33 @@
 	protected:
 		Transform* m_transform;
 		Rigidbody* m_rigidbody;
-		bool m_isStatic = true;
-		bool m_isTrigger;
 
 		ColliderType m_colliderType;
+		bool m_isStatic = true;
+		bool m_isTrigger;
+		float m_density;
 	public:
 		
 		//Constructor
-		Collider(ColliderType col) : m_colliderType(col) {}
+		Collider(ColliderType col) 
+			: m_colliderType(col), m_density(1.0f) {}
 		//Destructor
 		~Collider() {};
 		//Collider Interface
 		void SetTrigger(bool);
 		ColliderType GetType();
 		bool IsStatic();
-		Rigidbody* GetRigidBody();
 
 		//Virtual
 		virtual void SetOrient() {};
 		virtual void Update(float) const {}
-
-		//Inherit Interface
-		virtual void OnAwake() {}
-		virtual void OnEnable() {}
-		virtual void OnDisable() {}
-		virtual void OnStart() {}
-		virtual void OnUpdate(float dt) {}
-		virtual void OnFixedUpdate(float dt) {}
-		virtual void OnDestroy() {}
+		virtual void ComputeMass() {};
 
 	};
 
 	class BoxCollider : public Collider
 	{
+		friend class Rigidbody;
 	private:
 		float m_width;
 		float m_height;
@@ -63,17 +57,8 @@
 		void Init(float, float, Rigidbody*);
 
 		//Box Collider Interface
+		virtual void ComputeMass();
 		//virtual void Update(float) const;
-		
-
-		//Inherit Interface
-		virtual void OnAwake();
-		virtual void OnEnable();
-		virtual void OnDisable();
-		virtual void OnStart();
-		virtual void OnUpdate(float dt);
-		virtual void OnFixedUpdate(float dt);
-		virtual void OnDestroy();
 	};
 
 

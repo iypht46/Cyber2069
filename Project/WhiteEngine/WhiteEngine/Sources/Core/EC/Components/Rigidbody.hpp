@@ -11,6 +11,7 @@
 
 	class Rigidbody : public Component
 	{
+		friend class BoxCollider;
 	private:
 		//Body Settings
 		glm::vec3 m_position;
@@ -18,6 +19,7 @@
 		glm::vec3 m_acceleration;
 		float m_orientation;
 		float m_mass;
+		float m_invMass;
 		float m_gravityScale;
 
 		//Pointers to other components
