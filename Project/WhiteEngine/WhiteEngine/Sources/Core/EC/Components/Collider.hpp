@@ -9,7 +9,7 @@
 	{
 		INVALID = -1,
 		BOX,
-		CIRCLE
+		COLNUM
 	};
 
 	class Rigidbody;

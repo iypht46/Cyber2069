@@ -74,13 +74,7 @@ namespace Physic
 					//Check mainLayerBit with layerToCheckBit
 					if ((mainLayerBit & layerToCheckBit) == layerToCheckBit)
 					{
-						//Get vector of collider from main layer
-						Colliders* mainLayerCol = &m_colliders[mainLayer];
-						//Get vector of collider from layer to check
-						Colliders* layerToCheckCol = &m_colliders[layerToCheck];
-
-						//Check collision of main collider with layer to check
-
+						CheckLayerCollision(mainLayer, layerToCheck);
 					}
 				}
 			}
@@ -113,6 +107,25 @@ namespace Physic
 			}
 
 			m_collisionPairs.erase(iterator);
+		}
+	}
+
+	void PhysicScene::CheckLayerCollision(Layer mainLayer, Layer layerToCheck)
+	{
+		//Check collision of main collider with layer to check
+		for (auto mainCol : m_colliders[mainLayer])
+		{
+			for (auto colToCheck : m_colliders[layerToCheck])
+			{
+				if (mainCol->GetType() == ColliderType::BOX)
+				{
+					if (colToCheck->GetType() == ColliderType::BOX)
+					{
+						//Call AABBtoAABB
+
+					}
+				}
+			}
 		}
 	}
 

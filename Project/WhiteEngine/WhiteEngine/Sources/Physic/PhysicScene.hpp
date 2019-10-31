@@ -91,7 +91,10 @@ namespace Physic
 		void CheckDuplicatePair();
 
 		//Check collision of a layer with another one
-		void CheckCollisionLayer(Layer, Layer);
+		void CheckLayerCollision(Layer, Layer);
+
+		//
+		void CollisionCheck(Collider, Collider);
 
 		//Interface
 		//Add collider to layer
