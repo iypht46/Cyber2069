@@ -5,10 +5,10 @@
 namespace Physic
 {
 
-	//For Box to Box
-	bool AABBtoAABB(BoxCollider, BoxCollider);
+	////For Box to Box
+	//bool AABBtoAABB(BoxCollider, BoxCollider);
 
-	typedef void(*CollisionFunc)(Collider*, Collider*);
+	//typedef void(*CollisionFunc)(Collider*, Collider*);
 
-	extern CollisionFunc Check[static_cast<uint16_t>(ColliderType::COLNUM)][static_cast<uint16_t>(ColliderType::COLNUM)];
+	//extern CollisionFunc Check[static_cast<uint16_t>(ColliderType::COLNUM)][static_cast<uint16_t>(ColliderType::COLNUM)];
 }

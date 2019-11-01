@@ -16,6 +16,7 @@ private:
 
 	glm::vec3 m_position;
 	glm::vec3 m_scale;
+	//rotation in degree
 	float m_rotation;
 
 	glm::vec3 m_localPosition;
