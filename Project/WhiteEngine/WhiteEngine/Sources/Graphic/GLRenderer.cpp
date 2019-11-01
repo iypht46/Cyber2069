@@ -2,14 +2,21 @@
 #include "GLRenderer.h"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
+#include "Core/Factory.h"
+#include "Window.hpp"
 #include <vector>
+
+#include "Core/EC/Components/MeshRenderer.hpp"
 
 using namespace std;
 
 GLRenderer *GLRenderer::instance = nullptr;
 
 GLRenderer* GLRenderer::GetInstance() {
-
+	if (instance == nullptr)
+	{
+		instance = new GLRenderer(Graphic::Window::GetWidth(), Graphic::Window::GetHeight());
+	}
 	return instance;
 }
 
@@ -17,13 +24,8 @@ GLRenderer::GLRenderer(int w, int h)
 {
 	this->winWidth = w;
 	this->winHeight = h;
-	projectionMatrix = glm::ortho(-1.f, 1.f, -1.f, 1.f);
 	glViewport(0, 0, winWidth, winHeight);
 
-	if (instance == nullptr) 
-	{
-		instance = this;
-	}
 }
 
 bool GLRenderer::InitGL(string vertexShaderFile, string fragmentShaderFile)
@@ -92,12 +94,12 @@ bool GLRenderer::Initialize(string vertexShaderFile, string fragmentShaderFile)
 	}
 
 	//Set up uniform id attribute
-	pMatrixId = glGetUniformLocation(gProgramId, "pMatrix");
+	/*pMatrixId = glGetUniformLocation(gProgramId, "pMatrix");
 	if (pMatrixId == -1)
 	{
 		cout << "pMatrix is not a valid glsl uniform variable" << endl;
 		return false;
-	}
+	}*/
 	mMatrixId = glGetUniformLocation(gProgramId, "mMatrix");
 	if (mMatrixId == -1)
 	{
@@ -108,6 +110,18 @@ bool GLRenderer::Initialize(string vertexShaderFile, string fragmentShaderFile)
 	if (modeUniformId == -1)
 	{
 		cout << "mode is not a valid glsl uniform variable" << endl;
+		return false;
+	}
+	offSetXId = glGetUniformLocation(gProgramId, "offsetX");
+	if (modeUniformId == -1)
+	{
+		cout << "offsetX is not a valid glsl uniform variable" << endl;
+		return false;
+	}
+	offSetYId = glGetUniformLocation(gProgramId, "offsetY");
+	if (modeUniformId == -1)
+	{
+		cout << "offsetY is not a valid glsl uniform variable" << endl;
 		return false;
 	}
 
@@ -133,42 +147,37 @@ void GLRenderer::Render()
 	// Update window with OpenGL rendering
 
 	glUseProgram(gProgramId);
+
+	this->PrintProgramLog(gProgramId);
 	//Set up matrix uniform
 
 	/*if (pMatrixId != -1) {
 		glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix));
 	}
+	else
+	{
+		cout << "pMatrixId = -1\n";
+	}*/
 
 	glm::mat4 camera = glm::mat4(1.0);
 
-	for (DrawableObject *obj : objList) {
+
+	//--------Render Object Here--------
+
+	for (MeshRenderer *obj : Factory<MeshRenderer>::getCollection()) {
 		obj->Render(camera);
-	}*/
+	}
+
+	//test->Render(camera);
 
 	//Unbind program
 	glUseProgram(NULL);
 }
 
-/*void GLRenderer::SetMeshAttribId(MeshVbo * mesh)
+void GLRenderer::SetMeshAttribId(MeshVbo * mesh)
 {
 	mesh->SetAttribId(gPos2DLocation, gTex2DLocation);
-}*/
-
-/*void GLRenderer::AddMesh(string name, MeshVbo * mesh)
-{
-	SetMeshAttribId(mesh);
-	Mesh[name] = mesh;
-}*/
-
-/*MeshVbo * GLRenderer::GetMesh(string name)
-{
-	if (Mesh.find(name) == Mesh.end()) {
-		return nullptr;
-	}
-	else {
-		return shapes[name];
-	}
-}*/
+}
 
 void GLRenderer::PrintProgramLog(GLuint program)
 {
@@ -225,6 +234,11 @@ void GLRenderer::SetClearColor(float r, float g, float b)
 	glClearColor(r, g, b, 1.0);
 }
 
+glm::mat4 GLRenderer::GetprojectionMatrix() 
+{
+	return projectionMatrix;
+}
+
 GLuint GLRenderer::GetModelMatrixAttrId()
 {
 	return this->mMatrixId;
@@ -243,6 +257,16 @@ GLuint GLRenderer::GetColorUniformId()
 GLuint GLRenderer::GetModeUniformId()
 {
 	return this->modeUniformId;
+}
+
+GLuint GLRenderer::GetOffsetXUniformId() 
+{
+	return this->offSetXId;
+}
+
+GLuint GLRenderer::GetOffsetYUniformId()
+{
+	return this->offSetYId;
 }
 
 GLuint GLRenderer::LoadTexture(string path)

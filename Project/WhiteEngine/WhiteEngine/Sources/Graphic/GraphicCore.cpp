@@ -1,6 +1,7 @@
 #include "Graphic/GraphicCore.hpp"
 
 #include "Core/Logger.hpp"
+#include "Graphic/Camera.hpp"
 
 namespace Graphic
 {
@@ -10,12 +11,18 @@ namespace Graphic
 		Window::Init("White Engine", Window::WindowMode::WINDOWED);
 
 		////////////OpenGL////////////
-		g_renderer = new GLRenderer(Window::GetWidth(), Window::GetWidth());
+		g_renderer = GLRenderer::GetInstance();
+
 		g_renderer->InitGL("Sources/Graphic/Shader/vertext.shd", "Sources/Graphic/Shader/fragment.shd");
-		g_renderer->SetOrthoProjection(-1.f, 1.f, -1.f, 1.f);
-		g_renderer->SetClearColor(1.0f, 0.0f, 0.0f);
+		g_renderer->SetOrthoProjection(-Window::GetWidth() / 2, Window::GetWidth() / 2, -Window::GetHeight() / 2, Window::GetHeight() / 2);
+		g_renderer->SetClearColor(72.0f/255.0f, 42.0f / 255.0f, 109.0f / 255.0f);
+
+		Graphic::getCamera()->ResetCam();
 
 		ENGINE_WARN("Graphic System Initialized");
+
+		//g_renderer->test = new MeshRenderer("Sources/Mockup_PlayerBody_Vversion02.png", 7, 5);
+
 	}
 
 	void Render(void)

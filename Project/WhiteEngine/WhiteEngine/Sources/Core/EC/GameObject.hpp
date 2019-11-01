@@ -1,12 +1,12 @@
 #pragma once
 
+#include <iostream>
 #include <vector>
 #include <string>
-#include "Components/Component.hpp"
 #include "Components/Transform.hpp"
+#include "Core/Factory.h"
 
 class Component;
-class Transform;
 
 class GameObject
 {
@@ -16,10 +16,11 @@ protected:
 
 	int m_objectID;
 	
-	Transform* m_transform;
 	std::vector<Component*> m_components;
 
 public:
+	Transform m_transform;
+
 	void SetActive(bool activestate);
 
 	virtual void OnAwake() {};
@@ -30,7 +31,33 @@ public:
 	virtual void OnDisable() {};
 
 	template <class T>
-	Component* GetComponent();
+	T* AddComponent();
+
+	template <class T>
+	T* GetComponent();
 	//GameObject* GetGameObject();
 	//void SetGameObject(GameObject* obj);
 };
+
+template<class T>
+T* GameObject::AddComponent() {
+	T* component = Factory<T>::Create();
+	m_components.push_back(component);
+	m_components.back()->SetGameObject(this);
+
+	return component;
+}
+
+template<class T>
+T* GameObject::GetComponent() {
+
+	for (Component* component : m_components) 
+	{
+		if (dynamic_cast<T*>(component))
+		{
+			return dynamic_cast<T*>(component);
+		}
+	}
+
+	return nullptr;
+}
