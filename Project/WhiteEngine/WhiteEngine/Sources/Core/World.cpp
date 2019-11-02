@@ -8,6 +8,7 @@
 #include "Input/Input.hpp"
 #include "EC/Components/Animator.hpp"
 #include "EC/Components/MeshRenderer.hpp"
+#include "EC/Components/FlyerBehaviour.hpp"
 
 #include "Factory.h"
 #include "Core/EC/GameObject.hpp"
@@ -33,6 +34,7 @@ namespace World
 	GameObject* Rabbit;
 	GameObject* Bg;
 	GameObject* Child;
+	GameObject* Flyer;
 
 	GameObject* Enemy;
 
@@ -168,6 +170,7 @@ namespace World
 		Rabbit = new GameObject();
 		Bg = new GameObject();
 		Child = new GameObject();
+		Flyer = new GameObject();
 
 		//Add Renderer
 
@@ -186,6 +189,10 @@ namespace World
 		Child->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_PlayerBody_Vversion02.png");
 
 		Child->m_transform.SetParent(&Rabbit->m_transform);
+
+		Flyer->AddComponent<MeshRenderer>();
+		Flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
+		Flyer->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_Enemy_Flyer_Vversion01.png");
 
 		//Add Animator
 		Animation* Idle = new Animation();
@@ -216,16 +223,26 @@ namespace World
 		Bg->m_transform.SetScale(glm::vec3(500, 500, 1));
 
 		Rabbit->m_transform.SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
-		/*
+
+		Flyer->m_transform.SetPosition(glm::vec3(100, 100, 0));
+		Flyer->m_transform.SetScale(glm::vec3(50, 50, 1));
+		
 		Fly = new Animation();
-		Fly->setStartPosition(0,0);
+		Fly->setStartPosition(0, 0);
 		Fly->setEndPosition(5, 0);
 
 		EnemCon = new AnimationController();
 
 		EnemCon->setSheetSize(glm::vec2(6, 1));
 		EnemCon->AddState(Fly);
-		*/
+
+		Flyer->AddComponent<Animator>();
+		Flyer->GetComponent<Animator>()->AssignController(EnemCon);
+		Flyer->GetComponent<Animator>()->setCurrentState(0);
+
+		Flyer->AddComponent<FlyerBehaviour>();
+		Flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
+		Flyer->GetComponent<FlyerBehaviour>()->SetGameObject(Flyer);
 	}
 
 	void FixedUpdate(float dt)
@@ -257,6 +274,7 @@ namespace World
 		//Core
 		DebugInput(dt);
 
+		Flyer->GetComponent<FlyerBehaviour>()->OnUpdate(dt);
 
 		for (int i = 0; i < Factory<Animator>::getCollection().size(); i++)
 		{

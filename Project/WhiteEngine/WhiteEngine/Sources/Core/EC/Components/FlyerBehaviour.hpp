@@ -6,9 +6,12 @@
 
 class FlyerBehaviour : public BehaviourScript {
 protected:
-	Transform player;
-	Transform flyer;
+	Transform* player;
+	Transform* flyer;
 public:
+	FlyerBehaviour();
+	void SetPlayer(Transform&);
+
 	virtual void OnAwake();
 	virtual void OnEnable();
 	virtual void OnStart();
