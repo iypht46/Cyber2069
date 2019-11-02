@@ -1,5 +1,6 @@
 #pragma once
 
 namespace FactoryCollection {
-	static void UpdateComponents(float dt);
+	void FixedUpdateComponents(float dt);
+	void UpdateComponents(float dt);
 }

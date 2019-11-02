@@ -9,8 +9,10 @@
 #include "EC/Components/Animator.hpp"
 #include "EC/Components/MeshRenderer.hpp"
 #include "EC/Components/FlyerBehaviour.hpp"
+#include "EC/Components/Rigidbody.hpp"
 
 #include "Factory.h"
+#include "Core/FactoryCollection.h"
 #include "Core/EC/GameObject.hpp"
 
 #include <stdlib.h>
@@ -215,6 +217,9 @@ namespace World
 		Rabbit->GetComponent<Animator>()->AssignController(RabbitController);
 		Rabbit->GetComponent<Animator>()->setCurrentState(0);
 
+		Rabbit->AddComponent<Rigidbody>();
+		Rabbit->GetComponent<Rigidbody>()->Init();
+
 		Rabbit->m_transform.SetScale(glm::vec3(500, 500, 1));
 
 		Child->m_transform.SetScale(glm::vec3(100, 100, 1));
@@ -258,6 +263,13 @@ namespace World
 			//ENGINE_INFO("FixedUpdate: {}", dt);
 			accumulator -= c_targetDT;
 		}
+		
+		FactoryCollection::FixedUpdateComponents(dt);
+
+		//Rabbit->GetComponent<Rigidbody>()->AddForce(glm::vec3(0.0f, -5.0f, 0.0f));
+		Rabbit->GetComponent<Rigidbody>()->UpdateTransform(dt);
+
+		//cout << Rabbit->m_transform.GetPosition().y << endl;
 
 		/*Factory<GameObject>::Create();
 		std::vector<GameObject*> a = Factory<GameObject>::getCollection();
@@ -274,12 +286,13 @@ namespace World
 		//Core
 		DebugInput(dt);
 
-		Flyer->GetComponent<FlyerBehaviour>()->OnUpdate(dt);
+		//Flyer->GetComponent<FlyerBehaviour>()->OnUpdate(dt);
+		FactoryCollection::UpdateComponents(dt);
 
-		for (int i = 0; i < Factory<Animator>::getCollection().size(); i++)
-		{
-			Factory<Animator>::getCollection().at(i)->animUpdate();
-		}
+		//for (int i = 0; i < Factory<Animator>::getCollection().size(); i++)
+		//{
+		//	Factory<Animator>::getCollection().at(i)->animUpdate();
+		//}
 
 		//Update Graphic
 		Graphic::Render();
