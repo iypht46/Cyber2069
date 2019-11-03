@@ -2,6 +2,7 @@
 #include "Component.hpp"
 class BehaviourScript :public Component {
 public:
+	BehaviourScript();
 	virtual void OnAwake() = 0;
 	virtual void OnEnable() = 0;
 	virtual void OnStart() = 0;

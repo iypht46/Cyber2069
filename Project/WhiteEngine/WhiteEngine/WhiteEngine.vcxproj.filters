@@ -182,6 +182,9 @@
     <ClCompile Include="Sources\Core\EC\Components\FlyerBehaviour.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Core\EC\Components\BehaviourScript.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Sources\Graphic\Shader\fragment.shd" />
