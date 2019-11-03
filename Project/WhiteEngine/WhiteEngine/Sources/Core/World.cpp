@@ -9,6 +9,7 @@
 #include "EC/Components/Animator.hpp"
 #include "EC/Components/MeshRenderer.hpp"
 #include "EC/Components/FlyerBehaviour.hpp"
+#include "EC/Components/PlayerController.hpp"
 #include "EC/Components/Rigidbody.hpp"
 
 #include "Factory.h"
@@ -222,9 +223,13 @@ namespace World
 
 		Rabbit->m_transform.SetScale(glm::vec3(500, 500, 1));
 
+		Rabbit->AddComponent<PlayerController>();
+		Rabbit->GetComponent<PlayerController>()->OnStart();
+
 		Child->m_transform.SetScale(glm::vec3(100, 100, 1));
 		Child->m_transform.SetPosition(glm::vec3(100, 100, 0));
 		Child->m_transform.SetLocalPosition(glm::vec3(100, 100, 0));
+
 		Bg->m_transform.SetScale(glm::vec3(500, 500, 1));
 
 		Rabbit->m_transform.SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
