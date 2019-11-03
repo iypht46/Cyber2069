@@ -29,19 +29,25 @@
 		//Set Rigidbody
 		Rigidbody* rigid = m_gameObject->GetComponent<Rigidbody>();
 
+		//Set Box Size
+		m_width = hW * 2.0f;
+		m_height = hH * 2.0f;
+
 		if (rigid)
 		{
 			m_rigidbody = rigid;
 			m_isStatic = false;
+			ComputeMass();
 		}
 		else
 		{
 			m_isStatic = true;
+			rigid->m_mass = 0.0f;
+			rigid->m_invMass = 0.0f;
+			rigid->m_gravityScale = 0.0f;
 		}
 
-		//Set Box Size
-		m_width = hW * 2.0f;
-		m_height = hH * 2.0f;
+		
 
 	}
 
@@ -54,38 +60,16 @@
 		//Set Box Size
 		m_width = hW * 2.0f;
 		m_height = hH * 2.0f;
-
+		ComputeMass();
 		//Set Static
 		m_isStatic = false;
 		
 	}
 
-	void BoxCollider::OnAwake()
+	void BoxCollider::ComputeMass()
 	{
-	}
-
-	void BoxCollider::OnEnable()
-	{
-	}
-
-	void BoxCollider::OnStart()
-	{
-	}
-
-	void BoxCollider::OnDisable()
-	{
-	}
-
-	void BoxCollider::OnUpdate(float dt)
-	{
-	}
-
-	void BoxCollider::OnFixedUpdate(float dt)
-	{
-	}
-
-	void BoxCollider::OnDestroy()
-	{
+		m_rigidbody->m_mass = (m_width * m_height) * m_density;
+		m_rigidbody->m_invMass = 1.0 / m_rigidbody->m_mass;
 	}
 
 	//////////////Circle Collider///////////

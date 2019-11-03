@@ -25,12 +25,4 @@ public:
 	void CreateMesh(float NumframeX, float NumFrameY);
 	void SetTexture(std::string path);
 	void Render(glm::mat4 globalModelTransform);
-
-	virtual void OnAwake();
-	virtual void OnEnable();
-	virtual void OnDisable();
-	virtual void OnStart();
-	virtual void OnUpdate(float dt);
-	virtual void OnFixedUpdate(float dt);
-	virtual void OnDestroy();
 };

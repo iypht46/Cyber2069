@@ -8,20 +8,29 @@
 #include "EC/Components/Rigidbody.hpp"
 #include "EC/Components/Transform.hpp"
 #include "EC/Components/BehaviourScript.h"
+#include "EC/Components/FlyerBehaviour.hpp"
 
-void FactoryCollection::UpdateComponents(float dt) {
-	//update animator
-	for (Animator* anim : Factory<Animator>::getCollection()) {
-		anim->animUpdate();
+#include "Core/Logger.hpp"
+
+namespace FactoryCollection {
+
+	void FixedUpdateComponents(float dt) {
+		//update animator
+		for (Animator* anim : Factory<Animator>::getCollection()) {
+			anim->animUpdate();
+		}
+
+		//update behaviour script
+		for (FlyerBehaviour* behaviour : Factory<FlyerBehaviour>::getCollection()) {
+			behaviour->OnFixedUpdate(dt);
+		}
 	}
 
-	//update renderer
-	for (MeshRenderer* renderer : Factory<MeshRenderer>::getCollection()) {
-		renderer->OnUpdate(dt);
-	}
+	void UpdateComponents(float dt) {
+		//update behaviour script
+		for (FlyerBehaviour* behaviour : Factory<FlyerBehaviour>::getCollection()) {
+			behaviour->OnUpdate(dt);
+		}
 
-	//update behaviour
-	for (BehaviourScript* script : Factory<BehaviourScript>::getCollection()) {
-		script->OnUpdate(dt);
 	}
 }

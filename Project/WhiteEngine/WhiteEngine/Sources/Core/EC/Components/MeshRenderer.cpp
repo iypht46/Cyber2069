@@ -90,31 +90,3 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 		squareMesh->Render();
 	}
 }
-
-void MeshRenderer::OnAwake()
-{
-}
-
-void MeshRenderer::OnEnable()
-{
-}
-
-void MeshRenderer::OnStart()
-{
-}
-
-void MeshRenderer::OnDisable()
-{
-}
-
-void MeshRenderer::OnUpdate(float dt)
-{
-}
-
-void MeshRenderer::OnFixedUpdate(float dt)
-{
-}
-
-void MeshRenderer::OnDestroy()
-{
-}
