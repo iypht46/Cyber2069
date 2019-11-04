@@ -15,6 +15,7 @@ void PlayerController::OnDisable() {
 
 void PlayerController::OnStart() {
 	Gun = m_gameObject->m_transform.GetChild(0);
+	inverseGun = false;
 
 	GunDistance = 50.0f;
 }
@@ -46,16 +47,42 @@ void PlayerController::mouseAim()
 
 	angle_rad = angle_deg / 180 * PI;
 
-	Gun->SetRotation(angle_deg);
+	if (m_gameObject->m_transform.GetScale().x > 0) {
+		Gun->SetRotation(angle_deg);
+		
+		if (angle_deg > 90) {
+			if (!inverseGun) {
+				Gun->SetScale(glm::vec3(Gun->GetScale().x, -1.0f * Gun->GetScale().y, Gun->GetScale().z));
+				inverseGun = true;
+			}
+		}
+		else {
+			if (inverseGun) {
 
-	Gun->SetLocalPosition(glm::vec3(GunDistance * cos(angle_rad), GunDistance * sin(angle_rad), 0));
-
-	/*if (angle_deg > 90) {
-		Gun->SetScale(glm::vec3(Gun->GetScale().x, -1.0 * Gun->GetScale().y, Gun->GetScale().z));
+				Gun->SetScale(glm::vec3(Gun->GetScale().x, -1.0f * Gun->GetScale().y, Gun->GetScale().z));
+				inverseGun = false;
+			}
+		}
 	}
 	else {
-		Gun->SetScale(glm::vec3(Gun->GetScale().x, Gun->GetScale().y, Gun->GetScale().z));
-	}*/
+		Gun->SetRotation(angle_deg - 180);
+		
+		if (angle_deg < 90) {
+			if (!inverseGun) {
+				Gun->SetScale(glm::vec3(Gun->GetScale().x, -1.0f * Gun->GetScale().y, Gun->GetScale().z));
+				inverseGun = true;
+			}
+		}
+		else {
+			if (inverseGun) {
+
+				Gun->SetScale(glm::vec3(Gun->GetScale().x, -1.0f * Gun->GetScale().y, Gun->GetScale().z));
+				inverseGun = false;
+			}
+		}
+	}
+
+	//Gun->SetLocalPosition(glm::vec3(GunDistance * cos(angle_rad), GunDistance * sin(angle_rad), 0));
 
 
 	//std::cout << angle_deg << std::endl;

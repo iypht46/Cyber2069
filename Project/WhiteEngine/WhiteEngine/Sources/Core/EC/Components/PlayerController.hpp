@@ -10,6 +10,7 @@ class PlayerController : public BehaviourScript {
 protected:
 	Transform* Gun;
 	float GunDistance;
+	bool inverseGun;
 
 	float angle_deg, angle_rad;
 
