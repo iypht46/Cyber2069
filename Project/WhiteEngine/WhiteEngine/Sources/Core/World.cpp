@@ -65,26 +65,30 @@ namespace World
 		if (Input::GetKeyHold(Input::KeyCode::KEY_W))
 		{
 			Rabbit->m_transform.Translate(glm::vec3(0.0f, MOVE_SPEED * dt, 0.0f));
-			cam->Translate(glm::vec3(0.0f, MOVE_SPEED * dt, 0.0f));
+			//Bg->m_transform.Translate(glm::vec3(0.0f, MOVE_SPEED * dt, 0.0f));
+			//cam->Translate(glm::vec3(0.0f, MOVE_SPEED * dt, 0.0f));
 		}
 
 		if (Input::GetKeyHold(Input::KeyCode::KEY_A))
 		{
 			Rabbit->m_transform.Translate(glm::vec3(-MOVE_SPEED * dt, 0.0f, 0.0f));
-			cam->Translate(glm::vec3(-MOVE_SPEED * dt, 0.0f, 0.0f));
+			//Bg->m_transform.Translate(glm::vec3(-MOVE_SPEED * dt, 0.0f, 0.0f));
+			//cam->Translate(glm::vec3(-MOVE_SPEED * dt, 0.0f, 0.0f));
 			Rabbit->m_transform.SetScale(glm::vec3(-CHAR_SIZE, CHAR_SIZE, 1));
 		}
 
 		if (Input::GetKeyHold(Input::KeyCode::KEY_S))
 		{
 			Rabbit->m_transform.Translate(glm::vec3(0.0f, -MOVE_SPEED * dt, 0.0f));
-			cam->Translate(glm::vec3(0.0f, -MOVE_SPEED * dt, 0.0f));
+			//Bg->m_transform.Translate(glm::vec3(0.0f, -MOVE_SPEED * dt, 0.0f));
+			//cam->Translate(glm::vec3(0.0f, -MOVE_SPEED * dt, 0.0f));
 		}
 
 		if (Input::GetKeyHold(Input::KeyCode::KEY_D))
 		{
 			Rabbit->m_transform.Translate(glm::vec3(MOVE_SPEED * dt, 0.0f, 0.0f));
-			cam->Translate(glm::vec3(MOVE_SPEED * dt, 0.0f, 0.0f));
+			//Bg->m_transform.Translate(glm::vec3(MOVE_SPEED * dt, 0.0f, 0.0f));
+			//cam->Translate(glm::vec3(MOVE_SPEED * dt, 0.0f, 0.0f));
 			Rabbit->m_transform.SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
 		}
 
@@ -236,7 +240,7 @@ namespace World
 		Child->m_transform.SetLocalScale(glm::vec3(1, 1, 1));
 		Child->m_transform.SetPosition(glm::vec3(100, 100, 0));
 		Child->m_transform.SetLocalPosition(glm::vec3(1, 1, 0));
-		Bg->m_transform.SetScale(glm::vec3(500, 500, 1));
+		//Bg->m_transform.SetScale(glm::vec3(500, 500, 1));
 
 		Rabbit->m_transform.SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE , 1));
 

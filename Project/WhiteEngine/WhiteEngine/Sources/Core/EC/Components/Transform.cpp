@@ -47,7 +47,7 @@ glm::mat4 Transform::GetModelMatrix() {
 	glm::mat4 transformMat = tMat * rMat * sMat;
 
 	if (parent != nullptr) {
-		transformMat = parent->GetModelMatrix()* transformMat;
+		transformMat = parent->GetModelMatrix() * transformMat;
 	}
 
 	return transformMat;
@@ -58,7 +58,7 @@ void Transform::SetParent(Transform* newParent) {
 	parent->children.push_back(this);
 }
 
-/**
+/*
  *update world position according to parent rotation and local position
  */
 void Transform::UpdateWorldPosition() {
@@ -82,9 +82,9 @@ void Transform::UpdateWorldPosition() {
 	}
 }
 
-///**
-// *update world scale according to parent, local scale and local rotation
-// */
+/*
+ *update world scale according to parent, local scale and local rotation
+ */
 void Transform::UpdateScale() {
 	//update world scale
 	if (parent != nullptr) {
