@@ -89,7 +89,8 @@ namespace Input
 	bool GetMouseHold(MouseKeyCode);
 	bool GetMouseHold(unsigned);
 
-	glm::vec2 GetMousePosition();
+	glm::vec2 GetMouseScreenPosition();
+	glm::vec2 GetMouseWorldPosition();
 	glm::vec2 GetMouseOffset();
 
 	KeyState GetMouseState(MouseKeyCode);

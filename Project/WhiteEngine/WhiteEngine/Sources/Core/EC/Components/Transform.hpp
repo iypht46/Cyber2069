@@ -47,6 +47,8 @@ public:
 
 	void SetParent(Transform* newParent);
 
+	Transform* GetChild(int index);
+
 	void SetPosition(glm::vec3 position);
 	void SetLocalPosition(glm::vec3 localposition);
 	void Translate(glm::vec3 translation);

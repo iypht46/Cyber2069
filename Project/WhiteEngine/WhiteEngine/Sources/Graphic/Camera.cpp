@@ -86,6 +86,10 @@ namespace Graphic
 		return m_view;
 	}
 
+	glm::vec3 CameraObject::GetCampos() {
+		return m_position;
+	}
+
 	/*glm::mat4 CameraObject::CalculateViewMatrix(glm::vec3 position, glm::vec3 dir)
 	{
 

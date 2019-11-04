@@ -9,6 +9,7 @@
 #include "EC/Components/Transform.hpp"
 #include "EC/Components/BehaviourScript.h"
 #include "EC/Components/FlyerBehaviour.hpp"
+#include "EC/Components/PlayerController.hpp"
 
 #include "Core/Logger.hpp"
 
@@ -31,6 +32,8 @@ namespace FactoryCollection {
 		for (FlyerBehaviour* behaviour : Factory<FlyerBehaviour>::getCollection()) {
 			behaviour->OnUpdate(dt);
 		}
+
+		Factory<PlayerController>::getCollection().at(0)->OnUpdate(dt);
 
 	}
 }
