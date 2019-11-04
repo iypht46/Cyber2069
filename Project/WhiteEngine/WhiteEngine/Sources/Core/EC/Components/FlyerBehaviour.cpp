@@ -50,7 +50,7 @@ void FlyerBehaviour::OnUpdate(float dt)
 	//	flyer->Translate(glm::vec3(0.0f, MOVE_SPEED_FLYER * dt, 0.0f));
 	//}
 
-	ENGINE_INFO("Behavior Update");
+	//ENGINE_INFO("Behavior Update");
 }
 
 void FlyerBehaviour::OnFixedUpdate(float dt)

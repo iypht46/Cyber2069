@@ -9,6 +9,7 @@
 #include "EC/Components/Animator.hpp"
 #include "EC/Components/MeshRenderer.hpp"
 #include "EC/Components/FlyerBehaviour.hpp"
+#include "EC/Components/PlayerController.hpp"
 #include "EC/Components/Rigidbody.hpp"
 
 #include "Factory.h"
@@ -201,8 +202,8 @@ namespace World
 		Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_PlayerBody_Vversion03.png");
 
 		Child->AddComponent<MeshRenderer>();
-		Child->GetComponent<MeshRenderer>()->CreateMesh(7, 5);
-		Child->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_PlayerBody_Vversion02.png");
+		Child->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+		Child->GetComponent<MeshRenderer>()->SetTexture("Sources/MachineGun.png");
 
 		Child->m_transform.SetParent(&Rabbit->m_transform);
 
@@ -234,15 +235,18 @@ namespace World
 		Rabbit->AddComponent<Rigidbody>();
 		Rabbit->GetComponent<Rigidbody>()->Init();
 
+		Rabbit->AddComponent<PlayerController>();
+		Rabbit->GetComponent<PlayerController>()->OnStart();
+
 		Rabbit->m_transform.SetScale(glm::vec3(500, 500, 1));
 
-		Child->m_transform.SetScale(glm::vec3(100, 100, 1));
-		Child->m_transform.SetLocalScale(glm::vec3(1, 1, 1));
-		Child->m_transform.SetPosition(glm::vec3(100, 100, 0));
-		Child->m_transform.SetLocalPosition(glm::vec3(1, 1, 0));
-		//Bg->m_transform.SetScale(glm::vec3(500, 500, 1));
+		Rabbit->m_transform.SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
 
-		Rabbit->m_transform.SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE , 1));
+		Child->m_transform.SetScale(glm::vec3(30, 20, 1));
+		//Child->m_transform.SetLocalScale(glm::vec3(1, 1, 1));
+		Child->m_transform.SetPosition(glm::vec3(0, 0, 0));
+		Child->m_transform.SetLocalPosition(glm::vec3(1, 0, 0));
+		//Bg->m_transform.SetScale(glm::vec3(500, 500, 1));
 
 		Flyer->m_transform.SetPosition(glm::vec3(100, 100, 0));
 		Flyer->m_transform.SetScale(glm::vec3(50, 50, 1));

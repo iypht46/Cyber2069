@@ -58,6 +58,10 @@ void Transform::SetParent(Transform* newParent) {
 	parent->children.push_back(this);
 }
 
+Transform* Transform::GetChild(int index) {
+	return children.at(index);
+}
+
 /*
  *update world position according to parent rotation and local position
  */

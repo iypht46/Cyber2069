@@ -17,7 +17,7 @@ void PlayerController::OnStart() {
 	Gun = m_gameObject->m_transform.GetChild(0);
 	inverseGun = false;
 
-	GunDistance = 50.0f;
+	GunDistance = 0.5f;
 }
 
 void PlayerController::OnEnable() {
@@ -63,9 +63,11 @@ void PlayerController::mouseAim()
 				inverseGun = false;
 			}
 		}
+
+		Gun->SetLocalPosition(glm::vec3(GunDistance * cos(angle_rad), GunDistance * sin(angle_rad), 1));
 	}
 	else {
-		Gun->SetRotation(angle_deg - 180);
+		Gun->SetRotation(-1.0f * (angle_deg + 180));
 		
 		if (angle_deg < 90) {
 			if (!inverseGun) {
@@ -80,10 +82,10 @@ void PlayerController::mouseAim()
 				inverseGun = false;
 			}
 		}
+
+		Gun->SetLocalPosition(glm::vec3( -1.0f * GunDistance * cos(angle_rad), GunDistance * sin(angle_rad), 1));
 	}
 
-	//Gun->SetLocalPosition(glm::vec3(GunDistance * cos(angle_rad), GunDistance * sin(angle_rad), 0));
 
-
-	//std::cout << angle_deg << std::endl;
+	std::cout << angle_deg << std::endl;
 }
