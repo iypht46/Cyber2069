@@ -153,6 +153,7 @@
     <ClInclude Include="Sources\Input\Input.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Core\EC\Components\BehaviourScript.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\FlyerBehaviour.cpp" />
     <ClCompile Include="Sources\Physic\PhysicScene.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Collider.cpp" />
