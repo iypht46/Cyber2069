@@ -6,6 +6,7 @@
 
 namespace Input
 {
+	
 	////////////Enum Input Key////////////
 	enum class KeyCode : int
 	{
@@ -105,7 +106,7 @@ namespace Input
 
 	KeyState GetKeyState(KeyCode);
 	////////////System Interface////////////
-	void Init(void);
+	void Init(bool);
 	void Update(void);
 	void Terminate(void);
 

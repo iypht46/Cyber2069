@@ -2,6 +2,9 @@
 
 #include "Graphic/Window.hpp"
 
+#include "Core/Logger.hpp"
+#include "Core/GameInfo.h" //TODO: Remove this after message system is done
+
 using namespace glm;
 
 namespace Graphic
@@ -16,7 +19,6 @@ namespace Graphic
 
 		const glm::uvec2 windowResArr[] = { {1280, 720}, {1366,768}, {1600, 900}, {1920, 1080} };
 		glm::uvec2 windowRes;
-
 
 		void RecenterWindow(void)
 		{
@@ -46,8 +48,6 @@ namespace Graphic
 				break;
 			}
 		}
-
-		
 
 		void SetWindowShouldClose(bool i)
 		{
@@ -93,11 +93,14 @@ namespace Graphic
 		void window_close_callback(GLFWwindow* window)
 		{
 			SetWindowShouldClose(true);
+
+			//TODO: Remove this later and use message system instead
+			World::GameInfo::GetInstance().GameShouldClose();
 		}
 
 		void Init(const char* title, WindowMode mode)
 		{
-			windowRes = windowResArr[0];
+			windowRes = windowResArr[1];
 
 			//Init and Configure GLFW:
 			glfwInit();
@@ -112,7 +115,7 @@ namespace Graphic
 			if (glfwWindow == NULL)
 			{
 				//Print out error
-				std::cout << "Failed Creating GLFW Window" << std::endl;
+				ENGINE_ERROR("Failed Creating GLFW Window");
 				//Terminate GLFW
 				Terminate();
 				return;
@@ -125,23 +128,24 @@ namespace Graphic
 			if (glewInit() != GLEW_OK)
 			{
 				//Print Error
-				std::cout << "Failed Initializing GLEW" << std::endl;
+				ENGINE_ERROR("Failed Initializing GLEW");
 				return;
 			}
 
 			//Set Primary Monitor
 			glfwMonitor = glfwGetPrimaryMonitor();
 			SetWindowMode(mode);
-
 			glfwSetWindowAspectRatio(glfwWindow, windowRes.x, windowRes.y);
-			glfwSwapInterval(1);
 			glfwSetWindowCloseCallback(glfwWindow, window_close_callback);
+			glfwSwapInterval(1);
+			
+			ENGINE_WARN("Window System Initialized");
 		}
 
 		void Terminate(void)
 		{
-			SetWindowShouldClose(true);
 			glfwDestroyWindow(glfwWindow);
+			ENGINE_WARN("Terminate Window and Input System");
 		}
 	}
 }

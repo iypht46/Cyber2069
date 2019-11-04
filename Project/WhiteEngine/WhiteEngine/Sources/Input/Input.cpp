@@ -4,15 +4,17 @@
 //System Headers
 #include "Input/Input.hpp"
 #include "Graphic/Window.hpp"
+#include "Core/Logger.hpp"
 
 using namespace Graphic;
 using namespace glm;
 
 namespace Input
 {
+	//Variables
 	vec2 g_mousePosition;
-
 	vec2 g_prevMousePosition;
+	bool g_inputDebug;
 
 	//Keyboard array for update loop
 	KeyCode keyCodeEnumArr[] =
@@ -137,7 +139,7 @@ namespace Input
 	//Type Def
 	using KeyStateMap = std::unordered_map<KeyCode, KeyState>;
 	using MouseStateMap = std::unordered_map<MouseKeyCode, KeyState>;
-	
+
 	//Declare
 	KeyStateMap g_keyStateMap;
 	MouseStateMap g_mouseStateMap;
@@ -326,16 +328,15 @@ namespace Input
 		{
 			if (Input::GetKeyUp(keyCode))
 			{
-				std::cout << "GetKeyUp:       " << keyboardCodeName[index] << '\n';
-				
+				ENGINE_INFO("GetKeyUp  :       {}", keyboardCodeName[index]);
 			}
 			if (Input::GetKeyHold(keyCode))
 			{
-				std::cout << "GetKeyHold:     " << keyboardCodeName[index] << '\n';
+				ENGINE_INFO("GetKeyHold:       {}", keyboardCodeName[index]);
 			}
 			if (Input::GetKeyDown(keyCode))
 			{
-				std::cout << "GetKeyDown:     " << keyboardCodeName[index] << '\n';
+				ENGINE_INFO("GetKeyDown:       {}", keyboardCodeName[index]);
 			}
 
 			++index;
@@ -347,26 +348,26 @@ namespace Input
 		{
 			if (Input::GetMouseUp(keyCode))
 			{
-				std::cout << "GetMouseUp:       " << mouseKeyCodeName[index] << '\n';
+				ENGINE_INFO("GetMouseUp  :       {}", mouseKeyCodeName[index]);
 			}
 			if (Input::GetMouseHold(keyCode))
 			{
-				std::cout << "GetMouseHold:     " << mouseKeyCodeName[index] << '\n';
+				ENGINE_INFO("GetMouseHold:       {}", mouseKeyCodeName[index]);
 			}
 			if (Input::GetMouseDown(keyCode))
 			{
-				std::cout << "GetMouseDown:     " << mouseKeyCodeName[index] << '\n';
+				ENGINE_INFO("GetMouseDown:       {}", mouseKeyCodeName[index]);
 			}
 
 			++index;
 		}
 	}
 
-	void Init(void)
+	void Init(bool isDebug)
 	{
 		//Debug
-		std::cout << "Initialize Input System" << std::endl;
-
+		g_inputDebug = isDebug;
+		ENGINE_WARN("Input System Initialized");
 	}
 
 	void Update(void)
@@ -380,14 +381,17 @@ namespace Input
 		//Update Mouse
 		UpdateMousePosition();
 
-
-		DebugInputKey();
+		if (g_inputDebug)
+		{
+			DebugInputKey();
+		}
+		
 	}
 
 	void Terminate(void)
 	{
 		//Debug
-		std::cout << "Terminate Input System" << std::endl;
+		ENGINE_WARN("Input System Terminated");
 	}
 
 
