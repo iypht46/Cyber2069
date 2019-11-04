@@ -20,13 +20,13 @@ private:
 	float m_rotation;
 
 	glm::vec3 m_localPosition;
-	//glm::vec3 m_localScale;
+	glm::vec3 m_localScale;
 	float m_localRotation;
 
 	glm::mat4 m_modelMatrix;
 
 	void UpdateWorldPosition();
-	//void UpdateScale();
+	void UpdateScale();
 	void UpdateRotation();
 	//updatelocalposiitn
 	//updatelocalscale
@@ -47,11 +47,13 @@ public:
 
 	void SetParent(Transform* newParent);
 
+	Transform* GetChild(int index);
+
 	void SetPosition(glm::vec3 position);
 	void SetLocalPosition(glm::vec3 localposition);
 	void Translate(glm::vec3 translation);
 	void SetScale(glm::vec3 scale);
-	//void SetLocalScale(glm::vec3 localscale);
+	void SetLocalScale(glm::vec3 localscale);
 	void SetRotation(float rotation);
 	void SetLocalRotation(float localrotation);
 	void Rotate(float rotation);

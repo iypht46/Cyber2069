@@ -9,6 +9,7 @@ private:
 
 public:
 	static T* Create();
+	static void Add(T*);
 	static std::vector<T*>& getCollection();
 };
 
@@ -21,6 +22,11 @@ T* Factory<T>::Create() {
 	m_Collection.push_back(newT);
 
 	return newT;
+}
+
+template <class T>
+void Factory<T>::Add(T* pointer) {
+	m_Collection.push_back(pointer);
 }
 
 template <class T>

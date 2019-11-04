@@ -4,6 +4,7 @@
 //System Headers
 #include "Input/Input.hpp"
 #include "Graphic/Window.hpp"
+#include "Graphic/Camera.hpp"
 #include "Core/Logger.hpp"
 
 using namespace Graphic;
@@ -235,10 +236,52 @@ namespace Input
 	}
 
 	////////////Mouse Interface////////////
-
-	glm::vec2 GetMousePosition()
+	glm::vec2 GetMouseScreenPosition() 
 	{
-		return g_mousePosition;
+		float pos[2];
+
+		pos[0] = g_mousePosition.x - Window::GetWidth() / 2;
+		pos[1] = 0.0f - (g_mousePosition.y - Window::GetHeight() / 2);
+
+		glm::vec2 mouse_pos = glm::vec2(pos[0], pos[1]);
+
+		return mouse_pos;
+	}
+
+
+	glm::vec2 GetMouseWorldPosition()
+	{
+		glm::vec3 dir = glm::vec3(0.0f, 0.0f, -1.0f);
+		glm::vec3 dirUp = glm::vec3(0.0f, 1.0f, 0.0f);
+		glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f);
+
+		glm::mat4 viewMat = glm::lookAt(position, position + dir, dirUp);
+
+		glm::mat4 projMat = viewMat * Graphic::getCamera()->GetProjectionMatrix();
+		glm::mat4 matInverse = glm::inverse(projMat);
+
+
+		float in[4];
+		float winZ = 1.0;
+
+
+		in[0] = (2.0f * ((float)(g_mousePosition.x - 0) / (Window::GetWidth() - 0))) - 1.0f;
+		in[1] = 1.0f - (2.0f * ((float)(g_mousePosition.y - 0) / (Window::GetHeight() - 0)));
+		in[2] = 2.0 * winZ - 1.0;
+		in[3] = 1.0;
+
+		glm::vec4 vIn = glm::vec4(in[0], in[1], in[2], in[3]);
+		glm::vec4 pos = vIn * matInverse;
+
+		pos.w = 1.0 / pos.w;
+
+		pos.x *= pos.w;
+		pos.y *= pos.w;
+		pos.z *= pos.w;
+
+		glm::vec2 mouse_pos = glm::vec2(pos.x + Graphic::getCamera()->GetCampos().x, pos.y + Graphic::getCamera()->GetCampos().y);
+
+		return mouse_pos;
 	}
 
 	glm::vec2 GetMouseOffset()
