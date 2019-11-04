@@ -41,45 +41,16 @@ glm::vec3 Transform::Right() {
 }
 
 glm::mat4 Transform::GetModelMatrix() {
-	//transformation
-	/*mat4 transformMatrices(1);
-	transformMatrices[0].x = m_position.x;
-	transformMatrices[0].y = m_position.y;
-	transformMatrices[0].z = m_position.z;
-
-	//rotation
-	mat4 RotationMatrices(1);
-	RotationMatrices[0][0] = cos(radians(m_rotation));
-	RotationMatrices[0][1] = -sin(radians(m_rotation));
-	RotationMatrices[1][0] = sin(radians(m_rotation));
-	RotationMatrices[1][1] = cos(radians(m_rotation));
-
-	//scale
-	mat4 ScaleMatrices(1);
-	transformMatrices[0].x = m_scale.x;
-	transformMatrices[1].y = m_scale.y;
-	transformMatrices[2].z = m_scale.z;
-
-	return mat4(1.0f) * ScaleMatrices * RotationMatrices * transformMatrices;*/
-
-	glm::mat4 transform;
+	glm::mat4 rMat = glm::rotate(glm::mat4(1.0f), radians(m_localRotation), glm::vec3(0.0f, 0.0f, 1.0f));
+	glm::mat4 sMat = glm::scale(glm::mat4(1.0f), m_localScale);
+	glm::mat4 tMat = glm::translate(glm::mat4(1.0f), m_localPosition);
+	glm::mat4 transformMat = tMat * rMat * sMat;
 
 	if (parent != nullptr) {
-		glm::mat4 combinedRMat = glm::rotate(glm::mat4(1.0f), radians(parent->m_rotation+m_localRotation), glm::vec3(0.0f, 0.0f, 1.0f));
-		glm::mat4 parentsMat = glm::scale(glm::mat4(1.0f), parent->m_scale);
-		glm::mat4 combinedSMat = glm::scale(glm::mat4(1.0f), parent->m_scale*m_localScale);
-		glm::mat4 localtMat = glm::translate(glm::mat4(1.0f), m_localPosition);
-		glm::mat4 parenttmat = glm::translate(glm::mat4(1.0f), parent->m_position);
-		transform = parenttmat * combinedRMat * combinedSMat * localtMat;
-	}
-	else {
-		glm::mat4 rMat = glm::rotate(glm::mat4(1.0f), radians(m_rotation), glm::vec3(0.0f, 0.0f, 1.0f));
-		glm::mat4 sMat = glm::scale(glm::mat4(1.0f), m_scale);
-		glm::mat4 tMat = glm::translate(glm::mat4(1.0f), m_position);
-		transform = tMat * rMat * sMat;
+		transformMat = parent->GetModelMatrix()* transformMat;
 	}
 
-	return transform;
+	return transformMat;
 }
 
 void Transform::SetParent(Transform* newParent) {
