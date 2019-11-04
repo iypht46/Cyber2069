@@ -9,7 +9,6 @@
 #include "EC/Components/Animator.hpp"
 #include "EC/Components/MeshRenderer.hpp"
 #include "EC/Components/FlyerBehaviour.hpp"
-#include "EC/Components/PlayerController.hpp"
 #include "EC/Components/Rigidbody.hpp"
 
 #include "Factory.h"
@@ -145,7 +144,17 @@ namespace World
 
 		if (Input::GetKeyHold(Input::KeyCode::KEY_E))
 		{
-			Rabbit->m_transform.Rotate(1.0f);
+			Rabbit->m_transform.Rotate(-1.0f);
+		}
+
+		if (Input::GetKeyHold(Input::KeyCode::KEY_Z))
+		{
+			Rabbit->m_transform.SetScale(Rabbit->m_transform.GetScale() + glm::vec3(1, 0, 0));
+		}
+
+		if (Input::GetKeyHold(Input::KeyCode::KEY_C))
+		{
+			Rabbit->m_transform.SetScale(Rabbit->m_transform.GetScale() + glm::vec3(-1, 0, 0));
 		}
 	}
 
@@ -223,16 +232,13 @@ namespace World
 
 		Rabbit->m_transform.SetScale(glm::vec3(500, 500, 1));
 
-		Rabbit->AddComponent<PlayerController>();
-		Rabbit->GetComponent<PlayerController>()->OnStart();
-
 		Child->m_transform.SetScale(glm::vec3(100, 100, 1));
+		Child->m_transform.SetLocalScale(glm::vec3(1, 1, 1));
 		Child->m_transform.SetPosition(glm::vec3(100, 100, 0));
-		Child->m_transform.SetLocalPosition(glm::vec3(100, 100, 0));
-
+		Child->m_transform.SetLocalPosition(glm::vec3(1, 1, 0));
 		Bg->m_transform.SetScale(glm::vec3(500, 500, 1));
 
-		Rabbit->m_transform.SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
+		Rabbit->m_transform.SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE , 1));
 
 		Flyer->m_transform.SetPosition(glm::vec3(100, 100, 0));
 		Flyer->m_transform.SetScale(glm::vec3(50, 50, 1));
@@ -271,7 +277,7 @@ namespace World
 		
 		FactoryCollection::FixedUpdateComponents(dt);
 
-		//Rabbit->GetComponent<Rigidbody>()->AddForce(glm::vec3(0.0f, -5.0f, 0.0f));
+		//Rabbit->GetComponent<Rigidbody>()->AddForce(glm::vec3(0.0f, -10.0f*dt, 0.0f));
 		Rabbit->GetComponent<Rigidbody>()->UpdateTransform(dt);
 
 		//cout << Rabbit->m_transform.GetPosition().y << endl;

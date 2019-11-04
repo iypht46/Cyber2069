@@ -62,10 +62,22 @@ glm::mat4 Transform::GetModelMatrix() {
 
 	return mat4(1.0f) * ScaleMatrices * RotationMatrices * transformMatrices;*/
 
-	glm::mat4 rMat = glm::rotate(glm::mat4(1.0f), radians(m_rotation), glm::vec3(0.0f, 0.0f, 1.0f));
-	glm::mat4 sMat = glm::scale(glm::mat4(1.0f), m_scale);
-	glm::mat4 tMat = glm::translate(glm::mat4(1.0f), m_position);
-	glm::mat4 transform = tMat * sMat * rMat;
+	glm::mat4 transform;
+
+	if (parent != nullptr) {
+		glm::mat4 combinedRMat = glm::rotate(glm::mat4(1.0f), radians(parent->m_rotation+m_localRotation), glm::vec3(0.0f, 0.0f, 1.0f));
+		glm::mat4 parentsMat = glm::scale(glm::mat4(1.0f), parent->m_scale);
+		glm::mat4 combinedSMat = glm::scale(glm::mat4(1.0f), parent->m_scale*m_localScale);
+		glm::mat4 localtMat = glm::translate(glm::mat4(1.0f), m_localPosition);
+		glm::mat4 parenttmat = glm::translate(glm::mat4(1.0f), parent->m_position);
+		transform = parenttmat * combinedRMat * combinedSMat * localtMat;
+	}
+	else {
+		glm::mat4 rMat = glm::rotate(glm::mat4(1.0f), radians(m_rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+		glm::mat4 sMat = glm::scale(glm::mat4(1.0f), m_scale);
+		glm::mat4 tMat = glm::translate(glm::mat4(1.0f), m_position);
+		transform = tMat * rMat * sMat;
+	}
 
 	return transform;
 }
@@ -85,7 +97,6 @@ Transform* Transform::GetChild(int index) {
 void Transform::UpdateWorldPosition() {
 	//update world position
 	if (parent != nullptr) {
-
 		float x = m_localPosition.x;
 		float y = m_localPosition.y;
 		float angle = radians(parent->GetRotation());
@@ -107,18 +118,20 @@ void Transform::UpdateWorldPosition() {
 ///**
 // *update world scale according to parent, local scale and local rotation
 // */
-//void Transform::UpdateScale() {
-//	//update world scale
-//	if (parent != nullptr) {
-//
-//	}
-//	else {
-//		m_scale = m_localScale;
-//	}
-//
-//	//update child scale
-//
-//}
+void Transform::UpdateScale() {
+	//update world scale
+	if (parent != nullptr) {
+		m_scale = parent->m_scale * m_localScale;
+	}
+	else {
+		m_scale = m_localScale;
+	}
+
+	//update child scale
+	for (Transform* child : children) {
+		child->UpdateScale();
+	}
+}
 
 /**
 *update world rotation according to parent and local rotation
@@ -174,15 +187,25 @@ void Transform::SetScale(glm::vec3 scale) {
 
 	m_scale = scale;
 
-	////update local scale
-	//if (parent != nullptr) {
-
-	//}
+	//update local scale
+	if (parent != nullptr) {
+		m_localScale = m_scale / parent->m_scale;
+	}
+	else {
+		m_localScale = scale;
+	}
 
 	//update child scale
-	//for (Transform* child : children) {
-	//	child->UpdateWorldPosition();
-	//}
+	for (Transform* child : children) {
+		child->UpdateScale();
+	}
+}
+
+void Transform::SetLocalScale(glm::vec3 localScale) {
+	m_localScale = localScale;
+
+	//update world scale and child scale
+	UpdateScale();
 }
 
 void Transform::SetRotation(float rotation) {
