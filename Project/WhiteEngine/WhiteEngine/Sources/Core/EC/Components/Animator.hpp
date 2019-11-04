@@ -11,6 +11,7 @@ private:
 	glm::vec2 m_currentUVFrames;
 
 	int tmpDelay;
+	float animSpeed;
 
 public:
 	Animator();
@@ -18,7 +19,9 @@ public:
 	
 	void setCurrentState(int state);
 
-	void animUpdate();
+	void animUpdate(float dt);
+
+	void setAnimSpeed();
 
 	glm::vec2 GetCurrentUVFrame();
 	~Animator();

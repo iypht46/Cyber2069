@@ -216,11 +216,13 @@ namespace World
 
 		Idle->setStartPosition(0, 0);
 		Idle->setEndPosition(6, 0);
+		Idle->setSpeedMultiplier(500);
 
 		Animation* Running = new Animation();
 
 		Running->setStartPosition(0, 1);
 		Running->setEndPosition(4, 1);
+		Running->setSpeedMultiplier(700);
 
 		AnimationController* RabbitController = new AnimationController();
 		RabbitController->setSheetSize(glm::vec2(7, 5));
@@ -231,6 +233,7 @@ namespace World
 		Rabbit->AddComponent<Animator>();
 		Rabbit->GetComponent<Animator>()->AssignController(RabbitController);
 		Rabbit->GetComponent<Animator>()->setCurrentState(0);
+		Rabbit->GetComponent<Animator>()->setAnimSpeed();
 
 		Rabbit->AddComponent<Rigidbody>();
 		Rabbit->GetComponent<Rigidbody>()->Init();
@@ -254,6 +257,7 @@ namespace World
 		Fly = new Animation();
 		Fly->setStartPosition(0, 0);
 		Fly->setEndPosition(5, 0);
+		Fly->setSpeedMultiplier(1000);
 
 		EnemCon = new AnimationController();
 
@@ -263,6 +267,7 @@ namespace World
 		Flyer->AddComponent<Animator>();
 		Flyer->GetComponent<Animator>()->AssignController(EnemCon);
 		Flyer->GetComponent<Animator>()->setCurrentState(0);
+		Flyer->GetComponent<Animator>()->setAnimSpeed();
 
 		Flyer->AddComponent<FlyerBehaviour>();
 		Flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));

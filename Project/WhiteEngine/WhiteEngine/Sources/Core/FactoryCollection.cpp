@@ -18,7 +18,7 @@ namespace FactoryCollection {
 	void FixedUpdateComponents(float dt) {
 		//update animator
 		for (Animator* anim : Factory<Animator>::getCollection()) {
-			anim->animUpdate();
+			anim->animUpdate(dt);
 		}
 
 		//update behaviour script

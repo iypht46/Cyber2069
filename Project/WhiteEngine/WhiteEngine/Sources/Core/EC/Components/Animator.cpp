@@ -5,6 +5,7 @@
 Animator::Animator()
 {
 	tmpDelay = 0;
+	animSpeed = 0;
 	m_currentUVFrames = glm::vec2(0);
 }
 
@@ -24,12 +25,12 @@ void Animator::setCurrentState(int state) {
 	m_currentUVFrames = m_currentState->getStartPosition();
 }
 
-void Animator::animUpdate() 
+void Animator::animUpdate(float dt) 
 {
 	if (m_currentUVFrames.x < m_currentState->getEndPosition().x)
 	{
 		tmpDelay++;
-		if (tmpDelay == 5) 
+		if (tmpDelay > (animSpeed * m_currentState->getSpeedMultiplier()) * dt) 
 		{
 			tmpDelay = 0;
 			m_currentUVFrames.x++;
@@ -40,6 +41,9 @@ void Animator::animUpdate()
 	}
 }
 
+void Animator::setAnimSpeed() {
+	animSpeed = 1.0f / (m_controller->getSheetSize().x);
+}
 
 Animator::~Animator()
 {
