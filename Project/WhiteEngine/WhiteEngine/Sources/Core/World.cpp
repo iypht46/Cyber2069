@@ -210,19 +210,22 @@ namespace World
 		Flyer->AddComponent<MeshRenderer>();
 		Flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
 		Flyer->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_Enemy_Flyer_Vversion01.png");
+		Flyer->AddComponent<Rigidbody>();
+		Flyer->GetComponent<Rigidbody>()->Init();
+
 
 		//Add Animator
 		Animation* Idle = new Animation();
 
 		Idle->setStartPosition(0, 0);
 		Idle->setEndPosition(6, 0);
-		Idle->setSpeedMultiplier(500);
+		Idle->setSpeedMultiplier(1);
 
 		Animation* Running = new Animation();
 
 		Running->setStartPosition(0, 1);
 		Running->setEndPosition(4, 1);
-		Running->setSpeedMultiplier(700);
+		Running->setSpeedMultiplier(2);
 
 		AnimationController* RabbitController = new AnimationController();
 		RabbitController->setSheetSize(glm::vec2(7, 5));
@@ -233,7 +236,7 @@ namespace World
 		Rabbit->AddComponent<Animator>();
 		Rabbit->GetComponent<Animator>()->AssignController(RabbitController);
 		Rabbit->GetComponent<Animator>()->setCurrentState(0);
-		Rabbit->GetComponent<Animator>()->setAnimSpeed();
+		Rabbit->GetComponent<Animator>()->setFramePerSec(12);
 
 		Rabbit->AddComponent<Rigidbody>();
 		Rabbit->GetComponent<Rigidbody>()->Init();
@@ -257,7 +260,7 @@ namespace World
 		Fly = new Animation();
 		Fly->setStartPosition(0, 0);
 		Fly->setEndPosition(5, 0);
-		Fly->setSpeedMultiplier(1000);
+		Fly->setSpeedMultiplier(3);
 
 		EnemCon = new AnimationController();
 
@@ -267,7 +270,7 @@ namespace World
 		Flyer->AddComponent<Animator>();
 		Flyer->GetComponent<Animator>()->AssignController(EnemCon);
 		Flyer->GetComponent<Animator>()->setCurrentState(0);
-		Flyer->GetComponent<Animator>()->setAnimSpeed();
+		Flyer->GetComponent<Animator>()->setFramePerSec(12);
 
 		Flyer->AddComponent<FlyerBehaviour>();
 		Flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
@@ -292,6 +295,7 @@ namespace World
 
 		//Rabbit->GetComponent<Rigidbody>()->AddForce(glm::vec3(0.0f, -10.0f*dt, 0.0f));
 		Rabbit->GetComponent<Rigidbody>()->UpdateTransform(dt);
+		Flyer->GetComponent<Rigidbody>()->UpdateTransform(dt);
 
 		//cout << Rabbit->m_transform.GetPosition().y << endl;
 

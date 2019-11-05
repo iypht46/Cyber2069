@@ -10,8 +10,8 @@ private:
 	Animation* m_currentState;
 	glm::vec2 m_currentUVFrames;
 
-	int tmpDelay;
-	float animSpeed;
+	float timeElapse;
+	float framePerSec;
 
 public:
 	Animator();
@@ -21,7 +21,7 @@ public:
 
 	void animUpdate(float dt);
 
-	void setAnimSpeed();
+	void setFramePerSec(float frame);
 
 	glm::vec2 GetCurrentUVFrame();
 	~Animator();
