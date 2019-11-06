@@ -8,9 +8,14 @@
 #include "Input/Input.hpp"
 #include "EC/Components/Animator.hpp"
 #include "EC/Components/MeshRenderer.hpp"
+#include "EC/Components/Collider.hpp"
+#include "EC/Components/Rigidbody.hpp"
 
 #include "Factory.h"
 #include "Core/EC/GameObject.hpp"
+
+#include "Physic/PhysicScene.hpp"
+#include "Physic/Collision.hpp"
 
 #include <stdlib.h>
 #include <time.h>
@@ -38,6 +43,10 @@ namespace World
 
 	Animation* Fly;
 	AnimationController* EnemCon;
+
+	GameObject* test;
+
+	Physic::PhysicScene* g_physicScene;
 
 	bool running;
 	int Delay = 0;
@@ -150,8 +159,6 @@ namespace World
 		g_gameInfo = &(GameInfo::GetInstance());
 		g_isDebug = false;
 		//Initialize All System
-		//Physics
-		//g_physicScene = new PhysicScene();
 		//Core
 
 		//Runtime
@@ -162,12 +169,22 @@ namespace World
 		//Bool for debugging
 		Input::Init(false);
 
+		//Physics
+		g_physicScene = new Physic::PhysicScene();
+		g_physicScene->SetLayerName("Player", Physic::Layer::PHYSIC_LAYER_1);
+		g_physicScene->SetLayerName("Enemy", Physic::Layer::PHYSIC_LAYER_2);
+		g_physicScene->SetLayerCollisions("Player", "Enemy");
+		std::cout << "Layer Collision: " << g_physicScene->GetLayerCollisions("Player") << std::endl;
+
 		ENGINE_WARN("Engine Initialized");
+		//ENGINE_INFO("Layer Static Cast: {}", static_cast<uint32_t>(Physic::Layer::PHYSIC_LAYER_1));
+		//ENGINE_INFO("Layer Static Cast: {}", static_cast<uint32_t>(Physic::Layer::PHYSIC_LAYER_2));
 
 		//GameObject
 		Rabbit = new GameObject();
 		Bg = new GameObject();
 		Child = new GameObject();
+		test = new GameObject();
 
 		//Add Renderer
 
@@ -186,6 +203,10 @@ namespace World
 		Child->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_PlayerBody_Vversion02.png");
 
 		Child->m_transform.SetParent(&Rabbit->m_transform);
+
+		test->AddComponent<MeshRenderer>();
+		test->GetComponent<MeshRenderer>()->CreateMesh(6, 1);
+		test->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_Enemy_Flyer_Vversion01.png");
 
 		//Add Animator
 		Animation* Idle = new Animation();
@@ -216,6 +237,9 @@ namespace World
 		Bg->m_transform.SetScale(glm::vec3(500, 500, 1));
 
 		Rabbit->m_transform.SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
+
+		test->m_transform.SetScale(glm::vec3(40.0f, 30.0f, 1));
+		test->m_transform.SetPosition(glm::vec3(20.0f, 20.0f, 0.0f));
 		/*
 		Fly = new Animation();
 		Fly->setStartPosition(0,0);
@@ -226,6 +250,16 @@ namespace World
 		EnemCon->setSheetSize(glm::vec2(6, 1));
 		EnemCon->AddState(Fly);
 		*/
+
+		//Add Physic
+		Rigidbody* rabbitRigid = Rabbit->AddComponent<Rigidbody>();
+		rabbitRigid->Init(10.0f, 30.0f);
+
+		Rigidbody* testRigid = test->AddComponent<Rigidbody>();
+		testRigid->Init(15.0f, 10.0f);
+
+		g_physicScene->Add(rabbitRigid->GetCollider(), "Player");
+		g_physicScene->Add(testRigid->GetCollider(), "Enemy");
 	}
 
 	void FixedUpdate(float dt)
@@ -237,8 +271,14 @@ namespace World
 		while (accumulator >= c_targetDT)
 		{
 			//Update Physic
-			//g_physicScene->Update(c_targetDT);
-			//ENGINE_INFO("FixedUpdate: {}", dt);
+			g_physicScene->Update(c_targetDT);
+			//ENGINE_INFO("FixedUpdate: {}", dt
+			/*Physic::Manifold col(Rabbit->GetComponent<Collider>(), test->GetComponent<Collider>());
+			if (col.CheckCollision())
+			{
+				ENGINE_INFO("Collided");
+			}*/
+
 			accumulator -= c_targetDT;
 		}
 
@@ -298,7 +338,7 @@ namespace World
 		//Terminate Graphic
 		Graphic::Terminate();
 		//Terminate Physics
-		//delete g_physicScene;
+		delete g_physicScene;
 		//Terminate Game Info
 		ENGINE_WARN("Engine Terminated");
 	}

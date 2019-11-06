@@ -28,6 +28,7 @@
 	public:
 		//Rigidbody Interface
 		void Init(float, float);
+		Collider* GetCollider();
 		Rigidbody();
 		~Rigidbody();
 

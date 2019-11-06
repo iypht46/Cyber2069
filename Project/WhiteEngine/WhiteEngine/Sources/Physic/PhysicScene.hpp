@@ -9,6 +9,7 @@
 
 #include "Core/EC/Components/Collider.hpp"
 #include "Core/Logger.hpp"
+#include "Physic/Collision.hpp"
 
 namespace Physic
 {
@@ -17,7 +18,7 @@ namespace Physic
 
 	enum class Layer : unsigned
 	{
-		LAYER_INVALID = 0x00,
+		
 		PHYSIC_LAYER_1 = 0x01,
 		PHYSIC_LAYER_2 = 0x02,
 		PHYSIC_LAYER_3 = 0x03,
@@ -25,57 +26,68 @@ namespace Physic
 		PHYSIC_LAYER_5 = 0x05,
 		PHYSIC_LAYER_6 = 0x06,
 		PHYSIC_LAYER_7 = 0x07,
-		PHYSIC_LAYER_8 = 0x08
+		PHYSIC_LAYER_8 = 0x08,
+		PHYSIC_LAYER_NUM,
+		LAYER_INVALID
 	};
 
 	struct CollisionPair
 	{
 		std::pair<Collider*, Collider*> m_pair;
-
-		inline bool operator==(const CollisionPair& other) const
+		friend bool operator==(const CollisionPair& lhs, const CollisionPair& rhs);
+		/*inline bool operator==(const CollisionPair& rhs) const
 		{
-			if (m_pair.first == other.m_pair.first)
+			if (m_pair.first == rhs.m_pair.first
+				&& m_pair.second == rhs.m_pair.second)
 			{
-				if (m_pair.second == other.m_pair.second)
-				{
-					return true;
-				}
-				else
-				{
-					return false;
-				}
+				return true;
 			}
-			else
+			else if (m_pair.first == rhs.m_pair.second
+				&& m_pair.second == rhs.m_pair.first)
 			{
-				if (m_pair.first == other.m_pair.second)
-				{
-					if (m_pair.second == other.m_pair.first)
-					{
-						return true;
-					}
-					else
-					{
-						return false;
-					}
-				}
+				return true;
 			}
 
-		}
+			return false;
+
+		}*/
 	};
 
+	inline bool operator==(const CollisionPair& lhs, const CollisionPair& rhs)
+	{
+		if (lhs.m_pair.first == rhs.m_pair.first
+			&& lhs.m_pair.second == rhs.m_pair.second)
+		{
+			return true;
+		}
+		else if (lhs.m_pair.first == rhs.m_pair.second
+			&& lhs.m_pair.second == rhs.m_pair.first)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	//Collider
 	using LayerBit = std::bitset<LAYER_BIT>;
 	using Colliders = std::vector<Collider*>;
 	using ColliderMap = std::unordered_map<Layer, Colliders>;
+
+	//Collision
 	using CollisionLayer = std::unordered_map<Layer, LayerBit>;
-	using CollisionPairs = std::vector<CollisionPair>;
+	using Collisions = std::vector<Manifold>;
 	using LayerStringMap = std::unordered_map<std::string, Layer>;
 
 	class PhysicScene
 	{
 	private:
+		//Store layerbit as key and collider as value.
 		ColliderMap m_colliders;
+		//Store layer enum as key and layerbit as value.
 		CollisionLayer m_collisionLayer;
-		CollisionPairs m_collisionPairs;
+		//Store possible collision
+		Collisions m_possibleCollision;
+		Collisions m_finalCollision;
 		LayerStringMap m_layerString;
 	public:
 		//Main update loop
@@ -93,8 +105,8 @@ namespace Physic
 		//Check collision of a layer with another one
 		void CheckLayerCollision(Layer, Layer);
 
-		//
-		void CollisionCheck(Collider, Collider);
+		//Convert Layer Enum to number
+		static uint32_t LayerToNum(Layer);
 
 		//Interface
 		//Add collider to layer

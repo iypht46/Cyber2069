@@ -20,6 +20,16 @@ void Rigidbody::Init(float hW, float hH)
 	m_transform = &m_gameObject->m_transform;
 }
 
+Collider* Rigidbody::GetCollider()
+{
+	if (m_collider)
+	{
+		return m_collider;
+	}
+
+	return nullptr;
+}
+
 Rigidbody::~Rigidbody()
 {
 	
