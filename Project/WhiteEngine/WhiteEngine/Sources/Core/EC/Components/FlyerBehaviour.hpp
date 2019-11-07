@@ -1,6 +1,8 @@
 #pragma once
 #include "BehaviourScript.h"
 #include "Transform.hpp"
+#include "Core/EC/GameObject.hpp"
+#include "Core/EC/Components/Rigidbody.hpp"
 
 #define MOVE_SPEED_FLYER 100.0f
 
