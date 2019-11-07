@@ -19,54 +19,17 @@ namespace Physic
 	enum class Layer : unsigned
 	{
 		
-		PHYSIC_LAYER_1 = 0x01,
-		PHYSIC_LAYER_2 = 0x02,
-		PHYSIC_LAYER_3 = 0x03,
+		PHYSIC_LAYER_1 = 0x00,
+		PHYSIC_LAYER_2 = 0x01,
+		PHYSIC_LAYER_3 = 0x02,
 		PHYSIC_LAYER_4 = 0x04,
-		PHYSIC_LAYER_5 = 0x05,
-		PHYSIC_LAYER_6 = 0x06,
-		PHYSIC_LAYER_7 = 0x07,
-		PHYSIC_LAYER_8 = 0x08,
-		PHYSIC_LAYER_NUM,
-		LAYER_INVALID
+		PHYSIC_LAYER_5 = 0x08,
+		PHYSIC_LAYER_6 = 0x10,
+		PHYSIC_LAYER_7 = 0x20,
+		PHYSIC_LAYER_8 = 0x40,
+		PHYSIC_LAYER_NUM = 0x09,
+		LAYER_INVALID = 0x11
 	};
-
-	struct CollisionPair
-	{
-		std::pair<Collider*, Collider*> m_pair;
-		friend bool operator==(const CollisionPair& lhs, const CollisionPair& rhs);
-		/*inline bool operator==(const CollisionPair& rhs) const
-		{
-			if (m_pair.first == rhs.m_pair.first
-				&& m_pair.second == rhs.m_pair.second)
-			{
-				return true;
-			}
-			else if (m_pair.first == rhs.m_pair.second
-				&& m_pair.second == rhs.m_pair.first)
-			{
-				return true;
-			}
-
-			return false;
-
-		}*/
-	};
-
-	inline bool operator==(const CollisionPair& lhs, const CollisionPair& rhs)
-	{
-		if (lhs.m_pair.first == rhs.m_pair.first
-			&& lhs.m_pair.second == rhs.m_pair.second)
-		{
-			return true;
-		}
-		else if (lhs.m_pair.first == rhs.m_pair.second
-			&& lhs.m_pair.second == rhs.m_pair.first)
-		{
-			return true;
-		}
-		return false;
-	}
 
 	//Collider
 	using LayerBit = std::bitset<LAYER_BIT>;

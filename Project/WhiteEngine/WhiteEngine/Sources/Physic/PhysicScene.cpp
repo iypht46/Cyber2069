@@ -61,15 +61,13 @@ namespace Physic
 
 	void PhysicScene::Update(float dt)
 	{
-		//Clear Previous Collision
-		m_possibleCollision.clear();
-		m_finalCollision.clear();
+		
 
 		//Update Collision
 		UpdateLayerCollision();
 
 		//Check for duplicate pair
-		//CheckDuplicatePair();
+		CheckDuplicatePair();
 
 		//Resolve Collision
 		ResolveLayerCollision();
@@ -77,31 +75,9 @@ namespace Physic
 
 	void PhysicScene::UpdateLayerCollision()
 	{
+		//Clear Previous Collision
+		m_possibleCollision.clear();
 
-		/*for (auto layer : m_colliders)
-		{
-			for (auto col : layer.second)
-			{
-				for (auto layerToCheck : m_colliders)
-				{
-					for (auto colCheck : layerToCheck.second)
-					{
-						Collider* main = col;
-						Collider* check = colCheck;
-						if (main != check)
-						{
-							Manifold coll(main, check);
-							ENGINE_INFO("Check Collision");
-							if (coll.CheckCollision())
-							{
-								ENGINE_INFO("Collided");
-							}
-						}
-						
-					}
-				}
-			}
-		}*/
 		//Loop throuch every layer
 		for (auto mainLayer : m_collisionLayer)
 		{
@@ -122,7 +98,6 @@ namespace Physic
 					//Check mainLayerBit with layerToCheckBit
 					if ((mainLayerBit & layerToCheckBit) == layerToCheckBit)
 					{
-						std::cout << "Main Layer: " << GetLayerInBit(mainLayer.first) << " LayerToCheck: " << layerToCheckBit << std::endl;
 						CheckLayerCollision(mainLayer.first, layerToCheck);
 						//ENGINE_INFO("Main Layer: {}, LayerToCheck: {}", LayerToNum(mainLayer.first), LayerToNum(layerToCheck));
 					}
@@ -134,21 +109,27 @@ namespace Physic
 
 	void PhysicScene::ResolveLayerCollision()
 	{
-		if (m_possibleCollision.size() != 0)
+		
+		if (m_finalCollision.size() != 0)
 		{
 			for (auto colPair = m_finalCollision.begin(); colPair != m_finalCollision.end(); ++colPair)
 			{
 				//Resolve collision pair
 				//TODO: Create result struct that will be pass into the collider
 				//TODO: Generate collision result struct for the pair
-				ENGINE_INFO("Collision: {}", m_possibleCollision.size());
+
+				//ENGINE_INFO("Collision: {}", m_finalCollision.size());
 				colPair->Resolve();
 			}
+
+			m_finalCollision.clear();
 		}
 	}
 
 	void PhysicScene::CheckDuplicatePair()
 	{
+		ENGINE_INFO("Collision: {}", m_possibleCollision.size());
+
 		std::sort(m_possibleCollision.begin(), m_possibleCollision.end(), SortCollision);
 
 		int i = 0;
@@ -178,7 +159,7 @@ namespace Physic
 	void PhysicScene::CheckLayerCollision(Layer mainLayer, Layer layerToCheck)
 	{
 		//ENGINE_INFO("Check Collision");
-
+		//ENGINE_INFO("Main: {}, LayerToCheck: {}", LayerToNum(mainLayer), LayerToNum(layerToCheck));
 		//Check collision of main collider with layer to check
 		for (auto mainCol : m_colliders[mainLayer])
 		{
@@ -243,7 +224,7 @@ namespace Physic
 	{
 		uint32_t lay = LayerToNum(layerToCollide);
 		std::cout << "Layer: " << lay << std::endl;
-		m_collisionLayer[layer].set(lay);
+		m_collisionLayer[layer] |= static_cast<unsigned>(layerToCollide);
 	}
 
 	void PhysicScene::SetLayerCollisions(std::string layer, std::string layerToCollide)

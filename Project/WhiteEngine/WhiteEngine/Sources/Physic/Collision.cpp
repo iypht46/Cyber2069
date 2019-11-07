@@ -129,6 +129,14 @@ namespace Physic
 
 	void Manifold::Resolve()
 	{
+		if (m_objectA->IsStatic())
+		{
 
+		}
+
+		if (m_objectB->IsStatic())
+		{
+
+		}
 	}
 }
