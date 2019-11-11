@@ -128,7 +128,7 @@ namespace Physic
 
 	void PhysicScene::CheckDuplicatePair()
 	{
-		ENGINE_INFO("Collision: {}", m_possibleCollision.size());
+		//ENGINE_INFO("Collision: {}", m_possibleCollision.size());
 
 		std::sort(m_possibleCollision.begin(), m_possibleCollision.end(), SortCollision);
 
@@ -174,7 +174,7 @@ namespace Physic
 
 				if (collision.CheckCollision())
 				{
-					ENGINE_INFO("Object Collided");
+					//ENGINE_INFO("Object Collided");
 					m_possibleCollision.push_back(collision);
 				}
 			}

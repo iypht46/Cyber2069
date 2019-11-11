@@ -44,7 +44,7 @@ namespace World
 	Animation* Fly;
 	AnimationController* EnemCon;
 
-	GameObject* test;
+	GameObject** test;
 
 	Physic::PhysicScene* g_physicScene;
 
@@ -181,10 +181,11 @@ namespace World
 		//ENGINE_INFO("Layer Static Cast: {}", static_cast<uint32_t>(Physic::Layer::PHYSIC_LAYER_2));
 
 		//GameObject
+		enemyNum = 10;
+		test = new GameObject*[enemyNum];
 		Rabbit = new GameObject();
 		Bg = new GameObject();
 		Child = new GameObject();
-		test = new GameObject();
 
 		//Add Renderer
 
@@ -203,11 +204,7 @@ namespace World
 		Child->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_PlayerBody_Vversion02.png");
 
 		Child->m_transform.SetParent(&Rabbit->m_transform);
-
-		test->AddComponent<MeshRenderer>();
-		test->GetComponent<MeshRenderer>()->CreateMesh(6, 1);
-		test->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_Enemy_Flyer_Vversion01.png");
-
+		
 		//Add Animator
 		Animation* Idle = new Animation();
 
@@ -238,8 +235,7 @@ namespace World
 
 		Rabbit->m_transform.SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
 
-		test->m_transform.SetScale(glm::vec3(40.0f, 30.0f, 1));
-		test->m_transform.SetPosition(glm::vec3(20.0f, 20.0f, 0.0f));
+		
 		/*
 		Fly = new Animation();
 		Fly->setStartPosition(0,0);
@@ -255,11 +251,23 @@ namespace World
 		Rigidbody* rabbitRigid = Rabbit->AddComponent<Rigidbody>();
 		rabbitRigid->Init(10.0f, 30.0f);
 
-		Rigidbody* testRigid = test->AddComponent<Rigidbody>();
-		testRigid->Init(15.0f, 10.0f);
-
 		g_physicScene->Add(rabbitRigid->GetCollider(), "Player");
-		g_physicScene->Add(testRigid->GetCollider(), "Enemy");
+
+		for (int i = 0; i < enemyNum; i++)
+		{
+			float randX = (float)((rand() % 100) - (rand() % 100));
+			float randY = (float)((rand() % 100) - (rand() % 100));
+			test[i] = new GameObject();
+			test[i]->AddComponent<MeshRenderer>();
+			test[i]->GetComponent<MeshRenderer>()->CreateMesh(6, 1);
+			test[i]->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_Enemy_Flyer_Vversion01.png");
+			test[i]->m_transform.SetScale(glm::vec3(40.0f, 30.0f, 1));
+			test[i]->m_transform.SetPosition(glm::vec3(randX, randY, 0.0f));
+			Rigidbody* testRigid = test[i]->AddComponent<Rigidbody>();
+			testRigid->Init(15.0f, 10.0f);
+			g_physicScene->Add(testRigid->GetCollider(), "Enemy");
+
+		}
 	}
 
 	void FixedUpdate(float dt)

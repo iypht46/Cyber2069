@@ -18,7 +18,6 @@ namespace Physic
 
 	enum class Layer : unsigned
 	{
-		
 		PHYSIC_LAYER_1 = 0x00,
 		PHYSIC_LAYER_2 = 0x01,
 		PHYSIC_LAYER_3 = 0x02,

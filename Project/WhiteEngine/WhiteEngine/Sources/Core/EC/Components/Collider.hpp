@@ -23,7 +23,7 @@
 	{
 	protected:
 		
-		Rigidbody* m_rigidbody;
+		
 
 		ColliderType m_colliderType;
 		bool m_isStatic = true;
@@ -31,6 +31,7 @@
 		float m_density;
 	public:
 		Transform* m_transform;
+		Rigidbody* m_rigidbody;
 
 		//Constructor
 		Collider(ColliderType col) 
