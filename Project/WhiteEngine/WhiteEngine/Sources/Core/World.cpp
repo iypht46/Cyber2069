@@ -18,6 +18,9 @@
 
 #include <stdlib.h>
 #include <time.h>
+#include <irrKlang.h>
+
+using namespace irrklang;
 
 namespace World
 {
@@ -43,6 +46,7 @@ namespace World
 
 	Animation* Fly;
 	AnimationController* EnemCon;
+
 
 	bool running;
 	int Delay = 0;
@@ -182,6 +186,10 @@ namespace World
 		Input::Init(false);
 
 		ENGINE_WARN("Engine Initialized");
+
+		ISoundEngine* test = createIrrKlangDevice();
+		ISoundSource* testBGM = test->addSoundSourceFromFile("Sources/testMusic.mp3");
+		test->play2D(testBGM, true);
 
 		//GameObject
 		Rabbit = new GameObject();
