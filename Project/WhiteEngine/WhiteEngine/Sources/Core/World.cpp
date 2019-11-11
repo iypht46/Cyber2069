@@ -187,6 +187,17 @@ namespace World
 		Dashing->setStartPosition(0, 4);
 		Dashing->setEndPosition(2, 4);
 		Dashing->setSpeedMultiplier(1);
+
+		Animation* Jumping = new Animation();
+
+		Jumping->setStartPosition(0, 3);
+		Jumping->setEndPosition(3, 3);
+		Jumping->setSpeedMultiplier(1);
+
+		Idle->setLooping(true);
+		Running->setLooping(true);
+		Dashing->setLooping(true);
+		Jumping->setLooping(false);
 		
 
 		AnimationController* RabbitController = new AnimationController();
@@ -195,6 +206,7 @@ namespace World
 		RabbitController->AddState(Idle);
 		RabbitController->AddState(Running);
 		RabbitController->AddState(Dashing);
+		RabbitController->AddState(Jumping);
 
 		Rabbit->AddComponent<Animator>();
 		Rabbit->GetComponent<Animator>()->AssignController(RabbitController);
@@ -256,7 +268,7 @@ namespace World
 		
 		FactoryCollection::FixedUpdateComponents(dt);
 
-		//Rabbit->GetComponent<Rigidbody>()->AddForce(glm::vec3(0.0f, -10.0f*dt, 0.0f));
+		Rabbit->GetComponent<Rigidbody>()->AddForce(glm::vec3(0.0f, -500.0f*dt, 0.0f));
 		Rabbit->GetComponent<Rigidbody>()->UpdateTransform(dt);
 		Flyer->GetComponent<Rigidbody>()->UpdateTransform(dt);
 

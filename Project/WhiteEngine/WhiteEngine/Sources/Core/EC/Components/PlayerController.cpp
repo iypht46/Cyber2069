@@ -19,8 +19,11 @@ void PlayerController::OnStart() {
 	rb = m_gameObject->GetComponent<Rigidbody>();
 
 	inverseGun = false;
+
+	jumping = false;
 	move_speed = 300.0f;
 	dash_speed = 900.0f;
+	jump_speed = 300.0f;
 	direction.x = 1;
 	direction.y = 1;
 
@@ -35,6 +38,12 @@ void PlayerController::OnEnable() {
 
 void PlayerController::OnUpdate(float dt) 
 {
+	if (m_gameObject->m_transform.GetPosition().y < -(720 / 2))
+	{
+		jumping = false;
+		m_gameObject->m_transform.SetPosition(glm::vec3(m_gameObject->m_transform.GetPosition().x, -(720 / 2) + 1, m_gameObject->m_transform.GetPosition().z));
+	}
+
 	move();
 
 	if (Dash) {
@@ -83,14 +92,23 @@ void PlayerController::move()
 		m_gameObject->m_transform.SetScale(glm::vec3(glm::abs(m_gameObject->m_transform.GetScale().x), m_gameObject->m_transform.GetScale().y, m_gameObject->m_transform.GetScale().z));
 	}
 
-	if (!Input::GetKeyHold(Input::KeyCode::KEY_A) && !Input::GetKeyHold(Input::KeyCode::KEY_D))
+	if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE))
 	{
-		if (running && !Dash) {
+		rb->SetVelocity(glm::vec3(0, jump_speed, 0));
+		jumping = true;
+		running = false;
+
+		m_gameObject->GetComponent<Animator>()->setCurrentState(3);
+	}
+
+	if ((!Input::GetKeyHold(Input::KeyCode::KEY_A) && !Input::GetKeyHold(Input::KeyCode::KEY_D)) && !jumping)
+	{
+		if (!Dash) {
 			running = false;
 			m_gameObject->GetComponent<Animator>()->setCurrentState(0);
 		}
 	}
-	else if (Input::GetKeyHold(Input::KeyCode::KEY_A) || Input::GetKeyHold(Input::KeyCode::KEY_D)) {
+	else if ((Input::GetKeyHold(Input::KeyCode::KEY_A) || Input::GetKeyHold(Input::KeyCode::KEY_D)) && !jumping) {
 
 		if (!running && !Dash) {
 			running = true;
@@ -109,7 +127,7 @@ void PlayerController::move()
 	
 	if (!Dash) 
 	{
-		rb->SetVelocity(velocity);
+		rb->SetVelocity(glm::vec3(velocity.x, rb->GetVelocity().y, rb->GetVelocity().z));
 	}
 	
 }

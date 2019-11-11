@@ -15,6 +15,7 @@ protected:
 	
 	float move_speed;
 	float dash_speed;
+	float jump_speed;
 	float dashTime;
 	float dashRemainingTime;
 	float delay;
@@ -22,6 +23,7 @@ protected:
 	float GunDistance;
 	bool inverseGun;
 	bool running;
+	bool jumping;
 	bool Dash;
 	bool setDashAnim;
 	
