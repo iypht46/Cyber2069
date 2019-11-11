@@ -74,11 +74,11 @@ namespace Physic
 		//Add collider to layer
 		void Add(Collider*, Layer);
 		void Add(Collider*, std::string);
-		
+
 		//Remove collider from layer
 		void Remove(Collider*, Layer);
 		void Remove(Collider*, std::string);
-		
+
 		//Set Layer to Collide With
 		void SetLayerCollisions(Layer, Layer);
 		void SetLayerCollisions(std::string, std::string);
@@ -102,6 +102,3 @@ namespace Physic
 		~PhysicScene() {}
 	};
 }
-
-
-

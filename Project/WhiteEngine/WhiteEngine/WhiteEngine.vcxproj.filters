@@ -21,9 +21,6 @@
     <ClInclude Include="Sources\Core\EC\Components\Transform.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Core\EC\Components\Rigidbody.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Core\EC\Components\MeshRenderer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -100,6 +97,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Physic\Collision.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Core\EC\Components\Rigidbody.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

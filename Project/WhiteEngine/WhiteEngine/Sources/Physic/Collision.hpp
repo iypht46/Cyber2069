@@ -27,6 +27,6 @@ namespace Physic
 	//For Box to Box
 	bool AABBtoAABB(AABB, AABB);
 
-	typedef void(*CollisionFunc)(Collider*, Collider*);
+	//typedef void(*CollisionFunc)(Collider*, Collider*);
 
 }

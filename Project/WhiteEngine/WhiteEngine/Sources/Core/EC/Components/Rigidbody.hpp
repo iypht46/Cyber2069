@@ -17,7 +17,7 @@
 		glm::vec3 m_position;
 		glm::vec3 m_velocity;
 		glm::vec3 m_acceleration;
-		float m_orientation;
+		//float m_orientation;
 		float m_mass;
 		float m_invMass;
 		float m_gravityScale;
@@ -29,16 +29,11 @@
 		//Rigidbody Interface
 		void Init(float, float);
 		Collider* GetCollider();
+		void Init(/*float, float*/);
+		void SetVelocity(glm::vec3);
+		void AddForce(glm::vec3);
+		void AddRelativeForce(glm::vec3);
+		void UpdateTransform(float dt);
 		Rigidbody();
-		~Rigidbody();
-
-		//Inherit Interface
-		virtual void OnAwake();
-		virtual void OnEnable();
-		virtual void OnDisable();
-		virtual void OnStart();
-		virtual void OnUpdate(float dt);
-		virtual void OnFixedUpdate(float dt);
-		virtual void OnDestroy();
-
+		~Rigidbody() {};
 	};

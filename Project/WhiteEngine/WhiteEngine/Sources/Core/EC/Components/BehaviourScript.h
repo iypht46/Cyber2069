@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.hpp"
 class BehaviourScript :public Component {
+public:
 	virtual void OnAwake() = 0;
 	virtual void OnEnable() = 0;
 	virtual void OnStart() = 0;

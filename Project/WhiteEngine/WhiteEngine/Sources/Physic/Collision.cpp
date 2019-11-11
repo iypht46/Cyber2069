@@ -17,7 +17,7 @@ namespace Physic
 		//Generate AABB data from the collider data
 		objectA->ComputeAABB(a);
 		objectB->ComputeAABB(b);
-		
+
 		if (a.m_max.x < b.m_min.x)
 		{
 			return false;
@@ -104,7 +104,7 @@ namespace Physic
 	//					m->m_normal = glm::vec2(-1, 0);
 	//				else
 	//					m->m_normal = glm::vec2(0, 0);
-	//				
+	//
 	//				m->m_penetration = x_overlap;
 	//				std::cout << "Collided\n";
 	//				return true;
@@ -150,7 +150,7 @@ namespace Physic
 		{
 			ENGINE_ERROR("Object reference in Manifold is NULL");
 		}
-		
+
 
 		return false;
 	}

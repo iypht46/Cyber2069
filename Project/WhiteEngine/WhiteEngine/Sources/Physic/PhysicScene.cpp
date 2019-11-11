@@ -61,7 +61,7 @@ namespace Physic
 
 	void PhysicScene::Update(float dt)
 	{
-		
+
 
 		//Update Collision
 		UpdateLayerCollision();
@@ -103,13 +103,13 @@ namespace Physic
 					}
 				}
 			}
-			
+
 		}
 	}
 
 	void PhysicScene::ResolveLayerCollision()
 	{
-		
+
 		if (m_finalCollision.size() != 0)
 		{
 			for (auto colPair = m_finalCollision.begin(); colPair != m_finalCollision.end(); ++colPair)
@@ -193,7 +193,7 @@ namespace Physic
 		{
 			return;
 		}
-		
+
 		Add(col, layer);
 	}
 
@@ -232,7 +232,7 @@ namespace Physic
 		Layer mainLayer = GetLayerFromString(layer);
 		Layer layerToAdd = GetLayerFromString(layerToCollide);
 
-		if (mainLayer == Layer::LAYER_INVALID 
+		if (mainLayer == Layer::LAYER_INVALID
 			|| layerToAdd == Layer::LAYER_INVALID)
 		{
 			ENGINE_ERROR("Failed setting layer collisions {} to {}", layerToCollide, layer);
@@ -320,5 +320,3 @@ namespace Physic
 		m_layerString["INV"] = Layer::LAYER_INVALID;
 	}
 }
-
-

@@ -204,7 +204,7 @@ namespace World
 		Child->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_PlayerBody_Vversion02.png");
 
 		Child->m_transform.SetParent(&Rabbit->m_transform);
-		
+
 		//Add Animator
 		Animation* Idle = new Animation();
 
@@ -226,6 +226,9 @@ namespace World
 		Rabbit->GetComponent<Animator>()->AssignController(RabbitController);
 		Rabbit->GetComponent<Animator>()->setCurrentState(0);
 
+		Rabbit->AddComponent<Rigidbody>();
+		Rabbit->GetComponent<Rigidbody>()->Init();
+
 		Rabbit->m_transform.SetScale(glm::vec3(500, 500, 1));
 
 		Child->m_transform.SetScale(glm::vec3(100, 100, 1));
@@ -235,7 +238,7 @@ namespace World
 
 		Rabbit->m_transform.SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
 
-		
+
 		/*
 		Fly = new Animation();
 		Fly->setStartPosition(0,0);
@@ -290,6 +293,11 @@ namespace World
 			accumulator -= c_targetDT;
 		}
 
+		Rabbit->GetComponent<Rigidbody>()->AddForce(glm::vec3(0.0f, -10.0f, 0.0f));
+		Rabbit->GetComponent<Rigidbody>()->UpdateTransform(dt);
+
+		//cout << Rabbit->m_transform.GetPosition().y << endl;
+
 		/*Factory<GameObject>::Create();
 		std::vector<GameObject*> a = Factory<GameObject>::getCollection();
 		a.back()->AddComponent<MeshRenderer>();
@@ -304,7 +312,6 @@ namespace World
 		Input::Update();
 		//Core
 		DebugInput(dt);
-
 
 		for (int i = 0; i < Factory<Animator>::getCollection().size(); i++)
 		{
