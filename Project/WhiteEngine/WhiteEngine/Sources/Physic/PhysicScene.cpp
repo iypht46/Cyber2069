@@ -70,7 +70,7 @@ namespace Physic
 		CheckDuplicatePair();
 
 		//Resolve Collision
-		ResolveLayerCollision();
+		ResolveLayerCollision(dt);
 	}
 
 	void PhysicScene::UpdateLayerCollision()
@@ -107,7 +107,7 @@ namespace Physic
 		}
 	}
 
-	void PhysicScene::ResolveLayerCollision()
+	void PhysicScene::ResolveLayerCollision(float dt)
 	{
 
 		if (m_finalCollision.size() != 0)
@@ -115,11 +115,9 @@ namespace Physic
 			for (auto colPair = m_finalCollision.begin(); colPair != m_finalCollision.end(); ++colPair)
 			{
 				//Resolve collision pair
-				//TODO: Create result struct that will be pass into the collider
-				//TODO: Generate collision result struct for the pair
 
 				//ENGINE_INFO("Collision: {}", m_finalCollision.size());
-				colPair->Resolve();
+				colPair->Resolve(dt);
 			}
 
 			m_finalCollision.clear();

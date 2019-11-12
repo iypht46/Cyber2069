@@ -181,7 +181,7 @@ namespace World
 		//ENGINE_INFO("Layer Static Cast: {}", static_cast<uint32_t>(Physic::Layer::PHYSIC_LAYER_2));
 
 		//GameObject
-		enemyNum = 10;
+		enemyNum = 5;
 		test = new GameObject*[enemyNum];
 		Rabbit = new GameObject();
 		Bg = new GameObject();
@@ -227,7 +227,7 @@ namespace World
 		Rabbit->GetComponent<Animator>()->setCurrentState(0);
 
 		Rabbit->AddComponent<Rigidbody>();
-		Rabbit->GetComponent<Rigidbody>()->Init();
+		Rabbit->GetComponent<Rigidbody>()->Init(10.0f, 30.0f);
 
 		Rabbit->m_transform.SetScale(glm::vec3(500, 500, 1));
 
@@ -251,15 +251,13 @@ namespace World
 		*/
 
 		//Add Physic
-		Rigidbody* rabbitRigid = Rabbit->AddComponent<Rigidbody>();
-		rabbitRigid->Init(10.0f, 30.0f);
 
-		g_physicScene->Add(rabbitRigid->GetCollider(), "Player");
+		g_physicScene->Add(Rabbit->GetComponent<BoxCollider>(), "Player");
 
 		for (int i = 0; i < enemyNum; i++)
 		{
-			float randX = (float)((rand() % 100) - (rand() % 100));
-			float randY = (float)((rand() % 100) - (rand() % 100));
+			float randX = (float)((rand() % 350) - (rand() % 350));
+			float randY = (float)((rand() % 350) - (rand() % 350));
 			test[i] = new GameObject();
 			test[i]->AddComponent<MeshRenderer>();
 			test[i]->GetComponent<MeshRenderer>()->CreateMesh(6, 1);
@@ -267,7 +265,7 @@ namespace World
 			test[i]->m_transform.SetScale(glm::vec3(40.0f, 30.0f, 1));
 			test[i]->m_transform.SetPosition(glm::vec3(randX, randY, 0.0f));
 			Rigidbody* testRigid = test[i]->AddComponent<Rigidbody>();
-			testRigid->Init(15.0f, 10.0f);
+			testRigid->Init(10.0f, 5.0f);
 			g_physicScene->Add(testRigid->GetCollider(), "Enemy");
 
 		}
@@ -293,8 +291,8 @@ namespace World
 			accumulator -= c_targetDT;
 		}
 
-		Rabbit->GetComponent<Rigidbody>()->AddForce(glm::vec3(0.0f, -10.0f, 0.0f));
-		Rabbit->GetComponent<Rigidbody>()->UpdateTransform(dt);
+		//Rabbit->GetComponent<Rigidbody>()->AddForce(glm::vec3(0.0f, -10.0f, 0.0f));
+		//Rabbit->GetComponent<Rigidbody>()->UpdateTransform(dt);
 
 		//cout << Rabbit->m_transform.GetPosition().y << endl;
 

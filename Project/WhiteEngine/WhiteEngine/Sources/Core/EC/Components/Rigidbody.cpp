@@ -15,14 +15,26 @@ Rigidbody::Rigidbody()
 }
 
 //Create BoxCollider
-void Rigidbody::Init(/*float hW, float hH*/)
+void Rigidbody::Init(void)
+{
+	////Create new box collider
+	//BoxCollider* col = m_gameObject->AddComponent<BoxCollider>();
+	////Init Box
+	//col->Init(hW, hH, this);
+	////Set Collider
+	//m_collider = col;
+	m_transform = &(m_gameObject->m_transform);
+}
+
+//Create BoxCollider
+void Rigidbody::Init(float hW, float hH)
 {
 	//Create new box collider
-	//BoxCollider* col = m_gameObject->AddComponent<BoxCollider>();
+	BoxCollider* col = m_gameObject->AddComponent<BoxCollider>();
 	//Init Box
-	//col->Init(hW, hH, this);
+	col->Init(hW, hH, this);
 	//Set Collider
-	//m_collider = col;
+	m_collider = col;
 	m_transform = &(m_gameObject->m_transform);
 }
 
@@ -45,13 +57,15 @@ void Rigidbody::SetVelocity(vec3 velocity)
 {
 	m_velocity = velocity;
 }
-}
 
-void Rigidbody::AddForce(vec3 force) {
+
+void Rigidbody::AddForce(vec3 force) 
+{
 	m_velocity += (force / m_mass);
 }
 
-void Rigidbody::AddRelativeForce(vec3 force) {
+void Rigidbody::AddRelativeForce(vec3 force) 
+{
 	vec3 AbsoluteForce;
 	float Rotation(radians(m_transform->GetRotation()));
 	AbsoluteForce.x = (force.x * cos(Rotation)) - (force.y * sin(Rotation));
@@ -61,6 +75,7 @@ void Rigidbody::AddRelativeForce(vec3 force) {
 	AddForce(AbsoluteForce);
 }
 
-void Rigidbody::UpdateTransform(float dt) {
+void Rigidbody::UpdateTransform(float dt) 
+{
 	m_transform->Translate(m_velocity * dt);
 }

@@ -59,7 +59,7 @@ namespace Physic
 		void UpdateLayerCollision();
 
 		//Resolve layer collision pair
-		void ResolveLayerCollision();
+		void ResolveLayerCollision(float dt);
 
 		//Check for and remove duplicate collision pair
 		void CheckDuplicatePair();

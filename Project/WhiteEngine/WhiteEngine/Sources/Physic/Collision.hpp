@@ -17,11 +17,11 @@ namespace Physic
 		Collider* m_objectA;
 		Collider* m_objectB;
 		float m_penetration;
-		glm::vec2 m_normal;
+		glm::vec3 m_normal;
 
 		Manifold(Collider* a, Collider* b) : m_objectA(a), m_objectB(b) {}
 		bool CheckCollision();
-		void Resolve();
+		void Resolve(float dt);
 	};
 
 	//For Box to Box

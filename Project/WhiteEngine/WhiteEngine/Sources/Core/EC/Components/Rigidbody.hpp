@@ -35,5 +35,5 @@
 		void AddRelativeForce(glm::vec3);
 		void UpdateTransform(float dt);
 		Rigidbody();
-		~Rigidbody() {};
+		~Rigidbody();
 	};
