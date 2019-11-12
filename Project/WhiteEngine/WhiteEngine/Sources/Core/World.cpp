@@ -11,6 +11,7 @@
 #include "EC/Components/FlyerBehaviour.hpp"
 #include "EC/Components/PlayerController.hpp"
 #include "EC/Components/Rigidbody.hpp"
+#include "EC/Components/SoundPlayer.hpp"
 
 #include "Factory.h"
 #include "Core/FactoryCollection.h"
@@ -18,9 +19,7 @@
 
 #include <stdlib.h>
 #include <time.h>
-#include <irrKlang.h>
 
-using namespace irrklang;
 
 namespace World
 {
@@ -187,10 +186,6 @@ namespace World
 
 		ENGINE_WARN("Engine Initialized");
 
-		ISoundEngine* test = createIrrKlangDevice();
-		ISoundSource* testBGM = test->addSoundSourceFromFile("Sources/testMusic.mp3");
-		test->play2D(testBGM, true);
-
 		//GameObject
 		Rabbit = new GameObject();
 		Bg = new GameObject();
@@ -283,6 +278,14 @@ namespace World
 		Flyer->AddComponent<FlyerBehaviour>();
 		Flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
 		Flyer->GetComponent<FlyerBehaviour>()->SetGameObject(Flyer);
+
+		//Add Sound
+		Bg->AddComponent<SoundPlayer>();
+		Bg->GetComponent<SoundPlayer>()->CreateSoundPlayer();
+		Bg->GetComponent<SoundPlayer>()->SetSound("Sources/testMusic.mp3");
+		Bg->GetComponent<SoundPlayer>()->SetLoop(true);
+		Bg->GetComponent<SoundPlayer>()->PlaySound();
+		//Bg->GetComponent<SoundPlayer>()->DeleteSoundPlayer();
 	}
 
 	void FixedUpdate(float dt)
