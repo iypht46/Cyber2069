@@ -106,7 +106,7 @@ namespace Physic
 		std::cout << "y_overlap: " << y_overlap << std::endl;*/
 
 		// Find out which axis is axis of least penetration
-		if (x_overlap > y_overlap)
+		if (x_overlap < y_overlap)
 		{
 			// Point towards B knowing that n points from A to B
 			if (n.x < 0)
@@ -164,12 +164,15 @@ namespace Physic
 	{
 		if (!m_objectA->IsStatic())
 		{
+
+			//m_objectA->m_rigidbody->SetVelocity(-1.0f * m_objectA->m_rigidbody->GetVelocity());
 			m_objectA->m_rigidbody->SetVelocity(-(m_normal * (m_penetration * 10.0f)));
 			m_objectA->m_rigidbody->UpdateTransform(dt);
 		}
 
 		if (!m_objectB->IsStatic())
 		{
+			//m_objectB->m_rigidbody->SetVelocity(-1.0f  * m_objectB->m_rigidbody->GetVelocity());
 			m_objectB->m_rigidbody->SetVelocity(m_normal * (m_penetration * 10.0f));
 			m_objectB->m_rigidbody->UpdateTransform(dt);
 		}

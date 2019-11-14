@@ -58,6 +58,11 @@ void Rigidbody::SetVelocity(vec3 velocity)
 	m_velocity = velocity;
 }
 
+glm::vec3 Rigidbody::GetVelocity(void)
+{
+	return m_velocity;
+}
+
 
 void Rigidbody::AddForce(vec3 force) 
 {

@@ -181,7 +181,7 @@ namespace World
 		//ENGINE_INFO("Layer Static Cast: {}", static_cast<uint32_t>(Physic::Layer::PHYSIC_LAYER_2));
 
 		//GameObject
-		enemyNum = 5;
+		enemyNum = 10;
 		test = new GameObject*[enemyNum];
 		Rabbit = new GameObject();
 		Bg = new GameObject();
@@ -192,6 +192,7 @@ namespace World
 		Bg->AddComponent<MeshRenderer>();
 		Bg->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 		Bg->GetComponent<MeshRenderer>()->SetTexture("Sources/mockup_BG.png");
+		
 
 		Bg->m_transform.SetScale(glm::vec3(Graphic::Window::GetWidth(), Graphic::Window::GetHeight(), 1));
 
@@ -227,7 +228,7 @@ namespace World
 		Rabbit->GetComponent<Animator>()->setCurrentState(0);
 
 		Rabbit->AddComponent<Rigidbody>();
-		Rabbit->GetComponent<Rigidbody>()->Init(10.0f, 30.0f);
+		Rabbit->GetComponent<Rigidbody>()->Init(0.83f, 0.25f);
 
 		Rabbit->m_transform.SetScale(glm::vec3(500, 500, 1));
 
@@ -237,7 +238,7 @@ namespace World
 		Bg->m_transform.SetScale(glm::vec3(500, 500, 1));
 
 		Rabbit->m_transform.SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
-
+		Rabbit->m_transform.SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
 
 		/*
 		Fly = new Animation();
@@ -251,10 +252,12 @@ namespace World
 		*/
 
 		//Add Physic
-
+		Bg->AddComponent<BoxCollider>()->Init(0.6f, 0.02f);
+		g_physicScene->Add(Bg->GetComponent<BoxCollider>(), "Enemy");
 		g_physicScene->Add(Rabbit->GetComponent<BoxCollider>(), "Player");
 
-		for (int i = 0; i < enemyNum; i++)
+
+		/*for (int i = 0; i < enemyNum; i++)
 		{
 			float randX = (float)((rand() % 350) - (rand() % 350));
 			float randY = (float)((rand() % 350) - (rand() % 350));
@@ -268,7 +271,7 @@ namespace World
 			testRigid->Init(10.0f, 5.0f);
 			g_physicScene->Add(testRigid->GetCollider(), "Enemy");
 
-		}
+		}*/
 	}
 
 	void FixedUpdate(float dt)
@@ -291,8 +294,8 @@ namespace World
 			accumulator -= c_targetDT;
 		}
 
-		//Rabbit->GetComponent<Rigidbody>()->AddForce(glm::vec3(0.0f, -10.0f, 0.0f));
-		//Rabbit->GetComponent<Rigidbody>()->UpdateTransform(dt);
+		Rabbit->GetComponent<Rigidbody>()->AddForce(glm::vec3(0.0f, -10.0f, 0.0f));
+		Rabbit->GetComponent<Rigidbody>()->UpdateTransform(dt);
 
 		//cout << Rabbit->m_transform.GetPosition().y << endl;
 

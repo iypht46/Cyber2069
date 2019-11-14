@@ -45,9 +45,6 @@
 		else
 		{
 			m_isStatic = true;
-			m_rigidbody->m_mass = 0.0f;
-			m_rigidbody->m_invMass = 0.0f;
-			m_rigidbody->m_gravityScale = 0.0f;
 		}
 
 		
@@ -71,10 +68,10 @@
 
 	void BoxCollider::ComputeAABB(Physic::AABB& a)
 	{
-		a.m_min.x = m_transform->GetPosition().x - m_halfWidth;
-		a.m_min.y = m_transform->GetPosition().y + m_halfHeight;
-		a.m_max.x = m_transform->GetPosition().x + m_halfWidth;
-		a.m_max.y = m_transform->GetPosition().y - m_halfHeight;
+		a.m_min.x = m_transform->GetPosition().x - (m_halfWidth * m_transform->GetScale().x);
+		a.m_min.y = m_transform->GetPosition().y + (m_halfHeight * m_transform->GetScale().y);
+		a.m_max.x = m_transform->GetPosition().x + (m_halfWidth * m_transform->GetScale().x);
+		a.m_max.y = m_transform->GetPosition().y - (m_halfHeight * m_transform->GetScale().y);
 
 	}
 
