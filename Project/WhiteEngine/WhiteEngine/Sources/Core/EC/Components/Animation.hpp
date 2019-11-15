@@ -23,6 +23,7 @@ public:
 	void setStartPosition(int startPosX,int startPosY);
 	void setEndPosition(int endPosX, int endPosY);
 	void setSpeedMultiplier(int multiplier);
+	void setLooping(bool loop);
 	bool isLooping();
 	~Animation();
 };

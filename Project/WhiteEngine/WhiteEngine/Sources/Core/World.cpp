@@ -63,36 +63,6 @@ namespace World
 	void DebugInput(float dt)
 	{
 
-		if (Input::GetKeyHold(Input::KeyCode::KEY_W))
-		{
-			Rabbit->m_transform.Translate(glm::vec3(0.0f, MOVE_SPEED * dt, 0.0f));
-			//Bg->m_transform.Translate(glm::vec3(0.0f, MOVE_SPEED * dt, 0.0f));
-			//cam->Translate(glm::vec3(0.0f, MOVE_SPEED * dt, 0.0f));
-		}
-
-		if (Input::GetKeyHold(Input::KeyCode::KEY_A))
-		{
-			Rabbit->m_transform.Translate(glm::vec3(-MOVE_SPEED * dt, 0.0f, 0.0f));
-			//Bg->m_transform.Translate(glm::vec3(-MOVE_SPEED * dt, 0.0f, 0.0f));
-			//cam->Translate(glm::vec3(-MOVE_SPEED * dt, 0.0f, 0.0f));
-			Rabbit->m_transform.SetScale(glm::vec3(-CHAR_SIZE, CHAR_SIZE, 1));
-		}
-
-		if (Input::GetKeyHold(Input::KeyCode::KEY_S))
-		{
-			Rabbit->m_transform.Translate(glm::vec3(0.0f, -MOVE_SPEED * dt, 0.0f));
-			//Bg->m_transform.Translate(glm::vec3(0.0f, -MOVE_SPEED * dt, 0.0f));
-			//cam->Translate(glm::vec3(0.0f, -MOVE_SPEED * dt, 0.0f));
-		}
-
-		if (Input::GetKeyHold(Input::KeyCode::KEY_D))
-		{
-			Rabbit->m_transform.Translate(glm::vec3(MOVE_SPEED * dt, 0.0f, 0.0f));
-			//Bg->m_transform.Translate(glm::vec3(MOVE_SPEED * dt, 0.0f, 0.0f));
-			//cam->Translate(glm::vec3(MOVE_SPEED * dt, 0.0f, 0.0f));
-			Rabbit->m_transform.SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
-		}
-
 		if (Input::GetKeyHold(Input::KeyCode::KEY_I))
 		{
 			cam->Zoom(1.0f * dt);
@@ -107,21 +77,6 @@ namespace World
 		{
 			cam->ResetCam();
 			Rabbit->m_transform.SetPosition(glm::vec3(0.0f, 0.0f, 1));
-		}
-
-		if (!Input::GetKeyHold(Input::KeyCode::KEY_A) && !Input::GetKeyHold(Input::KeyCode::KEY_D))
-		{
-			if (running) {
-				running = false;
-				Rabbit->GetComponent<Animator>()->setCurrentState(0);
-			}
-		}
-		else {
-
-			if (!running) {
-				running = true;
-				Rabbit->GetComponent<Animator>()->setCurrentState(1);
-			}
 		}
 
 		//child
@@ -202,8 +157,8 @@ namespace World
 		Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_PlayerBody_Vversion03.png");
 
 		Child->AddComponent<MeshRenderer>();
-		Child->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-		Child->GetComponent<MeshRenderer>()->SetTexture("Sources/MachineGun.png");
+		Child->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
+		Child->GetComponent<MeshRenderer>()->SetTexture("Sources/machinegun_shoot.png");
 
 		Child->m_transform.SetParent(&Rabbit->m_transform);
 
@@ -227,11 +182,31 @@ namespace World
 		Running->setEndPosition(4, 1);
 		Running->setSpeedMultiplier(2);
 
+		Animation* Dashing = new Animation();
+
+		Dashing->setStartPosition(0, 4);
+		Dashing->setEndPosition(2, 4);
+		Dashing->setSpeedMultiplier(1);
+
+		Animation* Jumping = new Animation();
+
+		Jumping->setStartPosition(0, 3);
+		Jumping->setEndPosition(3, 3);
+		Jumping->setSpeedMultiplier(1);
+
+		Idle->setLooping(true);
+		Running->setLooping(true);
+		Dashing->setLooping(true);
+		Jumping->setLooping(false);
+		
+
 		AnimationController* RabbitController = new AnimationController();
 		RabbitController->setSheetSize(glm::vec2(7, 5));
 
 		RabbitController->AddState(Idle);
 		RabbitController->AddState(Running);
+		RabbitController->AddState(Dashing);
+		RabbitController->AddState(Jumping);
 
 		Rabbit->AddComponent<Animator>();
 		Rabbit->GetComponent<Animator>()->AssignController(RabbitController);
@@ -248,9 +223,9 @@ namespace World
 
 		Rabbit->m_transform.SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
 
-		Child->m_transform.SetScale(glm::vec3(30, 20, 1));
+		Child->m_transform.SetScale(glm::vec3(70, 70, 1));
 		//Child->m_transform.SetLocalScale(glm::vec3(1, 1, 1));
-		Child->m_transform.SetPosition(glm::vec3(0, 0, 0));
+		//Child->m_transform.SetPosition(glm::vec3(0, 0, 0));
 		Child->m_transform.SetLocalPosition(glm::vec3(1, 0, 0));
 		//Bg->m_transform.SetScale(glm::vec3(500, 500, 1));
 
@@ -293,7 +268,7 @@ namespace World
 		
 		FactoryCollection::FixedUpdateComponents(dt);
 
-		//Rabbit->GetComponent<Rigidbody>()->AddForce(glm::vec3(0.0f, -10.0f*dt, 0.0f));
+		Rabbit->GetComponent<Rigidbody>()->AddForce(glm::vec3(0.0f, -500.0f*dt, 0.0f));
 		Rabbit->GetComponent<Rigidbody>()->UpdateTransform(dt);
 		Flyer->GetComponent<Rigidbody>()->UpdateTransform(dt);
 

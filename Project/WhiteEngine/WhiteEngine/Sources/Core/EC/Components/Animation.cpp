@@ -39,6 +39,11 @@ void Animation::setSpeedMultiplier(int multiplier) {
 	speedMultiplier = multiplier;
 }
 
+void Animation::setLooping(bool loop) {
+	m_looping = loop;
+}
+
+
 bool Animation::isLooping() {
 	return m_looping;
 }
