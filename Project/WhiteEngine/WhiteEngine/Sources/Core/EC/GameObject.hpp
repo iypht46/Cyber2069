@@ -22,6 +22,7 @@ public:
 	Transform m_transform;
 
 	void SetActive(bool activestate);
+	bool Active();
 
 	virtual void OnAwake() {};
 	virtual void OnEnable() {};
