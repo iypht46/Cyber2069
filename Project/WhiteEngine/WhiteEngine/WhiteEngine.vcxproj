@@ -125,6 +125,7 @@
     <ClInclude Include="Sources\Core\EC\Components\BehaviourScript.h" />
     <ClInclude Include="Sources\Core\EC\Components\FlyerBehaviour.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\PlayerController.hpp" />
+    <ClInclude Include="Sources\Physic\Collision.hpp" />
     <ClInclude Include="Sources\Physic\PhysicScene.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\Collider.hpp" />
     <ClInclude Include="Sources\Core\Factory.h" />
@@ -157,6 +158,7 @@
     <ClCompile Include="Sources\Core\EC\Components\BehaviourScript.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\FlyerBehaviour.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\PlayerController.cpp" />
+    <ClCompile Include="Sources\Physic\Collision.cpp" />
     <ClCompile Include="Sources\Physic\PhysicScene.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Collider.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Rigidbody.cpp" />
