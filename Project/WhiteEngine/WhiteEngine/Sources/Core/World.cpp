@@ -171,11 +171,7 @@ namespace World
 
 		//Physics
 		g_physicScene = new Physic::PhysicScene();
-		g_physicScene->SetLayerName("Player", Physic::Layer::PHYSIC_LAYER_1);
-		g_physicScene->SetLayerName("Enemy", Physic::Layer::PHYSIC_LAYER_2);
-		g_physicScene->SetLayerCollisions("Player", "Enemy");
-		std::cout << "Layer Collision: " << g_physicScene->GetLayerCollisions("Player") << std::endl;
-
+		
 		ENGINE_WARN("Engine Initialized");
 		//ENGINE_INFO("Layer Static Cast: {}", static_cast<uint32_t>(Physic::Layer::PHYSIC_LAYER_1));
 		//ENGINE_INFO("Layer Static Cast: {}", static_cast<uint32_t>(Physic::Layer::PHYSIC_LAYER_2));
@@ -227,9 +223,6 @@ namespace World
 		Rabbit->GetComponent<Animator>()->AssignController(RabbitController);
 		Rabbit->GetComponent<Animator>()->setCurrentState(0);
 
-		Rabbit->AddComponent<Rigidbody>();
-		Rabbit->GetComponent<Rigidbody>()->Init(0.83f, 0.25f);
-
 		Rabbit->m_transform.SetScale(glm::vec3(500, 500, 1));
 
 		Child->m_transform.SetScale(glm::vec3(100, 100, 1));
@@ -239,7 +232,8 @@ namespace World
 
 		Rabbit->m_transform.SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
 		Rabbit->m_transform.SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
-
+		Rabbit->AddComponent<Rigidbody>();
+		Rabbit->GetComponent<Rigidbody>()->Init(20, 30);
 		/*
 		Fly = new Animation();
 		Fly->setStartPosition(0,0);
@@ -250,14 +244,20 @@ namespace World
 		EnemCon->setSheetSize(glm::vec2(6, 1));
 		EnemCon->AddState(Fly);
 		*/
+		g_physicScene->SetLayerName("Player", Physic::Layer::PHYSIC_LAYER_1);
+		g_physicScene->SetLayerName("Enemy", Physic::Layer::PHYSIC_LAYER_2);
+		g_physicScene->SetLayerName("Platform", Physic::Layer::PHYSIC_LAYER_3);
+		g_physicScene->SetLayerCollisions("Player", "Enemy");
+		g_physicScene->SetLayerCollisions("Player", "Platform");
+		std::cout << "Layer Collision: " << g_physicScene->GetLayerCollisions("Player") << std::endl;
 
 		//Add Physic
-		Bg->AddComponent<BoxCollider>()->Init(0.6f, 0.02f);
-		g_physicScene->Add(Bg->GetComponent<BoxCollider>(), "Enemy");
+		Bg->AddComponent<BoxCollider>()->Init(300, 10);
+		g_physicScene->Add(Bg->GetComponent<BoxCollider>(), "Platform");
 		g_physicScene->Add(Rabbit->GetComponent<BoxCollider>(), "Player");
 
 
-		/*for (int i = 0; i < enemyNum; i++)
+		for (int i = 0; i < enemyNum; i++)
 		{
 			float randX = (float)((rand() % 350) - (rand() % 350));
 			float randY = (float)((rand() % 350) - (rand() % 350));
@@ -268,10 +268,10 @@ namespace World
 			test[i]->m_transform.SetScale(glm::vec3(40.0f, 30.0f, 1));
 			test[i]->m_transform.SetPosition(glm::vec3(randX, randY, 0.0f));
 			Rigidbody* testRigid = test[i]->AddComponent<Rigidbody>();
-			testRigid->Init(10.0f, 5.0f);
+			testRigid->Init(5, 10);
 			g_physicScene->Add(testRigid->GetCollider(), "Enemy");
 
-		}*/
+		}
 	}
 
 	void FixedUpdate(float dt)
