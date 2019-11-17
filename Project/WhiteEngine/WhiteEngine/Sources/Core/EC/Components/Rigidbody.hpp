@@ -27,6 +27,8 @@
 		Transform* m_transform;
 	public:
 		//Rigidbody Interface
+		void Init(float, float);
+		Collider* GetCollider();
 		void Init(/*float, float*/);
 		void SetVelocity(glm::vec3);
 		glm::vec3 GetVelocity();
@@ -34,5 +36,5 @@
 		void AddRelativeForce(glm::vec3);
 		void UpdateTransform(float dt);
 		Rigidbody();
-		~Rigidbody() {};
+		~Rigidbody();
 	};
