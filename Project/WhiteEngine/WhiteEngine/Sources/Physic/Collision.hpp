@@ -2,7 +2,7 @@
 
 #include <glm/glm.hpp>
 #include "Core/EC/Components/Collider.hpp"
-
+#include <iostream>
 
 namespace Physic
 {
@@ -11,6 +11,8 @@ namespace Physic
 		glm::vec2 m_min;
 		glm::vec2 m_max;
 	};
+
+
 
 	struct Manifold
 	{

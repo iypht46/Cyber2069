@@ -35,6 +35,8 @@
 		void AddForce(glm::vec3);
 		void AddRelativeForce(glm::vec3);
 		void UpdateTransform(float dt);
+		float GetInvMass(void);
+		float GetMass(void);
 		Rigidbody();
 		~Rigidbody();
 	};

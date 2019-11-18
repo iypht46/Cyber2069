@@ -164,8 +164,10 @@ namespace Physic
 	{
 		if (!m_objectA->IsStatic())
 		{
-
-			//m_objectA->m_rigidbody->SetVelocity(-1.0f * m_objectA->m_rigidbody->GetVelocity());
+			//glm::vec3 imp = m_normal * m_penetration;
+			//glm::vec3 force = 1 / m_objectA->m_rigidbody->GetMass() * imp;
+			//m_objectA->m_rigidbody->SetVelocity(m_objectA->m_rigidbody->GetVelocity() -= force);
+			
 			m_objectA->m_rigidbody->SetVelocity(-(m_normal * (m_penetration * 10.0f)));
 			m_objectA->m_rigidbody->UpdateTransform(dt);
 		}

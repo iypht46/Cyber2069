@@ -35,6 +35,8 @@
 		//Set Box Size
 		m_halfWidth = hW;
 		m_halfHeight = hH;
+		m_colliderScale.x = hW / m_transform->GetScale().x;
+		m_colliderScale.y = hH / m_transform->GetScale().y;
 
 		if (m_rigidbody)
 		{
@@ -60,6 +62,9 @@
 		//Set Box Size
 		m_halfWidth = hW;
 		m_halfHeight = hH;
+		m_colliderScale.x = hW / m_transform->GetScale().x;
+		m_colliderScale.y = hH / m_transform->GetScale().y;
+
 		ComputeMass();
 		//Set Static
 		m_isStatic = false;
@@ -68,10 +73,10 @@
 
 	void BoxCollider::ComputeAABB(Physic::AABB& a)
 	{
-		a.m_min.x = m_transform->GetPosition().x - (m_halfWidth * m_transform->GetScale().x);
-		a.m_min.y = m_transform->GetPosition().y + (m_halfHeight * m_transform->GetScale().y);
-		a.m_max.x = m_transform->GetPosition().x + (m_halfWidth * m_transform->GetScale().x);
-		a.m_max.y = m_transform->GetPosition().y - (m_halfHeight * m_transform->GetScale().y);
+		a.m_min.x = m_transform->GetPosition().x - m_halfWidth;
+		a.m_min.y = m_transform->GetPosition().y + m_halfHeight;
+		a.m_max.x = m_transform->GetPosition().x + m_halfWidth;
+		a.m_max.y = m_transform->GetPosition().y - m_halfHeight;
 
 	}
 
@@ -79,6 +84,11 @@
 	{
 		m_rigidbody->m_mass = ((m_halfWidth*2) * (m_halfHeight*2)) * m_density;
 		m_rigidbody->m_invMass = 1.0 / m_rigidbody->m_mass;
+	}
+
+	glm::vec3 BoxCollider::GetColliderScale()
+	{
+		return m_colliderScale;
 	}
 
 	//////////////Circle Collider///////////

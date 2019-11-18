@@ -56,6 +56,7 @@
 	private:
 		float m_halfWidth;
 		float m_halfHeight;
+		glm::vec3 m_colliderScale; //Scale multiplier in halfwidth and halfheight
 	public:
 		//Constructor
 		BoxCollider() : Collider(ColliderType::BOX) {}
@@ -65,6 +66,7 @@
 
 		//Box Collider Interface
 		virtual void ComputeMass();
+		virtual glm::vec3 GetColliderScale();
 		//virtual void Update(float) const;
 	};
 
