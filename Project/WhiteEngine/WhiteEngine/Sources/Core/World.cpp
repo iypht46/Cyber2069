@@ -329,8 +329,8 @@ namespace World
 			FactoryCollection::FixedUpdateComponents(dt);
 
 			Rabbit->GetComponent<Rigidbody>()->AddForce(glm::vec3(0.0f, -10.0f, 0.0f));
-			Rabbit->GetComponent<Rigidbody>()->UpdateTransform(dt);
-			Flyer->GetComponent<Rigidbody>()->UpdateTransform(dt);
+			/*Rabbit->GetComponent<Rigidbody>()->UpdateTransform(dt);
+			Flyer->GetComponent<Rigidbody>()->UpdateTransform(dt);*/
 
 			g_physicScene->Update(c_targetDT);
 			//ENGINE_INFO("FixedUpdate: {}", dt
