@@ -163,6 +163,17 @@ namespace World
 		if (Input::GetKeyHold(Input::KeyCode::KEY_C))
 		{
 			Rabbit->m_transform.SetScale(Rabbit->m_transform.GetScale() + glm::vec3(-1, 0, 0));
+			
+		}
+
+		if (Input::GetKeyHold(Input::KeyCode::KEY_N))
+		{
+			Bg->GetComponent<SoundPlayer>()->IncreaseVolume();
+		}
+
+		if (Input::GetKeyHold(Input::KeyCode::KEY_M))
+		{
+			Bg->GetComponent<SoundPlayer>()->DecreaseVolume();
 		}
 	}
 
@@ -285,7 +296,6 @@ namespace World
 		Bg->GetComponent<SoundPlayer>()->SetSound("Sources/testMusic.mp3");
 		Bg->GetComponent<SoundPlayer>()->SetLoop(true);
 		Bg->GetComponent<SoundPlayer>()->PlaySound();
-		Bg->GetComponent<SoundPlayer>()->SetVolume(0.10);
 		//Bg->GetComponent<SoundPlayer>()->DeleteSoundPlayer();
 	}
 
@@ -308,6 +318,7 @@ namespace World
 		//Rabbit->GetComponent<Rigidbody>()->AddForce(glm::vec3(0.0f, -10.0f*dt, 0.0f));
 		Rabbit->GetComponent<Rigidbody>()->UpdateTransform(dt);
 		Flyer->GetComponent<Rigidbody>()->UpdateTransform(dt);
+		Bg->GetComponent<SoundPlayer>()->SetVolume();
 
 		//cout << Rabbit->m_transform.GetPosition().y << endl;
 
