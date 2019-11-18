@@ -169,14 +169,14 @@ namespace Physic
 			//m_objectA->m_rigidbody->SetVelocity(m_objectA->m_rigidbody->GetVelocity() -= force);
 			
 			m_objectA->m_rigidbody->SetVelocity(-(m_normal * (m_penetration * 10.0f)));
-			m_objectA->m_rigidbody->UpdateTransform(dt);
+			//m_objectA->m_rigidbody->UpdateTransform(dt);
 		}
 
 		if (!m_objectB->IsStatic())
 		{
 			//m_objectB->m_rigidbody->SetVelocity(-1.0f  * m_objectB->m_rigidbody->GetVelocity());
 			m_objectB->m_rigidbody->SetVelocity(m_normal * (m_penetration * 10.0f));
-			m_objectB->m_rigidbody->UpdateTransform(dt);
+			//m_objectB->m_rigidbody->UpdateTransform(dt);
 		}
 
 
