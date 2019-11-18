@@ -239,7 +239,7 @@ namespace World
 		Rabbit->GetComponent<Animator>()->setCurrentState(0);
 		Rabbit->GetComponent<Animator>()->setFramePerSec(12);
 
-		Rabbit->AddComponent<Rigidbody>();
+		g_physicScene->Add(Rabbit->AddComponent<Rigidbody>());
 		Rabbit->GetComponent<Rigidbody>()->Init(0.83f, 0.25f);
 
 		Rabbit->AddComponent<PlayerController>();
@@ -328,7 +328,7 @@ namespace World
 
 			FactoryCollection::FixedUpdateComponents(dt);
 
-			Rabbit->GetComponent<Rigidbody>()->AddForce(glm::vec3(0.0f, -10.0f, 0.0f));
+			//Rabbit->GetComponent<Rigidbody>()->AddForce(glm::vec3(0.0f, -10.0f, 0.0f));
 			/*Rabbit->GetComponent<Rigidbody>()->UpdateTransform(dt);
 			Flyer->GetComponent<Rigidbody>()->UpdateTransform(dt);*/
 

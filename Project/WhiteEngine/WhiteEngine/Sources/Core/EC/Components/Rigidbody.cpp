@@ -7,6 +7,7 @@ using namespace glm;
 
 Rigidbody::Rigidbody()
 {
+	m_gravityScale = 1.0f;
 	m_position = glm::vec3(0.0f, 0.0f, 0.0f);
 	//m_orientation = 0.0f;
 	m_transform = &m_gameObject->m_transform;
@@ -61,6 +62,16 @@ void Rigidbody::SetVelocity(vec3 velocity)
 glm::vec3 Rigidbody::GetVelocity()
 {
 	return m_velocity;
+}
+
+float Rigidbody::GetGravityScale()
+{
+	return m_gravityScale;
+}
+
+void Rigidbody::SetGravityScale(float scale)
+{
+	m_gravityScale = scale;
 }
 
 
