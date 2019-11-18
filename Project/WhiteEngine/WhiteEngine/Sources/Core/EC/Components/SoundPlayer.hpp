@@ -9,6 +9,7 @@ class SoundPlayer : public Component {
 private:
 	ISoundEngine* soundPlayer;
 	ISoundSource* soundSource;
+	ISound* soundVolume;
 	bool isLooping;
 public:
 	SoundPlayer();
@@ -18,5 +19,6 @@ public:
 	void PlaySound();
 	void DeleteSoundPlayer();
 	void SetLoop(bool loop);
+	void SetVolume(ik_f32 volume);
 
 };

@@ -285,6 +285,7 @@ namespace World
 		Bg->GetComponent<SoundPlayer>()->SetSound("Sources/testMusic.mp3");
 		Bg->GetComponent<SoundPlayer>()->SetLoop(true);
 		Bg->GetComponent<SoundPlayer>()->PlaySound();
+		Bg->GetComponent<SoundPlayer>()->SetVolume(0.10);
 		//Bg->GetComponent<SoundPlayer>()->DeleteSoundPlayer();
 	}
 

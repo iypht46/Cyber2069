@@ -17,7 +17,8 @@ void SoundPlayer::SetSound(const ik_c8* path) {
 }
 
 void SoundPlayer::PlaySound() {
-	soundPlayer->play2D(soundSource, isLooping);
+	soundVolume = soundPlayer->play2D(soundSource, isLooping, false, true);
+	
 }
 
 void SoundPlayer::DeleteSoundPlayer() {
@@ -26,4 +27,8 @@ void SoundPlayer::DeleteSoundPlayer() {
 
 void SoundPlayer::SetLoop(bool loop) {
 	isLooping = loop;
+}
+
+void SoundPlayer::SetVolume(ik_f32 volume) {
+	soundVolume->setVolume(volume);
 }
