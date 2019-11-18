@@ -44,6 +44,7 @@ namespace World
 	GameObject* Bg;
 	GameObject* Child;
 	GameObject* Flyer;
+	GameObject* platform;
 
 	GameObject* Enemy;
 
@@ -162,12 +163,17 @@ namespace World
 		Bg = new GameObject();
 		Child = new GameObject();
 		Flyer = new GameObject();
+		platform = new GameObject();
 
 		//Add Renderer
 
 		Bg->AddComponent<MeshRenderer>();
 		Bg->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 		Bg->GetComponent<MeshRenderer>()->SetTexture("Sources/mockup_BG.png");
+
+		platform->AddComponent<MeshRenderer>();
+		platform->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+		platform->GetComponent<MeshRenderer>()->SetTexture("Sources/black.png");
 		
 
 		Bg->m_transform.SetScale(glm::vec3(Graphic::Window::GetWidth(), Graphic::Window::GetHeight(), 1));
@@ -256,18 +262,17 @@ namespace World
 
 		Rabbit->m_transform.SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
 
-		/*
->>>>>>> 6c1f10f198c92323be59f8b65ac15caff70bd571
+		
 		Fly = new Animation();
 		Fly->setStartPosition(0, 0);
 		Fly->setEndPosition(5, 0);
 		Fly->setSpeedMultiplier(3);
+		Fly->setLooping(true);
 
 		EnemCon = new AnimationController();
 
 		EnemCon->setSheetSize(glm::vec2(6, 1));
 		EnemCon->AddState(Fly);
-<<<<<<< HEAD
 
 		Flyer->AddComponent<Animator>();
 		Flyer->GetComponent<Animator>()->AssignController(EnemCon);
@@ -277,12 +282,19 @@ namespace World
 		Flyer->AddComponent<FlyerBehaviour>();
 		Flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
 		Flyer->GetComponent<FlyerBehaviour>()->SetGameObject(Flyer);
-=======
-		*/
+
+
+		g_physicScene->SetLayerName("Player", Physic::Layer::PHYSIC_LAYER_1);
+		g_physicScene->SetLayerName("Enemy", Physic::Layer::PHYSIC_LAYER_2);
+		g_physicScene->SetLayerName("Platform", Physic::Layer::PHYSIC_LAYER_3);
+		g_physicScene->SetLayerCollisions("Player", "Enemy");
+		g_physicScene->SetLayerCollisions("Player", "Platform");
+		std::cout << "Layer Collision: " << g_physicScene->GetLayerCollisions("Player") << std::endl;
 
 		//Add Physic
-		Bg->AddComponent<BoxCollider>()->Init(0.6f, 0.02f);
-		g_physicScene->Add(Bg->GetComponent<BoxCollider>(), "Enemy");
+		platform->m_transform.SetScale(glm::vec3(600, 20, 1));
+		platform->AddComponent<BoxCollider>()->Init(300, 20);
+		g_physicScene->Add(platform->GetComponent<BoxCollider>(), "Platform");
 		g_physicScene->Add(Rabbit->GetComponent<BoxCollider>(), "Player");
 
 
@@ -297,7 +309,7 @@ namespace World
 			test[i]->m_transform.SetScale(glm::vec3(40.0f, 30.0f, 1));
 			test[i]->m_transform.SetPosition(glm::vec3(randX, randY, 0.0f));
 			Rigidbody* testRigid = test[i]->AddComponent<Rigidbody>();
-			testRigid->Init(10.0f, 5.0f);
+			testRigid->Init(5, 10);
 			g_physicScene->Add(testRigid->GetCollider(), "Enemy");
 
 		}*/
@@ -313,6 +325,13 @@ namespace World
 		while (accumulator >= c_targetDT)
 		{
 			//Update Physic
+
+			FactoryCollection::FixedUpdateComponents(dt);
+
+			Rabbit->GetComponent<Rigidbody>()->AddForce(glm::vec3(0.0f, -10.0f, 0.0f));
+			Rabbit->GetComponent<Rigidbody>()->UpdateTransform(dt);
+			Flyer->GetComponent<Rigidbody>()->UpdateTransform(dt);
+
 			g_physicScene->Update(c_targetDT);
 			//ENGINE_INFO("FixedUpdate: {}", dt
 			/*Physic::Manifold col(Rabbit->GetComponent<Collider>(), test->GetComponent<Collider>());
@@ -323,11 +342,6 @@ namespace World
 
 			accumulator -= c_targetDT;
 		}
-		FactoryCollection::FixedUpdateComponents(dt);
-
-		Rabbit->GetComponent<Rigidbody>()->AddForce(glm::vec3(0.0f, -10.0f, 0.0f));
-		Rabbit->GetComponent<Rigidbody>()->UpdateTransform(dt);
-		Flyer->GetComponent<Rigidbody>()->UpdateTransform(dt);
 
 		//cout << Rabbit->m_transform.GetPosition().y << endl;
 

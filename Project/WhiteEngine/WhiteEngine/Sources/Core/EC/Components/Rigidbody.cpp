@@ -84,3 +84,13 @@ void Rigidbody::UpdateTransform(float dt)
 {
 	m_transform->Translate(m_velocity * dt);
 }
+
+float Rigidbody::GetInvMass(void)
+{
+	return m_invMass;
+}
+
+float Rigidbody::GetMass(void)
+{
+	return m_mass;
+}

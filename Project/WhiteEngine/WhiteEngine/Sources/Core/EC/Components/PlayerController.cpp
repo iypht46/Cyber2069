@@ -38,11 +38,11 @@ void PlayerController::OnEnable() {
 
 void PlayerController::OnUpdate(float dt) 
 {
-	if (m_gameObject->m_transform.GetPosition().y < -(720 / 2))
+	/*if (m_gameObject->m_transform.GetPosition().y < -(720 / 2))
 	{
 		jumping = false;
 		m_gameObject->m_transform.SetPosition(glm::vec3(m_gameObject->m_transform.GetPosition().x, -(720 / 2) + 1, m_gameObject->m_transform.GetPosition().z));
-	}
+	}*/
 
 	move();
 
@@ -221,5 +221,5 @@ void PlayerController::mouseAim()
 	}
 
 
-	std::cout << angle_deg << std::endl;
+	//std::cout << angle_deg << std::endl;
 }
