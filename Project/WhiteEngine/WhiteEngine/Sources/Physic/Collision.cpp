@@ -7,65 +7,6 @@
 namespace Physic
 {
 
-	//bool AABBtoAABB(Manifold* m)
-	//{
-	//	//Cast Collider to BoxCollider
-	//	BoxCollider* objectA = dynamic_cast<BoxCollider*>(m->m_objectA);
-	//	BoxCollider* objectB = dynamic_cast<BoxCollider*>(m->m_objectB);
-	//	//AABB data
-	//	AABB a, b;
-	//	//Generate AABB data from the collider data
-	//	objectA->ComputeAABB(a);
-	//	objectB->ComputeAABB(b);
-
-	//	if (a.m_max.x < b.m_min.x)
-	//	{
-	//		return false;
-	//	}
-	//	else
-	//	{
-	//		//Collide Right
-	//		ENGINE_INFO("Collision Right");
-	//		m->m_normal = glm::vec3(1.0f, 0.0f, 0.0f);
-	//	}
-
-	//	if (a.m_min.x > b.m_max.x)
-	//	{
-	//		return false;
-	//	}
-	//	else
-	//	{
-	//		//Collide Left
-	//		ENGINE_INFO("Collision Left");
-	//		m->m_normal = glm::vec3(-1.0f, 0.0f, 0.0f);
-	//	}
-
-	//	if (a.m_max.y > b.m_min.y)
-	//	{
-	//		return false;
-	//	}
-	//	else
-	//	{
-	//		//Collide Down
-	//		ENGINE_INFO("Collision Down");
-	//		m->m_normal = glm::vec3(0.0f, -1.0f, 0.0f);
-	//	}
-
-	//	if (a.m_min.y < b.m_max.y)
-	//	{
-	//		return false;
-	//	}
-	//	else
-	//	{
-	//		//Collide Up
-	//		ENGINE_INFO("Collision Up");
-	//		m->m_normal = glm::vec3(0.0f, 1.0f, 0.0f);
-	//	}
-
-	//	//std::cout << "Collided\n";
-	//	return true;
-	//}
-
 	bool AABBtoAABB(Manifold* m)
 	{
 		//Cast Collider to BoxCollider
@@ -115,7 +56,6 @@ namespace Physic
 				m->m_normal = glm::vec3(1.0f, 0.0f, 0.0f);
 
 			m->m_penetration = x_overlap;
-			//std::cout << "Collided\n";
 		}
 		else
 		{
@@ -126,7 +66,6 @@ namespace Physic
 				m->m_normal = glm::vec3(0.0f, 1.0f, 0.0f);
 
 			m->m_penetration = y_overlap;
-			//std::cout << "Collided\n";
 		}
 
 		return true;
@@ -159,25 +98,51 @@ namespace Physic
 
 		return false;
 	}
-
+#define RE_MUL 10.0f
 	void Manifold::Resolve(float dt)
 	{
-		if (!m_objectA->IsStatic())
+		if (!m_objectA->IsStatic() && !m_objectB->IsStatic())
 		{
-			//glm::vec3 imp = m_normal * m_penetration;
-			//glm::vec3 force = 1 / m_objectA->m_rigidbody->GetMass() * imp;
-			//m_objectA->m_rigidbody->SetVelocity(m_objectA->m_rigidbody->GetVelocity() -= force);
-			
-			m_objectA->m_rigidbody->SetVelocity(-(m_normal * (m_penetration * 10.0f)));
-			//m_objectA->m_rigidbody->UpdateTransform(dt);
+			glm::vec3 relativeVel = m_objectB->m_rigidbody->GetVelocity() - m_objectA->m_rigidbody->GetVelocity();
+
+			if (glm::dot(relativeVel, m_normal) > 0)
+			{
+				return;
+			}
+
+			m_objectA->m_rigidbody->SetVelocity(-(m_normal * (m_penetration * RE_MUL)));
+			m_objectB->m_rigidbody->SetVelocity(m_normal * (m_penetration * RE_MUL));
+
+		}
+		else
+		{
+			if (!m_objectA->IsStatic())
+			{
+				m_objectA->m_rigidbody->SetVelocity(-(m_normal * (m_penetration * RE_MUL)));
+			}
+			else
+			{
+				m_objectB->m_rigidbody->SetVelocity(m_normal * (m_penetration * RE_MUL));
+			}
 		}
 
-		if (!m_objectB->IsStatic())
-		{
-			//m_objectB->m_rigidbody->SetVelocity(-1.0f  * m_objectB->m_rigidbody->GetVelocity());
-			m_objectB->m_rigidbody->SetVelocity(m_normal * (m_penetration * 10.0f));
-			//m_objectB->m_rigidbody->UpdateTransform(dt);
-		}
+		//if (!m_objectA->IsStatic())
+		//{
+		//	/*glm::vec3 imp = m_normal * m_penetration;
+		//	glm::vec3 force = 1 / m_objectA->m_rigidbody->GetMass() * imp;
+		//	m_objectA->m_rigidbody->SetVelocity(m_objectA->m_rigidbody->GetVelocity() -= force);
+		//	
+		//	m_objectA->m_rigidbody->UpdateTransform(dt);*/
+		//	m_objectA->m_rigidbody->SetVelocity(-(m_normal * (m_penetration * 10.0f)));
+
+		//}
+
+		//if (!m_objectB->IsStatic())
+		//{
+		//	/*m_objectB->m_rigidbody->SetVelocity(-1.0f  * m_objectB->m_rigidbody->GetVelocity());
+		//	m_objectB->m_rigidbody->UpdateTransform(dt);*/
+		//	m_objectB->m_rigidbody->SetVelocity(m_normal * (m_penetration * 10.0f));
+		//}
 
 
 	}
