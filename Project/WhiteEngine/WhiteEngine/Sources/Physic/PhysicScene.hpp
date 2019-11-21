@@ -8,12 +8,13 @@
 #include <string>
 
 #include "Core/EC/Components/Collider.hpp"
+#include "Core/EC/Components/Rigidbody.hpp"
 #include "Core/Logger.hpp"
 #include "Physic/Collision.hpp"
 
 namespace Physic
 {
-	
+#define GRAVITY_MUL 100.0f
 #define LAYER_BIT 8
 
 	enum class Layer : unsigned
@@ -33,6 +34,7 @@ namespace Physic
 	//Collider
 	using LayerBit = std::bitset<LAYER_BIT>;
 	using Colliders = std::vector<Collider*>;
+	using Bodies = std::vector<Rigidbody*>;
 	using ColliderMap = std::unordered_map<Layer, Colliders>;
 
 	//Collision
@@ -45,12 +47,16 @@ namespace Physic
 	private:
 		//Store layerbit as key and collider as value.
 		ColliderMap m_colliders;
+		Bodies m_bodies;
 		//Store layer enum as key and layerbit as value.
 		CollisionLayer m_collisionLayer;
 		//Store possible collision
 		Collisions m_possibleCollision;
 		Collisions m_finalCollision;
 		LayerStringMap m_layerString;
+
+		//Physics Setting
+		glm::vec3 m_gravity;
 	public:
 		//Main update loop
 		void Update(float);
@@ -60,6 +66,12 @@ namespace Physic
 
 		//Resolve layer collision pair
 		void ResolveLayerCollision(float dt);
+
+		//Update all bodies transform
+		void UpdateTransform(float dt);
+
+		//Apply Gravity
+		void ApplyGravity(float dt);
 
 		//Check for and remove duplicate collision pair
 		void CheckDuplicatePair();
@@ -74,6 +86,7 @@ namespace Physic
 		//Add collider to layer
 		void Add(Collider*, Layer);
 		void Add(Collider*, std::string);
+		void Add(Rigidbody*);
 
 		//Remove collider from layer
 		void Remove(Collider*, Layer);
@@ -97,6 +110,9 @@ namespace Physic
 		Layer GetLayerFromString(std::string);
 		//Get string from layer
 		std::string GetStringFromLayer(Layer);
+
+		//Physic Settings
+		void SetGravity(glm::vec3);
 
 		PhysicScene();
 		~PhysicScene() {}

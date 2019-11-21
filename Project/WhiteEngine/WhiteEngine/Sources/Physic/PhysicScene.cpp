@@ -62,15 +62,23 @@ namespace Physic
 	void PhysicScene::Update(float dt)
 	{
 
-
 		//Update Collision
 		UpdateLayerCollision();
 
 		//Check for duplicate pair
 		CheckDuplicatePair();
 
+		//Apply Gravity
+		ApplyGravity(dt);
+
+		//Update Transform
+		UpdateTransform(dt);
+
 		//Resolve Collision
 		ResolveLayerCollision(dt);
+
+		//Update Rigid bodies transform
+		UpdateTransform(dt);
 	}
 
 	void PhysicScene::UpdateLayerCollision()
@@ -124,6 +132,24 @@ namespace Physic
 		}
 	}
 
+	void PhysicScene::UpdateTransform(float dt)
+	{
+		for (auto body = m_bodies.begin(); body != m_bodies.end(); ++body)
+		{
+			(*body)->UpdateTransform(dt);
+		}
+	}
+	
+	void PhysicScene::ApplyGravity(float dt)
+	{
+		for (auto it = m_bodies.begin(); it != m_bodies.end(); ++it)
+		{
+			Rigidbody* body = (*it);
+
+			body->AddForce(m_gravity * body->GetGravityScale() * GRAVITY_MUL * dt);
+		}
+	}
+	
 	void PhysicScene::CheckDuplicatePair()
 	{
 		//ENGINE_INFO("Collision: {}", m_possibleCollision.size());
@@ -172,7 +198,7 @@ namespace Physic
 
 				if (collision.CheckCollision())
 				{
-					//ENGINE_INFO("Object Collided");
+					ENGINE_INFO("Object Collided");
 					m_possibleCollision.push_back(collision);
 				}
 			}
@@ -193,6 +219,11 @@ namespace Physic
 		}
 
 		Add(col, layer);
+	}
+
+	void PhysicScene::Add(Rigidbody* rigid)
+	{
+		m_bodies.push_back(rigid);
 	}
 
 	void PhysicScene::Remove(Collider* col, Layer layer)
@@ -312,8 +343,14 @@ namespace Physic
 		return layerName;
 	}
 
+	void PhysicScene::SetGravity(glm::vec3 value)
+	{
+		m_gravity = value;
+	}
+
 	PhysicScene::PhysicScene()
 	{
+		m_gravity = glm::vec3(0.0f, -10.0f, 0.0f);
 		//To prevent wrong layer string
 		m_layerString["INV"] = Layer::LAYER_INVALID;
 	}
