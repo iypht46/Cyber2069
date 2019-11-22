@@ -23,7 +23,7 @@ void PlayerController::OnStart() {
 	jumping = false;
 	move_speed = 300.0f;
 	dash_speed = 900.0f;
-	jump_speed = 300.0f;
+	jump_speed = 100.0f;
 	direction.x = 1;
 	direction.y = 1;
 
@@ -128,6 +128,7 @@ void PlayerController::move()
 	if (!Dash) 
 	{
 		rb->SetVelocity(glm::vec3(velocity.x, rb->GetVelocity().y, rb->GetVelocity().z));
+		//rb->SetVelocity(glm::vec3(velocity.x, velocity.y, rb->GetVelocity().z));
 	}
 	
 }

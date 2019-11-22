@@ -61,18 +61,20 @@ namespace Physic
 
 	void PhysicScene::Update(float dt)
 	{
+		//Apply Gravity
+		ApplyGravity(dt);
 
+		//Update Transform
+		UpdateTransform(dt);
+
+		//UpdateTransform(dt);
 		//Update Collision
 		UpdateLayerCollision();
 
 		//Check for duplicate pair
 		CheckDuplicatePair();
 
-		//Apply Gravity
-		ApplyGravity(dt);
-
-		//Update Transform
-		UpdateTransform(dt);
+		
 
 		//Resolve Collision
 		ResolveLayerCollision(dt);
@@ -198,7 +200,7 @@ namespace Physic
 
 				if (collision.CheckCollision())
 				{
-					ENGINE_INFO("Object Collided");
+					//ENGINE_INFO("Object Collided");
 					m_possibleCollision.push_back(collision);
 				}
 			}
@@ -252,7 +254,6 @@ namespace Physic
 	void PhysicScene::SetLayerCollisions(Layer layer, Layer layerToCollide)
 	{
 		uint32_t lay = LayerToNum(layerToCollide);
-		std::cout << "Layer: " << lay << std::endl;
 		m_collisionLayer[layer] |= static_cast<unsigned>(layerToCollide);
 	}
 

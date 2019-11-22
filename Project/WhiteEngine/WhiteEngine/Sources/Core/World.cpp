@@ -147,10 +147,8 @@ namespace World
 
 		//Physics
 		g_physicScene = new Physic::PhysicScene();
-		g_physicScene->SetLayerName("Player", Physic::Layer::PHYSIC_LAYER_1);
-		g_physicScene->SetLayerName("Enemy", Physic::Layer::PHYSIC_LAYER_2);
-		g_physicScene->SetLayerCollisions("Player", "Enemy");
-		std::cout << "Layer Collision: " << g_physicScene->GetLayerCollisions("Player") << std::endl;
+		
+		//std::cout << "Layer Collision: " << g_physicScene->GetLayerCollisions("Player") << std::endl;
 
 		ENGINE_WARN("Engine Initialized");
 		//ENGINE_INFO("Layer Static Cast: {}", static_cast<uint32_t>(Physic::Layer::PHYSIC_LAYER_1));
@@ -239,29 +237,7 @@ namespace World
 		Rabbit->GetComponent<Animator>()->setCurrentState(0);
 		Rabbit->GetComponent<Animator>()->setFramePerSec(12);
 
-		g_physicScene->Add(Rabbit->AddComponent<Rigidbody>());
-		Rabbit->GetComponent<Rigidbody>()->Init(0.83f, 0.25f);
-
-		Rabbit->AddComponent<PlayerController>();
-		Rabbit->GetComponent<PlayerController>()->OnStart();
-
-		Rabbit->m_transform.SetScale(glm::vec3(500, 500, 1));
-
-		Rabbit->m_transform.SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
-
-
-		Child->m_transform.SetScale(glm::vec3(70, 70, 1));
-		//Child->m_transform.SetLocalScale(glm::vec3(1, 1, 1));
-		//Child->m_transform.SetPosition(glm::vec3(0, 0, 0));
-		Child->m_transform.SetLocalPosition(glm::vec3(1, 0, 0));
-		//Bg->m_transform.SetScale(glm::vec3(500, 500, 1));
-
-		Flyer->m_transform.SetPosition(glm::vec3(100, 100, 0));
-		Flyer->m_transform.SetScale(glm::vec3(50, 50, 1));
 		
-
-		Rabbit->m_transform.SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
-
 		
 		Fly = new Animation();
 		Fly->setStartPosition(0, 0);
@@ -278,26 +254,51 @@ namespace World
 		Flyer->GetComponent<Animator>()->AssignController(EnemCon);
 		Flyer->GetComponent<Animator>()->setCurrentState(0);
 		Flyer->GetComponent<Animator>()->setFramePerSec(12);
+		//std::cout << "Layer Collision: " << g_physicScene->GetLayerCollisions("Player") << std::endl;
+		
+		
+		//Set Transform
 
-		Flyer->AddComponent<FlyerBehaviour>();
-		Flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
-		Flyer->GetComponent<FlyerBehaviour>()->SetGameObject(Flyer);
+		//Rabbit->m_transform.SetScale(glm::vec3(500, 500, 1));
 
+		Rabbit->m_transform.SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
 
+		Child->m_transform.SetScale(glm::vec3(70, 70, 1));
+		//Child->m_transform.SetLocalScale(glm::vec3(1, 1, 1));
+		//Child->m_transform.SetPosition(glm::vec3(0, 0, 0));
+		Child->m_transform.SetLocalPosition(glm::vec3(1, 0, 0));
+		//Bg->m_transform.SetScale(glm::vec3(500, 500, 1));
+
+		Flyer->m_transform.SetPosition(glm::vec3(100, 100, 0));
+		Flyer->m_transform.SetScale(glm::vec3(50, 50, 1));
+
+		Rabbit->m_transform.SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
+
+		//Add Physic
 		g_physicScene->SetLayerName("Player", Physic::Layer::PHYSIC_LAYER_1);
 		g_physicScene->SetLayerName("Enemy", Physic::Layer::PHYSIC_LAYER_2);
 		g_physicScene->SetLayerName("Platform", Physic::Layer::PHYSIC_LAYER_3);
 		g_physicScene->SetLayerCollisions("Player", "Enemy");
 		g_physicScene->SetLayerCollisions("Player", "Platform");
-		std::cout << "Layer Collision: " << g_physicScene->GetLayerCollisions("Player") << std::endl;
 
-		//Add Physic
+		Rabbit->AddComponent<Rigidbody>()->Init(30, 50);
 		platform->m_transform.SetScale(glm::vec3(600, 20, 1));
-		platform->AddComponent<BoxCollider>()->Init(300, 20);
+		platform->AddComponent<BoxCollider>()->Init(300, 10);
 		g_physicScene->Add(platform->GetComponent<BoxCollider>(), "Platform");
 		g_physicScene->Add(Rabbit->GetComponent<BoxCollider>(), "Player");
+		g_physicScene->Add(Rabbit->GetComponent<Rigidbody>());
 
+		//Behavior Script
+		Rabbit->AddComponent<PlayerController>();
+		Rabbit->GetComponent<PlayerController>()->OnStart();
 
+		Flyer->AddComponent<FlyerBehaviour>();
+		Flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
+		Flyer->GetComponent<FlyerBehaviour>()->SetGameObject(Flyer);
+
+		//g_physicScene->Add(Rabbit->AddComponent<Rigidbody>());
+		//Rabbit->GetComponent<Rigidbody>()->Init(0.83, 0.25f);
+		
 		/*for (int i = 0; i < enemyNum; i++)
 		{
 			float randX = (float)((rand() % 350) - (rand() % 350));
@@ -339,7 +340,7 @@ namespace World
 			{
 				ENGINE_INFO("Collided");
 			}*/
-
+			ENGINE_INFO("Velocity: {}, {}", Rabbit->GetComponent<Rigidbody>()->GetVelocity().x ,Rabbit->GetComponent<Rigidbody>()->GetVelocity().y);
 			accumulator -= c_targetDT;
 		}
 
