@@ -24,6 +24,10 @@ protected:
 	float dashRemainingTime;
 	float delay;
 
+	float camZoomSpeed;
+	float camDelay;
+	float camDelay_count;
+
 	float bullet_speed;
 	float bullet_delay;
 	float bullet_delay_count;

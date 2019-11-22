@@ -29,6 +29,9 @@ void PlayerController::OnStart() {
 	direction.x = 1;
 	direction.y = 1;
 
+	camZoomSpeed = 0.01f;
+	camDelay = 0.5f;
+
 	bullet_speed = 800.0f;
 	bullet_delay = 0.05f;
 
@@ -50,6 +53,35 @@ void PlayerController::OnUpdate(float dt)
 	}*/
 
 	Graphic::getCamera()->SetPos(glm::vec3(m_gameObject->m_transform.GetPosition().x, m_gameObject->m_transform.GetPosition().y, m_gameObject->m_transform.GetPosition().z));
+
+
+	if (!falling && jumping) 
+	{
+		camDelay_count = 0.0f;
+		if (Graphic::getCamera()->GetZoom() < 1.5f) 
+		{
+			Graphic::getCamera()->Zoom(camZoomSpeed);
+		}
+		else 
+		{
+			Graphic::getCamera()->SetZoom(1.5f);
+		}
+	}
+	else {
+		camDelay_count += dt;
+
+		if (camDelay_count > camDelay) {
+
+			if (Graphic::getCamera()->GetZoom() > 0.75f)
+			{
+				Graphic::getCamera()->Zoom(-camZoomSpeed);
+			}
+			else
+			{
+				Graphic::getCamera()->SetZoom(0.75f);
+			}
+		}
+	}
 
 	if ((rb->GetVelocity().y < -5.0f) && !falling)
 	{
@@ -266,7 +298,7 @@ void PlayerController::shoot(float dt)
 			bullet->m_transform.SetPosition(glm::vec3(posX, posY, 0.0f));
 			bullet->m_transform.SetRotation(angle_deg);
 
-			bullet->GetComponent<Rigidbody>()->SetVelocity(glm::vec3(rb->GetVelocity().x + (bullet_speed * cos(angle_rad)), rb->GetVelocity().y + (bullet_speed * sin(angle_rad)), 0.0f));
+			bullet->GetComponent<Rigidbody>()->SetVelocity(glm::vec3(rb->GetVelocity().x + (bullet_speed * cos(angle_rad)), glm::abs(rb->GetVelocity().y) + bullet_speed * sin(angle_rad), 0.0f));
 
 			bullet_delay_count = 0.0f;
 		}
