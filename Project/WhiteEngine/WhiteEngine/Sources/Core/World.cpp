@@ -45,6 +45,7 @@ namespace World
 	//======================================
 	ObjectPool* BulletPool;
 
+	GameObject* title;
 	GameObject* Rabbit;
 	GameObject* Bg1;
 	GameObject* Bg2;
@@ -166,6 +167,7 @@ namespace World
 
 		//GameObject
 		enemyNum = 10;
+		title = new GameObject();
 		test = new GameObject*[enemyNum];
 		Rabbit = new GameObject();
 		Bg2 = new GameObject();
@@ -177,6 +179,24 @@ namespace World
 		BulletPool = new ObjectPool();
 
 		//Add Renderer
+
+		title->AddComponent<MeshRenderer>();
+		title->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+		title->GetComponent<MeshRenderer>()->SetTexture("Sources/mockup_title.jpg");
+
+		title->m_transform.SetScale(glm::vec3(Graphic::Window::GetWidth(), Graphic::Window::GetHeight(), 1.0f));
+
+		while (!Input::GetKeyDown(Input::KeyCode::KEY_SPACE))
+		{
+			Input::Update();
+
+			Graphic::Render();
+
+			if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE))
+			{
+				title->SetActive(false);
+			}
+		}
 
 		Bg2->AddComponent<MeshRenderer>();
 		Bg2->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
