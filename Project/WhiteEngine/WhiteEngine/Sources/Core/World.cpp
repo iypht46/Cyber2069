@@ -8,6 +8,7 @@
 #include "Input/Input.hpp"
 #include "EC/Components/Animator.hpp"
 #include "EC/Components/MeshRenderer.hpp"
+#include "EC/Components/SoundPlayer.hpp"
 
 #include "EC/Components/FlyerBehaviour.hpp"
 #include "EC/Components/PlayerController.hpp"
@@ -142,12 +143,12 @@ namespace World
 
 		if (Input::GetKeyHold(Input::KeyCode::KEY_N))
 		{
-			Bg->GetComponent<SoundPlayer>()->IncreaseVolume();
+			Bg2->GetComponent<SoundPlayer>()->IncreaseVolume();
 		}
 
 		if (Input::GetKeyHold(Input::KeyCode::KEY_M))
 		{
-			Bg->GetComponent<SoundPlayer>()->DecreaseVolume();
+			Bg2->GetComponent<SoundPlayer>()->DecreaseVolume();
 		}
 	}
 
@@ -403,11 +404,11 @@ namespace World
 		}*/
 
 		//Add Sound
-		Bg->AddComponent<SoundPlayer>();
-		Bg->GetComponent<SoundPlayer>()->CreateSoundPlayer();
-		Bg->GetComponent<SoundPlayer>()->SetSound("Sources/testMusic.mp3");
-		Bg->GetComponent<SoundPlayer>()->SetLoop(true);
-		Bg->GetComponent<SoundPlayer>()->PlaySound();
+		Bg2->AddComponent<SoundPlayer>();
+		Bg2->GetComponent<SoundPlayer>()->CreateSoundPlayer();
+		Bg2->GetComponent<SoundPlayer>()->SetSound("Sources/testMusic.mp3");
+		Bg2->GetComponent<SoundPlayer>()->SetLoop(true);
+		Bg2->GetComponent<SoundPlayer>()->PlaySound();
 		//Bg->GetComponent<SoundPlayer>()->DeleteSoundPlayer();
 
 	}
