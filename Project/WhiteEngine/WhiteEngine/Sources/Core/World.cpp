@@ -40,13 +40,14 @@ namespace World
 	static Graphic::CameraObject* cam = Graphic::getCamera();
 
 
-	//====================================
-	//TESTING ONLY, DON'T FORGET TO REMOVE
-	//====================================
+	//======================================
+	//TESTING ONLY, DON'T FORGET TO REMOVE v
+	//======================================
 	ObjectPool* BulletPool;
 
 	GameObject* Rabbit;
-	GameObject* Bg;
+	GameObject* Bg1;
+	GameObject* Bg2;
 	GameObject* Child;
 	GameObject* Flyer;
 	GameObject** platform;
@@ -66,6 +67,10 @@ namespace World
 	int enemyNum = 10, platformNum = 5;
 	int rand_AD;
 	int rand_WS;
+
+	float parlx1 = 0.3f;
+	float parlx2 = 0.2f;
+
 #define MOVE_SPEED 300.0f
 #define MOVE_SPEED_ENEM 100.0f
 #define CHAR_SIZE 120.0f
@@ -163,7 +168,8 @@ namespace World
 		enemyNum = 10;
 		test = new GameObject*[enemyNum];
 		Rabbit = new GameObject();
-		Bg = new GameObject();
+		Bg2 = new GameObject();
+		Bg1 = new GameObject();
 		Child = new GameObject();
 		Flyer = new GameObject();
 		platform = new GameObject*[platformNum];
@@ -172,11 +178,19 @@ namespace World
 
 		//Add Renderer
 
-		Bg->AddComponent<MeshRenderer>();
-		Bg->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-		Bg->GetComponent<MeshRenderer>()->SetTexture("Sources/mockup_BG.png");
+		Bg2->AddComponent<MeshRenderer>();
+		Bg2->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+		Bg2->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_Background_Layer2.png");
 
-		Bg->m_transform.SetScale(glm::vec3(Graphic::Window::GetWidth(), Graphic::Window::GetHeight(), 1));
+		Bg1->AddComponent<MeshRenderer>();
+		Bg1->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+		Bg1->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_Background_Layer1.png");
+
+		Bg2->m_transform.SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
+		Bg1->m_transform.SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
+
+		Bg1->m_transform.SetPosition(glm::vec3(0, -300, 0));
+		Bg2->m_transform.SetPosition(glm::vec3(0, -300, 0));
 
 		Rabbit->AddComponent<MeshRenderer>();
 		Rabbit->GetComponent<MeshRenderer>()->CreateMesh(7, 5);
@@ -360,6 +374,9 @@ namespace World
 
 	void FixedUpdate(float dt)
 	{
+		Bg1->m_transform.SetPosition(Graphic::getCamera()->m_position*parlx1);
+		Bg2->m_transform.SetPosition(Graphic::getCamera()->m_position*parlx2);
+
 		//Update Physics Scene
 		static float accumulator = 0.0f;
 		accumulator += dt;
