@@ -152,7 +152,7 @@ namespace World
 
 		//Physics
 		g_physicScene = new Physic::PhysicScene();
-		
+
 		//std::cout << "Layer Collision: " << g_physicScene->GetLayerCollisions("Player") << std::endl;
 
 		ENGINE_WARN("Engine Initialized");
@@ -179,7 +179,7 @@ namespace World
 		platform->AddComponent<MeshRenderer>();
 		platform->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 		platform->GetComponent<MeshRenderer>()->SetTexture("Sources/black.png");
-		
+
 
 		Bg->m_transform.SetScale(glm::vec3(Graphic::Window::GetWidth(), Graphic::Window::GetHeight(), 1));
 
@@ -247,7 +247,7 @@ namespace World
 		Rabbit->GetComponent<Animator>()->setCurrentState(0);
 		Rabbit->GetComponent<Animator>()->setFramePerSec(12);
 
-		for (int i = 0; i < 100; i++) 
+		for (int i = 0; i < 100; i++)
 		{
 			GameObject* Bullet = new GameObject();
 			Bullet->AddComponent<MeshRenderer>();
@@ -286,8 +286,8 @@ namespace World
 		Flyer->GetComponent<Animator>()->setCurrentState(0);
 		Flyer->GetComponent<Animator>()->setFramePerSec(12);
 		//std::cout << "Layer Collision: " << g_physicScene->GetLayerCollisions("Player") << std::endl;
-		
-		
+
+
 		//Set Transform
 
 		//Rabbit->m_transform.SetScale(glm::vec3(500, 500, 1));
@@ -314,7 +314,7 @@ namespace World
 
 		Rabbit->AddComponent<Rigidbody>()->Init(20, 20);
 		platform->m_transform.SetScale(glm::vec3(600, 20, 1));
-		platform->AddComponent<BoxCollider>()->Init(300, 10);
+		platform->AddComponent<BoxCollider>()->Init(300, 5);
 		g_physicScene->Add(platform->GetComponent<BoxCollider>(), "Platform");
 		g_physicScene->Add(Rabbit->GetComponent<BoxCollider>(), "Player");
 		g_physicScene->Add(Rabbit->GetComponent<Rigidbody>());
@@ -330,7 +330,7 @@ namespace World
 
 		//g_physicScene->Add(Rabbit->AddComponent<Rigidbody>());
 		//Rabbit->GetComponent<Rigidbody>()->Init(0.83, 0.25f);
-		
+
 		/*for (int i = 0; i < enemyNum; i++)
 		{
 			float randX = (float)((rand() % 350) - (rand() % 350));
@@ -365,9 +365,9 @@ namespace World
 			Rabbit->GetComponent<Rigidbody>()->UpdateTransform(dt);*/
 			Flyer->GetComponent<Rigidbody>()->UpdateTransform(dt);
 
-			for (int i = 0; i < Factory<MachineGunBullet>::getCollection().size(); i++) 
+			for (int i = 0; i < Factory<MachineGunBullet>::getCollection().size(); i++)
 			{
-				if (Factory<MachineGunBullet>::getCollection().at(i)->GetGameObject()->Active()) 
+				if (Factory<MachineGunBullet>::getCollection().at(i)->GetGameObject()->Active())
 				{
 					Factory<MachineGunBullet>::getCollection().at(i)->GetGameObject()->GetComponent<Rigidbody>()->UpdateTransform(dt);
 				}

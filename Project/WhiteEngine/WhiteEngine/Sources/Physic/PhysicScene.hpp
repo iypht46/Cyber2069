@@ -14,7 +14,7 @@
 
 namespace Physic
 {
-#define GRAVITY_MUL 100000.0f
+#define GRAVITY_MUL 1.0f
 #define LAYER_BIT 8
 
 	enum class Layer : unsigned

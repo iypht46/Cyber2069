@@ -41,10 +41,10 @@ void PlayerController::OnStart() {
 }
 
 void PlayerController::OnEnable() {
-	
+
 }
 
-void PlayerController::OnUpdate(float dt) 
+void PlayerController::OnUpdate(float dt)
 {
 	/*if (m_gameObject->m_transform.GetPosition().y < -(720 / 2))
 	{
@@ -55,14 +55,14 @@ void PlayerController::OnUpdate(float dt)
 	Graphic::getCamera()->SetPos(glm::vec3(m_gameObject->m_transform.GetPosition().x, m_gameObject->m_transform.GetPosition().y, m_gameObject->m_transform.GetPosition().z));
 
 
-	if (!falling && jumping) 
+	if (!falling && jumping)
 	{
 		camDelay_count = 0.0f;
-		if (Graphic::getCamera()->GetZoom() < 1.5f) 
+		if (Graphic::getCamera()->GetZoom() < 1.5f)
 		{
 			Graphic::getCamera()->Zoom(camZoomSpeed);
 		}
-		else 
+		else
 		{
 			Graphic::getCamera()->SetZoom(1.5f);
 		}
@@ -88,9 +88,9 @@ void PlayerController::OnUpdate(float dt)
 		falling = true;
 	}
 
-	if (falling) 
+	if (falling)
 	{
-		if (rb->GetVelocity().y >= 0) 
+		if (rb->GetVelocity().y >= 0)
 		{
 			jumping = false;
 			falling = false;
@@ -108,7 +108,7 @@ void PlayerController::OnUpdate(float dt)
 	shoot(dt);
 }
 
-void PlayerController::OnFixedUpdate(float dt) 
+void PlayerController::OnFixedUpdate(float dt)
 {
 }
 
@@ -116,7 +116,7 @@ void PlayerController::updateDirection() {
 
 }
 
-void PlayerController::move() 
+void PlayerController::move()
 {
 	glm::vec3 velocity = glm::vec3(0);
 	//direction = glm::vec2(0);
@@ -126,7 +126,7 @@ void PlayerController::move()
 		direction.y = 1.0f;
 		velocity.y = move_speed * direction.y;
 	}
-	else if (Input::GetKeyHold(Input::KeyCode::KEY_S)) 
+	else if (Input::GetKeyHold(Input::KeyCode::KEY_S))
 	{
 		direction.y = -1.0f;
 		velocity.y = move_speed * direction.y;
@@ -172,7 +172,7 @@ void PlayerController::move()
 		}
 	}
 
-	if (Input::GetKeyDown(Input::KeyCode::KEY_LEFT_SHIFT) && !Dash) 
+	if (Input::GetKeyDown(Input::KeyCode::KEY_LEFT_SHIFT) && !Dash)
 	{
 		dashRemainingTime = dashTime;
 		Dash = true;
@@ -180,25 +180,25 @@ void PlayerController::move()
 
 		delay = 0.1f;
 	}
-	
-	if (!Dash) 
+
+	if (!Dash)
 	{
 		rb->SetVelocity(glm::vec3(velocity.x, rb->GetVelocity().y, rb->GetVelocity().z));
 		//rb->SetVelocity(glm::vec3(velocity.x, velocity.y, rb->GetVelocity().z));
 	}
-	
+
 }
 
-void PlayerController::dash(float dt) 
+void PlayerController::dash(float dt)
 {
 
-	if (dashRemainingTime <= 0) 
+	if (dashRemainingTime <= 0)
 	{
 		running = false;
 		m_gameObject->GetComponent<Animator>()->setCurrentState(4);
 		Dash = false;
 	}
-	else 
+	else
 	{
 		dashRemainingTime -= dt;
 		delay -= dt;
@@ -208,23 +208,23 @@ void PlayerController::dash(float dt)
 			dashDirection = direction;
 		}
 		else {
-			if (!setDashAnim) 
+			if (!setDashAnim)
 			{
 				setDashAnim = true;
 				m_gameObject->GetComponent<Animator>()->setCurrentState(2);
 			}
 		}
 
-		if (dashDirection.x != 0) 
+		if (dashDirection.x != 0)
 		{
 			m_gameObject->m_transform.SetScale(glm::vec3(glm::abs(m_gameObject->m_transform.GetScale().x) * dashDirection.x, m_gameObject->m_transform.GetScale().y, m_gameObject->m_transform.GetScale().z));
 		}
-		
+
 		rb->SetVelocity(glm::vec3(dash_speed * dashDirection.x, 0, 0));
 	}
 }
 
-void PlayerController::mouseAim() 
+void PlayerController::mouseAim()
 {
 	float mouse_x, mouse_y, pos_x, pos_y;
 
@@ -240,7 +240,7 @@ void PlayerController::mouseAim()
 
 	if (m_gameObject->m_transform.GetScale().x > 0) {
 		Gun->SetRotation(angle_deg);
-		
+
 		if (angle_deg > 90) {
 			if (!inverseGun) {
 				Gun->SetScale(glm::vec3(Gun->GetScale().x, -1.0f * Gun->GetScale().y, Gun->GetScale().z));
@@ -259,7 +259,7 @@ void PlayerController::mouseAim()
 	}
 	else {
 		Gun->SetRotation(-1.0f * (angle_deg + 180));
-		
+
 		if (angle_deg < 90) {
 			if (!inverseGun) {
 				Gun->SetScale(glm::vec3(Gun->GetScale().x, -1.0f * Gun->GetScale().y, Gun->GetScale().z));
@@ -281,12 +281,12 @@ void PlayerController::mouseAim()
 	//std::cout << angle_deg << std::endl;
 }
 
-void PlayerController::shoot(float dt) 
+void PlayerController::shoot(float dt)
 {
-	if (Input::GetMouseHold(Input::MouseKeyCode::MOUSE_LEFT)) 
+	if (Input::GetMouseHold(Input::MouseKeyCode::MOUSE_LEFT))
 	{
 		bullet_delay_count += dt;
-		if (bullet_delay_count > bullet_delay) 
+		if (bullet_delay_count > bullet_delay)
 		{
 
 			GameObject* bullet = MGbulletPool->GetInactiveObject();
@@ -305,7 +305,7 @@ void PlayerController::shoot(float dt)
 	}
 }
 
-void PlayerController::assignPool(ObjectPool* pool) 
+void PlayerController::assignPool(ObjectPool* pool)
 {
 	this->MGbulletPool = pool;
 }
