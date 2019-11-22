@@ -20,7 +20,7 @@ public:
 	void PlaySound();
 	void DeleteSoundPlayer();
 	void SetLoop(bool loop);
-	void SetVolume();
+	void UpdateVolume();
 	void IncreaseVolume();
 	void DecreaseVolume();
 };

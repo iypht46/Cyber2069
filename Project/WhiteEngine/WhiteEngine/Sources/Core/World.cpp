@@ -318,7 +318,7 @@ namespace World
 		//Rabbit->GetComponent<Rigidbody>()->AddForce(glm::vec3(0.0f, -10.0f*dt, 0.0f));
 		Rabbit->GetComponent<Rigidbody>()->UpdateTransform(dt);
 		Flyer->GetComponent<Rigidbody>()->UpdateTransform(dt);
-		Bg->GetComponent<SoundPlayer>()->SetVolume();
+		Bg->GetComponent<SoundPlayer>()->UpdateVolume();
 
 		//cout << Rabbit->m_transform.GetPosition().y << endl;
 
