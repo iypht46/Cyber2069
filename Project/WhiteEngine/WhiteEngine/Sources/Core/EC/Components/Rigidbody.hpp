@@ -21,6 +21,7 @@
 		float m_mass;
 		float m_invMass;
 		float m_gravityScale;
+		float m_drag;
 
 		//Pointers to other components
 		Collider* m_collider;
@@ -39,6 +40,8 @@
 		void UpdateTransform(float dt);
 		float GetInvMass(void);
 		float GetMass(void);
+		void SetDrag(float drag);
+		float GetDrag();
 		Rigidbody();
 		~Rigidbody();
 	};
