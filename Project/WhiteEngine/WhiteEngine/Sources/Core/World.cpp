@@ -49,7 +49,7 @@ namespace World
 	GameObject* Bg;
 	GameObject* Child;
 	GameObject* Flyer;
-	GameObject* platform;
+	GameObject** platform;
 
 	GameObject* Enemy;
 
@@ -63,7 +63,7 @@ namespace World
 	bool running;
 	int Delay = 0;
 	int Delay2 = 0;
-	int enemyNum;
+	int enemyNum = 10, platformNum = 5;
 	int rand_AD;
 	int rand_WS;
 #define MOVE_SPEED 300.0f
@@ -166,7 +166,7 @@ namespace World
 		Bg = new GameObject();
 		Child = new GameObject();
 		Flyer = new GameObject();
-		platform = new GameObject();
+		platform = new GameObject*[platformNum];
 
 		BulletPool = new ObjectPool();
 
@@ -175,11 +175,6 @@ namespace World
 		Bg->AddComponent<MeshRenderer>();
 		Bg->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 		Bg->GetComponent<MeshRenderer>()->SetTexture("Sources/mockup_BG.png");
-
-		platform->AddComponent<MeshRenderer>();
-		platform->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-		platform->GetComponent<MeshRenderer>()->SetTexture("Sources/black.png");
-
 
 		Bg->m_transform.SetScale(glm::vec3(Graphic::Window::GetWidth(), Graphic::Window::GetHeight(), 1));
 
@@ -313,9 +308,7 @@ namespace World
 		g_physicScene->SetLayerCollisions("Player", "Platform");
 
 		Rabbit->AddComponent<Rigidbody>()->Init(20, 20);
-		platform->m_transform.SetScale(glm::vec3(600, 20, 1));
-		platform->AddComponent<BoxCollider>()->Init(300, 5);
-		g_physicScene->Add(platform->GetComponent<BoxCollider>(), "Platform");
+		
 		g_physicScene->Add(Rabbit->GetComponent<BoxCollider>(), "Player");
 		g_physicScene->Add(Rabbit->GetComponent<Rigidbody>());
 
@@ -327,6 +320,22 @@ namespace World
 		Flyer->AddComponent<FlyerBehaviour>();
 		Flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
 		Flyer->GetComponent<FlyerBehaviour>()->SetGameObject(Flyer);
+
+		for (int i = 0; i < platformNum; i++)
+		{
+			platform[i] = new GameObject();
+			platform[i]->AddComponent<MeshRenderer>();
+			platform[i]->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			platform[i]->GetComponent<MeshRenderer>()->SetTexture("Sources/platform01.png");
+			platform[i]->m_transform.SetScale(glm::vec3(400, 20, 1));
+			platform[i]->AddComponent<BoxCollider>()->Init(180, 5);
+			g_physicScene->Add(platform[i]->GetComponent<BoxCollider>(), "Platform");
+		}
+
+		platform[1]->m_transform.SetPosition(glm::vec3(300, 300, 0));
+		platform[2]->m_transform.SetPosition(glm::vec3(-300, 300, 0));
+		platform[3]->m_transform.SetPosition(glm::vec3(-300, -300, 0));
+		platform[4]->m_transform.SetPosition(glm::vec3(300, -300, 0));
 
 		//g_physicScene->Add(Rabbit->AddComponent<Rigidbody>());
 		//Rabbit->GetComponent<Rigidbody>()->Init(0.83, 0.25f);
