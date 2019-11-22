@@ -40,6 +40,7 @@
 		~Collider() {};
 		//Collider Interface
 		void SetTrigger(bool);
+		bool IsTrigger(void);
 		ColliderType GetType();
 		bool IsStatic();
 

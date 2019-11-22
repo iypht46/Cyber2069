@@ -11,6 +11,11 @@
 		m_isTrigger = i;
 	}
 
+	bool Collider::IsTrigger(void)
+	{
+		return m_isTrigger;
+	}
+
 	ColliderType Collider::GetType()
 	{
 		return m_colliderType;

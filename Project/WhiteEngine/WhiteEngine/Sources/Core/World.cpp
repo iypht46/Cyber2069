@@ -192,8 +192,7 @@ namespace World
 		Flyer->AddComponent<MeshRenderer>();
 		Flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
 		Flyer->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_Enemy_Flyer_Vversion01.png");
-		Flyer->AddComponent<Rigidbody>();
-		Flyer->GetComponent<Rigidbody>()->Init();
+		
 
 
 		//Add Animator
@@ -293,6 +292,7 @@ namespace World
 		//Rabbit->m_transform.SetScale(glm::vec3(500, 500, 1));
 
 		Rabbit->m_transform.SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
+		Rabbit->m_transform.SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
 
 		Child->m_transform.SetScale(glm::vec3(70, 70, 1));
 		//Child->m_transform.SetLocalScale(glm::vec3(1, 1, 1));
@@ -303,21 +303,24 @@ namespace World
 		Flyer->m_transform.SetPosition(glm::vec3(100, 100, 0));
 		Flyer->m_transform.SetScale(glm::vec3(50, 50, 1));
 
-		Rabbit->m_transform.SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
+		platform->m_transform.SetScale(glm::vec3(600, 20, 1));
 
 		//Add Physic
 		g_physicScene->SetLayerName("Player", Physic::Layer::PHYSIC_LAYER_1);
 		g_physicScene->SetLayerName("Enemy", Physic::Layer::PHYSIC_LAYER_2);
 		g_physicScene->SetLayerName("Platform", Physic::Layer::PHYSIC_LAYER_3);
-		g_physicScene->SetLayerCollisions("Player", "Enemy");
+		//g_physicScene->SetLayerCollisions("Player", "Enemy");
 		g_physicScene->SetLayerCollisions("Player", "Platform");
-
 		Rabbit->AddComponent<Rigidbody>()->Init(20, 20);
-		platform->m_transform.SetScale(glm::vec3(600, 20, 1));
 		platform->AddComponent<BoxCollider>()->Init(300, 5);
+		Flyer->AddComponent<Rigidbody>()->Init(10,10);
+		Flyer->GetComponent<BoxCollider>()->SetTrigger(true);
+
 		g_physicScene->Add(platform->GetComponent<BoxCollider>(), "Platform");
 		g_physicScene->Add(Rabbit->GetComponent<BoxCollider>(), "Player");
+		g_physicScene->Add(Flyer->GetComponent<BoxCollider>(), "Enemy");
 		g_physicScene->Add(Rabbit->GetComponent<Rigidbody>());
+		g_physicScene->Add(Flyer->GetComponent<Rigidbody>());
 
 		//Behavior Script
 		Rabbit->AddComponent<PlayerController>();
@@ -363,7 +366,7 @@ namespace World
 
 			/*Rabbit->GetComponent<Rigidbody>()->AddForce(glm::vec3(0.0f, -10.0f, 0.0f));
 			Rabbit->GetComponent<Rigidbody>()->UpdateTransform(dt);*/
-			Flyer->GetComponent<Rigidbody>()->UpdateTransform(dt);
+			//Flyer->GetComponent<Rigidbody>()->UpdateTransform(dt);
 
 			for (int i = 0; i < Factory<MachineGunBullet>::getCollection().size(); i++)
 			{

@@ -74,8 +74,6 @@ namespace Physic
 		//Check for duplicate pair
 		CheckDuplicatePair();
 
-		
-
 		//Resolve Collision
 		ResolveLayerCollision(dt);
 

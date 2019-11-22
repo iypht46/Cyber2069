@@ -112,19 +112,35 @@ namespace Physic
 				return;
 			}
 
-			m_objectA->m_rigidbody->SetVelocity(-resultVec);
-			m_objectB->m_rigidbody->SetVelocity(resultVec);
-
-		}
-		else
-		{
-			if (!m_objectA->IsStatic())
+			if (!m_objectA->IsTrigger())
 			{
 				m_objectA->m_rigidbody->SetVelocity(-resultVec);
 			}
 			else
 			{
+				//Call back only
+			}
+
+			if (!m_objectB->IsTrigger())
+			{
 				m_objectB->m_rigidbody->SetVelocity(resultVec);
+			}
+			else
+			{
+				//Call back only
+			}
+		}
+		else
+		{
+			if (!m_objectA->IsStatic())
+			{
+				if (!m_objectA->IsTrigger())
+					m_objectA->m_rigidbody->SetVelocity(-resultVec);
+			}
+			else
+			{
+				if (!m_objectB->IsTrigger())
+					m_objectB->m_rigidbody->SetVelocity(resultVec);
 			}
 		}
 
