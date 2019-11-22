@@ -137,6 +137,17 @@ namespace World
 		if (Input::GetKeyHold(Input::KeyCode::KEY_C))
 		{
 			Rabbit->m_transform.SetScale(Rabbit->m_transform.GetScale() + glm::vec3(-1, 0, 0));
+
+		}
+
+		if (Input::GetKeyHold(Input::KeyCode::KEY_N))
+		{
+			Bg->GetComponent<SoundPlayer>()->IncreaseVolume();
+		}
+
+		if (Input::GetKeyHold(Input::KeyCode::KEY_M))
+		{
+			Bg->GetComponent<SoundPlayer>()->DecreaseVolume();
 		}
 	}
 
@@ -390,6 +401,14 @@ namespace World
 			g_physicScene->Add(testRigid->GetCollider(), "Enemy");
 
 		}*/
+
+		//Add Sound
+		Bg->AddComponent<SoundPlayer>();
+		Bg->GetComponent<SoundPlayer>()->CreateSoundPlayer();
+		Bg->GetComponent<SoundPlayer>()->SetSound("Sources/testMusic.mp3");
+		Bg->GetComponent<SoundPlayer>()->SetLoop(true);
+		Bg->GetComponent<SoundPlayer>()->PlaySound();
+		//Bg->GetComponent<SoundPlayer>()->DeleteSoundPlayer();
 
 	}
 
