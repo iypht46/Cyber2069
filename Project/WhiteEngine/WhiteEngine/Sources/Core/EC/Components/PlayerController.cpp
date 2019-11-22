@@ -32,8 +32,8 @@ void PlayerController::OnStart() {
 	camZoomSpeed = 0.01f;
 	camDelay = 0.5f;
 
-	bullet_speed = 800.0f;
-	bullet_delay = 0.05f;
+	bullet_speed = 850.0f;
+	bullet_delay = 0.075f;
 
 	dashTime = 0.35f;
 
@@ -298,7 +298,28 @@ void PlayerController::shoot(float dt)
 			bullet->m_transform.SetPosition(glm::vec3(posX, posY, 0.0f));
 			bullet->m_transform.SetRotation(angle_deg);
 
-			bullet->GetComponent<Rigidbody>()->SetVelocity(glm::vec3(rb->GetVelocity().x + (bullet_speed * cos(angle_rad)), glm::abs(rb->GetVelocity().y) + bullet_speed * sin(angle_rad), 0.0f));
+			float speedX = bullet_speed * cos(angle_rad);
+			float speedY = bullet_speed * sin(angle_rad);
+
+			if (((rb->GetVelocity().x > 0) && (speedX < 0)) ||
+				((rb->GetVelocity().x < 0) && (speedX > 0)))
+			{
+				speedX += -1.0 * rb->GetVelocity().x;
+			}
+			else {
+				speedX += rb->GetVelocity().x;
+			}
+
+			if (((rb->GetVelocity().y > 0) && (speedY < 0)) ||
+				((rb->GetVelocity().y < 0) && (speedY > 0)))
+			{
+				speedY += -1.0 * rb->GetVelocity().y;
+			}
+			else {
+				speedY += rb->GetVelocity().y;
+			}
+
+			bullet->GetComponent<Rigidbody>()->SetVelocity(glm::vec3(speedX,speedY, 0.0f));
 
 			bullet_delay_count = 0.0f;
 		}

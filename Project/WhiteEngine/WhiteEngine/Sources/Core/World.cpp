@@ -40,16 +40,18 @@ namespace World
 	static Graphic::CameraObject* cam = Graphic::getCamera();
 
 
-	//====================================
-	//TESTING ONLY, DON'T FORGET TO REMOVE
-	//====================================
+	//======================================
+	//TESTING ONLY, DON'T FORGET TO REMOVE v
+	//======================================
 	ObjectPool* BulletPool;
 
+	GameObject* title;
 	GameObject* Rabbit;
-	GameObject* Bg;
+	GameObject* Bg1;
+	GameObject* Bg2;
 	GameObject* Child;
 	GameObject* Flyer;
-	GameObject* platform;
+	GameObject** platform;
 
 	GameObject* Enemy;
 
@@ -63,9 +65,13 @@ namespace World
 	bool running;
 	int Delay = 0;
 	int Delay2 = 0;
-	int enemyNum;
+	int enemyNum = 10, platformNum = 5;
 	int rand_AD;
 	int rand_WS;
+
+	float parlx1 = 0.3f;
+	float parlx2 = 0.2f;
+
 #define MOVE_SPEED 300.0f
 #define MOVE_SPEED_ENEM 100.0f
 #define CHAR_SIZE 120.0f
@@ -161,27 +167,50 @@ namespace World
 
 		//GameObject
 		enemyNum = 10;
+		title = new GameObject();
 		test = new GameObject*[enemyNum];
 		Rabbit = new GameObject();
-		Bg = new GameObject();
+		Bg2 = new GameObject();
+		Bg1 = new GameObject();
 		Child = new GameObject();
 		Flyer = new GameObject();
-		platform = new GameObject();
+		platform = new GameObject*[platformNum];
 
 		BulletPool = new ObjectPool();
 
 		//Add Renderer
 
-		Bg->AddComponent<MeshRenderer>();
-		Bg->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-		Bg->GetComponent<MeshRenderer>()->SetTexture("Sources/mockup_BG.png");
+		title->AddComponent<MeshRenderer>();
+		title->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+		title->GetComponent<MeshRenderer>()->SetTexture("Sources/mockup_title.jpg");
 
-		platform->AddComponent<MeshRenderer>();
-		platform->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-		platform->GetComponent<MeshRenderer>()->SetTexture("Sources/black.png");
+		title->m_transform.SetScale(glm::vec3(Graphic::Window::GetWidth(), Graphic::Window::GetHeight(), 1.0f));
 
+		while (!Input::GetKeyDown(Input::KeyCode::KEY_SPACE))
+		{
+			Input::Update();
 
-		Bg->m_transform.SetScale(glm::vec3(Graphic::Window::GetWidth(), Graphic::Window::GetHeight(), 1));
+			Graphic::Render();
+
+			if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE))
+			{
+				title->SetActive(false);
+			}
+		}
+
+		Bg2->AddComponent<MeshRenderer>();
+		Bg2->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+		Bg2->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_Background_Layer2.png");
+
+		Bg1->AddComponent<MeshRenderer>();
+		Bg1->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+		Bg1->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_Background_Layer1.png");
+
+		Bg2->m_transform.SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
+		Bg1->m_transform.SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
+
+		Bg1->m_transform.SetPosition(glm::vec3(0, -300, 0));
+		Bg2->m_transform.SetPosition(glm::vec3(0, -300, 0));
 
 		Rabbit->AddComponent<MeshRenderer>();
 		Rabbit->GetComponent<MeshRenderer>()->CreateMesh(7, 5);
@@ -192,7 +221,7 @@ namespace World
 		Flyer->AddComponent<MeshRenderer>();
 		Flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
 		Flyer->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_Enemy_Flyer_Vversion01.png");
-		
+
 
 
 		//Add Animator
@@ -312,11 +341,9 @@ namespace World
 		//g_physicScene->SetLayerCollisions("Player", "Enemy");
 		g_physicScene->SetLayerCollisions("Player", "Platform");
 		Rabbit->AddComponent<Rigidbody>()->Init(20, 20);
-		platform->AddComponent<BoxCollider>()->Init(300, 5);
+
 		Flyer->AddComponent<Rigidbody>()->Init(10,10);
 		Flyer->GetComponent<BoxCollider>()->SetTrigger(true);
-
-		g_physicScene->Add(platform->GetComponent<BoxCollider>(), "Platform");
 		g_physicScene->Add(Rabbit->GetComponent<BoxCollider>(), "Player");
 		g_physicScene->Add(Flyer->GetComponent<BoxCollider>(), "Enemy");
 		g_physicScene->Add(Rabbit->GetComponent<Rigidbody>());
@@ -330,6 +357,22 @@ namespace World
 		Flyer->AddComponent<FlyerBehaviour>();
 		Flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
 		Flyer->GetComponent<FlyerBehaviour>()->SetGameObject(Flyer);
+
+		for (int i = 0; i < platformNum; i++)
+		{
+			platform[i] = new GameObject();
+			platform[i]->AddComponent<MeshRenderer>();
+			platform[i]->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			platform[i]->GetComponent<MeshRenderer>()->SetTexture("Sources/platform01.png");
+			platform[i]->m_transform.SetScale(glm::vec3(400, 20, 1));
+			platform[i]->AddComponent<BoxCollider>()->Init(180, 5);
+			g_physicScene->Add(platform[i]->GetComponent<BoxCollider>(), "Platform");
+		}
+
+		platform[1]->m_transform.SetPosition(glm::vec3(300, 300, 0));
+		platform[2]->m_transform.SetPosition(glm::vec3(-300, 300, 0));
+		platform[3]->m_transform.SetPosition(glm::vec3(-300, -300, 0));
+		platform[4]->m_transform.SetPosition(glm::vec3(300, -300, 0));
 
 		//g_physicScene->Add(Rabbit->AddComponent<Rigidbody>());
 		//Rabbit->GetComponent<Rigidbody>()->Init(0.83, 0.25f);
@@ -354,6 +397,9 @@ namespace World
 
 	void FixedUpdate(float dt)
 	{
+		Bg1->m_transform.SetPosition(Graphic::getCamera()->m_position*parlx1);
+		Bg2->m_transform.SetPosition(Graphic::getCamera()->m_position*parlx2);
+
 		//Update Physics Scene
 		static float accumulator = 0.0f;
 		accumulator += dt;
