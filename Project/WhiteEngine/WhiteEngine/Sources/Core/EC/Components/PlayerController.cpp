@@ -23,9 +23,10 @@ void PlayerController::OnStart() {
 
 	jumping = false;
 	falling = false;
-	move_speed = 200.0f;
-	dash_speed = 400.0f;
-	jump_speed = 200.0f;
+	max_move_speed = 300.0f;
+	move_speed = 300.0f;
+	dash_speed = 750.0f;
+	jump_speed = 300.0f;
 	direction.x = 1;
 	direction.y = 1;
 
@@ -117,10 +118,9 @@ void PlayerController::updateDirection() {
 
 }
 
-glm::vec3 velocity(0, 0, 0);
 void PlayerController::move()
 {
-
+	glm::vec3 velocity(0, 0, 0);
 	//direction = glm::vec2(0);
 
 	if (Input::GetKeyHold(Input::KeyCode::KEY_W))
@@ -190,7 +190,10 @@ void PlayerController::move()
 
 	if (!Dash)
 	{
-		rb->SetVelocity(glm::vec3(velocity.x, rb->GetVelocity().y, rb->GetVelocity().z));
+		rb->SetVelocity(glm::vec3(rb->GetVelocity().x + velocity.x, rb->GetVelocity().y, rb->GetVelocity().z));
+		if (abs(rb->GetVelocity().x) > max_move_speed) {
+			rb->SetVelocity(glm::vec3(rb->GetVelocity().x / abs(rb->GetVelocity().x) * max_move_speed, rb->GetVelocity().y, rb->GetVelocity().z));
+		}
 		//rb->SetVelocity(glm::vec3(velocity.x, velocity.y, rb->GetVelocity().z));
 	}
 

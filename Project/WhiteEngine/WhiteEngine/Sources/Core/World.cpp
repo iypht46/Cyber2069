@@ -408,13 +408,14 @@ namespace World
 		Bg2->GetComponent<SoundPlayer>()->CreateSoundPlayer();
 		Bg2->GetComponent<SoundPlayer>()->SetSound("Sources/testMusic.mp3");
 		Bg2->GetComponent<SoundPlayer>()->SetLoop(true);
-		Bg2->GetComponent<SoundPlayer>()->PlaySound();
+		//Bg2->GetComponent<SoundPlayer>()->PlaySound();
 		//Bg->GetComponent<SoundPlayer>()->DeleteSoundPlayer();
 
 	}
 
 	void FixedUpdate(float dt)
 	{
+
 		Bg1->m_transform.SetPosition(Graphic::getCamera()->m_position*parlx1);
 		Bg2->m_transform.SetPosition(Graphic::getCamera()->m_position*parlx2);
 
@@ -462,6 +463,9 @@ namespace World
 
 	void Update(float dt)
 	{
+		//update sound
+		//Bg2->GetComponent<SoundPlayer>()->SetVolume();
+
 		//Update All Systems
 		//Update Input
 		Input::Update();

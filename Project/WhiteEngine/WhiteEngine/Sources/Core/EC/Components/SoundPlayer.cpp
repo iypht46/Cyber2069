@@ -2,7 +2,7 @@
 
 SoundPlayer::SoundPlayer() {
 	isLooping = false;
-	volumeValue = 1;
+	volumeValue = 1.0f;
 }
 
 SoundPlayer::~SoundPlayer() {
@@ -39,7 +39,7 @@ void SoundPlayer::IncreaseVolume() {
 		volumeValue += 0;
 	}
 	else {
-		volumeValue += 0.05;
+		volumeValue += 0.05f;
 	}
 }
 
@@ -48,6 +48,6 @@ void SoundPlayer::DecreaseVolume() {
 		volumeValue -= 0;
 	}
 	else {
-		volumeValue -= 0.05;
+		volumeValue -= 0.05f;
 	}
 }

@@ -17,6 +17,7 @@ protected:
 
 	ObjectPool* MGbulletPool;
 	
+	float max_move_speed;
 	float move_speed;
 	float dash_speed;
 	float jump_speed;

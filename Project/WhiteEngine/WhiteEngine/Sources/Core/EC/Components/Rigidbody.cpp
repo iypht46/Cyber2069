@@ -13,7 +13,7 @@ Rigidbody::Rigidbody()
 	m_transform = &m_gameObject->m_transform;
 	m_velocity = vec3(0.0f);
 	m_mass = 1;
-	m_drag = 0.3f;
+	m_drag = 0.0f;
 }
 
 //Create BoxCollider
