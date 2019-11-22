@@ -13,6 +13,7 @@ Rigidbody::Rigidbody()
 	m_transform = &m_gameObject->m_transform;
 	m_velocity = vec3(0.0f);
 	m_mass = 1;
+	m_drag = 0.3f;
 }
 
 //Create BoxCollider
@@ -93,6 +94,7 @@ void Rigidbody::AddRelativeForce(vec3 force)
 
 void Rigidbody::UpdateTransform(float dt) 
 {
+	m_velocity = m_velocity * (1 - m_drag);
 	m_transform->Translate(m_velocity * dt);
 }
 
@@ -104,4 +106,12 @@ float Rigidbody::GetInvMass(void)
 float Rigidbody::GetMass(void)
 {
 	return m_mass;
+}
+
+void Rigidbody::SetDrag(float drag) {
+	m_drag = drag;
+}
+
+float Rigidbody::GetDrag() {
+	return m_drag;
 }

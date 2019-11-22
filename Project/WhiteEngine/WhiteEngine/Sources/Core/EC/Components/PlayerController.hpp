@@ -23,6 +23,7 @@ protected:
 	float dashTime;
 	float dashRemainingTime;
 	float delay;
+	float m_drag;
 
 	float camZoomSpeed;
 	float camDelay;

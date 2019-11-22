@@ -38,6 +38,7 @@ void PlayerController::OnStart() {
 	dashTime = 0.35f;
 
 	GunDistance = 0.45f;
+
 }
 
 void PlayerController::OnEnable() {
@@ -116,26 +117,31 @@ void PlayerController::updateDirection() {
 
 }
 
+glm::vec3 velocity(0, 0, 0);
 void PlayerController::move()
 {
-	glm::vec3 velocity = glm::vec3(0);
+
 	//direction = glm::vec2(0);
 
 	if (Input::GetKeyHold(Input::KeyCode::KEY_W))
 	{
 		direction.y = 1.0f;
 		velocity.y = move_speed * direction.y;
+		//rb->SetVelocity(glm::vec3(rb->GetVelocity().x, move_speed * direction.y, rb->GetVelocity().z));
 	}
 	else if (Input::GetKeyHold(Input::KeyCode::KEY_S))
 	{
 		direction.y = -1.0f;
 		velocity.y = move_speed * direction.y;
+		//rb->SetVelocity(glm::vec3(rb->GetVelocity().x, move_speed * direction.y, rb->GetVelocity().z));
 	}
 
 	if (Input::GetKeyHold(Input::KeyCode::KEY_A))
 	{
 		direction.x = -1.0f;
 		velocity.x = move_speed * direction.x;
+		//rb->SetVelocity(glm::vec3(move_speed * direction.x, rb->GetVelocity().y, rb->GetVelocity().z));
+
 
 		m_gameObject->m_transform.SetScale(glm::vec3(glm::abs(m_gameObject->m_transform.GetScale().x) * -1.0f, m_gameObject->m_transform.GetScale().y, m_gameObject->m_transform.GetScale().z));
 
@@ -144,6 +150,7 @@ void PlayerController::move()
 	{
 		direction.x = 1.0f;
 		velocity.x = move_speed * direction.x;
+		//rb->SetVelocity(glm::vec3(move_speed * direction.x, rb->GetVelocity().y, rb->GetVelocity().z));
 		m_gameObject->m_transform.SetScale(glm::vec3(glm::abs(m_gameObject->m_transform.GetScale().x), m_gameObject->m_transform.GetScale().y, m_gameObject->m_transform.GetScale().z));
 	}
 
