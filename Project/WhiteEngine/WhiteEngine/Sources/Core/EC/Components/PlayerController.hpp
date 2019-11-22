@@ -6,12 +6,16 @@
 #include "Input/Input.hpp"
 #include "../GameObject.hpp"
 
+#include "Utility/ObjectPool.h"
+
 #define PI 3.14159265358979323846
 
 class PlayerController : public BehaviourScript {
 protected:
 	Transform* Gun;
 	Rigidbody* rb;
+
+	ObjectPool* MGbulletPool;
 	
 	float move_speed;
 	float dash_speed;
@@ -20,10 +24,19 @@ protected:
 	float dashRemainingTime;
 	float delay;
 
+	float camZoomSpeed;
+	float camDelay;
+	float camDelay_count;
+
+	float bullet_speed;
+	float bullet_delay;
+	float bullet_delay_count;
+
 	float GunDistance;
 	bool inverseGun;
 	bool running;
 	bool jumping;
+	bool falling;
 	bool Dash;
 	bool setDashAnim;
 	
@@ -41,6 +54,9 @@ public:
 	void updateDirection();
 	void move();
 	void dash(float dt);
+	void shoot(float dt);
+
+	void assignPool(ObjectPool* pool);
 
 	virtual void OnAwake();
 	virtual void OnEnable();

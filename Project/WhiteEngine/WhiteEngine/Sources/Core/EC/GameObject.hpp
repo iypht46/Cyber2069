@@ -19,6 +19,8 @@ protected:
 	std::vector<Component*> m_components;
 
 public:
+	GameObject();
+
 	Transform m_transform;
 
 	void SetActive(bool activestate);

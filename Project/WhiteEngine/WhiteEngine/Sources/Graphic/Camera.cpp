@@ -90,6 +90,10 @@ namespace Graphic
 		return m_position;
 	}
 
+	float CameraObject::GetZoom() {
+		return m_zoom;
+	}
+
 	/*glm::mat4 CameraObject::CalculateViewMatrix(glm::vec3 position, glm::vec3 dir)
 	{
 
