@@ -281,9 +281,9 @@ namespace World
 		g_physicScene->SetLayerCollisions("Player", "Enemy");
 		g_physicScene->SetLayerCollisions("Player", "Platform");
 
-		Rabbit->AddComponent<Rigidbody>()->Init(30, 50);
+		Rabbit->AddComponent<Rigidbody>()->Init(30, 40);
 		platform->m_transform.SetScale(glm::vec3(600, 20, 1));
-		platform->AddComponent<BoxCollider>()->Init(300, 10);
+		platform->AddComponent<BoxCollider>()->Init(300, 5);
 		g_physicScene->Add(platform->GetComponent<BoxCollider>(), "Platform");
 		g_physicScene->Add(Rabbit->GetComponent<BoxCollider>(), "Player");
 		g_physicScene->Add(Rabbit->GetComponent<Rigidbody>());

@@ -23,7 +23,7 @@ void PlayerController::OnStart() {
 	jumping = false;
 	move_speed = 300.0f;
 	dash_speed = 900.0f;
-	jump_speed = 100.0f;
+	jump_speed = 200.0f;
 	direction.x = 1;
 	direction.y = 1;
 

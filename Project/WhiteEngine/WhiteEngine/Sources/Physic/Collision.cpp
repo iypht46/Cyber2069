@@ -101,6 +101,8 @@ namespace Physic
 #define RE_MUL 10.0f
 	void Manifold::Resolve(float dt)
 	{
+		glm::vec3 resultVec = m_normal * (m_penetration * RE_MUL);
+
 		if (!m_objectA->IsStatic() && !m_objectB->IsStatic())
 		{
 			glm::vec3 relativeVel = m_objectB->m_rigidbody->GetVelocity() - m_objectA->m_rigidbody->GetVelocity();
@@ -110,19 +112,19 @@ namespace Physic
 				return;
 			}
 
-			m_objectA->m_rigidbody->SetVelocity(-(m_normal * (m_penetration * RE_MUL)));
-			m_objectB->m_rigidbody->SetVelocity(m_normal * (m_penetration * RE_MUL));
+			m_objectA->m_rigidbody->SetVelocity(-resultVec);
+			m_objectB->m_rigidbody->SetVelocity(resultVec);
 
 		}
 		else
 		{
 			if (!m_objectA->IsStatic())
 			{
-				m_objectA->m_rigidbody->SetVelocity(-(m_normal * (m_penetration * RE_MUL)));
+				m_objectA->m_rigidbody->SetVelocity(-resultVec);
 			}
 			else
 			{
-				m_objectB->m_rigidbody->SetVelocity(m_normal * (m_penetration * RE_MUL));
+				m_objectB->m_rigidbody->SetVelocity(resultVec);
 			}
 		}
 

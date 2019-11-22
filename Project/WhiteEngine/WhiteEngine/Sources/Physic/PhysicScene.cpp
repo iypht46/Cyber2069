@@ -148,7 +148,7 @@ namespace Physic
 		{
 			Rigidbody* body = (*it);
 
-			body->AddForce(m_gravity * body->GetGravityScale() * GRAVITY_MUL * dt);
+			body->AddForce(m_gravity * body->GetGravityScale() * body->GetMass() * GRAVITY_MUL);
 		}
 	}
 	
