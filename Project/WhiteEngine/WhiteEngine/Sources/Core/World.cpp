@@ -332,8 +332,6 @@ namespace World
 		Flyer->m_transform.SetPosition(glm::vec3(100, 100, 0));
 		Flyer->m_transform.SetScale(glm::vec3(50, 50, 1));
 
-		platform->m_transform.SetScale(glm::vec3(600, 20, 1));
-
 		//Add Physic
 		g_physicScene->SetLayerName("Player", Physic::Layer::PHYSIC_LAYER_1);
 		g_physicScene->SetLayerName("Enemy", Physic::Layer::PHYSIC_LAYER_2);
