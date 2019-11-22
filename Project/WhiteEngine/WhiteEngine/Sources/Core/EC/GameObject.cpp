@@ -9,3 +9,8 @@ void GameObject::SetActive(bool activestate) {
 bool GameObject::Active() {
 	return isActive;
 }
+
+GameObject::GameObject() 
+{
+	isActive = true;
+}

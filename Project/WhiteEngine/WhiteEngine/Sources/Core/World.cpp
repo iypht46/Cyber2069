@@ -11,6 +11,7 @@
 
 #include "EC/Components/FlyerBehaviour.hpp"
 #include "EC/Components/PlayerController.hpp"
+#include "EC/Components/MachineGunBullet.hpp"
 
 #include "EC/Components/Collider.hpp"
 #include "EC/Components/Rigidbody.hpp"
@@ -18,6 +19,8 @@
 #include "Factory.h"
 #include "Core/FactoryCollection.h"
 #include "Core/EC/GameObject.hpp"
+
+#include "Utility/ObjectPool.h"
 
 #include "Physic/PhysicScene.hpp"
 #include "Physic/Collision.hpp"
@@ -40,6 +43,8 @@ namespace World
 	//====================================
 	//TESTING ONLY, DON'T FORGET TO REMOVE
 	//====================================
+	ObjectPool* BulletPool;
+
 	GameObject* Rabbit;
 	GameObject* Bg;
 	GameObject* Child;
@@ -163,6 +168,8 @@ namespace World
 		Flyer = new GameObject();
 		platform = new GameObject();
 
+		BulletPool = new ObjectPool();
+
 		//Add Renderer
 
 		Bg->AddComponent<MeshRenderer>();
@@ -179,10 +186,6 @@ namespace World
 		Rabbit->AddComponent<MeshRenderer>();
 		Rabbit->GetComponent<MeshRenderer>()->CreateMesh(7, 5);
 		Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_PlayerBody_Vversion03.png");
-
-		Child->AddComponent<MeshRenderer>();
-		Child->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
-		Child->GetComponent<MeshRenderer>()->SetTexture("Sources/machinegun_shoot.png");
 
 		Child->m_transform.SetParent(&Rabbit->m_transform);
 
@@ -218,11 +221,17 @@ namespace World
 		Jumping->setEndPosition(3, 3);
 		Jumping->setSpeedMultiplier(1);
 
+		Animation* falling = new Animation();
+		falling->setStartPosition(3, 3);
+		falling->setEndPosition(3, 3);
+		falling->setSpeedMultiplier(1);
+
+
 		Idle->setLooping(true);
 		Running->setLooping(true);
-		Dashing->setLooping(true);
+		Dashing->setLooping(false);
 		Jumping->setLooping(false);
-		
+		falling->setLooping(false);
 
 		AnimationController* RabbitController = new AnimationController();
 		RabbitController->setSheetSize(glm::vec2(7, 5));
@@ -231,14 +240,36 @@ namespace World
 		RabbitController->AddState(Running);
 		RabbitController->AddState(Dashing);
 		RabbitController->AddState(Jumping);
+		RabbitController->AddState(falling);
 
 		Rabbit->AddComponent<Animator>();
 		Rabbit->GetComponent<Animator>()->AssignController(RabbitController);
 		Rabbit->GetComponent<Animator>()->setCurrentState(0);
 		Rabbit->GetComponent<Animator>()->setFramePerSec(12);
 
-		
-		
+		for (int i = 0; i < 100; i++) 
+		{
+			GameObject* Bullet = new GameObject();
+			Bullet->AddComponent<MeshRenderer>();
+			Bullet->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
+			Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/machinegun_bullet.png");
+
+			Bullet->AddComponent<Rigidbody>();
+			Bullet->GetComponent<Rigidbody>()->Init();
+
+			Bullet->AddComponent<MachineGunBullet>();
+			Bullet->GetComponent<MachineGunBullet>()->OnStart();
+
+			Bullet->m_transform.SetScale(glm::vec3(10, 10, 1));
+
+			Bullet->SetActive(false);
+			BulletPool->AddObject(Bullet);
+		}
+
+		Child->AddComponent<MeshRenderer>();
+		Child->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
+		Child->GetComponent<MeshRenderer>()->SetTexture("Sources/machinegun_shoot.png");
+
 		Fly = new Animation();
 		Fly->setStartPosition(0, 0);
 		Fly->setEndPosition(5, 0);
@@ -281,7 +312,7 @@ namespace World
 		g_physicScene->SetLayerCollisions("Player", "Enemy");
 		g_physicScene->SetLayerCollisions("Player", "Platform");
 
-		Rabbit->AddComponent<Rigidbody>()->Init(30, 50);
+		Rabbit->AddComponent<Rigidbody>()->Init(20, 20);
 		platform->m_transform.SetScale(glm::vec3(600, 20, 1));
 		platform->AddComponent<BoxCollider>()->Init(300, 10);
 		g_physicScene->Add(platform->GetComponent<BoxCollider>(), "Platform");
@@ -291,6 +322,7 @@ namespace World
 		//Behavior Script
 		Rabbit->AddComponent<PlayerController>();
 		Rabbit->GetComponent<PlayerController>()->OnStart();
+		Rabbit->GetComponent<PlayerController>()->assignPool(BulletPool);
 
 		Flyer->AddComponent<FlyerBehaviour>();
 		Flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
@@ -329,9 +361,17 @@ namespace World
 
 			FactoryCollection::FixedUpdateComponents(dt);
 
-			//Rabbit->GetComponent<Rigidbody>()->AddForce(glm::vec3(0.0f, -10.0f, 0.0f));
-			/*Rabbit->GetComponent<Rigidbody>()->UpdateTransform(dt);
-			Flyer->GetComponent<Rigidbody>()->UpdateTransform(dt);*/
+			/*Rabbit->GetComponent<Rigidbody>()->AddForce(glm::vec3(0.0f, -10.0f, 0.0f));
+			Rabbit->GetComponent<Rigidbody>()->UpdateTransform(dt);*/
+			Flyer->GetComponent<Rigidbody>()->UpdateTransform(dt);
+
+			for (int i = 0; i < Factory<MachineGunBullet>::getCollection().size(); i++) 
+			{
+				if (Factory<MachineGunBullet>::getCollection().at(i)->GetGameObject()->Active()) 
+				{
+					Factory<MachineGunBullet>::getCollection().at(i)->GetGameObject()->GetComponent<Rigidbody>()->UpdateTransform(dt);
+				}
+			}
 
 			g_physicScene->Update(c_targetDT);
 			//ENGINE_INFO("FixedUpdate: {}", dt
@@ -340,7 +380,7 @@ namespace World
 			{
 				ENGINE_INFO("Collided");
 			}*/
-			ENGINE_INFO("Velocity: {}, {}", Rabbit->GetComponent<Rigidbody>()->GetVelocity().x ,Rabbit->GetComponent<Rigidbody>()->GetVelocity().y);
+			//ENGINE_INFO("Velocity: {}, {}", Rabbit->GetComponent<Rigidbody>()->GetVelocity().x ,Rabbit->GetComponent<Rigidbody>()->GetVelocity().y);
 			accumulator -= c_targetDT;
 		}
 

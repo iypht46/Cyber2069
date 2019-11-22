@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "Core/EC/Components/MeshRenderer.hpp"
+#include "Core/EC/GameObject.hpp"
 
 using namespace std;
 
@@ -165,7 +166,11 @@ void GLRenderer::Render()
 	//--------Render Object Here--------
 
 	for (MeshRenderer *obj : Factory<MeshRenderer>::getCollection()) {
-		obj->Render(camera);
+		
+		if (obj->GetGameObject()->Active()) 
+		{
+			obj->Render(camera);
+		}
 	}
 
 	//test->Render(camera);
