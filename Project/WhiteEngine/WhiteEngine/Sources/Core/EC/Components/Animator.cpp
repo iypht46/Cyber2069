@@ -4,7 +4,8 @@
 
 Animator::Animator()
 {
-	tmpDelay = 0;
+	timeElapse = 0;
+	framePerSec = 12;
 	m_currentUVFrames = glm::vec2(0);
 }
 
@@ -24,22 +25,25 @@ void Animator::setCurrentState(int state) {
 	m_currentUVFrames = m_currentState->getStartPosition();
 }
 
-void Animator::animUpdate() 
+void Animator::animUpdate(float dt)
 {
 	if (m_currentUVFrames.x < m_currentState->getEndPosition().x)
 	{
-		tmpDelay++;
-		if (tmpDelay == 5) 
+		timeElapse += dt;
+		if (timeElapse > 1.0f / (framePerSec * m_currentState->getSpeedMultiplier()))
 		{
-			tmpDelay = 0;
+			timeElapse = 0;
 			m_currentUVFrames.x++;
 		}
 	}
-	else {
+	else if (m_currentState->isLooping()) {
 		m_currentUVFrames.x = m_currentState->getStartPosition().x;
 	}
 }
 
+void Animator::setFramePerSec(float frame) {
+	framePerSec = frame;
+}
 
 Animator::~Animator()
 {

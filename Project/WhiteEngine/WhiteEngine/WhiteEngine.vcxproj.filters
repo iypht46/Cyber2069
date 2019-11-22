@@ -21,6 +21,9 @@
     <ClInclude Include="Sources\Core\EC\Components\Transform.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Core\EC\Components\Rigidbody.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Sources\Core\EC\Components\MeshRenderer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -96,10 +99,13 @@
     <ClInclude Include="Sources\Core\EC\Components\Animator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Physic\Collision.hpp">
+    <ClInclude Include="Sources\Core\EC\Components\FlyerBehaviour.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Core\EC\Components\Rigidbody.hpp">
+    <ClInclude Include="Sources\Core\EC\Components\PlayerController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Core\EC\Components\SoundPlayer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -179,7 +185,16 @@
     <ClCompile Include="Sources\Core\EC\Components\Animator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Physic\Collision.cpp">
+    <ClCompile Include="Sources\Core\EC\Components\FlyerBehaviour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Core\EC\Components\BehaviourScript.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Core\EC\Components\PlayerController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Core\EC\Components\SoundPlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

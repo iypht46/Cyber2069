@@ -27,11 +27,18 @@
 		Transform* m_transform;
 	public:
 		//Rigidbody Interface
+		void Init(float, float);
+		Collider* GetCollider();
 		void Init(/*float, float*/);
 		void SetVelocity(glm::vec3);
+		glm::vec3 GetVelocity();
+		float GetGravityScale();
+		void SetGravityScale(float);
 		void AddForce(glm::vec3);
 		void AddRelativeForce(glm::vec3);
 		void UpdateTransform(float dt);
+		float GetInvMass(void);
+		float GetMass(void);
 		Rigidbody();
-		~Rigidbody() {};
+		~Rigidbody();
 	};

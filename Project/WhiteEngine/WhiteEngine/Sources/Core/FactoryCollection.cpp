@@ -8,22 +8,32 @@
 #include "EC/Components/Rigidbody.hpp"
 #include "EC/Components/Transform.hpp"
 #include "EC/Components/BehaviourScript.h"
+#include "EC/Components/FlyerBehaviour.hpp"
+#include "EC/Components/PlayerController.hpp"
 
-void FactoryCollection::FixedUpdateComponents(float dt) {
-	//update animator
-	for (Animator* anim : Factory<Animator>::getCollection()) {
-		anim->animUpdate();
+#include "Core/Logger.hpp"
+
+namespace FactoryCollection {
+
+	void FixedUpdateComponents(float dt) {
+		//update animator
+		for (Animator* anim : Factory<Animator>::getCollection()) {
+			anim->animUpdate(dt);
+		}
+
+		//update behaviour script
+		for (FlyerBehaviour* behaviour : Factory<FlyerBehaviour>::getCollection()) {
+			behaviour->OnFixedUpdate(dt);
+		}
 	}
 
-	//update behaviour script
-	for (BehaviourScript* behaviour : Factory<BehaviourScript>::getCollection()) {
-		behaviour->OnFixedUpdate(dt);
-	}
-}
+	void UpdateComponents(float dt) {
+		//update behaviour script
+		for (FlyerBehaviour* behaviour : Factory<FlyerBehaviour>::getCollection()) {
+			behaviour->OnUpdate(dt);
+		}
 
-void FactoryCollection::UpdateComponents(float dt) {
-	//update behaviour script
-	for (BehaviourScript* behaviour : Factory<BehaviourScript>::getCollection()) {
-		behaviour->OnUpdate(dt);
+		Factory<PlayerController>::getCollection().at(0)->OnUpdate(dt);
+
 	}
 }

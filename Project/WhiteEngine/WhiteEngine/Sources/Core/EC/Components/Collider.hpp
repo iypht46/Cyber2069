@@ -14,19 +14,25 @@
 
 	class Rigidbody;
 	class Transform;
+	namespace Physic
+	{
+		struct AABB;
+	}
 
 	class Collider : public Component
 	{
 	protected:
-		Transform* m_transform;
-		Rigidbody* m_rigidbody;
+		
+		
 
 		ColliderType m_colliderType;
 		bool m_isStatic = true;
 		bool m_isTrigger;
 		float m_density;
 	public:
-		
+		Transform* m_transform;
+		Rigidbody* m_rigidbody;
+
 		//Constructor
 		Collider(ColliderType col) 
 			: m_colliderType(col), m_density(1.0f) {}
@@ -48,16 +54,19 @@
 	{
 		friend class Rigidbody;
 	private:
-		float m_width;
-		float m_height;
+		float m_halfWidth;
+		float m_halfHeight;
+		glm::vec3 m_colliderScale; //Scale multiplier in halfwidth and halfheight
 	public:
 		//Constructor
 		BoxCollider() : Collider(ColliderType::BOX) {}
 		void Init(float, float);
 		void Init(float, float, Rigidbody*);
+		void ComputeAABB(Physic::AABB&);
 
 		//Box Collider Interface
 		virtual void ComputeMass();
+		virtual glm::vec3 GetColliderScale();
 		//virtual void Update(float) const;
 	};
 

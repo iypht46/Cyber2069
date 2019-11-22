@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{F777A932-80C9-4398-820F-FCA0F950097D}</ProjectGuid>
     <RootNamespace>WhiteEngine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -122,8 +122,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Sources\Physic\Collision.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\BehaviourScript.h" />
+    <ClInclude Include="Sources\Core\EC\Components\FlyerBehaviour.hpp" />
+    <ClInclude Include="Sources\Core\EC\Components\PlayerController.hpp" />
+    <ClInclude Include="Sources\Core\EC\Components\SoundPlayer.hpp" />
     <ClInclude Include="Sources\Physic\PhysicScene.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\Collider.hpp" />
     <ClInclude Include="Sources\Core\Factory.h" />
@@ -153,7 +155,10 @@
     <ClInclude Include="Sources\Input\Input.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Sources\Physic\Collision.cpp" />
+    <ClCompile Include="Sources\Core\EC\Components\BehaviourScript.cpp" />
+    <ClCompile Include="Sources\Core\EC\Components\FlyerBehaviour.cpp" />
+    <ClCompile Include="Sources\Core\EC\Components\PlayerController.cpp" />
+    <ClCompile Include="Sources\Core\EC\Components\SoundPlayer.cpp" />
     <ClCompile Include="Sources\Physic\PhysicScene.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Collider.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Rigidbody.cpp" />
