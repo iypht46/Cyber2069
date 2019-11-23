@@ -71,7 +71,7 @@ namespace World
 	int rand_WS;
 
 	float parlx1 = 0.3f;
-	float parlx2 = 0.2f;
+	float parlx2 = 0.5f;
 
 #define MOVE_SPEED 300.0f
 #define MOVE_SPEED_ENEM 100.0f
@@ -351,6 +351,7 @@ namespace World
 		//g_physicScene->SetLayerCollisions("Player", "Enemy");
 		g_physicScene->SetLayerCollisions("Player", "Platform");
 		Rabbit->AddComponent<Rigidbody>()->Init(20, 20);
+		Rabbit->GetComponent<Rigidbody>()->SetDrag(0.01f);
 
 		Flyer->AddComponent<Rigidbody>()->Init(10,10);
 		Flyer->GetComponent<BoxCollider>()->SetTrigger(true);
@@ -416,8 +417,8 @@ namespace World
 	void FixedUpdate(float dt)
 	{
 
-		Bg1->m_transform.SetPosition(Graphic::getCamera()->m_position*parlx1);
-		Bg2->m_transform.SetPosition(Graphic::getCamera()->m_position*parlx2);
+		Bg1->m_transform.SetPosition(Graphic::getCamera()->m_position * parlx1);
+		Bg2->m_transform.SetPosition(Graphic::getCamera()->m_position * parlx2);
 
 		//Update Physics Scene
 		static float accumulator = 0.0f;
@@ -452,6 +453,7 @@ namespace World
 			accumulator -= c_targetDT;
 		}
 
+		//ENGINE_INFO()
 		//cout << Rabbit->m_transform.GetPosition().y << endl;
 
 		/*Factory<GameObject>::Create();
