@@ -21,6 +21,7 @@ public:
 	void DeleteSoundPlayer();
 	void SetLoop(bool loop);
 	void UpdateVolume();
+	void SetVolume(float value);
 	void IncreaseVolume();
 	void DecreaseVolume();
 };

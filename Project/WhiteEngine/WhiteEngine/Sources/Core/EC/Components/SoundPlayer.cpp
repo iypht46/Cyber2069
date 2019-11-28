@@ -34,6 +34,10 @@ void SoundPlayer::UpdateVolume() {
 	soundVolume->setVolume(volumeValue);
 }
 
+void SoundPlayer::SetVolume(float value) {
+	volumeValue = value;
+}
+
 void SoundPlayer::IncreaseVolume() {
 	if (volumeValue == 1) {
 		volumeValue += 0;
