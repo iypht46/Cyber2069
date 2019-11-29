@@ -11,6 +11,7 @@
 #include "EC/Components/FlyerBehaviour.hpp"
 #include "EC/Components/PlayerController.hpp"
 #include "EC/Components/MachineGunBullet.hpp"
+#include "EC/Components/EnemySpawner.hpp"
 
 #include "Core/Logger.hpp"
 
@@ -30,6 +31,10 @@ namespace FactoryCollection {
 
 	void UpdateComponents(float dt) {
 		//update behaviour script
+		for (EnemySpawner* behaviour : Factory<EnemySpawner>::getCollection()) {
+			behaviour->OnUpdate(dt);
+		}
+
 		for (FlyerBehaviour* behaviour : Factory<FlyerBehaviour>::getCollection()) {
 			behaviour->OnUpdate(dt);
 		}

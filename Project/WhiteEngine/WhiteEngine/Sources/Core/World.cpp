@@ -13,6 +13,7 @@
 #include "EC/Components/FlyerBehaviour.hpp"
 #include "EC/Components/PlayerController.hpp"
 #include "EC/Components/MachineGunBullet.hpp"
+#include "EC/Components/EnemySpawner.hpp"
 
 #include "EC/Components/Collider.hpp"
 #include "EC/Components/Rigidbody.hpp"
@@ -45,6 +46,7 @@ namespace World
 	//TESTING ONLY, DON'T FORGET TO REMOVE v
 	//======================================
 	ObjectPool* BulletPool;
+	ObjectPool* FlyerPool;
 
 	GameObject* title;
 	GameObject* Rabbit;
@@ -55,6 +57,7 @@ namespace World
 	GameObject** platform;
 
 	GameObject* Enemy;
+	GameObject* Spawner;
 
 	Animation* Fly;
 	AnimationController* EnemCon;
@@ -188,7 +191,10 @@ namespace World
 		Flyer = new GameObject();
 		platform = new GameObject*[platformNum];
 
+		Spawner = new GameObject();
+
 		BulletPool = new ObjectPool();
+		FlyerPool = new ObjectPool();
 
 		//Add Renderer
 
@@ -287,6 +293,22 @@ namespace World
 		Rabbit->GetComponent<Animator>()->setCurrentState(0);
 		Rabbit->GetComponent<Animator>()->setFramePerSec(12);
 
+		Fly = new Animation();
+		Fly->setStartPosition(0, 0);
+		Fly->setEndPosition(5, 0);
+		Fly->setSpeedMultiplier(3);
+		Fly->setLooping(true);
+
+		EnemCon = new AnimationController();
+
+		EnemCon->setSheetSize(glm::vec2(6, 1));
+		EnemCon->AddState(Fly);
+
+		Flyer->AddComponent<Animator>();
+		Flyer->GetComponent<Animator>()->AssignController(EnemCon);
+		Flyer->GetComponent<Animator>()->setCurrentState(0);
+		Flyer->GetComponent<Animator>()->setFramePerSec(12);
+
 		for (int i = 0; i < 100; i++)
 		{
 			GameObject* Bullet = new GameObject();
@@ -309,22 +331,6 @@ namespace World
 		Child->AddComponent<MeshRenderer>();
 		Child->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
 		Child->GetComponent<MeshRenderer>()->SetTexture("Sources/machinegun_shoot.png");
-
-		Fly = new Animation();
-		Fly->setStartPosition(0, 0);
-		Fly->setEndPosition(5, 0);
-		Fly->setSpeedMultiplier(3);
-		Fly->setLooping(true);
-
-		EnemCon = new AnimationController();
-
-		EnemCon->setSheetSize(glm::vec2(6, 1));
-		EnemCon->AddState(Fly);
-
-		Flyer->AddComponent<Animator>();
-		Flyer->GetComponent<Animator>()->AssignController(EnemCon);
-		Flyer->GetComponent<Animator>()->setCurrentState(0);
-		Flyer->GetComponent<Animator>()->setFramePerSec(12);
 		//std::cout << "Layer Collision: " << g_physicScene->GetLayerCollisions("Player") << std::endl;
 
 
@@ -368,6 +374,37 @@ namespace World
 		Flyer->AddComponent<FlyerBehaviour>();
 		Flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
 		Flyer->GetComponent<FlyerBehaviour>()->SetGameObject(Flyer);
+
+		for (int i = 0; i < 100; i++)
+		{
+			GameObject* flyer = new GameObject();
+			flyer->AddComponent<MeshRenderer>();
+			flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
+			flyer->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_Enemy_Flyer_Vversion01.png");
+
+			flyer->AddComponent<Rigidbody>();
+			flyer->GetComponent<Rigidbody>()->Init();
+
+			g_physicScene->Add(flyer->GetComponent<Rigidbody>());
+
+			flyer->AddComponent<FlyerBehaviour>();
+			flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
+			flyer->GetComponent<FlyerBehaviour>()->SetGameObject(flyer);
+
+			flyer->AddComponent<Animator>();
+			flyer->GetComponent<Animator>()->AssignController(EnemCon);
+			flyer->GetComponent<Animator>()->setCurrentState(0);
+			flyer->GetComponent<Animator>()->setFramePerSec(12);
+
+			flyer->m_transform.SetScale(glm::vec3(50, 50, 1));
+
+			flyer->SetActive(false);
+			FlyerPool->AddObject(flyer);
+		}
+
+		Spawner->AddComponent<EnemySpawner>();
+		Spawner->GetComponent<EnemySpawner>()->OnStart();
+		Spawner->GetComponent<EnemySpawner>()->assignPool(FlyerPool);
 
 		for (int i = 0; i < platformNum; i++)
 		{
