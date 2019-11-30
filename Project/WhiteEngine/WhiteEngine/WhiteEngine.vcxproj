@@ -127,6 +127,7 @@
     <ClInclude Include="Sources\Core\EC\Components\MachineGunBullet.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\PlayerController.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\SoundPlayer.hpp" />
+    <ClInclude Include="Sources\Core\EC\UI Components\Button.hpp" />
     <ClInclude Include="Sources\Physic\Collision.hpp" />
     <ClInclude Include="Sources\Physic\PhysicScene.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\Collider.hpp" />
@@ -163,6 +164,7 @@
     <ClCompile Include="Sources\Core\EC\Components\MachineGunBullet.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\PlayerController.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\SoundPlayer.cpp" />
+    <ClCompile Include="Sources\Core\EC\UI Components\Button.cpp" />
     <ClCompile Include="Sources\Physic\Collision.cpp" />
     <ClCompile Include="Sources\Physic\PhysicScene.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Collider.cpp" />
