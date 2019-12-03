@@ -444,9 +444,10 @@ namespace World
 		//Add Sound
 		Bg2->AddComponent<SoundPlayer>();
 		Bg2->GetComponent<SoundPlayer>()->CreateSoundPlayer();
-		Bg2->GetComponent<SoundPlayer>()->SetSound("Sources/testMusic.mp3");
+		Bg2->GetComponent<SoundPlayer>()->SetSound("Sources/BGMPrototype.mp3");
 		Bg2->GetComponent<SoundPlayer>()->SetLoop(true);
-		//Bg2->GetComponent<SoundPlayer>()->PlaySound();
+		Bg2->GetComponent<SoundPlayer>()->SetVolume(0.5);
+		Bg2->GetComponent<SoundPlayer>()->PlaySound();
 		//Bg->GetComponent<SoundPlayer>()->DeleteSoundPlayer();
 
 	}
@@ -503,7 +504,7 @@ namespace World
 	void Update(float dt)
 	{
 		//update sound
-		//Bg2->GetComponent<SoundPlayer>()->SetVolume();
+		Bg2->GetComponent<SoundPlayer>()->UpdateVolume();
 
 		//Update All Systems
 		//Update Input
