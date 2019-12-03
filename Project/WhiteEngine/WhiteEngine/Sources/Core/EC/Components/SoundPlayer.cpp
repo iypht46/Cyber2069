@@ -30,8 +30,12 @@ void SoundPlayer::SetLoop(bool loop) {
 	isLooping = loop;
 }
 
-void SoundPlayer::SetVolume() {
+void SoundPlayer::UpdateVolume() {
 	soundVolume->setVolume(volumeValue);
+}
+
+void SoundPlayer::SetVolume(float value) {
+	volumeValue = value;
 }
 
 void SoundPlayer::IncreaseVolume() {
