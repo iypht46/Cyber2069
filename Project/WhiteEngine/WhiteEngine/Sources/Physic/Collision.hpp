@@ -12,7 +12,13 @@ namespace Physic
 		glm::vec2 m_max;
 	};
 
+	struct Collision
+	{
+		Collider* m_collider;
+		Collider* m_otherCollider;
 
+		Collision(Collider* col, Collider* otherCol);
+	};
 
 	struct Manifold
 	{

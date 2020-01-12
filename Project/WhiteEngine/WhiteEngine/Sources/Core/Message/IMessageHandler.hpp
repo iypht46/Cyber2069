@@ -16,5 +16,7 @@ namespace Core
 		//Handle Message for each type
 		virtual void HandleMessage(const TestMessage&) {}
 		virtual void HandleMessage(const GameCloseMessage&) {}
+		virtual void HandleMessage(const Trigger&) {}
+		virtual void HandleMessage(const Collision&) {}
 	};
 }

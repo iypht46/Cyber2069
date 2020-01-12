@@ -71,6 +71,9 @@ namespace Physic
 		return true;
 	}
 
+	Collision::Collision(Collider* col, Collider* otherCol)
+		: m_collider(col), m_otherCollider(otherCol) {}
+
 	bool Manifold::CheckCollision()
 	{
 		if (m_objectA && m_objectB)

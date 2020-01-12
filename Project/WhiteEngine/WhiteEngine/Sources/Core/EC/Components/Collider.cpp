@@ -96,6 +96,16 @@
 		return m_colliderScale;
 	}
 
+	void BoxCollider::HandleMessage(const Core::Collision&)
+	{
+		//TODO: Call all OnCollisionStart/Exit for every script
+	}
+
+	void BoxCollider::HandleMessage(const Core::Trigger&)
+	{
+		//TODO: Call all OnTriggerStart/Exit for every script
+	}
+
 	//////////////Circle Collider///////////
 
 
