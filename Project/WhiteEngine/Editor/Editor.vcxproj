@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{62278D15-0704-44AA-B5A8-63564100A3E3}</ProjectGuid>
     <RootNamespace>Editor</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -84,12 +84,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)WhiteEngine\Sources;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\GIT\Cyber2069\Project\WhiteEngine\Editor\Vendors\imgui\examples;D:\GIT\Cyber2069\Project\WhiteEngine\Editor\Vendors\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>D:\GIT\Cyber2069\Project\WhiteEngine\bin\Debug-Win32\WhiteEngine;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>WhiteEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>NotSet</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -140,10 +140,18 @@
   <ItemGroup>
     <ClInclude Include="Sources\Editor.hpp" />
     <ClInclude Include="Sources\PrefabEditor.h" />
+    <ClInclude Include="Vendors\imgui\imconfig.h" />
+    <ClInclude Include="Vendors\imgui\imgui_internal.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Sources\Editor.cpp" />
+    <ClCompile Include="Vendors\imgui\examples\imgui_impl_glfw.cpp" />
+    <ClCompile Include="Vendors\imgui\examples\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Vendors\imgui\imgui.cpp" />
+    <ClCompile Include="Vendors\imgui\imgui_demo.cpp" />
+    <ClCompile Include="Vendors\imgui\imgui_draw.cpp" />
+    <ClCompile Include="Vendors\imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

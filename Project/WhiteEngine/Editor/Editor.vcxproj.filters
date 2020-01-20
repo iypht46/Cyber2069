@@ -21,6 +21,12 @@
     <ClInclude Include="Sources\PrefabEditor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Vendors\imgui\imgui_internal.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vendors\imgui\imconfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\Editor.cpp">
@@ -28,6 +34,24 @@
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vendors\imgui\imgui.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vendors\imgui\examples\imgui_impl_glfw.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vendors\imgui\examples\imgui_impl_opengl3.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vendors\imgui\imgui_demo.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vendors\imgui\imgui_draw.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vendors\imgui\imgui_widgets.cpp">
+      <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -92,10 +92,10 @@ namespace Graphic
 
 		void window_close_callback(GLFWwindow* window)
 		{
-			SetWindowShouldClose(true);
-
 			//TODO: Remove this later and use message system instead
 			World::GameInfo::GetInstance().GameShouldClose();
+
+			SetWindowShouldClose(true);
 		}
 
 		void Init(const char* title, WindowMode mode)

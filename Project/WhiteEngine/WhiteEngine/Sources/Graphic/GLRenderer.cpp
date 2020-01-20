@@ -239,6 +239,11 @@ void GLRenderer::SetClearColor(float r, float g, float b)
 	glClearColor(r, g, b, 1.0);
 }
 
+void GLRenderer::SetClearColor(float r, float g, float b, float w)
+{
+	glClearColor(r, g, b, w);
+}
+
 glm::mat4 GLRenderer::GetprojectionMatrix() 
 {
 	return projectionMatrix;

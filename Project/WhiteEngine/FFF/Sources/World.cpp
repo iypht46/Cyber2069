@@ -538,6 +538,7 @@ namespace World
 			if (Input::GetKeyDown(Input::KeyCode::KEY_ESCAPE))
 			{
 				g_gameInfo->GameShouldClose();
+				Graphic::Window::SetWindowShouldClose(true);
 			}
 
 			g_gameInfo->EndFrame();
