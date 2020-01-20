@@ -1,9 +1,9 @@
 #pragma once
 
 #include "BehaviourScript.h"
-#include "Transform.hpp"
-#include "Rigidbody.hpp"
-#include "../GameObject.hpp"
+#include "Core/EC/Components/Transform.hpp"
+#include "Core/EC/Components/Rigidbody.hpp"
+#include "Core/EC/GameObject.hpp"
 #include "Utility/ObjectPool.h"
 
 #include "Graphic/Camera.hpp"

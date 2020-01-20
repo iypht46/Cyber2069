@@ -1,25 +1,25 @@
 //System Headers
-#include "Core/World.hpp"
+#include "World.hpp"
 
 #include "Graphic/GraphicCore.hpp"
 #include "Graphic/Camera.hpp"
 #include "Core/GameInfo.h"
 #include "Core/Logger.hpp"
 #include "Input/Input.hpp"
-#include "EC/Components/Animator.hpp"
-#include "EC/Components/MeshRenderer.hpp"
-#include "EC/Components/SoundPlayer.hpp"
+#include "Core/EC/Components/Animator.hpp"
+#include "Core/EC/Components/MeshRenderer.hpp"
+#include "Core/EC/Components/SoundPlayer.hpp"
 
-#include "EC/Components/FlyerBehaviour.hpp"
-#include "EC/Components/PlayerController.hpp"
-#include "EC/Components/MachineGunBullet.hpp"
-#include "EC/Components/EnemySpawner.hpp"
+#include "FlyerBehaviour.hpp"
+#include "PlayerController.hpp"
+#include "MachineGunBullet.hpp"
+#include "EnemySpawner.hpp"
 
-#include "EC/Components/Collider.hpp"
-#include "EC/Components/Rigidbody.hpp"
+#include "Core/EC/Components/Collider.hpp"
+#include "Core/EC/Components/Rigidbody.hpp"
 
-#include "Factory.h"
-#include "Core/FactoryCollection.h"
+#include "Core/Factory.h"
+#include "FactoryCollection.h"
 #include "Core/EC/GameObject.hpp"
 
 #include "Utility/ObjectPool.h"
@@ -200,7 +200,7 @@ namespace World
 
 		title->AddComponent<MeshRenderer>();
 		title->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-		title->GetComponent<MeshRenderer>()->SetTexture("Sources/mockup_title.jpg");
+		title->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/mockup_title.jpg");
 
 		title->m_transform.SetScale(glm::vec3(Graphic::Window::GetWidth(), Graphic::Window::GetHeight(), 1.0f));
 
@@ -218,11 +218,11 @@ namespace World
 
 		Bg2->AddComponent<MeshRenderer>();
 		Bg2->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-		Bg2->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_Background_Layer2.png");
+		Bg2->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer2.png");
 
 		Bg1->AddComponent<MeshRenderer>();
 		Bg1->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-		Bg1->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_Background_Layer1.png");
+		Bg1->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer1.png");
 
 		Bg2->m_transform.SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
 		Bg1->m_transform.SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
@@ -232,13 +232,13 @@ namespace World
 
 		Rabbit->AddComponent<MeshRenderer>();
 		Rabbit->GetComponent<MeshRenderer>()->CreateMesh(7, 5);
-		Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_PlayerBody_Vversion03.png");
+		Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_PlayerBody_Vversion03.png");
 
 		Child->m_transform.SetParent(&Rabbit->m_transform);
 
 		Flyer->AddComponent<MeshRenderer>();
 		Flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
-		Flyer->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_Enemy_Flyer_Vversion01.png");
+		Flyer->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Flyer_Vversion01.png");
 
 
 
@@ -314,7 +314,7 @@ namespace World
 			GameObject* Bullet = new GameObject();
 			Bullet->AddComponent<MeshRenderer>();
 			Bullet->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
-			Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/machinegun_bullet.png");
+			Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_bullet.png");
 
 			Bullet->AddComponent<Rigidbody>();
 			Bullet->GetComponent<Rigidbody>()->Init();
@@ -330,7 +330,7 @@ namespace World
 
 		Child->AddComponent<MeshRenderer>();
 		Child->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
-		Child->GetComponent<MeshRenderer>()->SetTexture("Sources/machinegun_shoot.png");
+		Child->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_shoot.png");
 		//std::cout << "Layer Collision: " << g_physicScene->GetLayerCollisions("Player") << std::endl;
 
 
@@ -380,7 +380,7 @@ namespace World
 			GameObject* flyer = new GameObject();
 			flyer->AddComponent<MeshRenderer>();
 			flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
-			flyer->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_Enemy_Flyer_Vversion01.png");
+			flyer->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Flyer_Vversion01.png");
 
 			flyer->AddComponent<Rigidbody>();
 			flyer->GetComponent<Rigidbody>()->Init();
@@ -411,7 +411,7 @@ namespace World
 			platform[i] = new GameObject();
 			platform[i]->AddComponent<MeshRenderer>();
 			platform[i]->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			platform[i]->GetComponent<MeshRenderer>()->SetTexture("Sources/platform01.png");
+			platform[i]->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
 			platform[i]->m_transform.SetScale(glm::vec3(400, 20, 1));
 			platform[i]->AddComponent<BoxCollider>()->Init(180, 5);
 			g_physicScene->Add(platform[i]->GetComponent<BoxCollider>(), "Platform");
@@ -444,7 +444,7 @@ namespace World
 		//Add Sound
 		Bg2->AddComponent<SoundPlayer>();
 		Bg2->GetComponent<SoundPlayer>()->CreateSoundPlayer();
-		Bg2->GetComponent<SoundPlayer>()->SetSound("Sources/BGMPrototype.mp3");
+		Bg2->GetComponent<SoundPlayer>()->SetSound("Sources/Assets/BGMPrototype.mp3");
 		Bg2->GetComponent<SoundPlayer>()->SetLoop(true);
 		Bg2->GetComponent<SoundPlayer>()->SetVolume(0.5);
 		Bg2->GetComponent<SoundPlayer>()->PlaySound();
@@ -499,7 +499,6 @@ namespace World
 		a.back()->AddComponent<MeshRenderer>();
 		std::cout << Factory<MeshRenderer>::getCollection().size() << std::endl;*/
 	}
-
 
 	void Update(float dt)
 	{

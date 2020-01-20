@@ -22,17 +22,17 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{F777A932-80C9-4398-820F-FCA0F950097D}</ProjectGuid>
     <RootNamespace>WhiteEngine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -74,6 +74,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)bin-int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
     <IntDir>$(SolutionDir)bin-int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
   </PropertyGroup>
@@ -122,17 +126,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Sources\Core\EC\Components\BehaviourScript.h" />
-    <ClInclude Include="Sources\Core\EC\Components\EnemySpawner.hpp" />
-    <ClInclude Include="Sources\Core\EC\Components\FlyerBehaviour.hpp" />
-    <ClInclude Include="Sources\Core\EC\Components\MachineGunBullet.hpp" />
-    <ClInclude Include="Sources\Core\EC\Components\PlayerController.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\SoundPlayer.hpp" />
     <ClInclude Include="Sources\Physic\Collision.hpp" />
     <ClInclude Include="Sources\Physic\PhysicScene.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\Collider.hpp" />
     <ClInclude Include="Sources\Core\Factory.h" />
-    <ClInclude Include="Sources\Core\FactoryCollection.h" />
     <ClInclude Include="Sources\Core\Logger.hpp" />
     <ClInclude Include="Sources\Core\Animator\AnimationController.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\Animator.hpp" />
@@ -147,7 +145,6 @@
     <ClInclude Include="Sources\Core\Message\Message.hpp" />
     <ClInclude Include="Sources\Core\Message\MessageObjects.hpp" />
     <ClInclude Include="Sources\Core\Message\MessageType.hpp" />
-    <ClInclude Include="Sources\Core\World.hpp" />
     <ClInclude Include="Sources\Graphic\Camera.hpp" />
     <ClInclude Include="Sources\Graphic\GLRenderer.h" />
     <ClInclude Include="Sources\Graphic\GraphicCore.hpp" />
@@ -159,17 +156,11 @@
     <ClInclude Include="Sources\Utility\ObjectPool.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Sources\Core\EC\Components\BehaviourScript.cpp" />
-    <ClCompile Include="Sources\Core\EC\Components\EnemySpawner.cpp" />
-    <ClCompile Include="Sources\Core\EC\Components\FlyerBehaviour.cpp" />
-    <ClCompile Include="Sources\Core\EC\Components\MachineGunBullet.cpp" />
-    <ClCompile Include="Sources\Core\EC\Components\PlayerController.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\SoundPlayer.cpp" />
     <ClCompile Include="Sources\Physic\Collision.cpp" />
     <ClCompile Include="Sources\Physic\PhysicScene.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Collider.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Rigidbody.cpp" />
-    <ClCompile Include="Sources\Core\FactoryCollection.cpp" />
     <ClCompile Include="Sources\Core\Logger.cpp" />
     <ClCompile Include="Sources\Core\Animator\AnimationController.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Animator.cpp" />
@@ -181,7 +172,6 @@
     <ClCompile Include="Sources\Core\GameInfo.cpp" />
     <ClCompile Include="Sources\Core\Message\IMessageHandler.cpp" />
     <ClCompile Include="Sources\Core\Message\MessageObjects.cpp" />
-    <ClCompile Include="Sources\Core\World.cpp" />
     <ClCompile Include="Sources\Graphic\Camera.cpp" />
     <ClCompile Include="Sources\Graphic\GLRenderer.cpp" />
     <ClCompile Include="Sources\Graphic\GraphicCore.cpp" />
@@ -190,7 +180,6 @@
     <ClCompile Include="Sources\Graphic\SquareMeshVbo.cpp" />
     <ClCompile Include="Sources\Graphic\Window.cpp" />
     <ClCompile Include="Sources\Input\Input.cpp" />
-    <ClCompile Include="Sources\main.cpp" />
     <ClCompile Include="Sources\Utility\ObjectPool.cpp" />
   </ItemGroup>
   <ItemGroup>

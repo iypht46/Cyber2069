@@ -1,8 +1,8 @@
 #pragma once
 #include "BehaviourScript.h"
-#include "Transform.hpp"
-#include "Rigidbody.hpp"
-#include "../GameObject.hpp"
+#include "Core/EC/Components/Transform.hpp"
+#include "Core/EC/Components/Rigidbody.hpp"
+#include "Core/EC/GameObject.hpp"
 
 #include "Graphic/Camera.hpp"
 #include "Graphic/Window.hpp"

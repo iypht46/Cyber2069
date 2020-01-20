@@ -1,10 +1,10 @@
 #pragma once
 #include "BehaviourScript.h"
-#include "Transform.hpp"
-#include "Rigidbody.hpp"
-#include "Animator.hpp"
+#include "Core/EC/Components/Transform.hpp"
+#include "Core/EC/Components/Rigidbody.hpp"
+#include "Core/EC/Components/Animator.hpp"
 #include "Input/Input.hpp"
-#include "../GameObject.hpp"
+#include "Core/EC/GameObject.hpp"
 
 #include "Utility/ObjectPool.h"
 

@@ -1,5 +1,5 @@
 #include "BehaviourScript.h"
-#include "../../Factory.h"
+#include "Core/Factory.h"
 
 BehaviourScript::BehaviourScript() {
 	Factory<BehaviourScript>::Add(this);

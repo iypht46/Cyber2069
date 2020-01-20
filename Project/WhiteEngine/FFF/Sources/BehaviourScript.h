@@ -1,5 +1,6 @@
 #pragma once
-#include "Component.hpp"
+#include "Core/EC/Components/Component.hpp"
+
 class BehaviourScript :public Component {
 public:
 	BehaviourScript();

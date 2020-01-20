@@ -1,4 +1,4 @@
-#include "Core/World.hpp"
+#include "World.hpp"
 
 int main(int argc, char * argv[])
 {

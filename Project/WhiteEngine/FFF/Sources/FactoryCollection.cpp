@@ -1,17 +1,18 @@
 #include "FactoryCollection.h"
 
-#include "Factory.h"
+#include "Core/Factory.h"
 
 //essential component
-#include "EC/Components/Animator.hpp"
-#include "EC/Components/MeshRenderer.hpp"
-#include "EC/Components/Rigidbody.hpp"
-#include "EC/Components/Transform.hpp"
-#include "EC/Components/BehaviourScript.h"
-#include "EC/Components/FlyerBehaviour.hpp"
-#include "EC/Components/PlayerController.hpp"
-#include "EC/Components/MachineGunBullet.hpp"
-#include "EC/Components/EnemySpawner.hpp"
+#include "Core/EC/Components/Animator.hpp"
+#include "Core/EC/Components/MeshRenderer.hpp"
+#include "Core/EC/Components/Rigidbody.hpp"
+#include "Core/EC/Components/Transform.hpp"
+
+#include "BehaviourScript.h"
+#include "FlyerBehaviour.hpp"
+#include "PlayerController.hpp"
+#include "MachineGunBullet.hpp"
+#include "EnemySpawner.hpp"
 
 #include "Core/Logger.hpp"
 
