@@ -84,7 +84,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\GIT\Cyber2069\Project\WhiteEngine\Editor\Vendors\imgui\examples;D:\GIT\Cyber2069\Project\WhiteEngine\Editor\Vendors\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\GIT\Cyber2069\Project\WhiteEngine\Editor\Vendors\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>D:\GIT\Cyber2069\Project\WhiteEngine\bin\Debug-Win32\WhiteEngine;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -139,19 +139,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Editor.hpp" />
-    <ClInclude Include="Sources\PrefabEditor.h" />
+    <ClInclude Include="Sources\PrefabEditor.hpp" />
+    <ClInclude Include="Sources\UIWindow.hpp" />
     <ClInclude Include="Vendors\imgui\imconfig.h" />
-    <ClInclude Include="Vendors\imgui\imgui_internal.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\ImGuiBuild.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Sources\Editor.cpp" />
-    <ClCompile Include="Vendors\imgui\examples\imgui_impl_glfw.cpp" />
-    <ClCompile Include="Vendors\imgui\examples\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="Vendors\imgui\imgui.cpp" />
-    <ClCompile Include="Vendors\imgui\imgui_demo.cpp" />
-    <ClCompile Include="Vendors\imgui\imgui_draw.cpp" />
-    <ClCompile Include="Vendors\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Sources\PrefabEditor.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

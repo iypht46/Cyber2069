@@ -5,13 +5,11 @@ namespace Tools
 	class Editor
 	{
 	public:
-		void Init(void);
+		virtual void Init(void) = 0;
 
-		void Loop(void);
+		virtual void Update(void) = 0;
 
-		void Update(float dt);
-
-		void Terminate(void);
+		virtual void Terminate(void) = 0;
 	};
 
 	void Init(void);
