@@ -6,20 +6,33 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <set>
 #include "glm/glm.hpp"
 #include "SDL_surface.h"
 #include "SDL_image.h"
 #include "Graphic/SquareMeshVbo.h"
 
-//#include "Core/EC/Components/MeshRenderer.hpp"
+#include "Core/EC/Components/MeshRenderer.hpp"
 
 using namespace std;
+
+#ifndef LAYERCOMP
+#define LAYERCOMP
+struct LayerComparator
+{
+	bool operator()(const MeshRenderer* lhs, const MeshRenderer* rhs)
+	{
+		return lhs->layer < rhs->layer;
+	}
+};
+#endif
 
 class GLRenderer
 {
 protected:
 	static GLRenderer * instance;
-
+	multiset <MeshRenderer*, LayerComparator > MeshSet;
+	
 	GLRenderer(int w, int h);
 
 	int winWidth;
@@ -54,6 +67,8 @@ public:
 	void SetOrthoProjection(float left, float right, float bottom, float top);
 	void SetViewPort(int x, int y, int w, int h);
 	void SetClearColor(float r, float g, float b);
+
+	void AddMeshToSet(MeshRenderer* mesh);
 
 	glm::mat4 GetprojectionMatrix();
 

@@ -4,8 +4,21 @@
 #include "Graphic/Camera.hpp"
 #include "Core/EC/GameObject.hpp"
 
+
+//bool operator < (const MeshRenderer &m1, const MeshRenderer &m2)
+//{
+//	return m1.layer < m2.layer;
+//}
+
 MeshRenderer::MeshRenderer() 
 {
+	isUI = false;
+	
+	/*mesh = new SquareMeshVbo();
+	mesh->LoadData(1, 1);*/
+
+	//this->layer = 0;
+	//GLRenderer::GetInstance()->AddMeshToSet(this);
 }
 
 MeshRenderer::~MeshRenderer()
@@ -27,6 +40,28 @@ MeshRenderer::MeshRenderer(std::string texture_path,float NumframeX,float NumFra
 void MeshRenderer::SetTexture(std::string path)
 {
 	texture = GLRenderer::GetInstance()->LoadTexture(path);
+}
+
+void MeshRenderer::SetTexture(unsigned int tex) 
+{
+	texture = tex;
+}
+
+void MeshRenderer::SetLayer(unsigned int layer) 
+{
+	this->layer = layer;
+
+	GLRenderer::GetInstance()->AddMeshToSet(this);
+}
+
+void MeshRenderer::SetUI(bool ui) 
+{
+	isUI = ui;
+}
+
+int MeshRenderer::GetLayer() 
+{
+	return this->layer;
 }
 
 void  MeshRenderer::CreateMesh(float NumframeX, float NumFrameY)
@@ -59,13 +94,25 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 
 	vector<glm::mat4> matrixStack;
 
-	glm::mat4 modelMatrix = GetGameObject()->m_transform.GetModelMatrix();
-	glm::mat4 projectionMatrix = Graphic::getCamera()->GetProjectionMatrix();
-	glm::mat4 viewMatrix = Graphic::getCamera()->GetViewMatrix();
+
+	glm::mat4 currentMatrix;
+
+	if (!isUI){
+		glm::mat4 modelMatrix = GetGameObject()->m_transform.GetModelMatrix();
+		glm::mat4 projectionMatrix = Graphic::getCamera()->GetProjectionMatrix();
+		glm::mat4 viewMatrix = Graphic::getCamera()->GetViewMatrix();
+
+		currentMatrix = projectionMatrix * viewMatrix * modelMatrix;
+	}
+	else {
+		glm::mat4 modelMatrix = GetGameObject()->m_transform.GetModelMatrix();
+		glm::mat4 projectionMatrix = GLRenderer::GetInstance()->GetprojectionMatrix();
+
+		currentMatrix = projectionMatrix * modelMatrix;
+	}
 
 	if (squareMesh != nullptr)
 	{
-		glm::mat4 currentMatrix = projectionMatrix * viewMatrix * modelMatrix;
 		glUniformMatrix4fv(modelMatixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
 		glUniform1i(modeId, 1);
 

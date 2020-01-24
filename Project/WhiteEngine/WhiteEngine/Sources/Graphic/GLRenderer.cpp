@@ -26,7 +26,6 @@ GLRenderer::GLRenderer(int w, int h)
 	this->winWidth = w;
 	this->winHeight = h;
 	glViewport(0, 0, winWidth, winHeight);
-
 }
 
 bool GLRenderer::InitGL(string vertexShaderFile, string fragmentShaderFile)
@@ -150,30 +149,25 @@ void GLRenderer::Render()
 	glUseProgram(gProgramId);
 
 	this->PrintProgramLog(gProgramId);
-	//Set up matrix uniform
-
-	/*if (pMatrixId != -1) {
-		glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix));
-	}
-	else
-	{
-		cout << "pMatrixId = -1\n";
-	}*/
-
 	glm::mat4 camera = glm::mat4(1.0);
-
 
 	//--------Render Object Here--------
 
-	for (MeshRenderer *obj : Factory<MeshRenderer>::getCollection()) {
+	/*for (MeshRenderer *obj : Factory<MeshRenderer>::getCollection()) {
 		
 		if (obj->GetGameObject()->Active()) 
 		{
 			obj->Render(camera);
 		}
-	}
+	}*/
 
-	//test->Render(camera);
+	for (MeshRenderer *obj : MeshSet) {
+
+		if (obj->GetGameObject()->Active())
+		{
+			obj->Render(camera);
+		}
+	}
 
 	//Unbind program
 	glUseProgram(NULL);
@@ -237,6 +231,14 @@ void GLRenderer::SetViewPort(int x, int y, int w, int h)
 void GLRenderer::SetClearColor(float r, float g, float b)
 {
 	glClearColor(r, g, b, 1.0);
+}
+
+void GLRenderer::AddMeshToSet(MeshRenderer* mesh)
+{
+	//MeshSet.erase(mesh);
+
+	MeshSet.insert(mesh);
+
 }
 
 glm::mat4 GLRenderer::GetprojectionMatrix() 
