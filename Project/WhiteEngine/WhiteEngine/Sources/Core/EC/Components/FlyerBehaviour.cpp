@@ -29,22 +29,22 @@ void FlyerBehaviour::OnDisable()
 
 void FlyerBehaviour::OnUpdate(float dt)
 {
-	float degree;
-	glm::vec3 direction(player->GetPosition() - flyer->GetPosition());
-	direction /= glm::length(direction);
-	m_gameObject->GetComponent<Rigidbody>()->SetVelocity(direction * MOVE_SPEED_FLYER);
-	degree = glm::atan(direction.y, direction.x);
-	degree = glm::degrees(degree);
-	flyer->SetRotation(degree);
+	Rigidbody* rb = m_gameObject->GetComponent<Rigidbody>();
+	glm::vec3 myVel = m_gameObject->GetComponent<Rigidbody>()->GetVelocity();
+	glm::vec3 direction = glm::normalize(player->GetPosition() - flyer->GetPosition());
+	float rot = glm::cross(glm::normalize(myVel), direction).z;
+	flyer->SetRotation(flyer->GetRotation() + (rot * ROT_RATE * dt));
+	
+	rb->SetVelocity(glm::vec3(MOVE_SPEED_FLYER * glm::cos(flyer->GetRotation() + ROT_ANGLE),
+							  MOVE_SPEED_FLYER * glm::sin(flyer->GetRotation() + ROT_ANGLE), 0));
+	
 	if (direction.x > 0) {
 		flyer->SetScale(glm::vec3(glm::abs(flyer->GetScale().x) * -1, flyer->GetScale().y, 1.0f));
-	
+
 	}
 	else {
-		flyer->SetScale(glm::vec3(glm::abs(flyer->GetScale().x), flyer->GetScale().y, 1.0f));
-		flyer->SetRotation(degree - 180);
+		flyer->SetScale(glm::vec3(glm::abs(flyer->GetScale().x), flyer->GetScale().y, 1.0f));;
 	}
-
 
 
 }

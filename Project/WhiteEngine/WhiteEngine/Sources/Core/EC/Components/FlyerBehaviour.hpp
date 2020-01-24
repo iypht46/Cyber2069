@@ -5,6 +5,8 @@
 #include "Core/EC/Components/Rigidbody.hpp"
 
 #define MOVE_SPEED_FLYER 100.0f
+#define ROT_ANGLE 15.0f
+#define ROT_RATE 1.5f
 
 class FlyerBehaviour : public BehaviourScript {
 protected:
