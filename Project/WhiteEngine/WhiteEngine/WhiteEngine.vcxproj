@@ -83,7 +83,11 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)Vendors\flatbuffers\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(ProjectDir)Vendors\flatbuffers;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -153,6 +157,7 @@
     <ClInclude Include="Sources\Graphic\SquareMeshVbo.h" />
     <ClInclude Include="Sources\Graphic\Window.hpp" />
     <ClInclude Include="Sources\Input\Input.hpp" />
+    <ClInclude Include="Sources\Serialization\testest_generated.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\Core\EC\Components\BehaviourScript.cpp" />
@@ -184,6 +189,7 @@
     <ClCompile Include="Sources\Graphic\Window.cpp" />
     <ClCompile Include="Sources\Input\Input.cpp" />
     <ClCompile Include="Sources\main.cpp" />
+    <ClCompile Include="Sources\Serialization\FlatbufferTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sources\Graphic\Shader\fragment.shd" />
