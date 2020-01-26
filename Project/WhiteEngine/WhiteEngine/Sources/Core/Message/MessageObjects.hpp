@@ -3,6 +3,12 @@
 #include "Core/Message/Message.hpp"
 #include "Core/Message/MessageType.hpp"
 
+//Forward Declaration
+namespace Physic
+{
+	struct Collision;
+}
+
 namespace Core
 {
 	struct TestMessage : Message
@@ -19,5 +25,27 @@ namespace Core
 
 		MSG_GENERATE_DC()
 
+	};
+
+	struct Trigger : Message
+	{
+		bool m_isStart = true;
+		Physic::Collision* m_collision;
+		Trigger() : Message(MessageType::MSG_TRIGGER) {}
+		Trigger(bool isStart, Physic::Collision* col) 
+			: Message(MessageType::MSG_TRIGGER), m_isStart(isStart), m_collision(col) {}
+
+		MSG_GENERATE_DC()
+	};
+
+	struct Collision : Message
+	{
+		bool m_isStart = true;
+		Physic::Collision* m_collision;
+		Collision() : Message(MessageType::MSG_COLLISION) {}
+		Collision(bool isStart, Physic::Collision* col) 
+			: Message(MessageType::MSG_COLLISION), m_isStart(isStart), m_collision(col) {}
+
+		MSG_GENERATE_DC()
 	};
 }

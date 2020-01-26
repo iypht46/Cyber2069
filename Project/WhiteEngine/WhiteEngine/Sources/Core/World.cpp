@@ -519,7 +519,7 @@ namespace World
 		//{
 		//	Factory<Animator>::getCollection().at(i)->animUpdate();
 		//}
-
+		ENGINE_INFO("FPS: {}", (1/dt));
 		//Update Graphic
 		Graphic::Render();
 

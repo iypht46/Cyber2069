@@ -1,6 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 #include "Core/EC/Components/Component.hpp"
+#include "Core/Message/IMessageHandler.hpp"
 
 
 #define BOX_VERTICES 4
@@ -22,9 +23,6 @@
 	class Collider : public Component
 	{
 	protected:
-		
-		
-
 		ColliderType m_colliderType;
 		bool m_isStatic = true;
 		bool m_isTrigger;
@@ -51,7 +49,7 @@
 
 	};
 
-	class BoxCollider : public Collider
+	class BoxCollider : public Collider, public Core::IMessageHandler
 	{
 		friend class Rigidbody;
 	private:
@@ -64,10 +62,14 @@
 		void Init(float, float);
 		void Init(float, float, Rigidbody*);
 		void ComputeAABB(Physic::AABB&);
-
+		
 		//Box Collider Interface
 		virtual void ComputeMass();
 		virtual glm::vec3 GetColliderScale();
+
+		//Message Handle
+		virtual void HandleMessage(const Core::Collision&);
+		virtual void HandleMessage(const Core::Trigger&);
 		//virtual void Update(float) const;
 	};
 

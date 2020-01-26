@@ -1,4 +1,5 @@
 #include "Physic/PhysicScene.hpp"
+#include "Core/Message/MessageObjects.hpp"
 #include <iostream>
 
 namespace Physic
@@ -74,8 +75,13 @@ namespace Physic
 		//Check for duplicate pair
 		CheckDuplicatePair();
 
+		//OnStart
+
+
 		//Resolve Collision
 		ResolveLayerCollision(dt);
+
+		//OnExit
 
 		//Update Rigid bodies transform
 		UpdateTransform(dt);
@@ -157,18 +163,40 @@ namespace Physic
 		std::sort(m_possibleCollision.begin(), m_possibleCollision.end(), SortCollision);
 
 		int i = 0;
+		//Loop through vector of possible collisions
 		while (i < m_possibleCollision.size())
 		{
+			//Create temporary pointers and referenced it as main collision
 			Manifold* col = &(*(m_possibleCollision.begin() + i));
+
+			if (!col->m_objectA->IsTrigger())
+			{
+				m_onCollisionEnter.push_back(col->m_objectA);
+			}
+			else
+			{
+				m_onTriggerEnter.push_back(col->m_objectA);
+			}
+
+			if (!col->m_objectB->IsTrigger())
+			{
+				m_onCollisionEnter.push_back(col->m_objectB);
+			}
+			else
+			{
+				m_onTriggerEnter.push_back(col->m_objectB);
+			}
 
 			m_finalCollision.push_back(*col);
 
 			++i;
 
+			//Loop through to find possible collision duplicate
 			while (i < m_possibleCollision.size())
 			{
 				Manifold* colDup = &(*(m_possibleCollision.begin() + i));
 
+				//If next collisions is duplicate then continue checking
 				if (col->m_objectA != colDup->m_objectB || col->m_objectB != colDup->m_objectA)
 				{
 					break;
@@ -202,6 +230,32 @@ namespace Physic
 					m_possibleCollision.push_back(collision);
 				}
 			}
+		}
+	}
+
+	void PhysicScene::OnManifoldStart(void)
+	{
+		for (auto collider : m_onCollisionEnter)
+		{
+			
+		}
+
+		for (auto collider : m_onTriggerEnter)
+		{
+
+		}
+	}
+
+	void PhysicScene::OnManifoldExits(void)
+	{
+		for (auto collider : m_onCollisionExit)
+		{
+
+		}
+
+		for (auto collider : m_onTriggerExit)
+		{
+
 		}
 	}
 
