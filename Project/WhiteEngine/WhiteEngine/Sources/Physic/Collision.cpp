@@ -114,7 +114,21 @@ namespace Physic
 
 			if (!m_objectA->IsTrigger())
 			{
-				m_objectA->m_rigidbody->SetVelocity(-resultVec);
+				glm::vec3 ResolvedVelocity;
+
+				for (int i = 0; i < 3; i++) {
+					if (m_normal[i] == 0.0f) {
+						ResolvedVelocity[i] = m_objectA->m_rigidbody->GetVelocity()[i];
+					}
+					else {
+						ResolvedVelocity[i] = -resultVec[i];
+						ENGINE_INFO(i);
+					}
+				}
+
+				m_objectA->m_rigidbody->SetVelocity(ResolvedVelocity);
+				ENGINE_INFO(m_objectA->m_rigidbody->GetVelocity()[0]);
+				//m_objectA->m_rigidbody->SetVelocity(resultVec);
 			}
 			else
 			{
@@ -123,7 +137,22 @@ namespace Physic
 
 			if (!m_objectB->IsTrigger())
 			{
-				m_objectB->m_rigidbody->SetVelocity(resultVec);
+				glm::vec3 ResolvedVelocity;
+
+				for (int i = 0; i < 3; i++) {
+					if (m_normal[i] == 0.0f) {
+						ResolvedVelocity[i] = m_objectB->m_rigidbody->GetVelocity()[i];
+					}
+					else {
+						ResolvedVelocity[i] = resultVec[i];
+						ENGINE_INFO(i);
+					}
+				}
+
+				m_objectB->m_rigidbody->SetVelocity(ResolvedVelocity);
+				ENGINE_INFO(m_objectA->m_rigidbody->GetVelocity()[0]);
+
+				//m_objectB->m_rigidbody->SetVelocity(resultVec);
 			}
 			else
 			{
@@ -134,13 +163,41 @@ namespace Physic
 		{
 			if (!m_objectA->IsStatic())
 			{
-				if (!m_objectA->IsTrigger())
-					m_objectA->m_rigidbody->SetVelocity(-resultVec);
+				if (!m_objectA->IsTrigger()) {
+					glm::vec3 ResolvedVelocity;
+
+					for (int i = 0; i < 3; i++) {
+						if (m_normal[i] == 0.0f) {
+							ResolvedVelocity[i] = m_objectA->m_rigidbody->GetVelocity()[i];
+						}
+						else {
+							ResolvedVelocity[i] = -resultVec[i];
+							ENGINE_INFO(i);
+						}
+					}
+
+					m_objectA->m_rigidbody->SetVelocity(ResolvedVelocity);
+					ENGINE_INFO(m_objectA->m_rigidbody->GetVelocity()[0]);
+				}
 			}
 			else
 			{
-				if (!m_objectB->IsTrigger())
-					m_objectB->m_rigidbody->SetVelocity(resultVec);
+				if (!m_objectB->IsTrigger()) {
+					glm::vec3 ResolvedVelocity;
+
+					for (int i = 0; i < 3; i++) {
+						if (m_normal[i] == 0.0f) {
+							ResolvedVelocity[i] = m_objectB->m_rigidbody->GetVelocity()[i];
+						}
+						else {
+							ResolvedVelocity[i] = resultVec[i];
+							ENGINE_INFO(i);
+						}
+					}
+
+					m_objectB->m_rigidbody->SetVelocity(ResolvedVelocity);
+					ENGINE_INFO(m_objectA->m_rigidbody->GetVelocity()[0]);
+				}
 			}
 		}
 

@@ -447,7 +447,7 @@ namespace World
 		Bg2->GetComponent<SoundPlayer>()->SetSound("Sources/BGMPrototype.mp3");
 		Bg2->GetComponent<SoundPlayer>()->SetLoop(true);
 		Bg2->GetComponent<SoundPlayer>()->SetVolume(0.5);
-		Bg2->GetComponent<SoundPlayer>()->PlaySound();
+		//Bg2->GetComponent<SoundPlayer>()->PlaySound();
 		//Bg->GetComponent<SoundPlayer>()->DeleteSoundPlayer();
 
 	}
