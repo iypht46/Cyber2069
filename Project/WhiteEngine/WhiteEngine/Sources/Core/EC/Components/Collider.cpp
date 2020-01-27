@@ -6,6 +6,7 @@
 
 	//////////////Base Collider/////////////
 
+
 	void Collider::SetTrigger(bool i)
 	{
 		m_isTrigger = i;
@@ -24,6 +25,32 @@
 	bool Collider::IsStatic()
 	{
 		return m_isStatic;
+	}
+
+	void Collider::HandleMessage(const Core::Collision& msg)
+	{
+		//TODO: Call all OnCollisionStart/Exit for every script
+		if (msg.m_isStart)
+		{
+			m_gameObject->OnCollisionEnter(msg.m_collision);
+		}
+		else
+		{
+			m_gameObject->OnCollisionExit(msg.m_collision);
+		}
+	}
+
+	void Collider::HandleMessage(const Core::Trigger& msg)
+	{
+		//TODO: Call all OnTriggerStart/Exit for every script
+		if (msg.m_isStart)
+		{
+			m_gameObject->OnTriggerEnter(msg.m_collision);
+		}
+		else
+		{
+			m_gameObject->OnTriggerExit(msg.m_collision);
+		}
 	}
 
 
@@ -96,15 +123,7 @@
 		return m_colliderScale;
 	}
 
-	void BoxCollider::HandleMessage(const Core::Collision&)
-	{
-		//TODO: Call all OnCollisionStart/Exit for every script
-	}
 
-	void BoxCollider::HandleMessage(const Core::Trigger&)
-	{
-		//TODO: Call all OnTriggerStart/Exit for every script
-	}
 
 	//////////////Circle Collider///////////
 

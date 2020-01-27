@@ -129,7 +129,6 @@ namespace Physic
 			for (auto colPair = m_finalCollision.begin(); colPair != m_finalCollision.end(); ++colPair)
 			{
 				//Resolve collision pair
-
 				//ENGINE_INFO("Collision: {}", m_finalCollision.size());
 				colPair->Resolve(dt);
 			}
@@ -171,20 +170,20 @@ namespace Physic
 
 			if (!col->m_objectA->IsTrigger())
 			{
-				m_onCollisionEnter.push_back(col->m_objectA);
+				m_onCollisionEnter.push_back(new Collision(col->m_objectA, col->m_objectB));
 			}
 			else
 			{
-				m_onTriggerEnter.push_back(col->m_objectA);
+				m_onTriggerEnter.push_back(new Collision(col->m_objectA, col->m_objectB));
 			}
 
 			if (!col->m_objectB->IsTrigger())
 			{
-				m_onCollisionEnter.push_back(col->m_objectB);
+				m_onCollisionEnter.push_back(new Collision(col->m_objectB, col->m_objectA));
 			}
 			else
 			{
-				m_onTriggerEnter.push_back(col->m_objectB);
+				m_onTriggerEnter.push_back(new Collision(col->m_objectB, col->m_objectA));
 			}
 
 			m_finalCollision.push_back(*col);
@@ -235,9 +234,10 @@ namespace Physic
 
 	void PhysicScene::OnManifoldStart(void)
 	{
-		for (auto collider : m_onCollisionEnter)
+		for (auto col : m_onCollisionEnter)
 		{
-			
+			Core::Collision msg = Core::Collision(true, col);
+			msg.SendMessageTo(col->m_collider);
 		}
 
 		for (auto collider : m_onTriggerEnter)

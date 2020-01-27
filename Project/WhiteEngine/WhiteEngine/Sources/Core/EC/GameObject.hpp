@@ -5,18 +5,23 @@
 #include <string>
 #include "Components/Transform.hpp"
 #include "Core/Factory.h"
+#include "Physic/Collision.hpp"
 
 class Component;
+class BehaviourScript;
 
 class GameObject
 {
 protected:
+	friend class BehaviourScript;
+
 	bool isActive;
 	std::string m_objectName;
 
 	int m_objectID;
 	
 	std::vector<Component*> m_components;
+	std::vector<BehaviourScript*> m_scripts;
 
 public:
 	GameObject();
@@ -25,6 +30,11 @@ public:
 
 	void SetActive(bool activestate);
 	bool Active();
+
+	void OnCollisionEnter(const Physic::Collision*);
+	void OnCollisionExit(const Physic::Collision*);
+	void OnTriggerEnter(const Physic::Collision*);
+	void OnTriggerExit(const Physic::Collision*);
 
 	virtual void OnAwake() {};
 	virtual void OnEnable() {};
@@ -61,6 +71,7 @@ T* GameObject::GetComponent() {
 			return dynamic_cast<T*>(component);
 		}
 	}
-
+	
 	return nullptr;
 }
+

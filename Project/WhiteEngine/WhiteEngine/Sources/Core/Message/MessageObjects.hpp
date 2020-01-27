@@ -4,10 +4,7 @@
 #include "Core/Message/MessageType.hpp"
 
 //Forward Declaration
-namespace Physic
-{
-	struct Collision;
-}
+#include "Physic/Collision.hpp"
 
 namespace Core
 {

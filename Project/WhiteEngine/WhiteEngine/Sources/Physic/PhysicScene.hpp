@@ -41,11 +41,12 @@ namespace Physic
 	using CollisionLayer = std::unordered_map<Layer, LayerBit>;
 	using Collisions = std::vector<Manifold>;
 	using LayerStringMap = std::unordered_map<std::string, Layer>;
-	using ColliderLists = std::list<Collider*>;
+	using CollisionMsgLists = std::list<Collision*>;
 
 	class PhysicScene
 	{
 	private:
+		
 		//Store layerbit as key and collider as value.
 		ColliderMap m_colliders;
 		Bodies m_bodies;
@@ -57,11 +58,12 @@ namespace Physic
 		LayerStringMap m_layerString;
 
 		//Store Collision Callback Lists
-		ColliderLists m_onCollisionEnter;
-		ColliderLists m_onCollisionExit;
+
+		CollisionMsgLists m_onCollisionEnter;
+		CollisionMsgLists m_onCollisionExit;
 		//Store Trigger  Callback List
-		ColliderLists m_onTriggerEnter;
-		ColliderLists m_onTriggerExit;
+		CollisionMsgLists m_onTriggerEnter;
+		CollisionMsgLists m_onTriggerExit;
 
 		//Physics Setting
 		glm::vec3 m_gravity;

@@ -15,12 +15,10 @@
 
 	class Rigidbody;
 	class Transform;
-	namespace Physic
-	{
-		struct AABB;
-	}
+	struct Physic::AABB;
 
-	class Collider : public Component
+
+	class Collider : public Component, public Core::IMessageHandler
 	{
 	protected:
 		ColliderType m_colliderType;
@@ -47,9 +45,13 @@
 		virtual void Update(float) const {}
 		virtual void ComputeMass() {};
 
+		//Message Handle
+		virtual void HandleMessage(const Core::Collision&);
+		virtual void HandleMessage(const Core::Trigger&);
+
 	};
 
-	class BoxCollider : public Collider, public Core::IMessageHandler
+	class BoxCollider : public Collider
 	{
 		friend class Rigidbody;
 	private:
@@ -67,9 +69,7 @@
 		virtual void ComputeMass();
 		virtual glm::vec3 GetColliderScale();
 
-		//Message Handle
-		virtual void HandleMessage(const Core::Collision&);
-		virtual void HandleMessage(const Core::Trigger&);
+		
 		//virtual void Update(float) const;
 	};
 

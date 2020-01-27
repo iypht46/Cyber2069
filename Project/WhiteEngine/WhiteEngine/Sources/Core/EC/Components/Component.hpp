@@ -16,7 +16,7 @@ public:
 	int getComponentID();
 
 	GameObject* GetGameObject();
-	void SetGameObject(GameObject* obj);
+	virtual void SetGameObject(GameObject* obj);
 
 	virtual ~Component() = 0;
 };
