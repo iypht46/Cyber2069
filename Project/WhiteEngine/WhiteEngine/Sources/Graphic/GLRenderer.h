@@ -54,6 +54,7 @@ public:
 	void SetOrthoProjection(float left, float right, float bottom, float top);
 	void SetViewPort(int x, int y, int w, int h);
 	void SetClearColor(float r, float g, float b);
+	void SetClearColor(float r, float g, float b, float w);
 
 	glm::mat4 GetprojectionMatrix();
 

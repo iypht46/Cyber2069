@@ -2,7 +2,6 @@
 #include "Core/Logger.hpp"
 #include "Input/Input.hpp"
 #include "Graphic/Window.hpp"
-#include "SDL.h"
 
 namespace World
 {
