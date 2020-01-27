@@ -58,6 +58,7 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\WhiteEngine\White.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -97,10 +98,13 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)WhiteEngine\Sources\Core\EC\Components;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>D:\GIT\Cyber2069\Project\WhiteEngine\bin\Debug-Win32\WhiteEngine;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>WhiteEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -121,6 +125,25 @@
     <ProjectReference Include="..\WhiteEngine\WhiteEngine.vcxproj">
       <Project>{f777a932-80c9-4398-820f-fca0f950097d}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Sources\BehaviourScript.cpp" />
+    <ClCompile Include="Sources\EnemySpawner.cpp" />
+    <ClCompile Include="Sources\FactoryCollection.cpp" />
+    <ClCompile Include="Sources\FlyerBehaviour.cpp" />
+    <ClCompile Include="Sources\MachineGunBullet.cpp" />
+    <ClCompile Include="Sources\main.cpp" />
+    <ClCompile Include="Sources\PlayerController.cpp" />
+    <ClCompile Include="Sources\World.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Sources\BehaviourScript.h" />
+    <ClInclude Include="Sources\EnemySpawner.hpp" />
+    <ClInclude Include="Sources\FactoryCollection.h" />
+    <ClInclude Include="Sources\FlyerBehaviour.hpp" />
+    <ClInclude Include="Sources\MachineGunBullet.hpp" />
+    <ClInclude Include="Sources\PlayerController.hpp" />
+    <ClInclude Include="Sources\World.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
