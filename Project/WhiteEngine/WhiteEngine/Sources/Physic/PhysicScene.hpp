@@ -35,11 +35,11 @@ namespace Physic
 	using LayerBit = std::bitset<LAYER_BIT>;
 	using Colliders = std::vector<Collider*>;
 	using Bodies = std::vector<Rigidbody*>;
-	using ColliderMap = std::unordered_map<Layer, Colliders>;
+	using CollidersMap = std::unordered_map<Layer, Colliders>;
 
 	//Collision
 	using CollisionLayer = std::unordered_map<Layer, LayerBit>;
-	using Collisions = std::vector<Manifold>;
+	using Manifolds = std::vector<Manifold>;
 	using LayerStringMap = std::unordered_map<std::string, Layer>;
 	using CollisionMsgLists = std::list<Collision*>;
 
@@ -48,13 +48,13 @@ namespace Physic
 	private:
 		
 		//Store layerbit as key and collider as value.
-		ColliderMap m_colliders;
+		CollidersMap m_colliders;
 		Bodies m_bodies;
 		//Store layer enum as key and layerbit as value.
 		CollisionLayer m_collisionLayer;
 		//Store possible collision
-		Collisions m_possibleCollision;
-		Collisions m_finalCollision;
+		Manifolds m_possibleCollision;
+		Manifolds m_finalCollision;
 		LayerStringMap m_layerString;
 
 		//Store Collision Callback Lists
@@ -82,10 +82,7 @@ namespace Physic
 		void CheckDuplicatePair();
 		//Check collision of a layer with another one
 		void CheckLayerCollision(Layer, Layer);
-		//Call On Collision/Trigger Start Functions
-		void OnManifoldStart(void);
-		//Call on Collision/Trigger Exit Functions
-		void OnManifoldExits(void);
+		
 
 	public:
 		//Main update loop
@@ -100,6 +97,10 @@ namespace Physic
 		//Remove collider from layer
 		void Remove(Collider*, Layer);
 		void Remove(Collider*, std::string);
+		//Call On Collision/Trigger Start Functions
+		void OnManifoldStart(void);
+		//Call on Collision/Trigger Exit Functions
+		void OnManifoldExits(void);
 
 		//@Utility
 		//Get Layer to collide with

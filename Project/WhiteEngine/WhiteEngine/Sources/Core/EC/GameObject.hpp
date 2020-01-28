@@ -5,10 +5,11 @@
 #include <string>
 #include "Components/Transform.hpp"
 #include "Core/Factory.h"
-#include "Physic/Collision.hpp"
 
+//Forward Declaration
 class Component;
 class BehaviourScript;
+namespace Physic { struct Collision; }
 
 class GameObject
 {

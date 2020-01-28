@@ -15,8 +15,7 @@
 
 	class Rigidbody;
 	class Transform;
-	struct Physic::AABB;
-
+	namespace Physic { struct AABB; }
 
 	class Collider : public Component, public Core::IMessageHandler
 	{

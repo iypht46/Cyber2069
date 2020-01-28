@@ -1,6 +1,8 @@
 #pragma once
 #include "Core/EC/Components/Component.hpp"
-struct Physic::Collision;
+
+//Forward Declaration
+namespace Physic{ struct Collision; }
 
 class BehaviourScript :public Component {
 public:
@@ -12,8 +14,8 @@ public:
 	virtual void OnUpdate(float dt) = 0;
 	virtual void OnFixedUpdate(float dt) = 0;
 	virtual void OnDisable() = 0;
-	inline virtual void OnTriggerEnter(Physic::Collision col) {}
-	inline virtual void OnTriggerExit(Physic::Collision col) {}
-	inline virtual void OnCollisionEnter(Physic::Collision col) {}
-	inline virtual void OnCollisionExit(Physic::Collision col) {}
+	virtual void OnTriggerEnter(const Physic::Collision* col);
+	virtual void OnTriggerExit(const Physic::Collision* col);
+	virtual void OnCollisionEnter(const Physic::Collision* col);
+	virtual void OnCollisionExit(const Physic::Collision* col);
 };

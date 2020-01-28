@@ -125,12 +125,12 @@ namespace Physic
 					}
 					else {
 						ResolvedVelocity[i] = -resultVec[i];
-						ENGINE_INFO(i);
+						//ENGINE_INFO(i);
 					}
 				}
 
 				m_objectA->m_rigidbody->SetVelocity(ResolvedVelocity);
-				ENGINE_INFO(m_objectA->m_rigidbody->GetVelocity()[0]);
+				//ENGINE_INFO(m_objectA->m_rigidbody->GetVelocity()[0]);
 				//m_objectA->m_rigidbody->SetVelocity(resultVec);
 			}
 			else
@@ -148,12 +148,12 @@ namespace Physic
 					}
 					else {
 						ResolvedVelocity[i] = resultVec[i];
-						ENGINE_INFO(i);
+						//ENGINE_INFO(i);
 					}
 				}
 
 				m_objectB->m_rigidbody->SetVelocity(ResolvedVelocity);
-				ENGINE_INFO(m_objectA->m_rigidbody->GetVelocity()[0]);
+				//ENGINE_INFO(m_objectA->m_rigidbody->GetVelocity()[0]);
 
 				//m_objectB->m_rigidbody->SetVelocity(resultVec);
 			}
@@ -175,12 +175,12 @@ namespace Physic
 						}
 						else {
 							ResolvedVelocity[i] = -resultVec[i];
-							ENGINE_INFO(i);
+							//ENGINE_INFO(i);
 						}
 					}
 
 					m_objectA->m_rigidbody->SetVelocity(ResolvedVelocity);
-					ENGINE_INFO(m_objectA->m_rigidbody->GetVelocity()[0]);
+					//ENGINE_INFO(m_objectA->m_rigidbody->GetVelocity()[0]);
 				}
 			}
 			else
@@ -194,12 +194,12 @@ namespace Physic
 						}
 						else {
 							ResolvedVelocity[i] = resultVec[i];
-							ENGINE_INFO(i);
+							//ENGINE_INFO(i);
 						}
 					}
 
 					m_objectB->m_rigidbody->SetVelocity(ResolvedVelocity);
-					ENGINE_INFO(m_objectA->m_rigidbody->GetVelocity()[0]);
+					//ENGINE_INFO(m_objectA->m_rigidbody->GetVelocity()[0]);
 				}
 			}
 		}

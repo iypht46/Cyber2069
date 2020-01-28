@@ -1,5 +1,5 @@
 #pragma once
-#include "BehaviourScript.h"
+#include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/Components/Transform.hpp"
 #include "Core/EC/Components/Rigidbody.hpp"
 #include "Core/EC/Components/Animator.hpp"
@@ -66,4 +66,5 @@ public:
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
 	virtual void OnDisable();
+	virtual void OnCollisionEnter(const Physic::Collision* col) override;
 };

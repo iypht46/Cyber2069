@@ -127,7 +127,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Sources\BehaviourScript.cpp" />
     <ClCompile Include="Sources\EnemySpawner.cpp" />
     <ClCompile Include="Sources\FactoryCollection.cpp" />
     <ClCompile Include="Sources\FlyerBehaviour.cpp" />
@@ -137,7 +136,6 @@
     <ClCompile Include="Sources\World.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Sources\BehaviourScript.h" />
     <ClInclude Include="Sources\EnemySpawner.hpp" />
     <ClInclude Include="Sources\FactoryCollection.h" />
     <ClInclude Include="Sources\FlyerBehaviour.hpp" />

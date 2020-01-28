@@ -8,7 +8,7 @@
 #include "Core/EC/Components/Rigidbody.hpp"
 #include "Core/EC/Components/Transform.hpp"
 
-#include "BehaviourScript.h"
+#include "Core/EC/Components/BehaviourScript.h"
 #include "FlyerBehaviour.hpp"
 #include "PlayerController.hpp"
 #include "MachineGunBullet.hpp"

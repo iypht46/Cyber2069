@@ -1,6 +1,7 @@
 #include "PlayerController.hpp"
 #include "Input/Input.hpp"
 #include "Graphic/Camera.hpp"
+#include "Core/Logger.hpp"
 #include <math.h>
 
 PlayerController::PlayerController() {
@@ -13,6 +14,11 @@ void PlayerController::OnAwake() {
 
 void PlayerController::OnDisable() {
 
+}
+
+void PlayerController::OnCollisionEnter(const Physic::Collision* col)
+{
+	GAME_INFO("Collide Message");
 }
 
 void PlayerController::OnStart() {

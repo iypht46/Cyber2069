@@ -491,6 +491,7 @@ namespace World
 			accumulator -= c_targetDT;
 		}
 
+		g_physicScene->OnManifoldStart();
 		//ENGINE_INFO()
 		//cout << Rabbit->m_transform.GetPosition().y << endl;
 
@@ -518,7 +519,7 @@ namespace World
 		//{
 		//	Factory<Animator>::getCollection().at(i)->animUpdate();
 		//}
-		ENGINE_INFO("FPS: {}", (1/dt));
+		//ENGINE_INFO("FPS: {}", (1/dt));
 		//Update Graphic
 		Graphic::Render();
 

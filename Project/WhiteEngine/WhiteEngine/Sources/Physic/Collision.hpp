@@ -1,8 +1,11 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include "Core/EC/Components/Collider.hpp"
+//#include "Core/EC/Components/Collider.hpp"
 #include <iostream>
+
+//Forward Declaration
+class Collider;
 
 namespace Physic
 {

@@ -1,7 +1,7 @@
 #include "GameObject.hpp"
-#include "../Factory.h"
-#include "Components/BehaviourScript.h"
-
+#include "Core/Factory.h"
+#include "Core/EC/Components/BehaviourScript.h"
+#include "Physic/Collision.hpp"
 
 void GameObject::SetActive(bool activestate) {
 	isActive = activestate;
@@ -17,6 +17,7 @@ void GameObject::OnCollisionEnter(const Physic::Collision* col)
 	for (auto scripts : m_scripts)
 	{
 		//scripts
+		scripts->OnCollisionEnter(col);
 	}
 }
 

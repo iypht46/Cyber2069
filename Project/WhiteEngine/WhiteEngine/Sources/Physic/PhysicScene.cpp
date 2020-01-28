@@ -75,9 +75,6 @@ namespace Physic
 		//Check for duplicate pair
 		CheckDuplicatePair();
 
-		//OnStart
-
-
 		//Resolve Collision
 		ResolveLayerCollision(dt);
 
@@ -237,25 +234,30 @@ namespace Physic
 		for (auto col : m_onCollisionEnter)
 		{
 			Core::Collision msg = Core::Collision(true, col);
-			msg.SendMessageTo(col->m_collider);
+			msg.SendMessageTo(*col->m_collider);
 		}
 
-		for (auto collider : m_onTriggerEnter)
+		for (auto col : m_onTriggerEnter)
 		{
-
+			Core::Trigger msg = Core::Trigger(true, col);
+			msg.SendMessageTo(*col->m_collider);
 		}
+
+		m_onCollisionEnter.clear();
 	}
 
 	void PhysicScene::OnManifoldExits(void)
 	{
-		for (auto collider : m_onCollisionExit)
+		for (auto col : m_onCollisionExit)
 		{
-
+			Core::Collision msg = Core::Collision(false, col);
+			msg.SendMessageTo(*col->m_collider);
 		}
 
-		for (auto collider : m_onTriggerExit)
+		for (auto col : m_onTriggerExit)
 		{
-
+			Core::Trigger msg = Core::Trigger(false, col);
+			msg.SendMessageTo(*col->m_collider);
 		}
 	}
 
