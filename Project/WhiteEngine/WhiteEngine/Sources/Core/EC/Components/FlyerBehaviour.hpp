@@ -12,6 +12,9 @@ class FlyerBehaviour : public BehaviourScript {
 protected:
 	Transform* player;
 	Transform* flyer;
+	float flyerSpeed = 100.0f;
+	float rotAngle = 15.0f;
+	float rotRate = 1.5f;
 public:
 	FlyerBehaviour();
 	void SetPlayer(Transform&);
