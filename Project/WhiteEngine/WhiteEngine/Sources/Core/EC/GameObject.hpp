@@ -15,6 +15,7 @@ class GameObject
 {
 protected:
 	friend class BehaviourScript;
+	friend class Collider;
 
 	bool isActive;
 	std::string m_objectName;
@@ -24,6 +25,12 @@ protected:
 	std::vector<Component*> m_components;
 	std::vector<BehaviourScript*> m_scripts;
 
+	void CollisionEnter(const Physic::Collision);
+	void CollisionStay(const Physic::Collision);
+	void CollisionExit(const Physic::Collision);
+	void TriggerEnter(const Physic::Collision);
+	void TriggerStay(const Physic::Collision);
+	void TriggerExit(const Physic::Collision);
 public:
 	GameObject();
 
@@ -31,11 +38,6 @@ public:
 
 	void SetActive(bool activestate);
 	bool Active();
-
-	void OnCollisionEnter(const Physic::Collision*);
-	void OnCollisionExit(const Physic::Collision*);
-	void OnTriggerEnter(const Physic::Collision*);
-	void OnTriggerExit(const Physic::Collision*);
 
 	virtual void OnAwake() {};
 	virtual void OnEnable() {};

@@ -6,45 +6,48 @@
 
 #define BOX_VERTICES 4
 
-	enum class ColliderType : int
-	{
-		INVALID = -1,
-		BOX,
-		COLNUM
-	};
+	enum class COLLIDER_TYPE : int {INVALID = -1, BOX, COLNUM };
 
+	enum class COL_STATE : int { NONE = -1, ENTER, STAY, EXIT };
+
+	//Forward Declaration
 	class Rigidbody;
 	class Transform;
-	namespace Physic { struct AABB; }
+	namespace Physic { struct AABB; class PhysicScene; }
 
 	class Collider : public Component, public Core::IMessageHandler
 	{
 	protected:
-		ColliderType m_colliderType;
+		friend class Physic::PhysicScene;
+
+		COLLIDER_TYPE m_colliderType;
+		COL_STATE m_collisionState = COL_STATE::NONE;
 		bool m_isStatic = true;
 		bool m_isTrigger;
+		bool m_hasCollided = false;
 		float m_density;
 	public:
 		Transform* m_transform;
 		Rigidbody* m_rigidbody;
 
 		//Constructor
-		Collider(ColliderType col) 
+		Collider(COLLIDER_TYPE col) 
 			: m_colliderType(col), m_density(1.0f) {}
 		//Destructor
 		~Collider() {};
 		//Collider Interface
 		void SetTrigger(bool);
 		bool IsTrigger(void);
-		ColliderType GetType();
+		COLLIDER_TYPE GetType();
 		bool IsStatic();
+		COL_STATE GetCollisionState();
 
 		//Virtual
 		virtual void SetOrient() {};
 		virtual void Update(float) const {}
 		virtual void ComputeMass() {};
 
-		//Message Handle
+		//Message Handling
 		virtual void HandleMessage(const Core::Collision&);
 		virtual void HandleMessage(const Core::Trigger&);
 
@@ -59,7 +62,7 @@
 		glm::vec3 m_colliderScale; //Scale multiplier in halfwidth and halfheight
 	public:
 		//Constructor
-		BoxCollider() : Collider(ColliderType::BOX) {}
+		BoxCollider() : Collider(COLLIDER_TYPE::BOX) {}
 		void Init(float, float);
 		void Init(float, float, Rigidbody*);
 		void ComputeAABB(Physic::AABB&);

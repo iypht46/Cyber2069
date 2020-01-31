@@ -1,6 +1,6 @@
 #include "Physic/PhysicScene.hpp"
 #include "Core/Message/MessageObjects.hpp"
-#include <iostream>
+#include <algorithm>
 
 namespace Physic
 {
@@ -19,28 +19,6 @@ namespace Physic
 
 	LayerBit GetLayerInBit(Layer layer)
 	{
-		/*switch (layer)
-		{
-		case Physic::Layer::PHYSIC_LAYER_1:
-			return LayerBit(1);
-		case Physic::Layer::PHYSIC_LAYER_2:
-			return LayerBit(2);
-		case Physic::Layer::PHYSIC_LAYER_3:
-			return LayerBit(3);
-		case Physic::Layer::PHYSIC_LAYER_4:
-			return LayerBit(4);
-		case Physic::Layer::PHYSIC_LAYER_5:
-			return LayerBit(5);
-		case Physic::Layer::PHYSIC_LAYER_6:
-			return LayerBit(6);
-		case Physic::Layer::PHYSIC_LAYER_7:
-			return LayerBit(7);
-		case Physic::Layer::PHYSIC_LAYER_8:
-			return LayerBit(8);
-		default:
-			return LayerBit(0);
-		}*/
-
 		return LayerBit(PhysicScene::LayerToNum(layer));
 	}
 
@@ -56,6 +34,17 @@ namespace Physic
 
 		if (lhs.m_objectA == rhs.m_objectA)
 			return lhs.m_objectB < rhs.m_objectB;
+
+		return false;
+	}
+
+	bool SortCollisionMsg(Collision lhs, Collision rhs)
+	{
+		if (lhs.m_collider < rhs.m_collider)
+			return true;
+
+		if (lhs.m_collider == rhs.m_collider)
+			return lhs.m_otherCollider < rhs.m_otherCollider;
 
 		return false;
 	}
@@ -77,8 +66,6 @@ namespace Physic
 
 		//Resolve Collision
 		ResolveLayerCollision(dt);
-
-		//OnExit
 
 		//Update Rigid bodies transform
 		UpdateTransform(dt);
@@ -165,23 +152,23 @@ namespace Physic
 			//Create temporary pointers and referenced it as main collision
 			Manifold* col = &(*(m_possibleCollision.begin() + i));
 
-			if (!col->m_objectA->IsTrigger())
-			{
-				m_onCollisionEnter.push_back(new Collision(col->m_objectA, col->m_objectB));
-			}
-			else
-			{
-				m_onTriggerEnter.push_back(new Collision(col->m_objectA, col->m_objectB));
-			}
+			Collision collisionA(col->m_objectA, col->m_objectB);
+			Collision collisionB(col->m_objectB, col->m_objectA);
 
-			if (!col->m_objectB->IsTrigger())
+			//Create collision message for the pair
+			if (!col->m_objectA->m_hasCollided)
 			{
-				m_onCollisionEnter.push_back(new Collision(col->m_objectB, col->m_objectA));
+				collisionA.m_collider->m_hasCollided = true;
+				m_collisionMsg.push_back(collisionA);
+
 			}
-			else
+			
+			if (!col->m_objectB->m_hasCollided)
 			{
-				m_onTriggerEnter.push_back(new Collision(col->m_objectB, col->m_objectA));
+				collisionB.m_collider->m_hasCollided = true;
+				m_collisionMsg.push_back(collisionB);
 			}
+			
 
 			m_finalCollision.push_back(*col);
 
@@ -229,36 +216,82 @@ namespace Physic
 		}
 	}
 
-	void PhysicScene::OnManifoldStart(void)
+	void PhysicScene::SetCollisionState(Collision col)
 	{
-		for (auto col : m_onCollisionEnter)
-		{
-			Core::Collision msg = Core::Collision(true, col);
-			msg.SendMessageTo(*col->m_collider);
-		}
+		Collider* collider = col.m_collider;
 
-		for (auto col : m_onTriggerEnter)
+		switch (collider->m_collisionState)
 		{
-			Core::Trigger msg = Core::Trigger(true, col);
-			msg.SendMessageTo(*col->m_collider);
+		case COL_STATE::NONE:
+			collider->m_collisionState = COL_STATE::ENTER;
+			break;
+		case COL_STATE::ENTER:
+			collider->m_collisionState = COL_STATE::STAY;
+			m_stayState.push_back(col);
+			break;
+		default:
+			break;
 		}
-
-		m_onCollisionEnter.clear();
 	}
 
-	void PhysicScene::OnManifoldExits(void)
+	void PhysicScene::SendCollisionMsg(void)
 	{
-		for (auto col : m_onCollisionExit)
+		//Check collision from last frame that are in stay state
+		//ENGINE_INFO("Stay size: {}", m_stayState.size());
+		//for (auto col : m_stayState)
+		//{
+		//	//If in this frame it has not collided then change state to Exit
+		//	if (!col.m_collider->m_hasCollided)
+		//	{
+		//		//Change collision state
+		//		col.m_collider->m_collisionState = COL_STATE::EXIT;
+		//		//Send Message
+		//		Core::Collision msg = Core::Collision(col);
+		//		msg.SendMessageTo(*col.m_collider);
+		//	}
+		//}
+		//Clear stay state collision from last frame if it has not collided in this frame
+		m_stayState.erase(
+			std::remove_if(
+				m_stayState.begin(),
+				m_stayState.end(),
+				[](Collision col) {
+					if (!col.m_collider->m_hasCollided)
+					{
+						//Change collision state
+						col.m_collider->m_collisionState = COL_STATE::EXIT;
+						//Send Message
+						Core::Collision msg = Core::Collision(col);
+						msg.SendMessageTo(*col.m_collider);
+						return true;
+					}
+					return false;
+				}
+			),
+			m_stayState.end()
+		);
+
+		for (auto col : m_collisionMsg)
 		{
-			Core::Collision msg = Core::Collision(false, col);
-			msg.SendMessageTo(*col->m_collider);
+			//Send Message
+			SetCollisionState(col);
+
+			if (col.m_collider->IsTrigger())
+			{
+				Core::Trigger msg = Core::Trigger(col);
+				msg.SendMessageTo(*col.m_collider);
+			}
+			else
+			{
+				Core::Collision msg = Core::Collision(col);
+				msg.SendMessageTo(*col.m_collider);
+			}
+
+			col.m_collider->m_hasCollided = false;
 		}
 
-		for (auto col : m_onTriggerExit)
-		{
-			Core::Trigger msg = Core::Trigger(false, col);
-			msg.SendMessageTo(*col->m_collider);
-		}
+		//Clear container
+		m_collisionMsg.clear();
 	}
 
 	void PhysicScene::Add(Collider* col, Layer layer)

@@ -41,7 +41,7 @@ namespace Physic
 	using CollisionLayer = std::unordered_map<Layer, LayerBit>;
 	using Manifolds = std::vector<Manifold>;
 	using LayerStringMap = std::unordered_map<std::string, Layer>;
-	using CollisionMsgLists = std::list<Collision*>;
+	using CollisionMsgLists = std::vector<Collision>;
 
 	class PhysicScene
 	{
@@ -58,12 +58,8 @@ namespace Physic
 		LayerStringMap m_layerString;
 
 		//Store Collision Callback Lists
-
-		CollisionMsgLists m_onCollisionEnter;
-		CollisionMsgLists m_onCollisionExit;
-		//Store Trigger  Callback List
-		CollisionMsgLists m_onTriggerEnter;
-		CollisionMsgLists m_onTriggerExit;
+		CollisionMsgLists m_collisionMsg;
+		CollisionMsgLists m_stayState;
 
 		//Physics Setting
 		glm::vec3 m_gravity;
@@ -82,7 +78,8 @@ namespace Physic
 		void CheckDuplicatePair();
 		//Check collision of a layer with another one
 		void CheckLayerCollision(Layer, Layer);
-		
+		//Check collision state and put into each container
+		void SetCollisionState(Collision);
 
 	public:
 		//Main update loop
@@ -97,10 +94,8 @@ namespace Physic
 		//Remove collider from layer
 		void Remove(Collider*, Layer);
 		void Remove(Collider*, std::string);
-		//Call On Collision/Trigger Start Functions
-		void OnManifoldStart(void);
-		//Call on Collision/Trigger Exit Functions
-		void OnManifoldExits(void);
+		//Send Collision Message to Collider in list
+		void SendCollisionMsg(void);
 
 		//@Utility
 		//Get Layer to collide with

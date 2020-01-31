@@ -20,6 +20,7 @@ namespace Physic
 		Collider* m_collider;
 		Collider* m_otherCollider;
 
+		Collision();
 		Collision(Collider* col, Collider* otherCol);
 	};
 

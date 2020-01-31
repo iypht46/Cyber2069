@@ -71,15 +71,18 @@ namespace Physic
 		return true;
 	}
 
+	//Default Constructor
+	Collision::Collision() {}
+	//Constructor
 	Collision::Collision(Collider* col, Collider* otherCol)
 		: m_collider(col), m_otherCollider(otherCol) {}
-
+	
 	bool Manifold::CheckCollision()
 	{
 		if (m_objectA && m_objectB)
 		{
-			if (m_objectA->GetType() == ColliderType::BOX
-				&& m_objectB->GetType() == ColliderType::BOX)
+			if (m_objectA->GetType() == COLLIDER_TYPE::BOX
+				&& m_objectB->GetType() == COLLIDER_TYPE::BOX)
 			{
 				/*std::cout << "Object A:\n";
 				std::cout << "Min X: " << a.m_min.x << " , Y: " << a.m_min.y << std::endl;

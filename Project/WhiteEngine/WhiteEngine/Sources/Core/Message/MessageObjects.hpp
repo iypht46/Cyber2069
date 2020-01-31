@@ -24,25 +24,30 @@ namespace Core
 
 	};
 
+	
 	struct Trigger : Message
 	{
-		bool m_isStart = true;
-		Physic::Collision* m_collision;
-		Trigger() : Message(MessageType::MSG_TRIGGER) {}
-		Trigger(bool isStart, Physic::Collision* col) 
-			: Message(MessageType::MSG_TRIGGER), m_isStart(isStart), m_collision(col) {}
+		Physic::Collision m_collision;
+		Trigger();
+		Trigger(Physic::Collision);
 
 		MSG_GENERATE_DC()
 	};
+
+	inline Trigger::Trigger() : Message(MessageType::MSG_TRIGGER) {}
+	inline Trigger::Trigger(Physic::Collision col)
+		: Message(MessageType::MSG_TRIGGER), m_collision(col) {}
 
 	struct Collision : Message
 	{
-		bool m_isStart = true;
-		Physic::Collision* m_collision;
-		Collision() : Message(MessageType::MSG_COLLISION) {}
-		Collision(bool isStart, Physic::Collision* col) 
-			: Message(MessageType::MSG_COLLISION), m_isStart(isStart), m_collision(col) {}
+		Physic::Collision m_collision;
+		Collision();
+		Collision(Physic::Collision);
 
 		MSG_GENERATE_DC()
 	};
+
+	inline Collision::Collision() : Message(MessageType::MSG_COLLISION) {}
+	inline Collision::Collision(Physic::Collision col) 
+		: Message(MessageType::MSG_COLLISION), m_collision(col) {}
 }

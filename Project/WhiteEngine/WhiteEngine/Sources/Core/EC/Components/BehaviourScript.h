@@ -14,8 +14,10 @@ public:
 	virtual void OnUpdate(float dt) = 0;
 	virtual void OnFixedUpdate(float dt) = 0;
 	virtual void OnDisable() = 0;
-	virtual void OnTriggerEnter(const Physic::Collision* col);
-	virtual void OnTriggerExit(const Physic::Collision* col);
-	virtual void OnCollisionEnter(const Physic::Collision* col);
-	virtual void OnCollisionExit(const Physic::Collision* col);
+	virtual void OnTriggerEnter(const Physic::Collision col);
+	virtual void OnTriggerStay(const Physic::Collision col);
+	virtual void OnTriggerExit(const Physic::Collision col);
+	virtual void OnCollisionEnter(const Physic::Collision col);
+	virtual void OnCollisionStay(const Physic::Collision col);
+	virtual void OnCollisionExit(const Physic::Collision col);
 };

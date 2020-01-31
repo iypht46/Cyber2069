@@ -491,7 +491,7 @@ namespace World
 			accumulator -= c_targetDT;
 		}
 
-		g_physicScene->OnManifoldStart();
+		g_physicScene->SendCollisionMsg();
 		//ENGINE_INFO()
 		//cout << Rabbit->m_transform.GetPosition().y << endl;
 

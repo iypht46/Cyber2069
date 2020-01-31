@@ -66,5 +66,7 @@ public:
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
 	virtual void OnDisable();
-	virtual void OnCollisionEnter(const Physic::Collision* col) override;
+	virtual void OnCollisionEnter(const Physic::Collision) override;
+	virtual void OnCollisionStay(const Physic::Collision) override;
+	virtual void OnCollisionExit(const Physic::Collision) override;
 };
