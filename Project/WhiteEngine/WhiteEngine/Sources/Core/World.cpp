@@ -371,9 +371,11 @@ namespace World
 		Rabbit->GetComponent<PlayerController>()->OnStart();
 		Rabbit->GetComponent<PlayerController>()->assignPool(BulletPool);
 
-		Flyer->AddComponent<FlyerBehaviour>();
-		Flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
-		Flyer->GetComponent<FlyerBehaviour>()->SetGameObject(Flyer);
+		Flyer->AddComponent<AirFollowing>();
+		Flyer->GetComponent<AirFollowing>()->SetPlayer((Rabbit->m_transform));
+		Flyer->GetComponent<AirFollowing>()->SetGameObject(Flyer);
+		
+		//Flyer->AddComponent<FlyerBehaviour>();
 
 		for (int i = 0; i < 100; i++)
 		{
@@ -387,9 +389,11 @@ namespace World
 
 			g_physicScene->Add(flyer->GetComponent<Rigidbody>());
 
-			flyer->AddComponent<FlyerBehaviour>();
-			flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
-			flyer->GetComponent<FlyerBehaviour>()->SetGameObject(flyer);
+			flyer->AddComponent<AirFollowing>();
+			flyer->GetComponent<AirFollowing>()->SetPlayer((Rabbit->m_transform));
+			flyer->GetComponent<AirFollowing>()->SetGameObject(flyer);
+
+			//Flyer->AddComponent<FlyerBehaviour>();
 
 			flyer->AddComponent<Animator>();
 			flyer->GetComponent<Animator>()->AssignController(EnemCon);

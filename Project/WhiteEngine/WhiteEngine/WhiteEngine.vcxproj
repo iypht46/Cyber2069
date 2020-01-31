@@ -122,6 +122,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Core\EC\Components\AirFollowing.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\BehaviourScript.h" />
     <ClInclude Include="Sources\Core\EC\Components\EnemySpawner.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\FlyerBehaviour.hpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="Sources\Utility\ObjectPool.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Core\EC\Components\AirFollowing.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\BehaviourScript.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\EnemySpawner.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\FlyerBehaviour.cpp" />
