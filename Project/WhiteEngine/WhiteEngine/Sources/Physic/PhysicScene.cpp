@@ -80,7 +80,8 @@ namespace Physic
 		for (auto mainLayer : m_collisionLayer)
 		{
 			//Set main layer
-			LayerBit mainLayerBit = mainLayer.second;
+			LayerBit mainLayerBit = mainLayer.second.first;
+			
 
 			if (mainLayerBit.count() != 0)
 			{
@@ -92,11 +93,11 @@ namespace Physic
 
 					//Get layerToCheck in LayerBit type
 					LayerBit layerToCheckBit = GetLayerInBit(layerToCheck);
-
+					RESOLVE_TYPE resolveType = ((mainLayer.second.second & layerToCheckBit) == layerToCheckBit) ? RESOLVE_TYPE::COLLISION : RESOLVE_TYPE::TRIGGER;
 					//Check mainLayerBit with layerToCheckBit
 					if ((mainLayerBit & layerToCheckBit) == layerToCheckBit)
 					{
-						CheckLayerCollision(mainLayer.first, layerToCheck);
+						CheckLayerCollision(mainLayer.first, layerToCheck, resolveType);
 						//ENGINE_INFO("Main Layer: {}, LayerToCheck: {}", LayerToNum(mainLayer.first), LayerToNum(layerToCheck));
 					}
 				}
@@ -152,8 +153,8 @@ namespace Physic
 			//Create temporary pointers and referenced it as main collision
 			Manifold* col = &(*(m_possibleCollision.begin() + i));
 
-			Collision collisionA(col->m_objectA, col->m_objectB);
-			Collision collisionB(col->m_objectB, col->m_objectA);
+			Collision collisionA(col->m_objectA, col->m_objectB, col->m_type);
+			Collision collisionB(col->m_objectB, col->m_objectA, col->m_type);
 
 			//Create collision message for the pair
 			if (!col->m_objectA->m_hasCollided)
@@ -191,7 +192,7 @@ namespace Physic
 		}
 	}
 
-	void PhysicScene::CheckLayerCollision(Layer mainLayer, Layer layerToCheck)
+	void PhysicScene::CheckLayerCollision(Layer mainLayer, Layer layerToCheck, RESOLVE_TYPE resType)
 	{
 		//ENGINE_INFO("Check Collision");
 		//ENGINE_INFO("Main: {}, LayerToCheck: {}", LayerToNum(mainLayer), LayerToNum(layerToCheck));
@@ -201,15 +202,16 @@ namespace Physic
 
 			for (auto colToCheck : m_colliders[layerToCheck])
 			{
-				//ENGINE_INFO("Object Collided");
+				//If same collider then skip
 				if (mainCol == colToCheck)
 					continue;
 
-				Manifold collision(mainCol, colToCheck);
+				//Create collision manifold
+				Manifold collision(mainCol, colToCheck, resType);
 
+				//Check if object have collided
 				if (collision.CheckCollision())
 				{
-					//ENGINE_INFO("Object Collided");
 					m_possibleCollision.push_back(collision);
 				}
 			}
@@ -251,6 +253,7 @@ namespace Physic
 		//	}
 		//}
 		//Clear stay state collision from last frame if it has not collided in this frame
+		
 		m_stayState.erase(
 			std::remove_if(
 				m_stayState.begin(),
@@ -258,11 +261,23 @@ namespace Physic
 				[](Collision col) {
 					if (!col.m_collider->m_hasCollided)
 					{
+						Core::Trigger trigMsg = Core::Trigger(col);
+						Core::Collision colMsg = Core::Collision(col);
 						//Change collision state
 						col.m_collider->m_collisionState = COL_STATE::EXIT;
 						//Send Message
-						Core::Collision msg = Core::Collision(col);
-						msg.SendMessageTo(*col.m_collider);
+						//if (col.m_collider->is)
+						switch (col.m_type)
+						{
+						case RESOLVE_TYPE::COLLISION:
+							colMsg.SendMessageTo(*col.m_collider);
+							break;
+						case RESOLVE_TYPE::TRIGGER:
+							trigMsg.SendMessageTo(*col.m_collider);
+							break;
+						default:
+							break;
+						}
 						return true;
 					}
 					return false;
@@ -275,8 +290,23 @@ namespace Physic
 		{
 			//Send Message
 			SetCollisionState(col);
+			Core::Trigger trigMsg = Core::Trigger(col);
+			Core::Collision colMsg = Core::Collision(col);
 
-			if (col.m_collider->IsTrigger())
+			switch (col.m_type)
+			{
+			case RESOLVE_TYPE::TRIGGER:
+				
+				trigMsg.SendMessageTo(*col.m_collider);
+				break;
+			case RESOLVE_TYPE::COLLISION:
+				
+				colMsg.SendMessageTo(*col.m_collider);
+				break;
+			default:
+				break;
+			}
+			/*if (col.m_collider->IsTrigger())
 			{
 				Core::Trigger msg = Core::Trigger(col);
 				msg.SendMessageTo(*col.m_collider);
@@ -285,7 +315,7 @@ namespace Physic
 			{
 				Core::Collision msg = Core::Collision(col);
 				msg.SendMessageTo(*col.m_collider);
-			}
+			}*/
 
 			col.m_collider->m_hasCollided = false;
 		}
@@ -338,13 +368,17 @@ namespace Physic
 		Remove(col, layer);
 	}
 
-	void PhysicScene::SetLayerCollisions(Layer layer, Layer layerToCollide)
+	void PhysicScene::SetLayerCollisions(Layer layer, Layer layerToCollide, RESOLVE_TYPE type)
 	{
 		uint32_t lay = LayerToNum(layerToCollide);
-		m_collisionLayer[layer] |= static_cast<unsigned>(layerToCollide);
+		m_collisionLayer[layer].first |= static_cast<unsigned>(layerToCollide);
+
+		if (type == RESOLVE_TYPE::COLLISION)
+			m_collisionLayer[layer].second |= static_cast<unsigned>(layerToCollide);
+
 	}
 
-	void PhysicScene::SetLayerCollisions(std::string layer, std::string layerToCollide)
+	void PhysicScene::SetLayerCollisions(std::string layer, std::string layerToCollide, RESOLVE_TYPE type)
 	{
 		Layer mainLayer = GetLayerFromString(layer);
 		Layer layerToAdd = GetLayerFromString(layerToCollide);
@@ -356,13 +390,13 @@ namespace Physic
 			return;
 		}
 
-		SetLayerCollisions(mainLayer, layerToAdd);
+		SetLayerCollisions(mainLayer, layerToAdd, type);
 
 	}
 
 	void PhysicScene::ResetLayerCollisions(Layer layer, Layer layerToCollide)
 	{
-		m_collisionLayer[layer].set(LayerToNum(layerToCollide), false);
+		m_collisionLayer[layer].first.set(LayerToNum(layerToCollide), false);
 	}
 
 	void PhysicScene::ResetLayerCollisions(std::string layer, std::string layerToCollide)
@@ -382,7 +416,7 @@ namespace Physic
 
 	LayerBit PhysicScene::GetLayerCollisions(Layer layer)
 	{
-		return m_collisionLayer[layer];
+		return m_collisionLayer[layer].first;
 	}
 
 	LayerBit PhysicScene::GetLayerCollisions(std::string layerName)
@@ -395,7 +429,7 @@ namespace Physic
 		}
 		else
 		{
-			return m_collisionLayer[m_layerString[layerName]];
+			return m_collisionLayer[m_layerString[layerName]].first;
 		}
 	}
 

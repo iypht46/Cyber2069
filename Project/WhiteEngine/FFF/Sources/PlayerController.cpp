@@ -18,17 +18,17 @@ void PlayerController::OnDisable() {
 
 void PlayerController::OnCollisionEnter(const Physic::Collision col)
 {
-	GAME_INFO("Collider Enter");
+	//GAME_INFO("Collider Enter");
 }
 
 void PlayerController::OnCollisionStay(const Physic::Collision col)
 {
-	GAME_INFO("Collider Stay");
+	//GAME_INFO("Collider Stay");
 }
 
 void PlayerController::OnCollisionExit(const Physic::Collision col)
 {
-	GAME_INFO("Collider Exit");
+	//GAME_INFO("Collider Exit");
 }
 
 void PlayerController::OnStart() {

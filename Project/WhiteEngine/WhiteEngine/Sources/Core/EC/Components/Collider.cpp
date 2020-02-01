@@ -7,17 +7,6 @@
 
 	//////////////Base Collider/////////////
 
-
-	void Collider::SetTrigger(bool i)
-	{
-		m_isTrigger = i;
-	}
-
-	bool Collider::IsTrigger(void)
-	{
-		return m_isTrigger;
-	}
-
 	COLLIDER_TYPE Collider::GetType()
 	{
 		return m_colliderType;

@@ -33,12 +33,13 @@ namespace Physic
 
 	//Collider
 	using LayerBit = std::bitset<LAYER_BIT>;
+	using LayerBitPair = std::pair<LayerBit, LayerBit>;
 	using Colliders = std::vector<Collider*>;
 	using Bodies = std::vector<Rigidbody*>;
 	using CollidersMap = std::unordered_map<Layer, Colliders>;
 
 	//Collision
-	using CollisionLayer = std::unordered_map<Layer, LayerBit>;
+	using CollisionLayer = std::unordered_map<Layer, LayerBitPair>;
 	using Manifolds = std::vector<Manifold>;
 	using LayerStringMap = std::unordered_map<std::string, Layer>;
 	using CollisionMsgLists = std::vector<Collision>;
@@ -77,7 +78,7 @@ namespace Physic
 		//Check for and remove duplicate collision pair
 		void CheckDuplicatePair();
 		//Check collision of a layer with another one
-		void CheckLayerCollision(Layer, Layer);
+		void CheckLayerCollision(Layer, Layer, RESOLVE_TYPE);
 		//Check collision state and put into each container
 		void SetCollisionState(Collision);
 
@@ -114,8 +115,8 @@ namespace Physic
 		//Set Scene Gravity
 		void SetGravity(glm::vec3);
 		//Set Layer to Collide With
-		void SetLayerCollisions(Layer, Layer);
-		void SetLayerCollisions(std::string, std::string);
+		void SetLayerCollisions(Layer, Layer, RESOLVE_TYPE);
+		void SetLayerCollisions(std::string, std::string, RESOLVE_TYPE);
 		//Reset Layer to Collide With
 		void ResetLayerCollisions(Layer, Layer);
 		void ResetLayerCollisions(std::string, std::string);

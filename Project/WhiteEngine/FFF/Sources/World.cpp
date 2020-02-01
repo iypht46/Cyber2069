@@ -174,11 +174,7 @@ namespace World
 		//Physics
 		g_physicScene = new Physic::PhysicScene();
 
-		//std::cout << "Layer Collision: " << g_physicScene->GetLayerCollisions("Player") << std::endl;
-
 		ENGINE_WARN("Engine Initialized");
-		//ENGINE_INFO("Layer Static Cast: {}", static_cast<uint32_t>(Physic::Layer::PHYSIC_LAYER_1));
-		//ENGINE_INFO("Layer Static Cast: {}", static_cast<uint32_t>(Physic::Layer::PHYSIC_LAYER_2));
 
 		//GameObject
 		enemyNum = 10;
@@ -335,9 +331,6 @@ namespace World
 
 
 		//Set Transform
-
-		//Rabbit->m_transform.SetScale(glm::vec3(500, 500, 1));
-
 		Rabbit->m_transform.SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
 		Rabbit->m_transform.SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
 
@@ -351,20 +344,37 @@ namespace World
 		Flyer->m_transform.SetScale(glm::vec3(50, 50, 1));
 
 		//Add Physic
+		//Set name to layer
 		g_physicScene->SetLayerName("Player", Physic::Layer::PHYSIC_LAYER_1);
 		g_physicScene->SetLayerName("Enemy", Physic::Layer::PHYSIC_LAYER_2);
 		g_physicScene->SetLayerName("Platform", Physic::Layer::PHYSIC_LAYER_3);
-		//g_physicScene->SetLayerCollisions("Player", "Enemy");
-		g_physicScene->SetLayerCollisions("Player", "Platform");
+		//Set collision between layer
+		g_physicScene->SetLayerCollisions("Player", "Platform", Physic::RESOLVE_TYPE::COLLISION);
+		g_physicScene->SetLayerCollisions("Player", "Enemy", Physic::RESOLVE_TYPE::TRIGGER);
+		//Add Rigidbody
 		Rabbit->AddComponent<Rigidbody>()->Init(20, 20);
 		Rabbit->GetComponent<Rigidbody>()->SetDrag(0.01f);
-
 		Flyer->AddComponent<Rigidbody>()->Init(10,10);
-		Flyer->GetComponent<BoxCollider>()->SetTrigger(true);
 		g_physicScene->Add(Rabbit->GetComponent<BoxCollider>(), "Player");
 		g_physicScene->Add(Flyer->GetComponent<BoxCollider>(), "Enemy");
 		g_physicScene->Add(Rabbit->GetComponent<Rigidbody>());
 		g_physicScene->Add(Flyer->GetComponent<Rigidbody>());
+
+		for (int i = 0; i < platformNum; i++)
+		{
+			platform[i] = new GameObject();
+			platform[i]->AddComponent<MeshRenderer>();
+			platform[i]->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			platform[i]->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
+			platform[i]->m_transform.SetScale(glm::vec3(400, 20, 1));
+			platform[i]->AddComponent<BoxCollider>()->Init(180, 5);
+			g_physicScene->Add(platform[i]->GetComponent<BoxCollider>(), "Platform");
+		}
+
+		platform[1]->m_transform.SetPosition(glm::vec3(300, 300, 0));
+		platform[2]->m_transform.SetPosition(glm::vec3(-300, 300, 0));
+		platform[3]->m_transform.SetPosition(glm::vec3(-300, -300, 0));
+		platform[4]->m_transform.SetPosition(glm::vec3(300, -300, 0));
 
 		//Behavior Script
 		Rabbit->AddComponent<PlayerController>();
@@ -406,41 +416,6 @@ namespace World
 		Spawner->GetComponent<EnemySpawner>()->OnStart();
 		Spawner->GetComponent<EnemySpawner>()->assignPool(FlyerPool);
 
-		for (int i = 0; i < platformNum; i++)
-		{
-			platform[i] = new GameObject();
-			platform[i]->AddComponent<MeshRenderer>();
-			platform[i]->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			platform[i]->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
-			platform[i]->m_transform.SetScale(glm::vec3(400, 20, 1));
-			platform[i]->AddComponent<BoxCollider>()->Init(180, 5);
-			g_physicScene->Add(platform[i]->GetComponent<BoxCollider>(), "Platform");
-		}
-
-		platform[1]->m_transform.SetPosition(glm::vec3(300, 300, 0));
-		platform[2]->m_transform.SetPosition(glm::vec3(-300, 300, 0));
-		platform[3]->m_transform.SetPosition(glm::vec3(-300, -300, 0));
-		platform[4]->m_transform.SetPosition(glm::vec3(300, -300, 0));
-
-		//g_physicScene->Add(Rabbit->AddComponent<Rigidbody>());
-		//Rabbit->GetComponent<Rigidbody>()->Init(0.83, 0.25f);
-
-		/*for (int i = 0; i < enemyNum; i++)
-		{
-			float randX = (float)((rand() % 350) - (rand() % 350));
-			float randY = (float)((rand() % 350) - (rand() % 350));
-			test[i] = new GameObject();
-			test[i]->AddComponent<MeshRenderer>();
-			test[i]->GetComponent<MeshRenderer>()->CreateMesh(6, 1);
-			test[i]->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_Enemy_Flyer_Vversion01.png");
-			test[i]->m_transform.SetScale(glm::vec3(40.0f, 30.0f, 1));
-			test[i]->m_transform.SetPosition(glm::vec3(randX, randY, 0.0f));
-			Rigidbody* testRigid = test[i]->AddComponent<Rigidbody>();
-			testRigid->Init(5, 10);
-			g_physicScene->Add(testRigid->GetCollider(), "Enemy");
-
-		}*/
-
 		//Add Sound
 		Bg2->AddComponent<SoundPlayer>();
 		Bg2->GetComponent<SoundPlayer>()->CreateSoundPlayer();
@@ -468,10 +443,6 @@ namespace World
 
 			FactoryCollection::FixedUpdateComponents(dt);
 
-			/*Rabbit->GetComponent<Rigidbody>()->AddForce(glm::vec3(0.0f, -10.0f, 0.0f));
-			Rabbit->GetComponent<Rigidbody>()->UpdateTransform(dt);*/
-			//Flyer->GetComponent<Rigidbody>()->UpdateTransform(dt);
-
 			for (int i = 0; i < Factory<MachineGunBullet>::getCollection().size(); i++)
 			{
 				if (Factory<MachineGunBullet>::getCollection().at(i)->GetGameObject()->Active())
@@ -482,28 +453,16 @@ namespace World
 
 			g_physicScene->Update(c_targetDT);
 			//ENGINE_INFO("FixedUpdate: {}", dt
-			/*Physic::Manifold col(Rabbit->GetComponent<Collider>(), test->GetComponent<Collider>());
-			if (col.CheckCollision())
-			{
-				ENGINE_INFO("Collided");
-			}*/
-			//ENGINE_INFO("Velocity: {}, {}", Rabbit->GetComponent<Rigidbody>()->GetVelocity().x ,Rabbit->GetComponent<Rigidbody>()->GetVelocity().y);
 			accumulator -= c_targetDT;
 		}
 
 		g_physicScene->SendCollisionMsg();
-		//ENGINE_INFO()
-		//cout << Rabbit->m_transform.GetPosition().y << endl;
 
-		/*Factory<GameObject>::Create();
-		std::vector<GameObject*> a = Factory<GameObject>::getCollection();
-		a.back()->AddComponent<MeshRenderer>();
-		std::cout << Factory<MeshRenderer>::getCollection().size() << std::endl;*/
 	}
 
 	void Update(float dt)
 	{
-		//update sound
+		//Update Sound
 		Bg2->GetComponent<SoundPlayer>()->UpdateVolume();
 
 		//Update All Systems
@@ -512,13 +471,8 @@ namespace World
 		//Core
 		DebugInput(dt);
 
-		//Flyer->GetComponent<FlyerBehaviour>()->OnUpdate(dt);
 		FactoryCollection::UpdateComponents(dt);
 
-		//for (int i = 0; i < Factory<Animator>::getCollection().size(); i++)
-		//{
-		//	Factory<Animator>::getCollection().at(i)->animUpdate();
-		//}
 		//ENGINE_INFO("FPS: {}", (1/dt));
 		//Update Graphic
 		Graphic::Render();

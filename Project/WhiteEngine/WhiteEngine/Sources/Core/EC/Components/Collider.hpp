@@ -23,7 +23,6 @@
 		COLLIDER_TYPE m_colliderType;
 		COL_STATE m_collisionState = COL_STATE::NONE;
 		bool m_isStatic = true;
-		bool m_isTrigger;
 		bool m_hasCollided = false;
 		float m_density;
 	public:
@@ -36,8 +35,6 @@
 		//Destructor
 		~Collider() {};
 		//Collider Interface
-		void SetTrigger(bool);
-		bool IsTrigger(void);
 		COLLIDER_TYPE GetType();
 		bool IsStatic();
 		COL_STATE GetCollisionState();
