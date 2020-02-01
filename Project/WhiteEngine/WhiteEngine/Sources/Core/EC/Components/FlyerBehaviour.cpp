@@ -24,8 +24,7 @@ void FlyerBehaviour::OnDisable()
 
 void FlyerBehaviour::OnUpdate(float dt)
 {
-	AirFollowing flyer;
-	flyer.FollowPlayer(dt);
+	af->FollowPlayer(dt);
 
 }
 

@@ -3,7 +3,9 @@
 #include "AirFollowing.hpp"
 
 class FlyerBehaviour : public BehaviourScript {
+
 public:
+	AirFollowing* af;
 	FlyerBehaviour();
 	virtual void OnAwake();
 	virtual void OnEnable();

@@ -375,7 +375,8 @@ namespace World
 		Flyer->GetComponent<AirFollowing>()->SetPlayer((Rabbit->m_transform));
 		Flyer->GetComponent<AirFollowing>()->SetGameObject(Flyer);
 		
-		//Flyer->AddComponent<FlyerBehaviour>();
+		Flyer->AddComponent<FlyerBehaviour>();
+		Flyer->GetComponent<FlyerBehaviour>()->af = Flyer->GetComponent<AirFollowing>();
 
 		for (int i = 0; i < 100; i++)
 		{
@@ -393,7 +394,8 @@ namespace World
 			flyer->GetComponent<AirFollowing>()->SetPlayer((Rabbit->m_transform));
 			flyer->GetComponent<AirFollowing>()->SetGameObject(flyer);
 
-			//Flyer->AddComponent<FlyerBehaviour>();
+			flyer->AddComponent<FlyerBehaviour>();
+			flyer->GetComponent<FlyerBehaviour>()->af = flyer->GetComponent<AirFollowing>();
 
 			flyer->AddComponent<Animator>();
 			flyer->GetComponent<Animator>()->AssignController(EnemCon);
