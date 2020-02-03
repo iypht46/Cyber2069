@@ -46,3 +46,27 @@ void AirFollowing::FollowPlayer(float dt) {
 	}
 
 }
+
+void AirFollowing::OnAwake() {
+
+}
+
+void AirFollowing::OnEnable() {
+
+}
+
+void AirFollowing::OnStart() {
+
+}
+
+void AirFollowing::OnUpdate(float dt) {
+
+}
+
+void AirFollowing::OnFixedUpdate(float dt) {
+
+}
+
+void AirFollowing::OnDisable() {
+
+}

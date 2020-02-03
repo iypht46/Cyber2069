@@ -2,22 +2,22 @@
 #include "BehaviourScript.h"
 #include "Core/EC/GameObject.hpp"
 #include "Core/EC/Components/Rigidbody.hpp"
-
-class AirFollowing : public BehaviourScript
+class AirDash : public BehaviourScript
 {
 protected:
 	Transform* m_target;
-	Transform* flyer;
-	float m_speed;
-	float rotAngle;
-	float rotRate;
+	Transform* bomber;
+	Rigidbody* rb;
+	float m_dashSpeed;
+	float m_aimTime;
+	float m_aimSpeed;
 public:
-	AirFollowing();
-	void SetPlayer(Transform&);
-	void SetFlySpeed(float value);
-	void SetRotAngle(float value);
-	void SetRotRate(float value);
-	void FollowPlayer(float dt);
+	AirDash();
+	void SetPlayer(Transform* player);
+	void SetDashSpeed(float value);
+	void SetAimTime(float value);
+	void SetAimSpeed(float value);
+	void Dash(float dt);
 	virtual void OnAwake();
 	virtual void OnEnable();
 	virtual void OnStart();

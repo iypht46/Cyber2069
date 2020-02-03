@@ -25,6 +25,7 @@ void FlyerBehaviour::OnDisable()
 void FlyerBehaviour::OnUpdate(float dt)
 {
 	af->FollowPlayer(dt);
+	ad->Dash(dt);
 
 }
 

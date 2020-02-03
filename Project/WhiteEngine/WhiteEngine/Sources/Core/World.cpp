@@ -370,13 +370,19 @@ namespace World
 		Rabbit->AddComponent<PlayerController>();
 		Rabbit->GetComponent<PlayerController>()->OnStart();
 		Rabbit->GetComponent<PlayerController>()->assignPool(BulletPool);
-
+		
 		Flyer->AddComponent<AirFollowing>();
 		Flyer->GetComponent<AirFollowing>()->SetPlayer((Rabbit->m_transform));
 		Flyer->GetComponent<AirFollowing>()->SetGameObject(Flyer);
 		
+		Flyer->AddComponent<AirDash>();
+		Flyer->GetComponent<AirDash>()->SetPlayer(&(Rabbit->m_transform));
+		Flyer->GetComponent<AirDash>()->SetGameObject(Flyer);
+		
+		
 		Flyer->AddComponent<FlyerBehaviour>();
 		Flyer->GetComponent<FlyerBehaviour>()->af = Flyer->GetComponent<AirFollowing>();
+		Flyer->GetComponent<FlyerBehaviour>()->ad = Flyer->GetComponent<AirDash>();
 
 		for (int i = 0; i < 100; i++)
 		{
@@ -390,12 +396,19 @@ namespace World
 
 			g_physicScene->Add(flyer->GetComponent<Rigidbody>());
 
+			
 			flyer->AddComponent<AirFollowing>();
 			flyer->GetComponent<AirFollowing>()->SetPlayer((Rabbit->m_transform));
 			flyer->GetComponent<AirFollowing>()->SetGameObject(flyer);
 
+			Flyer->AddComponent<AirDash>();
+			Flyer->GetComponent<AirDash>()->SetPlayer(&(Rabbit->m_transform));
+			Flyer->GetComponent<AirDash>()->SetGameObject(Flyer);
+
 			flyer->AddComponent<FlyerBehaviour>();
 			flyer->GetComponent<FlyerBehaviour>()->af = flyer->GetComponent<AirFollowing>();
+			flyer->GetComponent<FlyerBehaviour>()->ad = flyer->GetComponent<AirDash>();
+
 
 			flyer->AddComponent<Animator>();
 			flyer->GetComponent<Animator>()->AssignController(EnemCon);
