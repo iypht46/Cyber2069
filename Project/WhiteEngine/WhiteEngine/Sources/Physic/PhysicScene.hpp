@@ -33,86 +33,93 @@ namespace Physic
 
 	//Collider
 	using LayerBit = std::bitset<LAYER_BIT>;
+	using LayerBitPair = std::pair<LayerBit, LayerBit>;
 	using Colliders = std::vector<Collider*>;
 	using Bodies = std::vector<Rigidbody*>;
-	using ColliderMap = std::unordered_map<Layer, Colliders>;
+	using CollidersMap = std::unordered_map<Layer, Colliders>;
 
 	//Collision
-	using CollisionLayer = std::unordered_map<Layer, LayerBit>;
-	using Collisions = std::vector<Manifold>;
+	using CollisionLayer = std::unordered_map<Layer, LayerBitPair>;
+	using Manifolds = std::vector<Manifold>;
 	using LayerStringMap = std::unordered_map<std::string, Layer>;
+	using CollisionMsgLists = std::vector<Collision>;
 
 	class PhysicScene
 	{
 	private:
+		
 		//Store layerbit as key and collider as value.
-		ColliderMap m_colliders;
+		CollidersMap m_colliders;
 		Bodies m_bodies;
 		//Store layer enum as key and layerbit as value.
 		CollisionLayer m_collisionLayer;
 		//Store possible collision
-		Collisions m_possibleCollision;
-		Collisions m_finalCollision;
+		Manifolds m_possibleCollision;
+		Manifolds m_finalCollision;
 		LayerStringMap m_layerString;
+
+		//Store Collision Callback Lists
+		CollisionMsgLists m_collisionMsg;
+		CollisionMsgLists m_stayState;
 
 		//Physics Setting
 		glm::vec3 m_gravity;
+
+	protected:
+		//Use in class only//
+		//Update layer collision and generate pair
+		void UpdateLayerCollision();
+		//Resolve layer collision pair
+		void ResolveLayerCollision(float dt);
+		//Update all bodies transform
+		void UpdateTransform(float dt);
+		//Apply Gravity
+		void ApplyGravity(float dt);
+		//Check for and remove duplicate collision pair
+		void CheckDuplicatePair();
+		//Check collision of a layer with another one
+		void CheckLayerCollision(Layer, Layer, RESOLVE_TYPE);
+		//Check collision state and put into each container
+		void SetCollisionState(Collision);
+
 	public:
 		//Main update loop
 		void Update(float);
 
-		//Update layer collision and generate pair
-		void UpdateLayerCollision();
-
-		//Resolve layer collision pair
-		void ResolveLayerCollision(float dt);
-
-		//Update all bodies transform
-		void UpdateTransform(float dt);
-
-		//Apply Gravity
-		void ApplyGravity(float dt);
-
-		//Check for and remove duplicate collision pair
-		void CheckDuplicatePair();
-
-		//Check collision of a layer with another one
-		void CheckLayerCollision(Layer, Layer);
-
-		//Convert Layer Enum to number
-		static uint32_t LayerToNum(Layer);
-
-		//Interface
+		//Interface//
+		//@Adding and Removing Collider
 		//Add collider to layer
 		void Add(Collider*, Layer);
 		void Add(Collider*, std::string);
 		void Add(Rigidbody*);
-
 		//Remove collider from layer
 		void Remove(Collider*, Layer);
 		void Remove(Collider*, std::string);
+		//Send Collision Message to Collider in list
+		void SendCollisionMsg(void);
 
-		//Set Layer to Collide With
-		void SetLayerCollisions(Layer, Layer);
-		void SetLayerCollisions(std::string, std::string);
-
-		//Reset Layer to Collide With
-		void ResetLayerCollisions(Layer, Layer);
-		void ResetLayerCollisions(std::string, std::string);
-
+		//@Utility
 		//Get Layer to collide with
 		LayerBit GetLayerCollisions(Layer);
 		LayerBit GetLayerCollisions(std::string);
-
 		//Map string with layer enum
 		void SetLayerName(std::string, Layer);
 		//Get layer enum from layer string map
 		Layer GetLayerFromString(std::string);
 		//Get string from layer
 		std::string GetStringFromLayer(Layer);
+		//Convert Layer Enum to number
+		static uint32_t LayerToNum(Layer);
 
-		//Physic Settings
+		//@Physic Settings
+		//Set Scene Gravity
 		void SetGravity(glm::vec3);
+		//Set Layer to Collide With
+		void SetLayerCollisions(Layer, Layer, RESOLVE_TYPE);
+		void SetLayerCollisions(std::string, std::string, RESOLVE_TYPE);
+		//Reset Layer to Collide With
+		void ResetLayerCollisions(Layer, Layer);
+		void ResetLayerCollisions(std::string, std::string);
 
 		PhysicScene();
 		~PhysicScene() {}

@@ -3,6 +3,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "Core/Factory.h"
+#include "Core/Logger.hpp"
 #include "Window.hpp"
 #include <vector>
 #include "Core/EC/Components/TextRenderer.hpp"
@@ -192,6 +193,18 @@ void GLRenderer::Render()
 
 	//Unbind program
 	glUseProgram(NULL);
+}
+
+void GLRenderer::CheckUnassignedLayer() 
+{
+	for (MeshRenderer *obj : Factory<MeshRenderer>::getCollection()) 
+	{
+		if (obj->layer == -1) 
+		{
+			ENGINE_WARN("Mesh Layer Unassigned (set to 0)");
+			obj->SetLayer(0);
+		}
+	}
 }
 
 void GLRenderer::SetMeshAttribId(MeshVbo * mesh)

@@ -22,7 +22,7 @@ private:
 	Animator* anim;
 
 public:
-	int layer;
+	int layer = -1;
 
 	MeshRenderer();
 	MeshRenderer(std::string texture_path, float NumframeX, float NumFrameY);

@@ -5,11 +5,11 @@
   <PropertyGroup />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Vendors\irrklang;$(ProjectDir)Sources;$(ProjectDir)Vendors\glm;$(ProjectDir)Vendors\glfw-3.3.bin.WIN32\include\GLFW;$(ProjectDir)Vendors\glew-2.1.0\include;$(ProjectDir)Vendors\SDL2-2.0.5\include;$(ProjectDir)Vendors\spdlog\include;$(ProjectDir)Vendors\freetype-2.10.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)WhiteEngine\Vendors\freetype-2.10.1\include;$(SolutionDir)WhiteEngine\Vendors\irrklang;$(SolutionDir)WhiteEngine\Sources;$(SolutionDir)WhiteEngine\Vendors\glm;$(SolutionDir)WhiteEngine\Vendors\glfw-3.3.bin.WIN32\include;$(SolutionDir)WhiteEngine\Vendors\glew-2.1.0\include;$(SolutionDir)WhiteEngine\Vendors\SDL2-2.0.5\include;$(SolutionDir)WhiteEngine\Vendors\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(ProjectDir)Vendors\glew-2.1.0\lib\Releases\Win32;$(ProjectDir)Vendors\irrklang;$(ProjectDir)Vendors\glfw-3.3.bin.WIN32\lib-vc2017;$(ProjectDir)Vendors\SDL2-2.0.5\lib\x86;$(ProjectDir)Vendors\freetype-2.10.1\include;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>irrKlang.lib;glew32.lib;glew32s.lib;glfw3.lib;opengl32.lib;SDL2_image.lib;SDL2main.lib;SDL2.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)WhiteEngine\Vendors\freetype-2.10.1\include;$(SolutionDir)WhiteEngine\Vendors\glew-2.1.0\lib\Releases\Win32;$(SolutionDir)WhiteEngine\Vendors\irrklang;$(SolutionDir)WhiteEngine\Vendors\glfw-3.3.bin.WIN32\lib-vc2017;$(SolutionDir)WhiteEngine\Vendors\SDL2-2.0.5\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>irrKlang.lib;glew32.lib;glew32s.lib;glfw3.lib;opengl32.lib;SDL2_image.lib;SDL2.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup />

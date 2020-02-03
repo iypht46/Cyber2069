@@ -71,6 +71,9 @@ public:
 	void SetOrthoProjection(float left, float right, float bottom, float top);
 	void SetViewPort(int x, int y, int w, int h);
 	void SetClearColor(float r, float g, float b);
+	void SetClearColor(float r, float g, float b, float w);
+	
+	void CheckUnassignedLayer();
 
 	void AddMeshToSet(MeshRenderer* mesh);
 
