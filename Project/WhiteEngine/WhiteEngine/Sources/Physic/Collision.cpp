@@ -2,6 +2,7 @@
 #include "Core/EC/Components/Collider.hpp"
 #include "Core/EC/Components/Rigidbody.hpp"
 #include "Core/EC/Components/Transform.hpp"
+#include "Core/EC/GameObject.hpp"
 #include "Core/Logger.hpp"
 #include <iostream>
 namespace Physic
@@ -87,10 +88,12 @@ namespace Physic
 	{
 		if (m_objectA && m_objectB)
 		{
-			if (m_objectA->GetType() == COLLIDER_TYPE::BOX
-				&& m_objectB->GetType() == COLLIDER_TYPE::BOX)
-			{
-				return (AABBtoAABB(this));
+			if (m_objectA->GetGameObject()->Active() && m_objectB->GetGameObject()->Active()) {
+				if (m_objectA->GetType() == COLLIDER_TYPE::BOX
+					&& m_objectB->GetType() == COLLIDER_TYPE::BOX)
+				{
+					return (AABBtoAABB(this));
+				}
 			}
 		}
 		else
@@ -121,36 +124,12 @@ namespace Physic
 			
 			if (m_objAResFlag)
 			{
-				glm::vec3 ResolvedVelocity;
-
-				for (int i = 0; i < 3; i++) {
-					if (m_normal[i] == 0.0f) {
-						ResolvedVelocity[i] = m_objectA->m_rigidbody->GetVelocity()[i];
-					}
-					else {
-						ResolvedVelocity[i] = -resultVec[i];
-						//ENGINE_INFO(i);
-					}
-				}
-
-				m_objectA->m_rigidbody->SetVelocity(ResolvedVelocity);
+				m_objectA->m_rigidbody->SetVelocity0Masked(-resultVec);
 			}
 
 			if (m_objBResFlag)
 			{
-				glm::vec3 ResolvedVelocity;
-
-				for (int i = 0; i < 3; i++) {
-					if (m_normal[i] == 0.0f) {
-						ResolvedVelocity[i] = m_objectB->m_rigidbody->GetVelocity()[i];
-					}
-					else {
-						ResolvedVelocity[i] = resultVec[i];
-						//ENGINE_INFO(i);
-					}
-				}
-
-				m_objectB->m_rigidbody->SetVelocity(ResolvedVelocity);
+				m_objectA->m_rigidbody->SetVelocity0Masked(resultVec);
 			}
 		}
 		

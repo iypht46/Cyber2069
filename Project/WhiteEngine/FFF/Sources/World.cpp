@@ -184,7 +184,7 @@ namespace World
 		Bg2 = new GameObject();
 		Bg1 = new GameObject();
 		Child = new GameObject();
-		Flyer = new GameObject();
+		//Flyer = new GameObject();
 		platform = new GameObject*[platformNum];
 
 		Spawner = new GameObject();
@@ -232,9 +232,9 @@ namespace World
 
 		Child->m_transform.SetParent(&Rabbit->m_transform);
 
-		Flyer->AddComponent<MeshRenderer>();
-		Flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
-		Flyer->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Flyer_Vversion01.png");
+		//Flyer->AddComponent<MeshRenderer>();
+		//Flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
+		//Flyer->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Flyer_Vversion01.png");
 
 
 
@@ -300,10 +300,10 @@ namespace World
 		EnemCon->setSheetSize(glm::vec2(6, 1));
 		EnemCon->AddState(Fly);
 
-		Flyer->AddComponent<Animator>();
+		/*Flyer->AddComponent<Animator>();
 		Flyer->GetComponent<Animator>()->AssignController(EnemCon);
 		Flyer->GetComponent<Animator>()->setCurrentState(0);
-		Flyer->GetComponent<Animator>()->setFramePerSec(12);
+		Flyer->GetComponent<Animator>()->setFramePerSec(12);*/
 
 		for (int i = 0; i < 100; i++)
 		{
@@ -340,8 +340,8 @@ namespace World
 		Child->m_transform.SetLocalPosition(glm::vec3(1, 0, 0));
 		//Bg->m_transform.SetScale(glm::vec3(500, 500, 1));
 
-		Flyer->m_transform.SetPosition(glm::vec3(100, 100, 0));
-		Flyer->m_transform.SetScale(glm::vec3(50, 50, 1));
+		//Flyer->m_transform.SetPosition(glm::vec3(100, 100, 0));
+		//Flyer->m_transform.SetScale(glm::vec3(50, 50, 1));
 
 		//Add Physic
 		//Set name to layer
@@ -352,13 +352,13 @@ namespace World
 		g_physicScene->SetLayerCollisions("Player", "Platform", Physic::RESOLVE_TYPE::COLLISION);
 		g_physicScene->SetLayerCollisions("Player", "Enemy", Physic::RESOLVE_TYPE::TRIGGER);
 		//Add Rigidbody
-		Rabbit->AddComponent<Rigidbody>()->Init(20, 20);
+		Rabbit->AddComponent<Rigidbody>()->Init(50, 50);
 		Rabbit->GetComponent<Rigidbody>()->SetDrag(0.01f);
-		Flyer->AddComponent<Rigidbody>()->Init(10,10);
+		//Flyer->AddComponent<Rigidbody>()->Init(10,10);
 		g_physicScene->Add(Rabbit->GetComponent<BoxCollider>(), "Player");
-		g_physicScene->Add(Flyer->GetComponent<BoxCollider>(), "Enemy");
+		//g_physicScene->Add(Flyer->GetComponent<BoxCollider>(), "Enemy");
 		g_physicScene->Add(Rabbit->GetComponent<Rigidbody>());
-		g_physicScene->Add(Flyer->GetComponent<Rigidbody>());
+		//g_physicScene->Add(Flyer->GetComponent<Rigidbody>());
 
 		for (int i = 0; i < platformNum; i++)
 		{
@@ -367,7 +367,7 @@ namespace World
 			platform[i]->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 			platform[i]->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
 			platform[i]->m_transform.SetScale(glm::vec3(400, 20, 1));
-			platform[i]->AddComponent<BoxCollider>()->Init(180, 5);
+			platform[i]->AddComponent<BoxCollider>()->Init(200, 5);
 			g_physicScene->Add(platform[i]->GetComponent<BoxCollider>(), "Platform");
 		}
 
@@ -381,9 +381,9 @@ namespace World
 		Rabbit->GetComponent<PlayerController>()->OnStart();
 		Rabbit->GetComponent<PlayerController>()->assignPool(BulletPool);
 
-		Flyer->AddComponent<FlyerBehaviour>();
-		Flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
-		Flyer->GetComponent<FlyerBehaviour>()->SetGameObject(Flyer);
+		//Flyer->AddComponent<FlyerBehaviour>();
+		//Flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
+		//Flyer->GetComponent<FlyerBehaviour>()->SetGameObject(Flyer);
 
 		for (int i = 0; i < 100; i++)
 		{
@@ -393,9 +393,10 @@ namespace World
 			flyer->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Flyer_Vversion01.png");
 
 			flyer->AddComponent<Rigidbody>();
-			flyer->GetComponent<Rigidbody>()->Init();
+			flyer->GetComponent<Rigidbody>()->Init(25,25);
 
 			g_physicScene->Add(flyer->GetComponent<Rigidbody>());
+			g_physicScene->Add(flyer->GetComponent<BoxCollider>(), "Enemy");
 
 			flyer->AddComponent<FlyerBehaviour>();
 			flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));

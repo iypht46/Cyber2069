@@ -69,4 +69,7 @@ public:
 	virtual void OnCollisionEnter(const Physic::Collision) override;
 	virtual void OnCollisionStay(const Physic::Collision) override;
 	virtual void OnCollisionExit(const Physic::Collision) override;
+	virtual void OnTriggerEnter(const Physic::Collision) override;
+	virtual void OnTriggerStay(const Physic::Collision) override;
+	virtual void OnTriggerExit(const Physic::Collision) override;
 };
