@@ -8,6 +8,12 @@ namespace Core
 	using SubscriberLists = std::unordered_map<MessageType, IMessageHandler*>;
 	class Observer
 	{
+		SubscriberLists m_subsList;
+
+	public:
+		//Subscribe to message function
+
+		//
 
 	};
 }
