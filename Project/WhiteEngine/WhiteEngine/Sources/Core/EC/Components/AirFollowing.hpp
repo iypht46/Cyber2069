@@ -5,9 +5,9 @@
 class AirFollowing : public Component
 {
 protected:
-	Transform* player;
+	Transform* m_target;
 	Transform* flyer;
-	float flySpeed;
+	float m_speed;
 	float rotAngle;
 	float rotRate;
 public:
