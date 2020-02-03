@@ -216,11 +216,12 @@ namespace World
 		Bg2->AddComponent<MeshRenderer>();
 		Bg2->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 		Bg2->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer2.png");
-
+		Bg2->GetComponent<MeshRenderer>()->SetLayer(0);
 
 		Bg1->AddComponent<MeshRenderer>();
 		Bg1->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 		Bg1->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer1.png");
+		Bg1->GetComponent<MeshRenderer>()->SetLayer(1);
 
 		Bg2->m_transform.SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
 		Bg1->m_transform.SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
@@ -231,6 +232,7 @@ namespace World
 		Rabbit->AddComponent<MeshRenderer>();
 		Rabbit->GetComponent<MeshRenderer>()->CreateMesh(7, 5);
 		Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_PlayerBody_Vversion03.png");
+		Rabbit->GetComponent<MeshRenderer>()->SetLayer(2);
 
 		Child->m_transform.SetParent(&Rabbit->m_transform);
 
@@ -313,6 +315,7 @@ namespace World
 			Bullet->AddComponent<MeshRenderer>();
 			Bullet->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
 			Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_bullet.png");
+			Bullet->GetComponent<MeshRenderer>()->SetLayer(5);
 
 			Bullet->AddComponent<Rigidbody>();
 			Bullet->GetComponent<Rigidbody>()->Init();
@@ -329,6 +332,7 @@ namespace World
 		Child->AddComponent<MeshRenderer>();
 		Child->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
 		Child->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_shoot.png");
+		Child->GetComponent<MeshRenderer>()->SetLayer(5);
 		//std::cout << "Layer Collision: " << g_physicScene->GetLayerCollisions("Player") << std::endl;
 
 
@@ -368,6 +372,7 @@ namespace World
 			platform[i]->AddComponent<MeshRenderer>();
 			platform[i]->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 			platform[i]->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
+			platform[i]->GetComponent<MeshRenderer>()->SetLayer(3);
 			platform[i]->m_transform.SetScale(glm::vec3(400, 20, 1));
 			platform[i]->AddComponent<BoxCollider>()->Init(180, 5);
 			g_physicScene->Add(platform[i]->GetComponent<BoxCollider>(), "Platform");
@@ -393,6 +398,7 @@ namespace World
 			flyer->AddComponent<MeshRenderer>();
 			flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
 			flyer->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Flyer_Vversion01.png");
+			flyer->GetComponent<MeshRenderer>()->SetLayer(4);
 
 			flyer->AddComponent<Rigidbody>();
 			flyer->GetComponent<Rigidbody>()->Init();
