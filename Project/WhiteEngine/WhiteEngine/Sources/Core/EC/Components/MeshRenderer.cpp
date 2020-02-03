@@ -77,6 +77,7 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 
 	GLuint modelMatixId = GLRenderer::GetInstance()->GetModelMatrixAttrId();
 	GLuint modeId = GLRenderer::GetInstance()->GetModeUniformId();
+	GLuint vmodeId = GLRenderer::GetInstance()->GetvModeUniformId();
 
 	GLuint offsetXId = GLRenderer::GetInstance()->GetOffsetXUniformId();
 	GLuint offsetYId = GLRenderer::GetInstance()->GetOffsetYUniformId();
@@ -113,8 +114,8 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 
 	if (squareMesh != nullptr)
 	{
-		glUniformMatrix4fv(modelMatixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
 		glUniform1i(modeId, 1);
+		glUniformMatrix4fv(modelMatixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
 
 		//-------Animation--------
 

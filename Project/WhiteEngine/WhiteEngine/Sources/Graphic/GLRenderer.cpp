@@ -5,7 +5,7 @@
 #include "Core/Factory.h"
 #include "Window.hpp"
 #include <vector>
-
+#include "Core/EC/Components/TextRenderer.hpp"
 #include "Core/EC/Components/MeshRenderer.hpp"
 #include "Core/EC/GameObject.hpp"
 
@@ -58,11 +58,19 @@ bool GLRenderer::Initialize(string vertexShaderFile, string fragmentShaderFile)
 	glAttachShader(gProgramId, fragmentShader->getShaderId());
 
 
-	//Link program
 	glLinkProgram(gProgramId);
 
 	//Check for errors
 	GLint programSuccess = GL_TRUE;
+	glGetProgramiv(gProgramId2, GL_LINK_STATUS, &programSuccess);
+	if (programSuccess != GL_TRUE)
+	{
+		cout << "Error linking program " << gProgramId2 << endl;
+		PrintProgramLog(gProgramId2);
+		return false;
+	}
+
+	programSuccess = GL_TRUE;
 	glGetProgramiv(gProgramId, GL_LINK_STATUS, &programSuccess);
 	if (programSuccess != GL_TRUE)
 	{
@@ -93,13 +101,13 @@ bool GLRenderer::Initialize(string vertexShaderFile, string fragmentShaderFile)
 		return false;
 	}
 
-	//Set up uniform id attribute
-	/*pMatrixId = glGetUniformLocation(gProgramId, "pMatrix");
-	if (pMatrixId == -1)
-	{
-		cout << "pMatrix is not a valid glsl uniform variable" << endl;
-		return false;
-	}*/
+	////Set up uniform id attribute
+	///*pMatrixId = glGetUniformLocation(gProgramId, "pMatrix");
+	//if (pMatrixId == -1)
+	//{
+	//	cout << "pMatrix is not a valid glsl uniform variable" << endl;
+	//	return false;
+	//}*/
 	mMatrixId = glGetUniformLocation(gProgramId, "mMatrix");
 	if (mMatrixId == -1)
 	{
@@ -112,6 +120,12 @@ bool GLRenderer::Initialize(string vertexShaderFile, string fragmentShaderFile)
 		cout << "mode is not a valid glsl uniform variable" << endl;
 		return false;
 	}
+	/*vmodeUniformId = glGetUniformLocation(gProgramId, "vmode");
+	if (vmodeUniformId == -1)
+	{
+		cout << "mode is not a valid glsl uniform variable" << endl;
+		return false;
+	}*/
 	offSetXId = glGetUniformLocation(gProgramId, "offsetX");
 	if (modeUniformId == -1)
 	{
@@ -124,7 +138,6 @@ bool GLRenderer::Initialize(string vertexShaderFile, string fragmentShaderFile)
 		cout << "offsetY is not a valid glsl uniform variable" << endl;
 		return false;
 	}
-
 
 	glEnableVertexAttribArray(gPos2DLocation);
 	glEnableVertexAttribArray(gTex2DLocation);
@@ -143,7 +156,7 @@ void GLRenderer::Render()
 {
 	// Clear color buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+	glEnable(GL_BLEND);
 	// Update window with OpenGL rendering
 
 	glUseProgram(gProgramId);
@@ -166,6 +179,14 @@ void GLRenderer::Render()
 		if (obj->GetGameObject()->Active())
 		{
 			obj->Render(camera);
+		}
+	}
+
+	for (TextRenderer *obj : Factory<TextRenderer>::getCollection()) {
+
+		if (obj->GetGameObject()->Active())
+		{
+			obj->Render();
 		}
 	}
 
@@ -266,6 +287,11 @@ GLuint GLRenderer::GetModeUniformId()
 	return this->modeUniformId;
 }
 
+GLuint GLRenderer::GetvModeUniformId()
+{
+	return this->vmodeUniformId;
+}
+
 GLuint GLRenderer::GetOffsetXUniformId() 
 {
 	return this->offSetXId;
@@ -274,6 +300,18 @@ GLuint GLRenderer::GetOffsetXUniformId()
 GLuint GLRenderer::GetOffsetYUniformId()
 {
 	return this->offSetYId;
+}
+
+GLuint GLRenderer::GetProgramId() {
+	return this->gProgramId;
+}
+
+int GLRenderer::GetgTex2DLocation() {
+	return this->gTex2DLocation;
+}
+
+int GLRenderer::GetgPos2DLocation() {
+	return this->gPos2DLocation;
 }
 
 GLuint GLRenderer::LoadTexture(string path)

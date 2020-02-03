@@ -8,6 +8,7 @@
 #include "Input/Input.hpp"
 #include "EC/Components/Animator.hpp"
 #include "EC/Components/MeshRenderer.hpp"
+#include "EC/Components/TextRenderer.hpp"
 #include "EC/Components/SoundPlayer.hpp"
 
 #include "EC/Components/FlyerBehaviour.hpp"
@@ -55,6 +56,8 @@ namespace World
 	GameObject* Child;
 	GameObject* Flyer;
 	GameObject** platform;
+
+	GameObject* testText;
 
 	GameObject* Enemy;
 	GameObject* Spawner;
@@ -193,6 +196,8 @@ namespace World
 		Flyer = new GameObject();
 		platform = new GameObject*[platformNum];
 
+		testText = new GameObject();
+
 		testUI = new GameObject();
 
 		Spawner = new GameObject();
@@ -220,6 +225,14 @@ namespace World
 				title->SetActive(false);
 			}
 		}
+
+		testText->AddComponent<TextRenderer>();
+		testText->GetComponent<TextRenderer>()->LoadFont("Sources/Orbitron-Regular.ttf", 50);
+		testText->GetComponent<TextRenderer>()->SetText("Hello world");
+		testText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
+
+		testText->m_transform.SetPosition(glm::vec3(100.0f, 300.0f, 1.0f));
+		testText->m_transform.SetScale(glm::vec3(1.5f, 1.5f, 1.0f));
 
 		Bg2->AddComponent<MeshRenderer>();
 		Bg2->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
@@ -257,7 +270,6 @@ namespace World
 
 		testUI->m_transform.SetScale(glm::vec3(150.0f, 150.0f, 0.0f));
 		testUI->m_transform.SetPosition(glm::vec3((Graphic::Window::GetWidth()/2) - 200.0f, (Graphic::Window::GetHeight() / 2) - 200.0f, 0.0f));
-
 
 		//Add Animator
 		Animation* Idle = new Animation();

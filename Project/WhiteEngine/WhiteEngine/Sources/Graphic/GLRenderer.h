@@ -43,10 +43,12 @@ protected:
 	GLuint pMatrixId = -1;
 	GLuint colorUniformId = -1;
 	GLuint modeUniformId = -1;
+	GLuint vmodeUniformId = -1;
 	GLuint offSetXId = -1;
 	GLuint offSetYId = -1;
 
 	GLuint gProgramId;
+	GLuint gProgramId2;
 	int gPos2DLocation = -1;
 	int gTex2DLocation = -1;
 	void PrintProgramLog(GLuint program);
@@ -54,7 +56,9 @@ protected:
 
 	Shader *vertexShader;
 	Shader *fragmentShader;
-
+	
+	Shader *vertexShaderT;
+	Shader *fragmentShaderT;
 public:
 	void Render();
 	static GLRenderer* GetInstance();
@@ -76,8 +80,14 @@ public:
 	GLuint GetProjectionMatrixAttrId();
 	GLuint GetColorUniformId();
 	GLuint GetModeUniformId();
+	GLuint GetvModeUniformId();
 	GLuint GetOffsetXUniformId();
 	GLuint GetOffsetYUniformId();
+
+	int GetgTex2DLocation();
+	int GetgPos2DLocation();
+	
+	GLuint GetProgramId();
 
 	GLuint LoadTexture(string path);
 
