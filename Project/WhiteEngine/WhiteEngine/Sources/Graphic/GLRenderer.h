@@ -53,6 +53,7 @@ protected:
 	int gTex2DLocation = -1;
 	void PrintProgramLog(GLuint program);
 	bool Initialize(string vertexShaderFile, string fragmentShaderFile);
+	bool AsgnLayer = false;
 
 	Shader *vertexShader;
 	Shader *fragmentShader;
@@ -73,7 +74,8 @@ public:
 	void SetClearColor(float r, float g, float b);
 	void SetClearColor(float r, float g, float b, float w);
 	
-	void CheckUnassignedLayer();
+	void AssignLayer();
+	void SetAsgnLayer(bool asgn);
 
 	void AddMeshToSet(MeshRenderer* mesh);
 

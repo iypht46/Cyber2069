@@ -155,6 +155,8 @@ bool GLRenderer::Initialize(string vertexShaderFile, string fragmentShaderFile)
 
 void GLRenderer::Render()
 {
+	AssignLayer();
+
 	// Clear color buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_BLEND);
@@ -166,14 +168,6 @@ void GLRenderer::Render()
 	glm::mat4 camera = glm::mat4(1.0);
 
 	//--------Render Object Here--------
-
-	/*for (MeshRenderer *obj : Factory<MeshRenderer>::getCollection()) {
-		
-		if (obj->GetGameObject()->Active()) 
-		{
-			obj->Render(camera);
-		}
-	}*/
 
 	for (MeshRenderer *obj : MeshSet) {
 
@@ -195,16 +189,28 @@ void GLRenderer::Render()
 	glUseProgram(NULL);
 }
 
-void GLRenderer::CheckUnassignedLayer() 
+void GLRenderer::AssignLayer() 
 {
 	for (MeshRenderer *obj : Factory<MeshRenderer>::getCollection()) 
 	{
-		if (obj->layer == -1) 
+		if (obj->inSet == false) 
 		{
-			ENGINE_WARN("Mesh Layer Unassigned (set to 0)");
-			obj->SetLayer(0);
+			obj->inSet = true;
+
+			if (obj->layer == -1) 
+			{
+				ENGINE_WARN("GameObjectMeshLayer unassigned (set Layer to 0)");
+				obj->SetLayer(0);
+			}
+
+			GLRenderer::GetInstance()->AddMeshToSet(obj);
 		}
 	}
+}
+
+void GLRenderer::SetAsgnLayer(bool asgn) 
+{
+	this->AsgnLayer = asgn;
 }
 
 void GLRenderer::SetMeshAttribId(MeshVbo * mesh)

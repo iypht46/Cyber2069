@@ -50,8 +50,6 @@ void MeshRenderer::SetTexture(unsigned int tex)
 void MeshRenderer::SetLayer(unsigned int layer) 
 {
 	this->layer = layer;
-
-	GLRenderer::GetInstance()->AddMeshToSet(this);
 }
 
 void MeshRenderer::SetUI(bool ui) 

@@ -23,6 +23,7 @@ private:
 
 public:
 	int layer = -1;
+	bool inSet = false;
 
 	MeshRenderer();
 	MeshRenderer(std::string texture_path, float NumframeX, float NumFrameY);
