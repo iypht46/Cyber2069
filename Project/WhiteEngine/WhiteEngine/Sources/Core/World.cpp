@@ -53,7 +53,6 @@ namespace World
 	GameObject* Bg1;
 	GameObject* Bg2;
 	GameObject* Child;
-	GameObject* Flyer;
 	GameObject** platform;
 
 	GameObject* Enemy;
@@ -188,7 +187,6 @@ namespace World
 		Bg2 = new GameObject();
 		Bg1 = new GameObject();
 		Child = new GameObject();
-		Flyer = new GameObject();
 		platform = new GameObject*[platformNum];
 
 		Spawner = new GameObject();
@@ -235,10 +233,6 @@ namespace World
 		Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_PlayerBody_Vversion03.png");
 
 		Child->m_transform.SetParent(&Rabbit->m_transform);
-
-		Flyer->AddComponent<MeshRenderer>();
-		Flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
-		Flyer->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_Enemy_Flyer_Vversion01.png");
 
 
 
@@ -304,11 +298,6 @@ namespace World
 		EnemCon->setSheetSize(glm::vec2(6, 1));
 		EnemCon->AddState(Fly);
 
-		Flyer->AddComponent<Animator>();
-		Flyer->GetComponent<Animator>()->AssignController(EnemCon);
-		Flyer->GetComponent<Animator>()->setCurrentState(0);
-		Flyer->GetComponent<Animator>()->setFramePerSec(12);
-
 		for (int i = 0; i < 100; i++)
 		{
 			GameObject* Bullet = new GameObject();
@@ -347,9 +336,6 @@ namespace World
 		Child->m_transform.SetLocalPosition(glm::vec3(1, 0, 0));
 		//Bg->m_transform.SetScale(glm::vec3(500, 500, 1));
 
-		Flyer->m_transform.SetPosition(glm::vec3(100, 100, 0));
-		Flyer->m_transform.SetScale(glm::vec3(50, 50, 1));
-
 		//Add Physic
 		g_physicScene->SetLayerName("Player", Physic::Layer::PHYSIC_LAYER_1);
 		g_physicScene->SetLayerName("Enemy", Physic::Layer::PHYSIC_LAYER_2);
@@ -359,30 +345,14 @@ namespace World
 		Rabbit->AddComponent<Rigidbody>()->Init(20, 20);
 		Rabbit->GetComponent<Rigidbody>()->SetDrag(0.01f);
 
-		Flyer->AddComponent<Rigidbody>()->Init(10,10);
-		Flyer->GetComponent<BoxCollider>()->SetTrigger(true);
 		g_physicScene->Add(Rabbit->GetComponent<BoxCollider>(), "Player");
-		g_physicScene->Add(Flyer->GetComponent<BoxCollider>(), "Enemy");
 		g_physicScene->Add(Rabbit->GetComponent<Rigidbody>());
-		g_physicScene->Add(Flyer->GetComponent<Rigidbody>());
 
 		//Behavior Script
 		Rabbit->AddComponent<PlayerController>();
 		Rabbit->GetComponent<PlayerController>()->OnStart();
 		Rabbit->GetComponent<PlayerController>()->assignPool(BulletPool);
-		
-		Flyer->AddComponent<AirFollowing>();
-		Flyer->GetComponent<AirFollowing>()->SetPlayer((Rabbit->m_transform));
-		Flyer->GetComponent<AirFollowing>()->SetGameObject(Flyer);
-		
-		Flyer->AddComponent<AirDash>();
-		Flyer->GetComponent<AirDash>()->SetPlayer(&(Rabbit->m_transform));
-		Flyer->GetComponent<AirDash>()->SetGameObject(Flyer);
-		
-		
-		Flyer->AddComponent<FlyerBehaviour>();
-		Flyer->GetComponent<FlyerBehaviour>()->af = Flyer->GetComponent<AirFollowing>();
-		Flyer->GetComponent<FlyerBehaviour>()->ad = Flyer->GetComponent<AirDash>();
+
 
 		for (int i = 0; i < 100; i++)
 		{
@@ -401,9 +371,9 @@ namespace World
 			flyer->GetComponent<AirFollowing>()->SetPlayer((Rabbit->m_transform));
 			flyer->GetComponent<AirFollowing>()->SetGameObject(flyer);
 
-			Flyer->AddComponent<AirDash>();
-			Flyer->GetComponent<AirDash>()->SetPlayer(&(Rabbit->m_transform));
-			Flyer->GetComponent<AirDash>()->SetGameObject(Flyer);
+			flyer->AddComponent<AirDash>();
+			flyer->GetComponent<AirDash>()->SetPlayer(&(Rabbit->m_transform));
+			flyer->GetComponent<AirDash>()->SetGameObject(flyer);
 
 			flyer->AddComponent<FlyerBehaviour>();
 			flyer->GetComponent<FlyerBehaviour>()->af = flyer->GetComponent<AirFollowing>();

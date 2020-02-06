@@ -29,11 +29,11 @@ void AirDash::SetAimSpeed(float value) {
 
 void AirDash::Dash(float dt) {
 
-	cout << "HELLO" << endl;
+	//cout << "HELLO" << endl;
 	float rangeX = m_target->GetPosition().x - bomber->GetPosition().x;
-	cout << "BYE" << endl;
+	//cout << "BYE" << endl;
 	float rangeY = m_target->GetPosition().y - bomber->GetPosition().y;
-	cout << "DONE" << endl;
+	//cout << "DONE" << endl;
 
 	if (rangeX <= 100.0 || rangeY <= 100.0) {
 		m_aimTime -= dt;
