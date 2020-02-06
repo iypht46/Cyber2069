@@ -463,9 +463,9 @@ namespace World
 			g_physicScene->Update(c_targetDT);
 			//ENGINE_INFO("FixedUpdate: {}", dt
 			accumulator -= c_targetDT;
-		}
 
-		g_physicScene->SendCollisionMsg();
+			g_physicScene->SendCollisionMsg();
+		}
 
 	}
 

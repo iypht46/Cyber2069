@@ -342,23 +342,23 @@ void PlayerController::shoot(float dt)
 			float speedX = bullet_speed * cos(angle_rad);
 			float speedY = bullet_speed * sin(angle_rad);
 
-			if (((rb->GetVelocity().x > 0) && (speedX < 0)) ||
-				((rb->GetVelocity().x < 0) && (speedX > 0)))
-			{
-				speedX += -1.0 * rb->GetVelocity().x;
-			}
-			else {
-				speedX += rb->GetVelocity().x;
-			}
+			//if (((rb->GetVelocity().x > 0) && (speedX < 0)) ||
+			//	((rb->GetVelocity().x < 0) && (speedX > 0)))
+			//{
+			//	speedX += -1.0 * rb->GetVelocity().x;
+			//}
+			//else {
+			//	speedX += rb->GetVelocity().x;
+			//}
 
-			if (((rb->GetVelocity().y > 0) && (speedY < 0)) ||
-				((rb->GetVelocity().y < 0) && (speedY > 0)))
-			{
-				speedY += -1.0 * rb->GetVelocity().y;
-			}
-			else {
-				speedY += rb->GetVelocity().y;
-			}
+			//if (((rb->GetVelocity().y > 0) && (speedY < 0)) ||
+			//	((rb->GetVelocity().y < 0) && (speedY > 0)))
+			//{
+			//	speedY += -1.0 * rb->GetVelocity().y;
+			//}
+			//else {
+			//	speedY += rb->GetVelocity().y;
+			//}
 
 			bullet->GetComponent<Rigidbody>()->SetVelocity(glm::vec3(speedX,speedY, 0.0f));
 
