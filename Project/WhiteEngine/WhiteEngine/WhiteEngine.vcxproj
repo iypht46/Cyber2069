@@ -126,8 +126,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Sources\Core\EC\Components\AirDash.hpp" />
-    <ClInclude Include="Sources\Core\EC\Components\AirFollowing.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\BehaviourScript.h" />
     <ClInclude Include="Sources\Core\EC\Components\SoundPlayer.hpp" />
     <ClInclude Include="Sources\Core\Message\Observer.hpp" />
@@ -160,8 +158,6 @@
     <ClInclude Include="Sources\Utility\ObjectPool.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Sources\Core\EC\Components\AirDash.cpp" />
-    <ClCompile Include="Sources\Core\EC\Components\AirFollowing.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\BehaviourScript.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\SoundPlayer.cpp" />
     <ClCompile Include="Sources\Physic\Collision.cpp" />

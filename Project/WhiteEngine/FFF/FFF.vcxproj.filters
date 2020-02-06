@@ -36,6 +36,12 @@
     <ClCompile Include="Sources\FactoryCollection.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\AirDash.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\AirFollowing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\EnemySpawner.hpp">
@@ -54,6 +60,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sources\FactoryCollection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\AirDash.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\AirFollowing.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

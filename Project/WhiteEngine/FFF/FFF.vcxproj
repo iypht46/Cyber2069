@@ -127,6 +127,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\AirDash.cpp" />
+    <ClCompile Include="Sources\AirFollowing.cpp" />
     <ClCompile Include="Sources\EnemySpawner.cpp" />
     <ClCompile Include="Sources\FactoryCollection.cpp" />
     <ClCompile Include="Sources\FlyerBehaviour.cpp" />
@@ -136,6 +138,8 @@
     <ClCompile Include="Sources\World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\AirDash.hpp" />
+    <ClInclude Include="Sources\AirFollowing.hpp" />
     <ClInclude Include="Sources\EnemySpawner.hpp" />
     <ClInclude Include="Sources\FactoryCollection.h" />
     <ClInclude Include="Sources\FlyerBehaviour.hpp" />

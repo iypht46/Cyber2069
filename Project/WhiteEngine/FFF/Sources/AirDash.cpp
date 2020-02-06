@@ -4,9 +4,10 @@
 
 AirDash::AirDash()
 {
-	m_dashSpeed = 200.0f;
+	m_dashSpeed = 500.0f;
 	m_aimTime = 5.0f;
 	m_aimSpeed = 50.0f;
+	timer = m_aimTime;
 }
 
 void AirDash::SetPlayer(Transform* player) {
@@ -28,21 +29,24 @@ void AirDash::SetAimSpeed(float value) {
 }
 
 void AirDash::Dash(float dt) {
-
-	//cout << "HELLO" << endl;
+	
 	float rangeX = m_target->GetPosition().x - bomber->GetPosition().x;
-	//cout << "BYE" << endl;
 	float rangeY = m_target->GetPosition().y - bomber->GetPosition().y;
-	//cout << "DONE" << endl;
+	float angle = glm::atan(rangeY, rangeX);
 
 	if (rangeX <= 100.0 || rangeY <= 100.0) {
-		m_aimTime -= dt;
-		if (m_aimTime > 0) {
+		timer -= dt;
+		if (timer > 0) {
 			rb->SetVelocity(glm::vec3(0, 0, 0));
-			bomber->SetRotation(m_aimSpeed * dt);
+			bomber->SetRotation(angle);
 		}
 		else {
-			rb->SetVelocity(glm::vec3(m_dashSpeed*glm::cos(bomber->GetRotation()), m_dashSpeed*glm::sin(bomber->GetRotation()), 0));
+			if (bomber->GetPosition().x != m_target->GetPosition().x || bomber->GetPosition().y != m_target->GetPosition().y) {
+				rb->SetVelocity(glm::vec3(m_dashSpeed*glm::cos(bomber->GetRotation()), m_dashSpeed*glm::sin(bomber->GetRotation()), 0));
+			}
+			else {
+				timer = m_aimTime;
+			}
 		}
 	}
 }
