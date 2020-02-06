@@ -13,6 +13,7 @@
 #include "Graphic/SquareMeshVbo.h"
 
 #include "Core/EC/Components/MeshRenderer.hpp"
+#include "Core/EC/Components/Collider.hpp"
 
 using namespace std;
 
@@ -47,6 +48,9 @@ protected:
 	GLuint offSetXId = -1;
 	GLuint offSetYId = -1;
 
+	GLuint colVBO = -1;
+	GLuint colVAO = -1;
+
 	GLuint gProgramId;
 	GLuint gProgramId2;
 	int gPos2DLocation = -1;
@@ -78,6 +82,8 @@ public:
 	void SetAsgnLayer(bool asgn);
 
 	void AddMeshToSet(MeshRenderer* mesh);
+
+	void RenderDebugCollider(BoxCollider* col);
 
 	glm::mat4 GetprojectionMatrix();
 

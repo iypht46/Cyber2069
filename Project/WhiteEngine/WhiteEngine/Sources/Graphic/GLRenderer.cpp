@@ -6,9 +6,11 @@
 #include "Core/Logger.hpp"
 #include "Window.hpp"
 #include <vector>
+#include <glm/glm.hpp>
 #include "Core/EC/Components/TextRenderer.hpp"
 #include "Core/EC/Components/MeshRenderer.hpp"
 #include "Core/EC/GameObject.hpp"
+#include "Graphic/Camera.hpp"
 
 using namespace std;
 
@@ -149,6 +151,21 @@ bool GLRenderer::Initialize(string vertexShaderFile, string fragmentShaderFile)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	GLfloat vertexData[] =
+	{
+	  -0.5f, -0.5f,
+	  0.5f, -0.5f,
+	  0.5f,  0.5f,
+	  -0.5f,  0.5f
+	};
+	
+	glGenVertexArrays(1, &(this->colVAO));
+	glGenBuffers(1, &(this->colVBO));
+
+	//Create VBO
+	glBindBuffer(GL_ARRAY_BUFFER, this->colVBO);
+	glBufferData(GL_ARRAY_BUFFER, 2 * 4 * sizeof(GLfloat), vertexData, GL_STATIC_DRAW);
+
 	return true;
 
 }
@@ -183,6 +200,11 @@ void GLRenderer::Render()
 		{
 			obj->Render();
 		}
+	}
+
+	for (BoxCollider *obj : Factory<BoxCollider>::getCollection()) 
+	{
+		RenderDebugCollider(obj);
 	}
 
 	//Unbind program
@@ -364,4 +386,32 @@ GLuint GLRenderer::LoadTexture(string path)
 	SDL_FreeSurface(image);
 
 	return texture;
+}
+
+void GLRenderer::RenderDebugCollider(BoxCollider* col) 
+{
+	GameObject* obj = col->GetGameObject();
+
+	glm::mat4 sMat = glm::scale(glm::mat4(1.0f), glm::vec3(col->GetHw() * 2, col->GetHh() * 2, 1.0f));
+	glm::mat4 tMat = glm::translate(glm::mat4(1.0f), obj->m_transform.GetLocalPosition());
+	glm::mat4 transformMat = tMat * sMat;
+
+	glm::mat4 projectionMatrix = Graphic::getCamera()->GetProjectionMatrix();
+	glm::mat4 viewMatrix = Graphic::getCamera()->GetViewMatrix();
+
+	glm::mat4 currentMatrix = projectionMatrix * viewMatrix * transformMat;
+
+	glUniform1i(modeUniformId, 0);
+	glUniformMatrix4fv(mMatrixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
+	glUniform3f(colorUniformId, 0.0f, 1.0f, 0.0f);
+
+	glBindVertexArray(this->colVAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, this->colVBO);
+	glVertexAttribPointer(this->gPos2DLocation, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), NULL);
+	glEnableVertexAttribArray(1);
+
+
+	glDrawArrays(GL_LINE_LOOP, 0, 4);
+
 }
