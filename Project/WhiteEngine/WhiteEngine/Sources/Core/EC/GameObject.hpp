@@ -6,18 +6,31 @@
 #include "Components/Transform.hpp"
 #include "Core/Factory.h"
 
+//Forward Declaration
 class Component;
+class BehaviourScript;
+namespace Physic { struct Collision; }
 
 class GameObject
 {
 protected:
+	friend class BehaviourScript;
+	friend class Collider;
+
 	bool isActive;
 	std::string m_objectName;
 
 	int m_objectID;
 	
 	std::vector<Component*> m_components;
+	std::vector<BehaviourScript*> m_scripts;
 
+	void CollisionEnter(const Physic::Collision);
+	void CollisionStay(const Physic::Collision);
+	void CollisionExit(const Physic::Collision);
+	void TriggerEnter(const Physic::Collision);
+	void TriggerStay(const Physic::Collision);
+	void TriggerExit(const Physic::Collision);
 public:
 	GameObject();
 
@@ -61,6 +74,7 @@ T* GameObject::GetComponent() {
 			return dynamic_cast<T*>(component);
 		}
 	}
-
+	
 	return nullptr;
 }
+
