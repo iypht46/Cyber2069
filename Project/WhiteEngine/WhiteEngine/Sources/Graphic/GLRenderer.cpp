@@ -204,7 +204,10 @@ void GLRenderer::Render()
 
 	for (BoxCollider *obj : Factory<BoxCollider>::getCollection()) 
 	{
-		RenderDebugCollider(obj);
+		if (obj->GetGameObject()->Active())
+		{
+			RenderDebugCollider(obj);
+		}
 	}
 
 	//Unbind program
