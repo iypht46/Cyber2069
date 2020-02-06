@@ -1,5 +1,8 @@
 #include "MachineGunBullet.hpp"
 #include "Graphic/Camera.hpp"
+#include "Core/Logger.hpp"
+
+#include "FlyerBehaviour.hpp"
 
 void MachineGunBullet::OnUpdate(float dt)
 {
@@ -40,4 +43,20 @@ void MachineGunBullet::OnStart()
 
 void MachineGunBullet::OnDisable() {
 
+}
+
+void MachineGunBullet::OnTriggerEnter(const Physic::Collision col) {
+	ENGINE_INFO("Bullet Hit");
+
+	m_gameObject->SetActive(false);
+	FlyerBehaviour* other = col.m_otherCollider->GetGameObject()->GetComponent<FlyerBehaviour>();
+	if (--(other->hp) <= 0) {
+		col.m_otherCollider->GetGameObject()->SetActive(false);
+	}
+}
+
+void MachineGunBullet::OnCollisionEnter(const Physic::Collision col) {
+	ENGINE_INFO("Wall Hit");
+
+	m_gameObject->SetActive(false);
 }

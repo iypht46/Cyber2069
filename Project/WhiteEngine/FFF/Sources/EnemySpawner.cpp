@@ -1,5 +1,7 @@
 #include "EnemySpawner.hpp"
 
+#include "FlyerBehaviour.hpp"
+
 void EnemySpawner::OnStart()
 {
 	SpawnDelay = 1;
@@ -19,6 +21,9 @@ void EnemySpawner::OnUpdate(float dt)
 			int randPosY = (rand() % (Graphic::Window::GetHeight() * 2)) - Graphic::Window::GetHeight();
 
 			flyer->SetActive(true);
+			//
+			flyer->GetComponent<FlyerBehaviour>()->hp = 3;
+			//
 
 			flyer->m_transform.SetPosition(glm::vec3(randPosX, randPosY, 1.0f));
 		}

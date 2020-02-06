@@ -252,7 +252,7 @@ namespace Physic
 		//	}
 		//}
 		//Clear stay state collision from last frame if it has not collided in this frame
-		ENGINE_INFO("Collision Message Size: {}", m_collisionMsg.size());
+		//ENGINE_INFO("Collision Message Size: {}", m_collisionMsg.size());
 		m_stayState.erase(
 			std::remove_if(
 				m_stayState.begin(),

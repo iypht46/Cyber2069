@@ -8,12 +8,12 @@ class BehaviourScript :public Component {
 public:
 	BehaviourScript();
 	virtual void SetGameObject(GameObject* obj);
-	virtual void OnAwake() = 0;
-	virtual void OnEnable() = 0;
+	virtual void OnAwake();
+	virtual void OnEnable();
 	virtual void OnStart() = 0;
 	virtual void OnUpdate(float dt) = 0;
 	virtual void OnFixedUpdate(float dt) = 0;
-	virtual void OnDisable() = 0;
+	virtual void OnDisable();
 	virtual void OnTriggerEnter(const Physic::Collision col);
 	virtual void OnTriggerStay(const Physic::Collision col);
 	virtual void OnTriggerExit(const Physic::Collision col);

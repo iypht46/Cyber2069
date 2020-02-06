@@ -305,25 +305,6 @@ namespace World
 		Flyer->GetComponent<Animator>()->setCurrentState(0);
 		Flyer->GetComponent<Animator>()->setFramePerSec(12);*/
 
-		for (int i = 0; i < 100; i++)
-		{
-			GameObject* Bullet = new GameObject();
-			Bullet->AddComponent<MeshRenderer>();
-			Bullet->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
-			Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_bullet.png");
-
-			Bullet->AddComponent<Rigidbody>();
-			Bullet->GetComponent<Rigidbody>()->Init();
-
-			Bullet->AddComponent<MachineGunBullet>();
-			Bullet->GetComponent<MachineGunBullet>()->OnStart();
-
-			Bullet->m_transform.SetScale(glm::vec3(10, 10, 1));
-
-			Bullet->SetActive(false);
-			BulletPool->AddObject(Bullet);
-		}
-
 		Child->AddComponent<MeshRenderer>();
 		Child->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
 		Child->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_shoot.png");
@@ -348,11 +329,14 @@ namespace World
 		g_physicScene->SetLayerName("Player", Physic::Layer::PHYSIC_LAYER_1);
 		g_physicScene->SetLayerName("Enemy", Physic::Layer::PHYSIC_LAYER_2);
 		g_physicScene->SetLayerName("Platform", Physic::Layer::PHYSIC_LAYER_3);
+		g_physicScene->SetLayerName("Bullet", Physic::Layer::PHYSIC_LAYER_4);
 		//Set collision between layer
 		g_physicScene->SetLayerCollisions("Player", "Platform", Physic::RESOLVE_TYPE::COLLISION);
+		g_physicScene->SetLayerCollisions("Bullet", "Platform", Physic::RESOLVE_TYPE::COLLISION);
 		g_physicScene->SetLayerCollisions("Player", "Enemy", Physic::RESOLVE_TYPE::TRIGGER);
+		g_physicScene->SetLayerCollisions("Bullet", "Enemy", Physic::RESOLVE_TYPE::TRIGGER);
 		//Add Rigidbody
-		Rabbit->AddComponent<Rigidbody>()->Init(50, 50);
+		Rabbit->AddComponent<Rigidbody>()->Init(25, 25);
 		Rabbit->GetComponent<Rigidbody>()->SetDrag(0.01f);
 		//Flyer->AddComponent<Rigidbody>()->Init(10,10);
 		g_physicScene->Add(Rabbit->GetComponent<BoxCollider>(), "Player");
@@ -384,6 +368,30 @@ namespace World
 		//Flyer->AddComponent<FlyerBehaviour>();
 		//Flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
 		//Flyer->GetComponent<FlyerBehaviour>()->SetGameObject(Flyer);
+
+
+		for (int i = 0; i < 100; i++)
+		{
+			GameObject* Bullet = new GameObject();
+			Bullet->AddComponent<MeshRenderer>();
+			Bullet->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
+			Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_bullet.png");
+
+			Bullet->AddComponent<Rigidbody>();
+			Bullet->GetComponent<Rigidbody>()->Init(20, 20);
+			Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0f);
+
+			g_physicScene->Add(Bullet->GetComponent<Rigidbody>());
+			g_physicScene->Add(Bullet->GetComponent<BoxCollider>(), "Bullet");
+
+			Bullet->AddComponent<MachineGunBullet>();
+			Bullet->GetComponent<MachineGunBullet>()->OnStart();
+
+			Bullet->m_transform.SetScale(glm::vec3(10, 10, 1));
+
+			Bullet->SetActive(false);
+			BulletPool->AddObject(Bullet);
+		}
 
 		for (int i = 0; i < 100; i++)
 		{

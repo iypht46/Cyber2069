@@ -64,8 +64,8 @@ void PlayerController::OnStart() {
 	camZoomSpeed = 0.01f;
 	camDelay = 0.5f;
 
-	bullet_speed = 850.0f;
-	bullet_delay = 0.075f;
+	bullet_speed = 300.0f;
+	bullet_delay = 0.1f;
 
 	dashTime = 0.35f;
 

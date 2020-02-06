@@ -13,6 +13,8 @@ protected:
 	Transform* player;
 	Transform* flyer;
 public:
+	int hp = 0;
+
 	FlyerBehaviour();
 	void SetPlayer(Transform&);
 
