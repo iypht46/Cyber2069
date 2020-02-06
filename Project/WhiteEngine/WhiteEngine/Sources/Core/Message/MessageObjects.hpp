@@ -5,9 +5,13 @@
 
 //Forward Declaration
 #include "Physic/Collision.hpp"
+//#include "Core/EC/Components/Rigidbody.hpp"
+//#include "Core/EC/Components/Collider.hpp"
+
 
 namespace Core
 {
+
 	struct TestMessage : Message
 	{
 		TestMessage() : Message(MessageType::MSG_TEST) {}
@@ -23,6 +27,24 @@ namespace Core
 		MSG_GENERATE_DC()
 
 	};
+
+	//struct PhysicObjectAddMessage : Message
+	//{
+	//	union
+	//	{
+	//		Rigidbody* rigid;
+	//		Collider* col;
+	//	} m_objToAdd;
+	//};
+
+	//struct PhysicObjectRemoveMessage : Message
+	//{
+	//	union
+	//	{
+	//		Rigidbody* rigid;
+	//		Collider* col;
+	//	} m_objToRemove, m_objToAdd;
+	//};
 
 	
 	struct Trigger : Message
@@ -48,6 +70,5 @@ namespace Core
 	};
 
 	inline Collision::Collision() : Message(MessageType::MSG_COLLISION) {}
-	inline Collision::Collision(Physic::Collision col) 
-		: Message(MessageType::MSG_COLLISION), m_collision(col) {}
+	inline Collision::Collision(Physic::Collision col) : Message(MessageType::MSG_COLLISION), m_collision(col) {}
 }

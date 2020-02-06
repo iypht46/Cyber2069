@@ -18,7 +18,9 @@
 		glm::vec3 m_velocity;
 		glm::vec3 m_acceleration;
 		//float m_orientation;
-		float m_mass;
+
+		bool automass = true;
+		float m_mass = 1.0f;
 		float m_invMass;
 		float m_gravityScale;
 		float m_drag;
@@ -32,12 +34,14 @@
 		Collider* GetCollider();
 		void Init(/*float, float*/);
 		void SetVelocity(glm::vec3);
+		void SetVelocity0Masked(glm::vec3);
 		glm::vec3 GetVelocity();
 		float GetGravityScale();
 		void SetGravityScale(float);
 		void AddForce(glm::vec3);
 		void AddRelativeForce(glm::vec3);
 		void UpdateTransform(float dt);
+		void SetMass(float);
 		float GetInvMass(void);
 		float GetMass(void);
 		void SetDrag(float drag);

@@ -155,19 +155,18 @@ namespace Physic
 
 			Collision collisionA(col->m_objectA, col->m_objectB, col->m_type);
 			Collision collisionB(col->m_objectB, col->m_objectA, col->m_type);
+			m_collisionMsg.push_back(collisionA);
+			m_collisionMsg.push_back(collisionB);
 
 			//Create collision message for the pair
 			if (!col->m_objectA->m_hasCollided)
 			{
 				collisionA.m_collider->m_hasCollided = true;
-				m_collisionMsg.push_back(collisionA);
-
 			}
 			
 			if (!col->m_objectB->m_hasCollided)
 			{
 				collisionB.m_collider->m_hasCollided = true;
-				m_collisionMsg.push_back(collisionB);
 			}
 			
 
@@ -253,7 +252,7 @@ namespace Physic
 		//	}
 		//}
 		//Clear stay state collision from last frame if it has not collided in this frame
-		
+		//ENGINE_INFO("Collision Message Size: {}", m_collisionMsg.size());
 		m_stayState.erase(
 			std::remove_if(
 				m_stayState.begin(),

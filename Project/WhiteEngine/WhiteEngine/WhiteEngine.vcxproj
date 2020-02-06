@@ -129,6 +129,7 @@
     <ClInclude Include="Sources\Core\EC\Components\BehaviourScript.h" />
     <ClInclude Include="Sources\Core\EC\Components\SoundPlayer.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\TextRenderer.hpp" />
+    <ClInclude Include="Sources\Core\Message\Observer.hpp" />
     <ClInclude Include="Sources\Physic\Collision.hpp" />
     <ClInclude Include="Sources\Physic\PhysicScene.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\Collider.hpp" />
@@ -188,8 +189,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Sources\Graphic\Shader\fragment.shd" />
-    <None Include="Sources\Graphic\Shader\textFragment.shd" />
-    <None Include="Sources\Graphic\Shader\textVertext.shd" />
     <None Include="Sources\Graphic\Shader\vertext.shd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -13,6 +13,10 @@ void BehaviourScript::SetGameObject(GameObject * obj)
 	m_gameObject->m_scripts.push_back(this);
 }
 
+void BehaviourScript::OnAwake() { }
+void BehaviourScript::OnEnable() { }
+void BehaviourScript::OnDisable() { }
+
 void BehaviourScript::OnTriggerEnter(const Physic::Collision col) { }
 void BehaviourScript::OnTriggerStay(const Physic::Collision col) { }
 void BehaviourScript::OnTriggerExit(const Physic::Collision col) { }

@@ -87,7 +87,31 @@
 		{
 			m_rigidbody = m_rigidbody;
 			m_isStatic = false;
-			ComputeMass();
+
+			if (m_rigidbody->automass) {
+				ComputeMass();
+			}
+		}
+		else
+		{
+			m_isStatic = true;
+		}
+	}
+
+	void BoxCollider::ReSize(float hW, float hH) {
+		m_halfWidth = hW;
+		m_halfHeight = hH;
+		m_colliderScale.x = hW / m_transform->GetScale().x;
+		m_colliderScale.y = hH / m_transform->GetScale().y;
+
+		if (m_rigidbody)
+		{
+			m_rigidbody = m_rigidbody;
+			m_isStatic = false;
+
+			if (m_rigidbody->automass) {
+				ComputeMass();
+			}
 		}
 		else
 		{

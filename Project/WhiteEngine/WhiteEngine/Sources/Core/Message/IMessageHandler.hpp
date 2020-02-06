@@ -18,5 +18,7 @@ namespace Core
 		inline virtual void HandleMessage(const GameCloseMessage&) {}
 		inline virtual void HandleMessage(const Trigger&) {}
 		inline virtual void HandleMessage(const Collision&) {}
+		//inline virtual void HandleMessage(const PhysicObjectAdd&) {}
+		//inline virtual void HandleMessage(const PhysicObjectAddRemove&) {}
 	};
 }
