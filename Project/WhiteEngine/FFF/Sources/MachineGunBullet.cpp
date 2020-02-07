@@ -56,7 +56,7 @@ void MachineGunBullet::OnTriggerEnter(const Physic::Collision col) {
 }
 
 void MachineGunBullet::OnCollisionEnter(const Physic::Collision col) {
-	ENGINE_INFO("Wall Hit");
+	ENGINE_INFO("Wall Hit: {}",m_gameObject->GetID());
 
 	m_gameObject->SetActive(false);
 }

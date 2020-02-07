@@ -369,8 +369,8 @@ namespace World
 		//Flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
 		//Flyer->GetComponent<FlyerBehaviour>()->SetGameObject(Flyer);
 
-
-		for (int i = 0; i < 100; i++)
+		ENGINE_INFO("Creating Bullet");
+		for (int i = 0; i < 10; i++)
 		{
 			GameObject* Bullet = new GameObject();
 			Bullet->AddComponent<MeshRenderer>();

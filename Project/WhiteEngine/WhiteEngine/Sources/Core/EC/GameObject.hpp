@@ -20,6 +20,7 @@ protected:
 	bool isActive;
 	std::string m_objectName;
 
+	static int s_IDCounter;
 	int m_objectID;
 	
 	std::vector<Component*> m_components;
@@ -38,6 +39,8 @@ public:
 
 	void SetActive(bool activestate);
 	bool Active();
+
+	int GetID();
 
 	virtual void OnAwake() {};
 	virtual void OnEnable() {};

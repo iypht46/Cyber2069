@@ -3,6 +3,10 @@
 #include "Core/EC/Components/BehaviourScript.h"
 #include "Physic/Collision.hpp"
 
+#include "Core//Logger.hpp"
+
+int GameObject::s_IDCounter = 0;
+
 void GameObject::SetActive(bool activestate) {
 	isActive = activestate;
 }
@@ -10,6 +14,10 @@ void GameObject::SetActive(bool activestate) {
 //return object active state
 bool GameObject::Active() {
 	return isActive;
+}
+
+int GameObject::GetID() {
+	return m_objectID;
 }
 
 void GameObject::CollisionEnter(const Physic::Collision col)
@@ -68,5 +76,7 @@ void GameObject::TriggerExit(const Physic::Collision col)
 
 GameObject::GameObject() 
 {
+	m_objectID = GameObject::s_IDCounter++;
+	ENGINE_INFO("{}", m_objectID);
 	isActive = true;
 }
