@@ -5,6 +5,7 @@
 #include <string>
 #include "Components/Transform.hpp"
 #include "Core/Factory.h"
+#include "Core/LogCustomType.hpp"
 
 //Forward Declaration
 class Component;
@@ -51,6 +52,10 @@ public:
 
 	template <class T>
 	T* GetComponent();
+
+	//Log to logger
+	LogCustomType_DC(GameObject);
+
 	//GameObject* GetGameObject();
 	//void SetGameObject(GameObject* obj);
 };
@@ -76,5 +81,10 @@ T* GameObject::GetComponent() {
 	}
 	
 	return nullptr;
+}
+
+LogCustomType_DF(GameObject)
+{
+	return os << "GameObject: " << obj.m_objectName << "\n";
 }
 

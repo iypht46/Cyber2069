@@ -108,6 +108,9 @@
     <ClInclude Include="Sources\Core\EC\Components\TextRenderer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Core\LogCustomType.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\Core\EC\GameObject.cpp">
