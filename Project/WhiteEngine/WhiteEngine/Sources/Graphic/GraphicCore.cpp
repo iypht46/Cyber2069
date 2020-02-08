@@ -27,6 +27,7 @@ namespace Graphic
 
 	void Render(void)
 	{
+		//ENGINE_WARN("Render");
 		if (!Window::ShouldClose())
 		{
 			g_renderer->Render();

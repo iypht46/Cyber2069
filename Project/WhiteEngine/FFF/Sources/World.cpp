@@ -378,7 +378,7 @@ namespace World
 			Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_bullet.png");
 
 			Bullet->AddComponent<Rigidbody>();
-			Bullet->GetComponent<Rigidbody>()->Init(20, 20);
+			Bullet->GetComponent<Rigidbody>()->Init(7, 7);
 			Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0f);
 
 			g_physicScene->Add(Bullet->GetComponent<Rigidbody>());
@@ -401,7 +401,7 @@ namespace World
 			flyer->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Flyer_Vversion01.png");
 
 			flyer->AddComponent<Rigidbody>();
-			flyer->GetComponent<Rigidbody>()->Init(25,25);
+			flyer->GetComponent<Rigidbody>()->Init(15,15);
 
 			g_physicScene->Add(flyer->GetComponent<Rigidbody>());
 			g_physicScene->Add(flyer->GetComponent<BoxCollider>(), "Enemy");
@@ -433,6 +433,8 @@ namespace World
 		Bg2->GetComponent<SoundPlayer>()->SetVolume(0.5);
 		//Bg2->GetComponent<SoundPlayer>()->PlaySound();
 		//Bg->GetComponent<SoundPlayer>()->DeleteSoundPlayer();
+
+		GAME_INFO(*Rabbit);
 
 	}
 

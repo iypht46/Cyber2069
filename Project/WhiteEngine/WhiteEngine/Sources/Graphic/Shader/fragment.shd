@@ -1,21 +1,28 @@
-#version 330
+#version 330 core
 
 uniform sampler2D ourTexture;
-uniform int mode = 0;
 
+flat in int Outmode;
 in vec3 OutColor;
-in vec2 TexCoord;
+in vec2 TexCoords;
 
 out vec4 finalColor;
 
 void main()
-{
-	if(mode == 0)
+{   
+	int mode = Outmode;
+
+    if(mode == 0)
 	{
 		finalColor = vec4( OutColor, 1.0 ); 
 	} 
-    else
+    else if(mode == 1)
     {
-    	finalColor = texture(ourTexture, TexCoord);
+    	finalColor = texture(ourTexture, TexCoords);
     }
-}
+	else if(mode == 2)
+	{
+		vec4 sampled = vec4(1.0, 1.0, 1.0, texture(ourTexture, TexCoords).r);
+		finalColor = vec4(OutColor, 1.0) * sampled;
+	}
+}  

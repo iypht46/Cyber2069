@@ -195,6 +195,11 @@ void PlayerController::move()
 		m_gameObject->GetComponent<Animator>()->setCurrentState(3);
 	}
 
+	if (Input::GetKeyDown(Input::KeyCode::KEY_R)) 
+	{
+		m_gameObject->m_transform.SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
+	}
+
 	if ((!Input::GetKeyHold(Input::KeyCode::KEY_A) && !Input::GetKeyHold(Input::KeyCode::KEY_D)) && !jumping && !falling)
 	{
 		if (!Dash) {
