@@ -434,6 +434,8 @@ namespace World
 		//Bg2->GetComponent<SoundPlayer>()->PlaySound();
 		//Bg->GetComponent<SoundPlayer>()->DeleteSoundPlayer();
 
+		GAME_INFO(*Rabbit);
+
 	}
 
 	void FixedUpdate(float dt)
