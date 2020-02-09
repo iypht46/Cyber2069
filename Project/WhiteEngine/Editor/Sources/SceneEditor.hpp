@@ -1,9 +1,8 @@
 #pragma once
 
-#include "Editor.hpp"
 #include "UIWindow.hpp"
+#include "Inspector.hpp"
 #include "ComponentsBrowser.hpp"
-#include "Core/EC/GameObject.hpp"
 
 namespace Core
 {
@@ -12,20 +11,22 @@ namespace Core
 
 namespace Tools
 {
-	class PrefabEditor : public UIWindow
+	class SceneEditor : public UIWindow
 	{
 	private:
-		//
-		//TODO: Add UI Window Elements
-		
-		ComponentsBrowser m_componentBrowser;
-		//TODO: Preview Window
+		static Core::GameObject* m_selectedGameObject;
+
+		//TODO: Add UI Window
+		//GameObjectHierarchy
+		//Inspector
 	public:
 		virtual void Init(void) override;
 		virtual void OnRender(void) override;
 		virtual void Terminate(void) override;
 
 		//Interface
-
+		bool LoadScene();
+		bool SaveScene();
+		Core::GameObject* GetSelectedGameObject(void);
 	};
 }

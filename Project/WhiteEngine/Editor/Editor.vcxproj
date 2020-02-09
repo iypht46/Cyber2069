@@ -140,20 +140,26 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ComponentsBrowser.hpp" />
-    <ClInclude Include="FileBrowser.hpp" />
-    <ClInclude Include="Inspector.hpp" />
+    <ClInclude Include="Sources\ComponentsBrowser.hpp" />
+    <ClInclude Include="Sources\EditorEntity.hpp" />
+    <ClInclude Include="Sources\FileBrowser.hpp" />
+    <ClInclude Include="Sources\GameObjectHierarchy.hpp" />
+    <ClInclude Include="Sources\Inspector.hpp" />
     <ClInclude Include="Sources\Editor.hpp" />
     <ClInclude Include="Sources\PrefabEditor.hpp" />
+    <ClInclude Include="Sources\SceneEditor.hpp" />
+    <ClInclude Include="Sources\Tools.hpp" />
     <ClInclude Include="Sources\UIWindow.hpp" />
     <ClInclude Include="Vendors\imgui\imconfig.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FileBrowser.cpp" />
+    <ClCompile Include="Sources\EditorEntity.cpp" />
+    <ClCompile Include="Sources\FileBrowser.cpp" />
     <ClCompile Include="Sources\ImGuiBuild.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Sources\Editor.cpp" />
     <ClCompile Include="Sources\PrefabEditor.cpp" />
+    <ClCompile Include="Sources\SceneEditor.cpp" />
+    <ClCompile Include="Sources\Tools.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

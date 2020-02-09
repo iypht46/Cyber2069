@@ -27,20 +27,29 @@
     <ClInclude Include="Sources\UIWindow.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Inspector.hpp">
+    <ClInclude Include="Sources\FileBrowser.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentsBrowser.hpp">
+    <ClInclude Include="Sources\Inspector.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileBrowser.hpp">
+    <ClInclude Include="Sources\ComponentsBrowser.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Tools.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\SceneEditor.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\GameObjectHierarchy.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\EditorEntity.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Sources\Editor.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -50,7 +59,16 @@
     <ClCompile Include="Sources\PrefabEditor.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="FileBrowser.cpp">
+    <ClCompile Include="Sources\FileBrowser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Tools.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SceneEditor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\EditorEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

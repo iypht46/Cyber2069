@@ -12,11 +12,5 @@ namespace Tools
 		virtual void Terminate(void) = 0;
 	};
 
-	void Init(void);
-
-	void Loop(void);
-
-	void Update(float dt);
-
-	void Terminate(void);
+	
 }

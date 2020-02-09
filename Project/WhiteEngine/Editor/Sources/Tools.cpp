@@ -25,7 +25,7 @@ namespace Tools
 		Graphic::Init();
 		//Input
 		Input::Init(false);
-		
+
 		//Setup ImGui context
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();

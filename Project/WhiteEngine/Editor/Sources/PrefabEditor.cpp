@@ -7,7 +7,7 @@ namespace Tools
 
 	}
 
-	void PrefabEditor::Update(void)
+	void PrefabEditor::OnRender(void)
 	{
 
 	}
