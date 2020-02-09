@@ -141,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\ComponentsBrowser.hpp" />
+    <ClInclude Include="Sources\EditorComponent.hpp" />
     <ClInclude Include="Sources\EditorEntity.hpp" />
     <ClInclude Include="Sources\FileBrowser.hpp" />
     <ClInclude Include="Sources\GameObjectHierarchy.hpp" />

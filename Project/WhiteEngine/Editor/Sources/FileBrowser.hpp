@@ -23,9 +23,9 @@ namespace Tools
 		//Interface
 		//Set file path
 		bool OpenFileDir(std::string);
-		//Get file
+		//TODO: Get file
 
-		//Get file lists
+		//TODO: Get file lists
 
 	};
 }
