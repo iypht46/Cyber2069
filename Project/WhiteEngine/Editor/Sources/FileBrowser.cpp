@@ -20,15 +20,15 @@ namespace Tools
 
 	bool FileBrowser::OpenFileDir(std::string path)
 	{
-		if (m_fileSystem.get() != nullptr)
-			m_fileSystem = std::make_unique<fs::path>(path);
+		if (m_fileSystem.get() == nullptr)
+			m_fileSystem = std::make_shared<fs::path>(path);
 		else
 		{
 			m_fileSystem.reset();
-			m_fileSystem = std::make_unique<fs::path>(path);
+			m_fileSystem = std::make_shared<fs::path>(path);
 		}
 
-		if (fs::exists(FileBrowser::Get()) && fs::is_directory(FileBrowser::Get()))
+		if (fs::exists(*FileBrowser::Get()) && fs::is_directory(*FileBrowser::Get()))
 			return true;
 		else
 			return false;

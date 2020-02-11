@@ -13,7 +13,7 @@ namespace Tools
 	class FileBrowser
 	{
 	private:
-		std::unique_ptr<fs::path> m_fileSystem;
+		std::shared_ptr<fs::path> m_fileSystem;
 		fs::path* Get();
 	public:
 		//Default Constructor
@@ -24,8 +24,9 @@ namespace Tools
 		//Set file path
 		bool OpenFileDir(std::string);
 		//TODO: Get file
-
+		bool GetFileInDir(const char*);
 		//TODO: Get file lists
+		bool GetFilesInDir()
 
 	};
 }

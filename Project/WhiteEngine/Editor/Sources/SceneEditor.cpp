@@ -1,4 +1,5 @@
 #include "SceneEditor.hpp"
+#include "Core/EC/GameObject.hpp"
 
 namespace Tools
 {
@@ -6,7 +7,7 @@ namespace Tools
 	{
 
 	}
-	void SceneEditor::OnRender(void)
+	void SceneEditor::Update(void)
 	{
 	}
 	void SceneEditor::Terminate(void)
@@ -20,9 +21,9 @@ namespace Tools
 	{
 		return false;
 	}
-	Core::GameObject * SceneEditor::GetSelectedGameObject(void)
+	/*GameObject * SceneEditor::GetSelectedGameObject(void)
 	{
 		return m_selectedGameObject;
-	}
+	}*/
 }
 

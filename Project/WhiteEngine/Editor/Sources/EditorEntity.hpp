@@ -2,22 +2,21 @@
 #include <memory>
 
 #include "Core/Factory.h"
-
-namespace Core
-{
-	class GameObject;
-}
+#include "Core/EC/GameObject.hpp"
 
 namespace Tools
 {
-	using GameObject = std::unique_ptr<Core::GameObject>;
+	class PrefabEditor;
+	using gameObject = std::unique_ptr<GameObject>;
 
 	class EditorEntity
 	{
+		friend class PrefabEditor;
 	private:
+		
 		std::string m_objectName;
 		int m_objectID;
-		const GameObject m_gameObject;
+		gameObject m_gameObject;
 
 	public:
 		EditorEntity();

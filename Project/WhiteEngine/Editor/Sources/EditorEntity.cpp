@@ -3,7 +3,7 @@
 
 namespace Tools
 {
-	EditorEntity::EditorEntity() : m_gameObject(std::make_unique<Core::GameObject>().get()) 
+	EditorEntity::EditorEntity() : m_gameObject(std::make_unique<GameObject>().get()) 
 	{
 	
 	}
