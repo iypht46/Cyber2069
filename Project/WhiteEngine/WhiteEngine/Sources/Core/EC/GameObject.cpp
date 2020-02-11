@@ -12,6 +12,12 @@ bool GameObject::Active() {
 	return isActive;
 }
 
+void GameObject::AddComponent(Component * component)
+{
+	m_components.push_back(component);
+}
+
+
 void GameObject::CollisionEnter(const Physic::Collision col)
 {
 	for (auto scripts : m_scripts)

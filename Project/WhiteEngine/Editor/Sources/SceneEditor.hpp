@@ -16,9 +16,12 @@ namespace Tools
 		//GameObjectHierarchy
 		//Inspector
 	public:
+		SceneEditor() : Editor(EDITOR_TYPE::SCENE_EDITOR) {}
 		virtual void Init(void) override;
 		virtual void Update(void) override;
 		virtual void Terminate(void) override;
+		virtual bool Save(const char*) override;
+		virtual bool Load(const char*) override;
 
 		//Interface
 		bool LoadScene();

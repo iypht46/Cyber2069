@@ -46,6 +46,8 @@ public:
 	virtual void OnFixedUpdate(float dt) {};
 	virtual void OnDisable() {};
 
+	void AddComponent(Component*);
+
 	template <class T>
 	T* AddComponent();
 

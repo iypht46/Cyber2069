@@ -4,6 +4,7 @@
 #include "Editor.hpp"
 #include "ComponentsBrowser.hpp"
 #include "EditorEntity.hpp"
+#include "PreviewWindow.hpp"
 
 namespace Tools
 {
@@ -17,7 +18,9 @@ namespace Tools
 		EntityHandle m_editorEntitiy;
 		ComponentsBrowser m_componentBrowser;
 		//TODO: Preview Window
+		PreviewWindow m_previewWindow;
 	public:
+		PrefabEditor() : Editor(EDITOR_TYPE::PREFAB_EDITOR) {}
 		virtual void Init(void) override;
 		virtual void Update(void) override;
 		virtual void Terminate(void) override;

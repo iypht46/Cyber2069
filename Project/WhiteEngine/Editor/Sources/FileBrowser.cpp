@@ -33,5 +33,13 @@ namespace Tools
 		else
 			return false;
 	}
+	bool FileBrowser::GetFileInDir(const char *)
+	{
+		return false;
+	}
+	bool FileBrowser::GetFilesInDir()
+	{
+		return false;
+	}
 }
 

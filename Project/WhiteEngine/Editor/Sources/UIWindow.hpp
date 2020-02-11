@@ -9,7 +9,7 @@ namespace Tools
 		bool m_show = true;
 		std::string m_windowName;
 	public:
-		UIWindow();
+		UIWindow(std::string);
 		virtual void Init(void) = 0;
 		virtual void OnRender(void) = 0;
 		virtual void Terminate(void) = 0;
@@ -24,7 +24,7 @@ namespace Tools
 		OnRender();
 		ImGui::End();
 	}
-	inline UIWindow::UIWindow() { m_show = true; }
+	inline UIWindow::UIWindow(std::string name) : m_windowName(name) { m_show = true; }
 	inline bool UIWindow::GetBool(void) { return m_show; }
 	inline void UIWindow::ToggleBool() { m_show = !m_show; }
 }

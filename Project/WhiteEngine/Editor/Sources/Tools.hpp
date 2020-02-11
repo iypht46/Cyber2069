@@ -6,7 +6,7 @@ namespace Tools
 
 	void Loop(void);
 
-	void Update(float dt);
+	void Update();
 
 	void Terminate(void);
 }

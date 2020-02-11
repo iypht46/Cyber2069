@@ -26,7 +26,7 @@ namespace Tools
 		//TODO: Get file
 		bool GetFileInDir(const char*);
 		//TODO: Get file lists
-		bool GetFilesInDir()
+		bool GetFilesInDir();
 
 	};
 }

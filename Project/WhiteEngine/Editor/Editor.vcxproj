@@ -140,6 +140,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\PreviewWindow.hpp" />
     <ClInclude Include="Sources\ComponentsBrowser.hpp" />
     <ClInclude Include="Sources\EditorComponent.hpp" />
     <ClInclude Include="Sources\EditorEntity.hpp" />
@@ -154,6 +155,9 @@
     <ClInclude Include="Vendors\imgui\imconfig.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="PREVIEWWINDOW.CPP" />
+    <ClCompile Include="Sources\EditorComponent.cpp" />
+    <ClCompile Include="Sources\PreviewWindow.cpp" />
     <ClCompile Include="Sources\EditorEntity.cpp" />
     <ClCompile Include="Sources\FileBrowser.cpp" />
     <ClCompile Include="Sources\ImGuiBuild.cpp" />
