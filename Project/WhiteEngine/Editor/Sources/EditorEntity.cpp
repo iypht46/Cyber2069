@@ -25,13 +25,13 @@ namespace Tools
 		if (component)
 		{
 			ComponentHandle editorComp = make_unique<EditorComponent>(component);
-			m_components.push_back(editorComp);
+			m_components.push_back(std::move(editorComp));
 		}
 		//m_gameObject.get()->
 
 	}
 
-	ComponentList& EditorEntity::GetComponentList()
+	std::vector<std::unique_ptr<EditorComponent>>& EditorEntity::GetComponentList()
 	{
 		return m_components;
 	}

@@ -4,10 +4,22 @@ namespace Tools
 {
 	class EditorComponent
 	{
-	private:
+	protected:
 		Component* m_component;
 	public:
 		EditorComponent(Component* comp) : m_component(comp) {}
+		virtual void Render() = 0;
 
 	};
+
+	class MeshRendererEC : EditorComponent
+	{
+
+	};
+
+	class TransformEC : EditorComponent
+	{
+
+	};
+
 }

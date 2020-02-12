@@ -1,12 +1,19 @@
 #include "PreviewWindow.hpp"
 
-
-
-PreviewWindow::PreviewWindow()
+namespace Tools
 {
+	void PreviewWindow::Init()
+	{
+	}
+
+	void PreviewWindow::OnRender()
+	{
+		//ImGui::Image()
+	}
+
+	void PreviewWindow::Terminate()
+	{
+	}
 }
 
 
-PreviewWindow::~PreviewWindow()
-{
-}

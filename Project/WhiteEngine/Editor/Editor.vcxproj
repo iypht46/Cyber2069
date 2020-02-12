@@ -155,7 +155,7 @@
     <ClInclude Include="Vendors\imgui\imconfig.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="PREVIEWWINDOW.CPP" />
+    <ClCompile Include="Sources\ComponentsBrowser.cpp" />
     <ClCompile Include="Sources\EditorComponent.cpp" />
     <ClCompile Include="Sources\PreviewWindow.cpp" />
     <ClCompile Include="Sources\EditorEntity.cpp" />
