@@ -292,8 +292,6 @@ void PlayerController::mouseAim()
 	mouse_x = Input::GetMouseWorldPosition().x;
 	mouse_y = Input::GetMouseWorldPosition().y;
 
-	GLRenderer::GetInstance()->DrawDebug_Line(mouse_x, mouse_y, pos_x, pos_y, 1.0f, 0.0f, 0.0f);
-
 	angle_deg = ((atan2(mouse_x - pos_x, mouse_y - pos_y) * 180 / PI) - 90) * -1.0f;
 
 	angle_rad = angle_deg / 180 * PI;
@@ -386,6 +384,18 @@ void PlayerController::shoot(float dt)
 			}
 		}
 	}
+
+	float mouse_x, mouse_y, pos_x, pos_y;
+
+	pos_x = m_gameObject->m_transform.GetPosition().x;
+	pos_y = m_gameObject->m_transform.GetPosition().y;
+
+	mouse_x = Input::GetMouseWorldPosition().x;
+	mouse_y = Input::GetMouseWorldPosition().y;
+
+	int hits = ps->RaycastAll(Physic::Ray(pos_x, pos_y, mouse_x, mouse_y), ps->GetLayerFromString("Enemy")).size();
+	ENGINE_INFO("{} enemies hit with ray", hits);
+	GLRenderer::GetInstance()->DrawDebug_Line(pos_x, pos_y, mouse_x, mouse_y, 1.0f, 0.0f, 0.0f);
 }
 
 void PlayerController::assignPool(ObjectPool* pool)

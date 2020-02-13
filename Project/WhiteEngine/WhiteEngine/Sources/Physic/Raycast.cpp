@@ -38,7 +38,7 @@ namespace Physic
 	Collider* PhysicScene::Raycast(Ray ray, Layer targetLayer) {
 		Colliders hits = RaycastAll(ray, targetLayer);
 		float closestDistance = ray.distance();
-		Collider* closestHit;
+		Collider* closestHit = nullptr;
 
 		//find collider closest to origin
 		for (Collider* coll : hits) {

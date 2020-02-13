@@ -3,6 +3,7 @@
 #include "Core/EC/Components/Transform.hpp"
 #include "Core/EC/Components/Rigidbody.hpp"
 #include "Core/EC/Components/Animator.hpp"
+#include "Physic/PhysicScene.hpp"
 #include "Input/Input.hpp"
 #include "Core/EC/GameObject.hpp"
 
@@ -11,6 +12,8 @@
 #define PI 3.14159265358979323846
 
 class PlayerController : public BehaviourScript {
+private://change later
+	Physic::PhysicScene* ps;
 protected:
 	Transform* Gun;
 	Rigidbody* rb;
@@ -49,6 +52,7 @@ protected:
 	float angle_deg, angle_rad;
 
 public:
+	void PSSet(Physic::PhysicScene* ps) { this->ps = ps; }
 	PlayerController();
 	
 	void mouseAim();

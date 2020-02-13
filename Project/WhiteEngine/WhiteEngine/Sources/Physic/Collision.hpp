@@ -28,7 +28,7 @@ namespace Physic
 
 		Ray(glm::vec2 origin, glm::vec2 end);
 		Ray(glm::vec2 origin, glm::vec2 direction, float distance);
-		Ray(float ax, float ay, float bx, float by);
+		Ray(float originx, float originy, float endx, float endy);
 		float distance();
 	};
 
