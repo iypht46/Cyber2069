@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include <set>
+#include <queue>
 #include "glm/glm.hpp"
 #include "SDL_surface.h"
 #include "SDL_image.h"
@@ -28,11 +29,21 @@ struct LayerComparator
 };
 #endif
 
+class LineVertex {
+public:
+	float x1, y1, x2, y2, r, g, b;
+	LineVertex(float x1, float y1, float x2, float y2,float r,float g,float b) 
+	{
+		this->x1 = x1; this->y1 = y1; this->x2 = x2; this->y2 = y2; this->r = r;this->g = g; this->b = b;
+	}
+};
+
 class GLRenderer
 {
 protected:
 	static GLRenderer * instance;
 	multiset <MeshRenderer*, LayerComparator > MeshSet;
+	queue <LineVertex*> Lineq;
 	
 	GLRenderer(int w, int h);
 
@@ -68,6 +79,8 @@ public:
 	void Render();
 	static GLRenderer* GetInstance();
 	bool InitGL(string vertexShaderFile, string fragmentShaderFile);
+	bool drawDebug = true;
+
 
 	~GLRenderer();
 
@@ -84,6 +97,10 @@ public:
 	void AddMeshToSet(MeshRenderer* mesh);
 
 	void RenderDebugCollider(BoxCollider* col);
+	void RenderLine(LineVertex* vertex);
+
+	void DrawDebug_Line(float x1, float y1, float x2, float y2, float r, float g, float b);
+
 
 	glm::mat4 GetprojectionMatrix();
 
