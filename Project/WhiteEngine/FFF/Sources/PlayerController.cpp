@@ -1,6 +1,7 @@
 #include "PlayerController.hpp"
 #include "Input/Input.hpp"
 #include "Graphic/Camera.hpp"
+#include "Graphic/GLRenderer.h"
 #include "Core/Logger.hpp"
 #include <math.h>
 
@@ -200,6 +201,17 @@ void PlayerController::move()
 		m_gameObject->m_transform.SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
 	}
 
+	if (Input::GetKeyDown(Input::KeyCode::KEY_N))
+	{
+		if (GLRenderer::GetInstance()->drawDebug) {
+
+			GLRenderer::GetInstance()->drawDebug = false;
+		}
+		else {
+			GLRenderer::GetInstance()->drawDebug = true;
+		}
+	}
+
 	if ((!Input::GetKeyHold(Input::KeyCode::KEY_A) && !Input::GetKeyHold(Input::KeyCode::KEY_D)) && !jumping && !falling)
 	{
 		if (!Dash) {
@@ -279,6 +291,8 @@ void PlayerController::mouseAim()
 
 	mouse_x = Input::GetMouseWorldPosition().x;
 	mouse_y = Input::GetMouseWorldPosition().y;
+
+	GLRenderer::GetInstance()->DrawDebug_Line(mouse_x, mouse_y, pos_x, pos_y, 1.0f, 0.0f, 0.0f);
 
 	angle_deg = ((atan2(mouse_x - pos_x, mouse_y - pos_y) * 180 / PI) - 90) * -1.0f;
 
