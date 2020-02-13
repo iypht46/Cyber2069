@@ -44,7 +44,6 @@ void AirFollowing::FollowPlayer(float dt) {
 	else {
 		flyer->SetScale(glm::vec3(glm::abs(flyer->GetScale().x), flyer->GetScale().y, 1.0f));;
 	}
-
 }
 
 void AirFollowing::OnAwake() {

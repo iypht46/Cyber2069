@@ -7,6 +7,8 @@ class AirDash : public BehaviourScript
 {
 private: 
 	float timer;
+	float maxExplodeTime;
+	bool dashState;
 protected:
 	Transform* m_target;
 	Transform* bomber;
@@ -14,6 +16,8 @@ protected:
 	float m_dashSpeed;
 	float m_aimTime;
 	float m_aimSpeed;
+	float m_angle;
+	float m_explodeCountDown;
 public:
 	AirDash();
 	void SetPlayer(Transform* player);

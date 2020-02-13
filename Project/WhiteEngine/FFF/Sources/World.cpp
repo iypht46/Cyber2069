@@ -364,7 +364,7 @@ namespace World
 		Rabbit->GetComponent<PlayerController>()->assignPool(BulletPool);
 
 
-		for (int i = 0; i < 1; i++)
+		for (int i = 0; i < 10; i++)
 		{
 			GameObject* flyer = new GameObject();
 			flyer->AddComponent<MeshRenderer>();
@@ -373,7 +373,7 @@ namespace World
 
 			flyer->AddComponent<Rigidbody>();
 			flyer->GetComponent<Rigidbody>()->Init();
-			flyer->GetComponent<Rigidbody>()->SetGravityScale(0);
+			flyer->GetComponent<Rigidbody>()->SetGravityScale(1);
 
 			g_physicScene->Add(flyer->GetComponent<Rigidbody>());
 
