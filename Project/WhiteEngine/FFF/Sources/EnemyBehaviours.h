@@ -5,34 +5,65 @@
 #include "AirDash.hpp"
 #include "AirPatrol.hpp"
 
-class Flyer :public Enemy {
-	AirFollowing* airFollow;
+enum EnemyState
+{
+	Idle = 0,
+	Chase,
+	Active,
 };
 
+
+class Flyer :public Enemy {
+private:
+	Rigidbody* rigidbody;
+protected:
+	AirFollowing* airFollow;
+public:
+	EnemyState state = EnemyState::Idle;
+
+	void Init(Transform* player);
+	virtual void OnStart();
+	virtual void OnUpdate(float dt);
+	virtual void OnFixedUpdate(float dt);
+
+};
+
+
 class Bomber :public Enemy {
+private:
+	float DashTriggerRadius;
+	Rigidbody* rigidbody;
+protected:
 	AirFollowing* airFollow;
 	AirDash* airDash;
-	//Explosion
-	
+	//Explosion expl
+
+public:
+	EnemyState state = EnemyState::Idle;
+
+	void Init(Transform* player);
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
 };
 
 class DeQueen :public Enemy {
-	AirPatrol* airPatrol;
-	ObjectPool* FlyerPool;
-	ObjectPool* BomberPool;
-
+private:
 	int PosX;
 	int PosY;
 	float SpawnDelay;
 	float SpawnDelayCount;
+protected:
+	AirPatrol* airPatrol;
+	ObjectPool* FlyerPool;
+	ObjectPool* BomberPool;
+public:
 
+	EnemyState state = EnemyState::Idle;
+	
+	void assignFlyPool(ObjectPool* pool);
+	void assignBombPool(ObjectPool* pool);
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
-public:
-	void assignFlyPool(ObjectPool* pool);
-	void assignBombPool(ObjectPool* pool);
 };
