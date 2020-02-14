@@ -5,6 +5,7 @@
 #include "Core/EC/GameObject.hpp"
 #include "Core/Logger.hpp"
 #include <iostream>
+
 namespace Physic
 {
 
@@ -125,12 +126,15 @@ namespace Physic
 			if (m_objAResFlag)
 			{
 				m_objectA->m_rigidbody->SetVelocity0Masked(-resultVec);
+				//ENGINE_INFO("objA {}", m_objectA->GetGameObject()->GetID());
 			}
 
 			if (m_objBResFlag)
 			{
 				m_objectA->m_rigidbody->SetVelocity0Masked(resultVec);
+				//ENGINE_INFO("objB {}", m_objectB->GetGameObject()->GetID());
 			}
+			//ENGINE_INFO("reslv\n");
 		}
 		
 		//glm::vec3 resultVec = m_normal * (m_penetration * RESOLVE_MUL);

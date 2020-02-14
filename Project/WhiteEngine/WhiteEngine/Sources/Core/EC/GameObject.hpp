@@ -5,6 +5,7 @@
 #include <string>
 #include "Components/Transform.hpp"
 #include "Core/Factory.h"
+#include "Core/LogCustomType.hpp"
 
 //Forward Declaration
 class Component;
@@ -20,6 +21,7 @@ protected:
 	bool isActive;
 	std::string m_objectName;
 
+	static int s_IDCounter;
 	int m_objectID;
 	
 	std::vector<Component*> m_components;
@@ -39,6 +41,8 @@ public:
 	void SetActive(bool activestate);
 	bool Active();
 
+	int GetID();
+
 	virtual void OnAwake() {};
 	virtual void OnEnable() {};
 	virtual void OnStart() {};
@@ -51,6 +55,10 @@ public:
 
 	template <class T>
 	T* GetComponent();
+
+	//Log to logger
+	LogCustomType_DC(GameObject);
+
 	//GameObject* GetGameObject();
 	//void SetGameObject(GameObject* obj);
 };
@@ -76,5 +84,10 @@ T* GameObject::GetComponent() {
 	}
 	
 	return nullptr;
+}
+
+LogCustomType_DF(GameObject)
+{
+	return os << "GameObject: " << obj.m_objectName << "\n";
 }
 
