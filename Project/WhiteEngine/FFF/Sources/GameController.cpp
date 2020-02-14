@@ -1,5 +1,25 @@
 #include "GameController.hpp"
 
+GameController* GameController::instance = nullptr;
+
+GameController::GameController() {
+	if (instance == nullptr) 
+	{
+		instance = this;
+	}
+}
+
+GameController* GameController::GetInstance() 
+{
+	if (instance != nullptr) 
+	{
+		return instance;
+	}
+	else {
+		return nullptr;
+	}
+}
+
 float GameController::GetScore(){
 	return this->ScoreValue;
 }

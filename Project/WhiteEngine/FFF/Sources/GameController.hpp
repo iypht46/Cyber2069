@@ -5,11 +5,14 @@
 
 class GameController : public BehaviourScript {
 private:
+	static GameController* instance;
 	float ScoreValue = 0;
 	float ComboValue = 1;
 	
 	GameObject* ScoreText;
 public:
+	GameController();
+	static GameController* GetInstance();
 	float GetScore();
 	float GetCombo();
 
