@@ -7,6 +7,8 @@
 #include "Input/Input.hpp"
 #include "Core/EC/GameObject.hpp"
 
+#include "HPsystem.hpp"
+
 #include "Utility/ObjectPool.h"
 
 #define PI 3.14159265358979323846
@@ -15,6 +17,7 @@ class PlayerController : public BehaviourScript {
 private://change later
 	Physic::PhysicScene* ps;
 protected:
+	HPsystem* hpSystem;
 	Transform* Gun;
 	Rigidbody* rb;
 
