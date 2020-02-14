@@ -133,6 +133,7 @@
     <ClCompile Include="Sources\Enemy.cpp" />
     <ClCompile Include="Sources\EnemySpawner.cpp" />
     <ClCompile Include="Sources\FactoryCollection.cpp" />
+    <ClCompile Include="Sources\Flyer.cpp" />
     <ClCompile Include="Sources\FlyerBehaviour.cpp" />
     <ClCompile Include="Sources\HPsystem.cpp" />
     <ClCompile Include="Sources\MachineGunBullet.cpp" />

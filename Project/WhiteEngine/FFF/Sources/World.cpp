@@ -10,7 +10,6 @@
 #include "Core/EC/Components/MeshRenderer.hpp"
 #include "Core/EC/Components/SoundPlayer.hpp"
 
-#include "FlyerBehaviour.hpp"
 #include "EnemyBehaviours.h"
 #include "PlayerController.hpp"
 #include "MachineGunBullet.hpp"
@@ -185,7 +184,6 @@ namespace World
 		Bg2 = new GameObject();
 		Bg1 = new GameObject();
 		Child = new GameObject();
-		//Flyer = new GameObject();
 		platform = new GameObject*[platformNum];
 
 		Spawner = new GameObject();
@@ -232,12 +230,6 @@ namespace World
 		Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_PlayerBody_Vversion03.png");
 
 		Child->m_transform.SetParent(&Rabbit->m_transform);
-
-		//Flyer->AddComponent<MeshRenderer>();
-		//Flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
-		//Flyer->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Flyer_Vversion01.png");
-
-
 
 		//Add Animator
 		Animation* Idle = new Animation();
@@ -339,7 +331,6 @@ namespace World
 		//Add Rigidbody
 		Rabbit->AddComponent<Rigidbody>()->Init(25, 25);
 		Rabbit->GetComponent<Rigidbody>()->SetDrag(0.01f);
-		//Flyer->AddComponent<Rigidbody>()->Init(10,10);
 		g_physicScene->Add(Rabbit->GetComponent<BoxCollider>(), "Player");
 		//g_physicScene->Add(Flyer->GetComponent<BoxCollider>(), "Enemy");
 		g_physicScene->Add(Rabbit->GetComponent<Rigidbody>());
@@ -366,10 +357,6 @@ namespace World
 		Rabbit->GetComponent<PlayerController>()->OnStart();
 		Rabbit->GetComponent<PlayerController>()->assignPool(BulletPool);
 		Rabbit->GetComponent<PlayerController>()->PSSet(g_physicScene);
-
-		//Flyer->AddComponent<FlyerBehaviour>();
-		//Flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
-		//Flyer->GetComponent<FlyerBehaviour>()->SetGameObject(Flyer);
 
 		ENGINE_INFO("Creating Bullet");
 		for (int i = 0; i < 10; i++)
@@ -406,16 +393,18 @@ namespace World
 
 			flyer->AddComponent<Rigidbody>();
 			flyer->GetComponent<Rigidbody>()->Init(15, 15);
-			flyer->GetComponent<Rigidbody>()->SetGravityScale(0);
+			flyer->GetComponent<Rigidbody>()->SetGravityScale(0.0001f);
 
 			g_physicScene->Add(flyer->GetComponent<Rigidbody>());
 			g_physicScene->Add(flyer->GetComponent<BoxCollider>(), "Enemy");
 
-			//flyer->AddComponent<FlyerBehaviour>();
-			////flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
-			//flyer->GetComponent<FlyerBehaviour>()->SetGameObject(flyer);
+
 			flyer->AddComponent<AirFollowing>();
 			flyer->AddComponent<AirDash>();
+
+			//flyer->AddComponent<Flyer>();
+			//flyer->GetComponent<Flyer>()->Init(&(Rabbit->m_transform));
+
 
 			flyer->AddComponent<Bomber>();
 			flyer->GetComponent<Bomber>()->Init(&(Rabbit->m_transform));

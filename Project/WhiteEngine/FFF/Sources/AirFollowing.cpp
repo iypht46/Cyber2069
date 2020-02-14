@@ -2,6 +2,8 @@
 #include "Core/EC/GameObject.hpp"
 #include "Core/Logger.hpp"
 
+#include <iostream>
+
 AirFollowing::AirFollowing()
 {
 	m_speed = 100.0f;
@@ -9,39 +11,65 @@ AirFollowing::AirFollowing()
 	rotRate = 1.5f;
 }
 
-void AirFollowing::SetPlayer(Transform& player) {
-	this->m_target = &player;
-	flyer = &m_gameObject->m_transform;
+void AirFollowing::SetPlayer(Transform* player) {
+	m_target = player;
+	t = &(m_gameObject->m_transform);
+	rb = m_gameObject->GetComponent<Rigidbody>();
+
+	if (m_gameObject == nullptr) {
+		ENGINE_INFO("we're fine");
+	}
+	else {
+		ENGINE_INFO("we're fucked");
+	}
+
+	if (rb == nullptr) {
+		ENGINE_INFO("rbisfine");
+	}
+	else {
+		ENGINE_INFO("rbisfucked");
+	}
+
+	if (t == nullptr) {
+		ENGINE_INFO("tisfine");
+	}
+	else {
+		ENGINE_INFO("tisfucked");
+	}
 }
 
 void AirFollowing::SetFlySpeed(float value) {
-	this->m_speed = value;
+	m_speed = value;
 }
 
 void AirFollowing::SetRotAngle(float value) {
-	this->rotAngle = value;
+	rotAngle = value;
 }
 
 void AirFollowing::SetRotRate(float value) {
-	this->rotRate = value;
+	rotRate = value;
 }
 
 void AirFollowing::FollowPlayer(float dt) {
-	
-	Rigidbody* rb = m_gameObject->GetComponent<Rigidbody>();
-	glm::vec3 myVel = m_gameObject->GetComponent<Rigidbody>()->GetVelocity();
-	glm::vec3 direction = glm::normalize(m_target->GetPosition() - flyer->GetPosition());
+	glm::vec3 myVel = rb->GetVelocity();
+	std::cout << myVel.x << endl;
+	//ENGINE_INFO("Myvel {},{},{}", myVel.x, myVel.y, myVel.z);
+	glm::vec3 direction = glm::normalize(m_target->GetPosition() - t->GetPosition());
+	//ENGINE_INFO("direction {},{},{}", direction.x, direction.y, direction.z);
 	float rot = glm::cross(glm::normalize(myVel), direction).z;
-	//flyer->SetRotation(flyer->GetRotation() + (rot * rotRate * dt));
-
-	rb->SetVelocity(glm::vec3(glm::cos(flyer->GetRotation() + this->rotAngle), glm::sin(flyer->GetRotation() + this->rotAngle), 0) * m_speed);
+	//ENGINE_INFO("rot {}", rot);
+	t->SetRotation(t->GetRotation() + (rot * rotRate * dt));
+	//ENGINE_INFO("rotRate {}", rotRate);
+	//ENGINE_INFO("dt {}", dt);
+	//ENGINE_INFO("rotation {}", rot * rotRate * dt);
+	ENGINE_INFO("================");
+	rb->SetVelocity(glm::vec3(glm::cos(t->GetRotation() + this->rotAngle), glm::sin(t->GetRotation() + this->rotAngle), 0) * m_speed);
 
 	if (direction.x > 0) {
-		flyer->SetScale(glm::vec3(glm::abs(flyer->GetScale().x) * -1, flyer->GetScale().y, 1.0f));
-
+		t->SetScale(glm::vec3(glm::abs(t->GetScale().x) * -1, t->GetScale().y, 1.0f));
 	}
 	else {
-		flyer->SetScale(glm::vec3(glm::abs(flyer->GetScale().x), flyer->GetScale().y, 1.0f));;
+		t->SetScale(glm::vec3(glm::abs(t->GetScale().x), t->GetScale().y, 1.0f));;
 	}
 }
 

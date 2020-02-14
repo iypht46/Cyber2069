@@ -13,7 +13,18 @@ enum EnemyState
 };
 
 class Flyer :public Enemy {
+private:
+	Rigidbody* rigidbody;
+protected:
 	AirFollowing* airFollow;
+
+public:
+	EnemyState state = EnemyState::Idle;
+
+	void Init(Transform* player);
+	virtual void OnStart();
+	virtual void OnUpdate(float dt);
+	virtual void OnFixedUpdate(float dt);
 };
 
 class Bomber :public Enemy {

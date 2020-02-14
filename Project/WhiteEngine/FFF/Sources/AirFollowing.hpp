@@ -6,15 +6,17 @@
 
 class AirFollowing : public BehaviourScript
 {
+private:
+	Rigidbody* rb;
+	Transform* t;
 protected:
 	Transform* m_target;
-	Transform* flyer;
 	float m_speed;
 	float rotAngle;
 	float rotRate;
 public:
 	AirFollowing();
-	void SetPlayer(Transform&);
+	void SetPlayer(Transform*);
 	void SetFlySpeed(float value);
 	void SetRotAngle(float value);
 	void SetRotRate(float value);
