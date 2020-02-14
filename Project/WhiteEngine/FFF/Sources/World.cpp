@@ -9,11 +9,13 @@
 #include "Core/EC/Components/Animator.hpp"
 #include "Core/EC/Components/MeshRenderer.hpp"
 #include "Core/EC/Components/SoundPlayer.hpp"
+#include "Core/EC/Components/TextRenderer.hpp"
 
 #include "EnemyBehaviours.h"
 #include "PlayerController.hpp"
 #include "MachineGunBullet.hpp"
 #include "EnemySpawner.hpp"
+#include "GameController.hpp"
 
 #include "Core/EC/Components/Collider.hpp"
 #include "Core/EC/Components/Rigidbody.hpp"
@@ -54,9 +56,12 @@ namespace World
 	GameObject* Bg1;
 	GameObject* Bg2;
 	GameObject* Child;
-	GameObject* Flyer;
 	GameObject** platform;
 	GameObject* queen;
+
+	GameObject* gamecontroller;
+	GameObject* ui_ScoreText;
+	GameObject* ui_HPbar;
 
 	GameObject* Enemy;
 	GameObject* Spawner;
@@ -99,12 +104,6 @@ namespace World
 		if (Input::GetKeyHold(Input::KeyCode::KEY_O))
 		{
 			cam->Zoom(-1.0f * dt);
-		}
-
-		if (Input::GetKeyHold(Input::KeyCode::KEY_R))
-		{
-			cam->ResetCam();
-			Rabbit->m_transform.SetPosition(glm::vec3(0.0f, 0.0f, 1));
 		}
 
 		//child
@@ -190,6 +189,10 @@ namespace World
 		platform = new GameObject*[platformNum];
 		queen = new GameObject();
 
+		gamecontroller = new GameObject();
+		ui_ScoreText = new GameObject();
+		ui_HPbar = new GameObject();
+
 		Spawner = new GameObject();
 
 		BulletPool = new ObjectPool();
@@ -216,6 +219,24 @@ namespace World
 			}
 		}
 
+		ui_ScoreText->AddComponent<TextRenderer>();
+		ui_ScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 50);
+		ui_ScoreText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		ui_ScoreText->m_transform.SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
+		ui_ScoreText->m_transform.SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 50.0f, (Graphic::Window::GetHeight() / -2) + 50.0f, 1.0f));
+
+		ui_HPbar->AddComponent<MeshRenderer>();
+		ui_HPbar->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+		ui_HPbar->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Red.jpg");
+		ui_HPbar->GetComponent<MeshRenderer>()->SetUI(true);
+		ui_HPbar->GetComponent<MeshRenderer>()->SetLayer(10);
+		ui_HPbar->m_transform.SetScale(glm::vec3(500.0f, 40.0f, 1.0f));
+		ui_HPbar->m_transform.SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 280.0f, (Graphic::Window::GetHeight() / 2) - 40.0f, 1.0f));
+
+		gamecontroller->AddComponent<GameController>();
+		gamecontroller->GetComponent<GameController>()->AssignScoreText(ui_ScoreText);
+		gamecontroller->GetComponent<GameController>()->AssignHPbar(ui_HPbar);
+
 		Bg2->AddComponent<MeshRenderer>();
 		Bg2->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 		Bg2->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer2.png");
@@ -233,6 +254,9 @@ namespace World
 		Rabbit->AddComponent<MeshRenderer>();
 		Rabbit->GetComponent<MeshRenderer>()->CreateMesh(7, 5);
 		Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_PlayerBody_Vversion03.png");
+
+		Rabbit->AddComponent<HPsystem>();
+		gamecontroller->GetComponent<GameController>()->AssignPlayer(Rabbit);
 
 		Child->m_transform.SetParent(&Rabbit->m_transform);
 
@@ -365,6 +389,7 @@ namespace World
 		platform[4]->m_transform.SetPosition(glm::vec3(300, -300, 0));
 
 		//Behavior Script
+		Rabbit->AddComponent<HPsystem>();
 		Rabbit->AddComponent<PlayerController>();
 		Rabbit->GetComponent<PlayerController>()->OnStart();
 		Rabbit->GetComponent<PlayerController>()->assignPool(BulletPool);
@@ -411,7 +436,10 @@ namespace World
 			g_physicScene->Add(flyer->GetComponent<Rigidbody>());
 			g_physicScene->Add(flyer->GetComponent<BoxCollider>(), "Enemy");
 
-
+			flyer->AddComponent<HPsystem>();
+			flyer->AddComponent<AirFollowing>();
+			flyer->AddComponent<Flyer>();
+			flyer->GetComponent<Flyer>()->Init(&(Rabbit->m_transform));
 			//flyer->AddComponent<FlyerBehaviour>();
 			//flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
 			//flyer->GetComponent<FlyerBehaviour>()->SetGameObject(flyer);
@@ -431,9 +459,11 @@ namespace World
 		Spawner->GetComponent<EnemySpawner>()->OnStart();
 		Spawner->GetComponent<EnemySpawner>()->assignPool(FlyerPool);
 
-		queen->AddComponent<DeQueen>();
-		queen->GetComponent<DeQueen>()->assignFlyPool(FlyerPool);
-		queen->GetComponent<DeQueen>()->assignBombPool(BomberPool);
+		//queen->AddComponent<AirPatrol>();
+		//queen->AddComponent<DeQueen>();
+		//queen->GetComponent<DeQueen>()->Init();
+		//queen->GetComponent<DeQueen>()->assignFlyPool(FlyerPool);
+		//queen->GetComponent<DeQueen>()->assignBombPool(BomberPool);
 
 		//Add Sound
 		Bg2->AddComponent<SoundPlayer>();

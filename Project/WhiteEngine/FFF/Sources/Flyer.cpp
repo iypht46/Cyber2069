@@ -9,6 +9,7 @@ void Flyer::Init(Transform* player) {
 	targetDetectionRange = 1000.0f;
 
 	rigidbody = m_gameObject->GetComponent<Rigidbody>();
+	Enemy::Init();
 }
 
 void Flyer::OnStart() {

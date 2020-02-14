@@ -13,6 +13,8 @@ void Bomber::Init(Transform* player) {
 	DashTriggerRadius = 300.0f;
 
 	rigidbody = m_gameObject->GetComponent<Rigidbody>();
+
+	Enemy::Init();
 }
 
 void Bomber::OnStart() {

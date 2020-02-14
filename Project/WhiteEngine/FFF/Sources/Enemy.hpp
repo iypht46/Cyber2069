@@ -20,6 +20,7 @@ protected:
 public:
 	float targetDetectionRange = 0;
 
+	void Init();
 	virtual void OnStart() = 0;
 	virtual void OnUpdate(float dt) override;
 	virtual void OnFixedUpdate(float dt) = 0;

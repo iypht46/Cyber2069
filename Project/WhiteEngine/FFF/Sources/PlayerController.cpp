@@ -34,7 +34,7 @@ void PlayerController::OnCollisionExit(const Physic::Collision col)
 
 void PlayerController::OnTriggerEnter(const Physic::Collision col)
 {
-	//GAME_INFO("HIT");
+	hpSystem->TakeDamage(2.0f);
 }
 
 void PlayerController::OnTriggerStay(const Physic::Collision col)
@@ -50,6 +50,10 @@ void PlayerController::OnTriggerExit(const Physic::Collision col)
 void PlayerController::OnStart() {
 	Gun = m_gameObject->m_transform.GetChild(0);
 	rb = m_gameObject->GetComponent<Rigidbody>();
+	hpSystem = m_gameObject->GetComponent<HPsystem>();
+
+	hpSystem->SetMaxHP(100.0f);
+	hpSystem->ResetHP();
 
 	inverseGun = false;
 
@@ -84,6 +88,13 @@ void PlayerController::OnUpdate(float dt)
 	{
 		jumping = false;
 		m_gameObject->m_transform.SetPosition(glm::vec3(m_gameObject->m_transform.GetPosition().x, -(720 / 2) + 1, m_gameObject->m_transform.GetPosition().z));
+	}*/
+
+	/*if (hpSystem->GetHP() > 10.0f) {
+		hpSystem->TakeDamage(1.0f);
+	}
+	else {
+		hpSystem->ResetHP();
 	}*/
 
 	Graphic::getCamera()->SetPos(glm::vec3(m_gameObject->m_transform.GetPosition().x, m_gameObject->m_transform.GetPosition().y, m_gameObject->m_transform.GetPosition().z));
