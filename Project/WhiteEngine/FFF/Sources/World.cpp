@@ -58,7 +58,6 @@ namespace World
 	GameObject* Child;
 	GameObject** platform;
 	GameObject* queen;
-	GameObject* bomber;
 
 	GameObject* gamecontroller;
 	GameObject* ui_ScoreText;
@@ -69,6 +68,11 @@ namespace World
 
 	Animation* Fly;
 	AnimationController* EnemCon;
+
+	AnimationController* RabbitController;
+	AnimationController* BomberAnimController;
+	AnimationController* queenAnimControl;
+
 
 	GameObject** test;
 
@@ -189,7 +193,6 @@ namespace World
 		//Flyer = new GameObject();
 		platform = new GameObject*[platformNum];
 		queen = new GameObject();
-		bomber = new GameObject();
 
 		gamecontroller = new GameObject();
 		ui_ScoreText = new GameObject();
@@ -305,7 +308,7 @@ namespace World
 		Jumping->setLooping(false);
 		falling->setLooping(false);
 
-		AnimationController* RabbitController = new AnimationController();
+		RabbitController = new AnimationController();
 		RabbitController->setSheetSize(glm::vec2(7, 5));
 
 		RabbitController->AddState(Idle);
@@ -455,109 +458,6 @@ namespace World
 			FlyerPool->AddObject(flyer);
 		}
 
-		for (int i = 0; i < 100; i++)
-		{
-			GameObject* bomber = new GameObject();
-
-			bomber->AddComponent<MeshRenderer>();
-			bomber->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
-			bomber->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Flyer_Vversion01.png");
-
-			bomber->AddComponent<Rigidbody>();
-			bomber->GetComponent<Rigidbody>()->Init(15, 15);
-
-			g_physicScene->Add(bomber->GetComponent<Rigidbody>());
-			g_physicScene->Add(bomber->GetComponent<BoxCollider>(), "Enemy");
-
-			bomber->AddComponent<HPsystem>();
-			bomber->AddComponent<AirFollowing>();
-			bomber->AddComponent<AirDash>();
-			bomber->AddComponent<Bomber>();
-			bomber->GetComponent<Bomber>()->Init(&(Rabbit->m_transform));
-
-			bomber->AddComponent<Animator>();
-			bomber->GetComponent<Animator>()->AssignController(EnemCon);
-			bomber->GetComponent<Animator>()->setCurrentState(0);
-			bomber->GetComponent<Animator>()->setFramePerSec(12);
-
-			bomber->m_transform.SetScale(glm::vec3(50, 50, 1));
-
-			bomber->SetActive(false);
-			BomberPool->AddObject(bomber);
-		}
-
-	
-		Spawner->AddComponent<EnemySpawner>();
-		Spawner->GetComponent<EnemySpawner>()->OnStart();
-		Spawner->GetComponent<EnemySpawner>()->assignFlyPool(FlyerPool);
-		Spawner->GetComponent<EnemySpawner>()->assignBombPool(BomberPool);
-
-
-		GameObject* queen = new GameObject();
-		queen->m_transform.SetPosition(glm::vec3(-(Graphic::Window::GetWidth() / 2), (Graphic::Window::GetHeight() / 2), 1.0f));
-		queen->AddComponent<MeshRenderer>();
-		queen->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
-		queen->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Flyer_Vversion01.png");
-
-		queen->AddComponent<Rigidbody>();
-		queen->GetComponent<Rigidbody>()->Init(15, 15);
-		queen->GetComponent<Rigidbody>()->SetGravityScale(0.00001);
-
-		g_physicScene->Add(queen->GetComponent<Rigidbody>());
-		g_physicScene->Add(queen->GetComponent<BoxCollider>(), "Enemy");
-
-		queen->AddComponent<HPsystem>();
-		queen->AddComponent<AirPatrol>();
-		queen->AddComponent<DeQueen>();
-		queen->GetComponent<DeQueen>()->Init();
-
-		queen->AddComponent<Animator>();
-		queen->GetComponent<Animator>()->AssignController(EnemCon);
-		queen->GetComponent<Animator>()->setCurrentState(0);
-		queen->GetComponent<Animator>()->setFramePerSec(12);
-
-		queen->m_transform.SetScale(glm::vec3(50, 50, 1));
-
-
-		queen->GetComponent<DeQueen>()->assignFlyPool(FlyerPool);
-		queen->GetComponent<DeQueen>()->assignBombPool(BomberPool);
-
-		queen->AddComponent<MeshRenderer>();
-		queen->GetComponent<MeshRenderer>()->CreateMesh(4, 2);
-		queen->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Queen_V[version01].png");
-
-		queen->m_transform.SetScale(glm::vec3(200.0f, 200.f, 1.0f));
-
-		Animation* queenIdle = new Animation();
-
-		queenIdle->setStartPosition(0, 0);
-		queenIdle->setEndPosition(3, 0);
-		queenIdle->setSpeedMultiplier(1);
-		queenIdle->setLooping(true);
-
-		Animation* queenSpawning = new Animation();
-
-		queenSpawning->setStartPosition(0, 1);
-		queenSpawning->setEndPosition(3, 1);
-		queenSpawning->setSpeedMultiplier(1);
-		queenSpawning->setLooping(true);
-
-		AnimationController* queenAnimControl = new AnimationController();
-		queenAnimControl->setSheetSize(glm::vec2(4, 2));
-		queenAnimControl->AddState(queenIdle);
-		queenAnimControl->AddState(queenSpawning);
-
-		queen->AddComponent<Animator>();
-		queen->GetComponent<Animator>()->AssignController(queenAnimControl);
-		queen->GetComponent<Animator>()->setCurrentState(1);
-
-		bomber->AddComponent<MeshRenderer>();
-		bomber->GetComponent<MeshRenderer>()->CreateMesh(12, 4);
-		bomber->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Bomber_V[version01].png");
-
-		bomber->m_transform.SetScale(glm::vec3(60.0f, 60.f, 1.0f));
-		bomber->m_transform.SetPosition(glm::vec3(100.0f, 100.f, 1.0f));
-
 		Animation* BomberIdle = new Animation();
 		BomberIdle->setStartPosition(0, 0);
 		BomberIdle->setEndPosition(4, 0);
@@ -588,7 +488,7 @@ namespace World
 		BomberDie->setSpeedMultiplier(1);
 		BomberDie->setLooping(false);
 
-		AnimationController* BomberAnimController = new AnimationController();
+		BomberAnimController = new AnimationController();
 		BomberAnimController->setSheetSize(glm::vec2(12, 4));
 		BomberAnimController->AddState(BomberIdle);
 		BomberAnimController->AddState(BomberCharging);
@@ -596,9 +496,94 @@ namespace World
 		BomberAnimController->AddState(BomberExplode);
 		BomberAnimController->AddState(BomberDie);
 
-		bomber->AddComponent<Animator>();
-		bomber->GetComponent<Animator>()->AssignController(BomberAnimController);
-		bomber->GetComponent<Animator>()->setCurrentState(0);
+		for (int i = 0; i < 100; i++)
+		{
+			GameObject* bomber = new GameObject();
+
+			bomber->AddComponent<MeshRenderer>();
+			bomber->GetComponent<MeshRenderer>()->CreateMesh(12, 4);
+			bomber->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Bomber_V[version01].png");
+
+			bomber->AddComponent<Animator>();
+			bomber->GetComponent<Animator>()->AssignController(BomberAnimController);
+			bomber->GetComponent<Animator>()->setCurrentState(0);
+			bomber->GetComponent<Animator>()->setFramePerSec(12);
+
+			bomber->AddComponent<Rigidbody>();
+			bomber->GetComponent<Rigidbody>()->Init(15, 15);
+
+			g_physicScene->Add(bomber->GetComponent<Rigidbody>());
+			g_physicScene->Add(bomber->GetComponent<BoxCollider>(), "Enemy");
+
+			bomber->AddComponent<HPsystem>();
+			bomber->AddComponent<AirFollowing>();
+			bomber->AddComponent<AirDash>();
+			bomber->AddComponent<Bomber>();
+			bomber->GetComponent<Bomber>()->Init(&(Rabbit->m_transform));
+
+			bomber->m_transform.SetScale(glm::vec3(50, 50, 1));
+
+			bomber->SetActive(false);
+			BomberPool->AddObject(bomber);
+		}
+
+	
+		Spawner->AddComponent<EnemySpawner>();
+		Spawner->GetComponent<EnemySpawner>()->OnStart();
+		Spawner->GetComponent<EnemySpawner>()->assignFlyPool(FlyerPool);
+		Spawner->GetComponent<EnemySpawner>()->assignBombPool(BomberPool);
+
+		Animation* queenIdle = new Animation();
+
+		queenIdle->setStartPosition(0, 0);
+		queenIdle->setEndPosition(3, 0);
+		queenIdle->setSpeedMultiplier(1);
+		queenIdle->setLooping(true);
+
+		Animation* queenSpawning = new Animation();
+
+		queenSpawning->setStartPosition(0, 1);
+		queenSpawning->setEndPosition(3, 1);
+		queenSpawning->setSpeedMultiplier(1);
+		queenSpawning->setLooping(true);
+
+		queenAnimControl = new AnimationController();
+		queenAnimControl->setSheetSize(glm::vec2(4, 2));
+		queenAnimControl->AddState(queenIdle);
+		queenAnimControl->AddState(queenSpawning);
+
+
+		GameObject* queen = new GameObject();
+		queen->m_transform.SetPosition(glm::vec3(-(Graphic::Window::GetWidth() / 2), (Graphic::Window::GetHeight() / 2), 1.0f));
+		queen->AddComponent<MeshRenderer>();
+		queen->GetComponent<MeshRenderer>()->CreateMesh(4, 2);
+		queen->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Queen_V[version01].png");
+
+		queen->AddComponent<Animator>();
+		queen->GetComponent<Animator>()->AssignController(queenAnimControl);
+		queen->GetComponent<Animator>()->setCurrentState(1);
+		queen->GetComponent<Animator>()->setFramePerSec(12);
+
+		queen->AddComponent<Rigidbody>();
+		queen->GetComponent<Rigidbody>()->Init(15, 15);
+		queen->GetComponent<Rigidbody>()->SetGravityScale(0.00001);
+
+		g_physicScene->Add(queen->GetComponent<Rigidbody>());
+		g_physicScene->Add(queen->GetComponent<BoxCollider>(), "Enemy");
+
+		queen->AddComponent<HPsystem>();
+		queen->AddComponent<AirPatrol>();
+		queen->AddComponent<DeQueen>();
+		queen->GetComponent<DeQueen>()->Init();
+
+		queen->m_transform.SetScale(glm::vec3(50, 50, 1));
+
+
+		queen->GetComponent<DeQueen>()->assignFlyPool(FlyerPool);
+		queen->GetComponent<DeQueen>()->assignBombPool(BomberPool);
+
+		queen->m_transform.SetScale(glm::vec3(200.0f, 200.f, 1.0f));
+
 
 		//Add Sound
 		Bg2->AddComponent<SoundPlayer>();

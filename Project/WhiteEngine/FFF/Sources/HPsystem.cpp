@@ -56,7 +56,7 @@ void HPsystem::OnStart() {
 }
 
 void HPsystem::OnUpdate(float dt) {
-	if (dead && hp <= 0)
+	if (!dead && hp <= 0)
 	{
 		Dead();
 	}

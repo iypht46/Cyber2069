@@ -34,7 +34,7 @@ void PlayerController::OnCollisionExit(const Physic::Collision col)
 
 void PlayerController::OnTriggerEnter(const Physic::Collision col)
 {
-	hpSystem->TakeDamage(2.0f);
+	hpSystem->TakeDamage(1.0f);
 }
 
 void PlayerController::OnTriggerStay(const Physic::Collision col)

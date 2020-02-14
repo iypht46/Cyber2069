@@ -11,6 +11,8 @@ void DeQueen::Init() {
 	airPatrol->SetPoint(PosX, -PosX);
 	SpawnDelay = 1;
 	SpawnDelayCount = SpawnDelay;
+
+	Enemy::Init();
 }
 
 

@@ -5,7 +5,7 @@
 class HPsystem : public BehaviourScript {
 protected:
 	float Maxhp;
-	float hp;
+	float hp = 1;
 	bool invincible = false;
 	bool dead = false;
 public:
