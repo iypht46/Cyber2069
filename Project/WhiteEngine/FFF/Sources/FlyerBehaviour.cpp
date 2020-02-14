@@ -29,7 +29,7 @@ void FlyerBehaviour::OnUpdate(float dt)
 	//if (Input::GetKeyHold(Input::KeyCode::KEY_M)) {
 		//ad->Dash(dt);
 	//}
-	ap->Patrol(dt);
+	//ap->Patrol(dt);
 
 }
 

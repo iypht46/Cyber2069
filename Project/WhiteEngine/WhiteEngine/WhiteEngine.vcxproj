@@ -186,6 +186,7 @@
     <ClCompile Include="Sources\Graphic\SquareMeshVbo.cpp" />
     <ClCompile Include="Sources\Graphic\Window.cpp" />
     <ClCompile Include="Sources\Input\Input.cpp" />
+    <ClCompile Include="Sources\Physic\Raycast.cpp" />
     <ClCompile Include="Sources\Utility\ObjectPool.cpp" />
   </ItemGroup>
   <ItemGroup>

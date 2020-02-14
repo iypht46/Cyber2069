@@ -2,14 +2,14 @@
 #include "Core/EC/Components/BehaviourScript.h"
 #include "AirFollowing.hpp"
 #include "AirDash.hpp" //For testing
-#include "AirPatrol.hpp" // For testing
+//#include "AirPatrol.hpp" // For testing
 
 class FlyerBehaviour : public BehaviourScript {
 
 public:
 	AirFollowing* af;
 	AirDash* ad; //For Testing
-	AirPatrol* ap; //For Testing
+	//AirPatrol* ap; //For Testing
 	int hp;
 	FlyerBehaviour();
 	virtual void OnAwake();

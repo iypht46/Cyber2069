@@ -111,6 +111,9 @@ namespace Physic
 		//Convert Layer Enum to number
 		static uint32_t LayerToNum(Layer);
 
+		Colliders RaycastAll (Ray,Layer);
+		Collider* Raycast (Ray,Layer);
+
 		//@Physic Settings
 		//Set Scene Gravity
 		void SetGravity(glm::vec3);
