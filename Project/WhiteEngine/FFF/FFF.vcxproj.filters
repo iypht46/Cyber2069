@@ -42,7 +42,10 @@
     <ClCompile Include="Sources\AirFollowing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\AirPatrol.cpp">
+    <ClCompile Include="Sources\HPsystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Enemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -71,7 +74,10 @@
     <ClInclude Include="Sources\AirFollowing.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\AirPatrol.hpp">
+    <ClInclude Include="Sources\Enemy.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\HPsystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
