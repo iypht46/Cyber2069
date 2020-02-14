@@ -363,6 +363,7 @@ namespace World
 		Rabbit->AddComponent<PlayerController>();
 		Rabbit->GetComponent<PlayerController>()->OnStart();
 		Rabbit->GetComponent<PlayerController>()->assignPool(BulletPool);
+		Rabbit->GetComponent<PlayerController>()->PSSet(g_physicScene);
 
 
 		for (int i = 0; i < 1; i++)

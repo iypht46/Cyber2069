@@ -194,6 +194,9 @@
     <ClCompile Include="Sources\Core\EC\Components\TextRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Physic\Raycast.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Sources\Graphic\Shader\fragment.shd" />
