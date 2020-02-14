@@ -90,12 +90,12 @@ void PlayerController::OnUpdate(float dt)
 		m_gameObject->m_transform.SetPosition(glm::vec3(m_gameObject->m_transform.GetPosition().x, -(720 / 2) + 1, m_gameObject->m_transform.GetPosition().z));
 	}*/
 
-	if (hpSystem->GetHP() > 10.0f) {
+	/*if (hpSystem->GetHP() > 10.0f) {
 		hpSystem->TakeDamage(1.0f);
 	}
 	else {
 		hpSystem->ResetHP();
-	}
+	}*/
 
 	Graphic::getCamera()->SetPos(glm::vec3(m_gameObject->m_transform.GetPosition().x, m_gameObject->m_transform.GetPosition().y, m_gameObject->m_transform.GetPosition().z));
 
