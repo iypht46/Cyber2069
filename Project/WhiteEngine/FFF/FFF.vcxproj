@@ -129,9 +129,7 @@
   <ItemGroup>
     <ClCompile Include="Sources\AirDash.cpp" />
     <ClCompile Include="Sources\AirFollowing.cpp" />
-    <ClCompile Include="Sources\AirPatrol.cpp" />
     <ClCompile Include="Sources\Bomber.cpp" />
-    <ClCompile Include="Sources\DeQueen.cpp" />
     <ClCompile Include="Sources\Enemy.cpp" />
     <ClCompile Include="Sources\EnemySpawner.cpp" />
     <ClCompile Include="Sources\FactoryCollection.cpp" />
@@ -146,8 +144,8 @@
   <ItemGroup>
     <ClInclude Include="Sources\AirDash.hpp" />
     <ClInclude Include="Sources\AirFollowing.hpp" />
-    <ClInclude Include="Sources\AirPatrol.hpp" />
     <ClInclude Include="Sources\Enemy.hpp" />
+    <ClInclude Include="Sources\EnemyBehaviour.hpp" />
     <ClInclude Include="Sources\EnemyBehaviours.h" />
     <ClInclude Include="Sources\EnemySpawner.hpp" />
     <ClInclude Include="Sources\FactoryCollection.h" />

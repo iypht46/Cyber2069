@@ -46,13 +46,13 @@ void MachineGunBullet::OnDisable() {
 }
 
 void MachineGunBullet::OnTriggerEnter(const Physic::Collision col) {
-	//ENGINE_INFO("Bullet Hit");
+	ENGINE_INFO("Bullet Hit " + col.m_otherCollider->GetGameObject()->Name);
 
-	m_gameObject->SetActive(false);
+	//m_gameObject->SetActive(false);
 	FlyerBehaviour* other = col.m_otherCollider->GetGameObject()->GetComponent<FlyerBehaviour>();
-	if (--(other->hp) <= 0) {
-		col.m_otherCollider->GetGameObject()->SetActive(false);
-	}
+	//if (--(other->hp) <= 0) {
+	//	col.m_otherCollider->GetGameObject()->SetActive(false);
+	//}
 }
 
 void MachineGunBullet::OnCollisionEnter(const Physic::Collision col) {
