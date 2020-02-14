@@ -1,4 +1,10 @@
 #include "Enemy.hpp"
+#include "GameController.hpp"
+
+void Enemy::Init() {
+	hpSystem = m_gameObject->GetComponent<HPsystem>();
+	animator = m_gameObject->GetComponent<Animator>();
+}
 
 void Enemy::OnTakeDamage() {
 	//call all funct from events vector
@@ -6,6 +12,8 @@ void Enemy::OnTakeDamage() {
 
 void Enemy::OnDead() {
 	//call all funct from events vector
+	m_gameObject->SetActive(false);
+	GameController::GetInstance()->AddScoreValue(1.0);
 }
 
 //check if target in range

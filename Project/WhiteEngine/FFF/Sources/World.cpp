@@ -389,6 +389,7 @@ namespace World
 		platform[4]->m_transform.SetPosition(glm::vec3(300, -300, 0));
 
 		//Behavior Script
+		Rabbit->AddComponent<HPsystem>();
 		Rabbit->AddComponent<PlayerController>();
 		Rabbit->GetComponent<PlayerController>()->OnStart();
 		Rabbit->GetComponent<PlayerController>()->assignPool(BulletPool);
@@ -436,10 +437,11 @@ namespace World
 			g_physicScene->Add(flyer->GetComponent<Rigidbody>());
 			g_physicScene->Add(flyer->GetComponent<BoxCollider>(), "Enemy");
 
+			flyer->AddComponent<HPsystem>();
 			flyer->AddComponent<AirFollowing>();
 			flyer->AddComponent<Flyer>();
 			flyer->GetComponent<Flyer>()->Init(&(Rabbit->m_transform));
-			
+
 			flyer->AddComponent<Animator>();
 			flyer->GetComponent<Animator>()->AssignController(EnemCon);
 			flyer->GetComponent<Animator>()->setCurrentState(0);
@@ -465,6 +467,7 @@ namespace World
 			g_physicScene->Add(bomber->GetComponent<Rigidbody>());
 			g_physicScene->Add(bomber->GetComponent<BoxCollider>(), "Enemy");
 
+			bomber->AddComponent<HPsystem>();
 			bomber->AddComponent<AirFollowing>();
 			bomber->AddComponent<AirDash>();
 			bomber->AddComponent<Bomber>();
@@ -501,6 +504,7 @@ namespace World
 		g_physicScene->Add(queen->GetComponent<Rigidbody>());
 		g_physicScene->Add(queen->GetComponent<BoxCollider>(), "Enemy");
 
+		queen->AddComponent<HPsystem>();
 		queen->AddComponent<AirPatrol>();
 		queen->AddComponent<DeQueen>();
 		queen->GetComponent<DeQueen>()->Init();
@@ -515,7 +519,7 @@ namespace World
 
 		queen->GetComponent<DeQueen>()->assignFlyPool(FlyerPool);
 		queen->GetComponent<DeQueen>()->assignBombPool(BomberPool);
-		
+
 		//Add Sound
 		Bg2->AddComponent<SoundPlayer>();
 		Bg2->GetComponent<SoundPlayer>()->CreateSoundPlayer();
