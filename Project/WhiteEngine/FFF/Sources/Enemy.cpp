@@ -10,7 +10,9 @@ void Enemy::OnDead() {
 
 //check if target in range
 void Enemy::OnUpdate(float dt) {
-	foundTarget = glm::length(target->GetPosition() - m_gameObject->m_transform.GetPosition()) < targetDetectionRange;
+	if (target != nullptr) {
+		foundTarget = glm::length(target->GetPosition() - m_gameObject->m_transform.GetPosition()) < targetDetectionRange;
+	}
 }
 
 void Enemy::SetTarget(Transform* target) {
