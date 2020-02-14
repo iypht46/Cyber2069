@@ -2,13 +2,21 @@
 #include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/GameObject.hpp"
 #include "Core/EC/Components/TextRenderer.hpp"
+#include "HPsystem.hpp"
 
 class GameController : public BehaviourScript {
 private:
 	static GameController* instance;
 	float ScoreValue = 0;
 	float ComboValue = 1;
+
+	float startHPscaleX;
+	float startHPscaleY;
+
+	float startHPposX;
 	
+	HPsystem* PlayerHP;
+	GameObject* HPbar;
 	GameObject* ScoreText;
 public:
 	GameController();
@@ -23,7 +31,11 @@ public:
 
 	void ResetScore();
 
+	void updateHPui();
+
 	void AssignScoreText(GameObject* ScoreText);
+	void AssignHPbar(GameObject* hpbar);
+	void AssignPlayer(GameObject* player);
 	
 	virtual void OnAwake();
 	virtual void OnEnable();
