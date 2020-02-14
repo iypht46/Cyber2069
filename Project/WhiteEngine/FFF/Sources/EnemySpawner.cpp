@@ -17,15 +17,17 @@ void EnemySpawner::OnUpdate(float dt)
 		GameObject* flyer = FlyerPool->GetInactiveObject();
 		if (flyer != nullptr) 
 		{
-			int randPosX = (rand() % (Graphic::Window::GetWidth() * 2)) - Graphic::Window::GetWidth();
-			int randPosY = (rand() % (Graphic::Window::GetHeight() * 2)) - Graphic::Window::GetHeight();
+			int testPosX = -Graphic::Window::GetWidth() / 2;
+			int testPosY = -Graphic::Window::GetHeight() / 2;
+			//int randPosX = (rand() % (Graphic::Window::GetWidth() * 2)) - Graphic::Window::GetWidth();
+			//int randPosY = (rand() % (Graphic::Window::GetHeight() * 2)) - Graphic::Window::GetHeight();
 
 			flyer->SetActive(true);
 			//
 			flyer->GetComponent<FlyerBehaviour>()->hp = 3;
 			//
 
-			flyer->m_transform.SetPosition(glm::vec3(randPosX, randPosY, 1.0f));
+			flyer->m_transform.SetPosition(glm::vec3(testPosX, testPosY, 1.0f));
 		}
 	}
 }

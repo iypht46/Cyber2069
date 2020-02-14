@@ -1,23 +1,17 @@
 #pragma once
 #include "Core/EC/Components/BehaviourScript.h"
-#include "Core/EC/Components/Transform.hpp"
-#include "Core/EC/GameObject.hpp"
-#include "Core/EC/Components/Rigidbody.hpp"
-
-#define MOVE_SPEED_FLYER 100.0f
-#define ROT_ANGLE 15.0f
-#define ROT_RATE 1.5f
+#include "AirFollowing.hpp"
+#include "AirDash.hpp" //For testing
+#include "AirPatrol.hpp" // For testing
 
 class FlyerBehaviour : public BehaviourScript {
-protected:
-	Transform* player;
-	Transform* flyer;
+
 public:
-	int hp = 0;
-
+	AirFollowing* af;
+	AirDash* ad; //For Testing
+	AirPatrol* ap; //For Testing
+	int hp;
 	FlyerBehaviour();
-	void SetPlayer(Transform&);
-
 	virtual void OnAwake();
 	virtual void OnEnable();
 	virtual void OnStart();
