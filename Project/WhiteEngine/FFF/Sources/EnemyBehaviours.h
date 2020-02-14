@@ -49,8 +49,8 @@ public:
 
 class DeQueen :public Enemy {
 private:
-	int PosX;
-	int PosY;
+	float PosX;
+	float PosY;
 	float SpawnDelay;
 	float SpawnDelayCount;
 protected:
@@ -59,7 +59,7 @@ protected:
 	ObjectPool* BomberPool;
 public:
 
-	EnemyState state = EnemyState::Idle;
+	//EnemyState state = EnemyState::Idle;
 	
 	void Init();
 	void assignFlyPool(ObjectPool* pool);

@@ -25,15 +25,12 @@ void Bomber::OnUpdate(float dt) {
 
 		if (glm::length(target->GetPosition() - m_gameObject->m_transform.GetPosition()) < DashTriggerRadius) {
 			state = EnemyState::Active;
-			ENGINE_INFO("Active");
 		}
 		else if (foundTarget) {
 			state = EnemyState::Chase;
-			ENGINE_INFO("chase");
 		}
 		else {
 			state = EnemyState::Idle;
-			ENGINE_INFO("Idle");
 		}
 	}
 }
