@@ -8,7 +8,7 @@ void Enemy::OnDead() {
 	//call all funct from events vector
 }
 
-//search for target
+//check if target in range
 void Enemy::OnUpdate(float dt) {
 	foundTarget = glm::length(target->GetPosition() - m_gameObject->m_transform.GetPosition()) < targetDetectionRange;
 }
