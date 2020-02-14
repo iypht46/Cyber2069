@@ -25,6 +25,10 @@ void GameController::ResetScore() {
 	this->ComboValue = 1;
 }
 
+void GameController::AssignScoreText(GameObject* ScoreText) {
+	this->ScoreText = ScoreText;
+}
+
 void GameController::OnAwake() {
 
 }
@@ -37,8 +41,10 @@ void GameController::OnStart() {
 
 }
 
-void GameController::OnUpdate(float dt) {
-
+void GameController::OnUpdate(float dt) 
+{
+	int sc = ScoreValue;
+	this->ScoreText->GetComponent<TextRenderer>()->SetText("Score: " + to_string(sc));
 }
 
 void GameController::OnFixedUpdate(float dt) {

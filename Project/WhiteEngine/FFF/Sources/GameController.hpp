@@ -1,12 +1,14 @@
 #pragma once
 #include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/GameObject.hpp"
+#include "Core/EC/Components/TextRenderer.hpp"
 
 class GameController : public BehaviourScript {
 private:
 	float ScoreValue = 0;
 	float ComboValue = 1;
-
+	
+	GameObject* ScoreText;
 public:
 	float GetScore();
 	float GetCombo();
@@ -17,6 +19,8 @@ public:
 	void AddComboValue(float value);
 
 	void ResetScore();
+
+	void AssignScoreText(GameObject* ScoreText);
 	
 	virtual void OnAwake();
 	virtual void OnEnable();

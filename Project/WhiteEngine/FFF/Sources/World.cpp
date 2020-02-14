@@ -9,11 +9,13 @@
 #include "Core/EC/Components/Animator.hpp"
 #include "Core/EC/Components/MeshRenderer.hpp"
 #include "Core/EC/Components/SoundPlayer.hpp"
+#include "Core/EC/Components/TextRenderer.hpp"
 
 #include "FlyerBehaviour.hpp"
 #include "PlayerController.hpp"
 #include "MachineGunBullet.hpp"
 #include "EnemySpawner.hpp"
+#include "GameController.hpp"
 
 #include "Core/EC/Components/Collider.hpp"
 #include "Core/EC/Components/Rigidbody.hpp"
@@ -55,6 +57,9 @@ namespace World
 	GameObject* Child;
 	GameObject* Flyer;
 	GameObject** platform;
+
+	GameObject* gamecontroller;
+	GameObject* ScoreText_UI;
 
 	GameObject* Enemy;
 	GameObject* Spawner;
@@ -187,6 +192,9 @@ namespace World
 		//Flyer = new GameObject();
 		platform = new GameObject*[platformNum];
 
+		gamecontroller = new GameObject();
+		ScoreText_UI = new GameObject();
+
 		Spawner = new GameObject();
 
 		BulletPool = new ObjectPool();
@@ -211,6 +219,15 @@ namespace World
 				title->SetActive(false);
 			}
 		}
+
+		ScoreText_UI->AddComponent<TextRenderer>();
+		ScoreText_UI->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 50);
+		ScoreText_UI->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		ScoreText_UI->m_transform.SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
+		ScoreText_UI->m_transform.SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 50.0f, (Graphic::Window::GetHeight() / -2) + 50.0f, 1.0f));
+
+		gamecontroller->AddComponent<GameController>();
+		gamecontroller->GetComponent<GameController>()->AssignScoreText(ScoreText_UI);
 
 		Bg2->AddComponent<MeshRenderer>();
 		Bg2->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
