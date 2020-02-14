@@ -129,6 +129,8 @@
     <ClInclude Include="Sources\Core\EC\Components\BehaviourScript.h" />
     <ClInclude Include="Sources\Core\EC\Components\SoundPlayer.hpp" />
     <ClInclude Include="Sources\Core\Handle.hpp" />
+    <ClInclude Include="Sources\Utility\Reflection.hpp" />
+    <ClInclude Include="Sources\Utility\Serialization.hpp" />
     <ClInclude Include="Sources\Physic\Collision.hpp" />
     <ClInclude Include="Sources\Physic\PhysicScene.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\Collider.hpp" />
