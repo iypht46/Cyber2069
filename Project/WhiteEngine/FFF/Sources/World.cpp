@@ -431,7 +431,9 @@ namespace World
 		Spawner->GetComponent<EnemySpawner>()->OnStart();
 		Spawner->GetComponent<EnemySpawner>()->assignPool(FlyerPool);
 
+		queen->AddComponent<AirPatrol>();
 		queen->AddComponent<DeQueen>();
+		queen->GetComponent<DeQueen>()->Init();
 		queen->GetComponent<DeQueen>()->assignFlyPool(FlyerPool);
 		queen->GetComponent<DeQueen>()->assignBombPool(BomberPool);
 

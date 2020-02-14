@@ -2,16 +2,24 @@
 #include "Graphic/Camera.hpp"
 #include "Graphic/Window.hpp"
 
-void DeQueen::OnStart() {
+void DeQueen::Init() {
+	airPatrol = m_gameObject->GetComponent<AirPatrol>();
 	PosX = -(Graphic::Window::GetWidth() / 2);
 	PosY = Graphic::Window::GetHeight() / 2;
+	airPatrol->SetPoint(PosX, -PosX);
 	SpawnDelay = 1;
 	SpawnDelayCount = SpawnDelay;
 }
 
+
+void DeQueen::OnStart() {
+
+}
+
 void DeQueen::OnUpdate(float dt) {
+	
 	Enemy::OnUpdate(dt);
-	airPatrol->SetPoint(PosX, -PosX);
+
 	airPatrol->Patrol();
 
 	SpawnDelayCount -= dt;

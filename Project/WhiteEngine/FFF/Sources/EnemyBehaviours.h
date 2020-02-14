@@ -61,6 +61,7 @@ public:
 
 	EnemyState state = EnemyState::Idle;
 	
+	void Init();
 	void assignFlyPool(ObjectPool* pool);
 	void assignBombPool(ObjectPool* pool);
 	virtual void OnStart();
