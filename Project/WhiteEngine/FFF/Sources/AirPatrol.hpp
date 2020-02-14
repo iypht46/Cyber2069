@@ -8,13 +8,13 @@ class AirPatrol : public BehaviourScript
 private:
 	float m_pointAX;
 	float m_pointBX;
-	Transform* queen;
-	Rigidbody* rb;
 	float m_speed;
 public:
+	Transform* queen;
+	Rigidbody* rb;
 	AirPatrol();
 	~AirPatrol();
-	void Patrol(float dt);
+	void Patrol();
 	void SetPoint(float aX, float bX);
 	virtual void OnAwake();
 	virtual void OnEnable();

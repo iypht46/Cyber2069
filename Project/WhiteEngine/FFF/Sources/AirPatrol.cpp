@@ -15,7 +15,7 @@ AirPatrol::~AirPatrol()
 	
 }
 
-void AirPatrol::Patrol(float dt) {
+void AirPatrol::Patrol() {
 
 	if (queen->GetPosition().x <= m_pointAX) {
 		rb->SetVelocity(glm::vec3(m_speed, 0, 0));

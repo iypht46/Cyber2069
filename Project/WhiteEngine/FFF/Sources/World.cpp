@@ -10,7 +10,7 @@
 #include "Core/EC/Components/MeshRenderer.hpp"
 #include "Core/EC/Components/SoundPlayer.hpp"
 
-#include "FlyerBehaviour.hpp"
+#include "EnemyBehaviours.h"
 #include "PlayerController.hpp"
 #include "MachineGunBullet.hpp"
 #include "EnemySpawner.hpp"
@@ -47,6 +47,7 @@ namespace World
 	//======================================
 	ObjectPool* BulletPool;
 	ObjectPool* FlyerPool;
+	ObjectPool* BomberPool;
 
 	GameObject* title;
 	GameObject* Rabbit;
@@ -55,6 +56,7 @@ namespace World
 	GameObject* Child;
 	GameObject* Flyer;
 	GameObject** platform;
+	GameObject* queen;
 
 	GameObject* Enemy;
 	GameObject* Spawner;
@@ -186,11 +188,13 @@ namespace World
 		Child = new GameObject();
 		//Flyer = new GameObject();
 		platform = new GameObject*[platformNum];
+		queen = new GameObject();
 
 		Spawner = new GameObject();
 
 		BulletPool = new ObjectPool();
 		FlyerPool = new ObjectPool();
+		BomberPool = new ObjectPool();
 
 		//Add Renderer
 
@@ -393,9 +397,8 @@ namespace World
 			Bullet->SetActive(false);
 			BulletPool->AddObject(Bullet);
 		}
-		int PosX = -(Graphic::Window::GetWidth() / 2);
 
-		for (int i = 0; i < 1; i++)
+		for (int i = 0; i < 100; i++)
 		{
 			GameObject* flyer = new GameObject();
 			flyer->AddComponent<MeshRenderer>();
@@ -404,19 +407,14 @@ namespace World
 
 			flyer->AddComponent<Rigidbody>();
 			flyer->GetComponent<Rigidbody>()->Init(15, 15);
-			flyer->GetComponent<Rigidbody>()->SetGravityScale(0.0f);
 
 			g_physicScene->Add(flyer->GetComponent<Rigidbody>());
 			g_physicScene->Add(flyer->GetComponent<BoxCollider>(), "Enemy");
 
-			flyer->AddComponent<AirPatrol>();
-			flyer->GetComponent<AirPatrol>()->SetGameObject(flyer);
-			flyer->GetComponent<AirPatrol>()->SetPoint(PosX, -PosX);
 
-			flyer->AddComponent<FlyerBehaviour>();
+			//flyer->AddComponent<FlyerBehaviour>();
 			//flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
-			flyer->GetComponent<FlyerBehaviour>()->SetGameObject(flyer);
-			flyer->GetComponent<FlyerBehaviour>()->ap = flyer->GetComponent<AirPatrol>();
+			//flyer->GetComponent<FlyerBehaviour>()->SetGameObject(flyer);
 
 			flyer->AddComponent<Animator>();
 			flyer->GetComponent<Animator>()->AssignController(EnemCon);
@@ -432,6 +430,10 @@ namespace World
 		Spawner->AddComponent<EnemySpawner>();
 		Spawner->GetComponent<EnemySpawner>()->OnStart();
 		Spawner->GetComponent<EnemySpawner>()->assignPool(FlyerPool);
+
+		queen->AddComponent<DeQueen>();
+		queen->GetComponent<DeQueen>()->assignFlyPool(FlyerPool);
+		queen->GetComponent<DeQueen>()->assignBombPool(BomberPool);
 
 		//Add Sound
 		Bg2->AddComponent<SoundPlayer>();
