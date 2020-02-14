@@ -202,12 +202,25 @@ void GLRenderer::Render()
 		}
 	}
 
-	for (BoxCollider *obj : Factory<BoxCollider>::getCollection()) 
-	{
-		if (obj->GetGameObject()->Active())
+	if (drawDebug) {
+		for (BoxCollider *obj : Factory<BoxCollider>::getCollection())
 		{
-			RenderDebugCollider(obj);
+			if (obj->GetGameObject()->Active())
+			{
+				RenderDebugCollider(obj);
+			}
 		}
+
+		while (!Lineq.empty())
+		{
+			RenderLine(Lineq.front());
+			Lineq.pop();
+		}
+	}
+
+	while (!Lineq.empty())
+	{
+		Lineq.pop();
 	}
 
 	//Unbind program
@@ -417,4 +430,41 @@ void GLRenderer::RenderDebugCollider(BoxCollider* col)
 
 	glDrawArrays(GL_LINE_LOOP, 0, 4);
 
+}
+
+void GLRenderer::RenderLine(LineVertex* vertex) 
+{
+	float x1 = vertex->x1;
+	float y1 = vertex->y1;
+	float x2 = vertex->x2;
+	float y2 = vertex->y2;
+	float length = glm::sqrt(((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1)));
+
+	glm::mat4 sMat = glm::scale(glm::mat4(1.0f), glm::vec3(length, 1.0f, 1.0f));
+	glm::mat4 rMat = glm::rotate(glm::mat4(1.0f), glm::atan((y2 - y1) / (x2 - x1)), glm::vec3(0.0f, 0.0f, 1.0f));
+	glm::mat4 tMat = glm::translate(glm::mat4(1.0f), glm::vec3((x2 + x1) / 2, (y2 + y1) / 2, 1.0f));
+	glm::mat4 transformMat = tMat * rMat * sMat;
+
+	glm::mat4 projectionMatrix = Graphic::getCamera()->GetProjectionMatrix();
+	glm::mat4 viewMatrix = Graphic::getCamera()->GetViewMatrix();
+
+	glm::mat4 currentMatrix = projectionMatrix * viewMatrix * transformMat;
+
+	glUniform1i(modeUniformId, 0);
+	glUniformMatrix4fv(mMatrixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
+	glUniform3f(colorUniformId, vertex->r, vertex->g, vertex->b);
+
+	glBindVertexArray(this->colVAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, this->colVBO);
+	glVertexAttribPointer(this->gPos2DLocation, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), NULL);
+	glEnableVertexAttribArray(1);
+
+
+	glDrawArrays(GL_LINES, 0, 2);
+}
+
+void GLRenderer::DrawDebug_Line(float x1, float y1, float x2, float y2,float r, float g, float b)
+{
+	Lineq.push(new LineVertex(x1, y1, x2, y2, r, g, b));
 }
