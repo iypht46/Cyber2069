@@ -58,6 +58,7 @@ namespace World
 	GameObject* Child;
 	GameObject** platform;
 	GameObject* queen;
+	GameObject* bomber;
 
 	GameObject* gamecontroller;
 	GameObject* ui_ScoreText;
@@ -188,6 +189,7 @@ namespace World
 		//Flyer = new GameObject();
 		platform = new GameObject*[platformNum];
 		queen = new GameObject();
+		bomber = new GameObject();
 
 		gamecontroller = new GameObject();
 		ui_ScoreText = new GameObject();
@@ -519,6 +521,84 @@ namespace World
 
 		queen->GetComponent<DeQueen>()->assignFlyPool(FlyerPool);
 		queen->GetComponent<DeQueen>()->assignBombPool(BomberPool);
+
+		queen->AddComponent<MeshRenderer>();
+		queen->GetComponent<MeshRenderer>()->CreateMesh(4, 2);
+		queen->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Queen_V[version01].png");
+
+		queen->m_transform.SetScale(glm::vec3(200.0f, 200.f, 1.0f));
+
+		Animation* queenIdle = new Animation();
+
+		queenIdle->setStartPosition(0, 0);
+		queenIdle->setEndPosition(3, 0);
+		queenIdle->setSpeedMultiplier(1);
+		queenIdle->setLooping(true);
+
+		Animation* queenSpawning = new Animation();
+
+		queenSpawning->setStartPosition(0, 1);
+		queenSpawning->setEndPosition(3, 1);
+		queenSpawning->setSpeedMultiplier(1);
+		queenSpawning->setLooping(true);
+
+		AnimationController* queenAnimControl = new AnimationController();
+		queenAnimControl->setSheetSize(glm::vec2(4, 2));
+		queenAnimControl->AddState(queenIdle);
+		queenAnimControl->AddState(queenSpawning);
+
+		queen->AddComponent<Animator>();
+		queen->GetComponent<Animator>()->AssignController(queenAnimControl);
+		queen->GetComponent<Animator>()->setCurrentState(1);
+
+		bomber->AddComponent<MeshRenderer>();
+		bomber->GetComponent<MeshRenderer>()->CreateMesh(12, 4);
+		bomber->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Bomber_V[version01].png");
+
+		bomber->m_transform.SetScale(glm::vec3(60.0f, 60.f, 1.0f));
+		bomber->m_transform.SetPosition(glm::vec3(100.0f, 100.f, 1.0f));
+
+		Animation* BomberIdle = new Animation();
+		BomberIdle->setStartPosition(0, 0);
+		BomberIdle->setEndPosition(4, 0);
+		BomberIdle->setSpeedMultiplier(1);
+		BomberIdle->setLooping(true);
+
+		Animation* BomberCharging = new Animation();
+		BomberCharging->setStartPosition(0, 1);
+		BomberCharging->setEndPosition(2, 1);
+		BomberCharging->setSpeedMultiplier(1);
+		BomberCharging->setLooping(false);
+
+		Animation* BomberDashing = new Animation();
+		BomberDashing->setStartPosition(3, 1);
+		BomberDashing->setEndPosition(4, 1);
+		BomberDashing->setSpeedMultiplier(1);
+		BomberDashing->setLooping(true);
+
+		Animation* BomberExplode = new Animation();
+		BomberExplode->setStartPosition(0, 2);
+		BomberExplode->setEndPosition(11, 2);
+		BomberExplode->setSpeedMultiplier(1);
+		BomberExplode->setLooping(false);
+
+		Animation* BomberDie = new Animation();
+		BomberDie->setStartPosition(0, 3);
+		BomberDie->setEndPosition(4, 3);
+		BomberDie->setSpeedMultiplier(1);
+		BomberDie->setLooping(false);
+
+		AnimationController* BomberAnimController = new AnimationController();
+		BomberAnimController->setSheetSize(glm::vec2(12, 4));
+		BomberAnimController->AddState(BomberIdle);
+		BomberAnimController->AddState(BomberCharging);
+		BomberAnimController->AddState(BomberDashing);
+		BomberAnimController->AddState(BomberExplode);
+		BomberAnimController->AddState(BomberDie);
+
+		bomber->AddComponent<Animator>();
+		bomber->GetComponent<Animator>()->AssignController(BomberAnimController);
+		bomber->GetComponent<Animator>()->setCurrentState(0);
 
 		//Add Sound
 		Bg2->AddComponent<SoundPlayer>();
