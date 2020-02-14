@@ -128,6 +128,8 @@
   <ItemGroup>
     <ClInclude Include="Sources\Core\EC\Components\BehaviourScript.h" />
     <ClInclude Include="Sources\Core\EC\Components\SoundPlayer.hpp" />
+    <ClInclude Include="Sources\Core\EC\Components\TextRenderer.hpp" />
+    <ClInclude Include="Sources\Core\LogCustomType.hpp" />
     <ClInclude Include="Sources\Core\Message\Observer.hpp" />
     <ClInclude Include="Sources\Physic\Collision.hpp" />
     <ClInclude Include="Sources\Physic\PhysicScene.hpp" />
@@ -160,6 +162,7 @@
   <ItemGroup>
     <ClCompile Include="Sources\Core\EC\Components\BehaviourScript.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\SoundPlayer.cpp" />
+    <ClCompile Include="Sources\Core\EC\Components\TextRenderer.cpp" />
     <ClCompile Include="Sources\Physic\Collision.cpp" />
     <ClCompile Include="Sources\Physic\PhysicScene.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Collider.cpp" />

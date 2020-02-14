@@ -69,7 +69,8 @@
 		virtual void ComputeMass();
 		virtual glm::vec3 GetColliderScale();
 
-		
+		float GetHw() { return m_halfWidth; }
+		float GetHh() { return m_halfHeight; }
 		//virtual void Update(float) const;
 	};
 

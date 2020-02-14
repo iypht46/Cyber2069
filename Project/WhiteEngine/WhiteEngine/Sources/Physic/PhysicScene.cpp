@@ -258,7 +258,7 @@ namespace Physic
 				m_stayState.begin(),
 				m_stayState.end(),
 				[](Collision col) {
-					if (!col.m_collider->m_hasCollided)
+					if (true/*!col.m_collider->m_hasCollided*/)
 					{
 						Core::Trigger trigMsg = Core::Trigger(col);
 						Core::Collision colMsg = Core::Collision(col);
