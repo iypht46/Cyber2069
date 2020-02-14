@@ -3,12 +3,11 @@
 #include "Core/EC/Components/BehaviourScript.h"
 #include "HPsystem.hpp"
 
-class Enemy :BehaviourScript {
+class Enemy :public BehaviourScript {
 protected:
 	HPsystem* hpSystem;
 
 	Transform* target;
-	float targetDetectionRange;
 	bool foundTarget;
 
 	bool isDead = false;
@@ -19,8 +18,10 @@ protected:
 	void OnTakeDamage();
 	void OnDead();
 public:
+	float targetDetectionRange = 0;
+
 	virtual void OnStart() = 0;
-	virtual void OnUpdate(float dt);
+	virtual void OnUpdate(float dt) override;
 	virtual void OnFixedUpdate(float dt) = 0;
 
 	void SetTarget(Transform*);
