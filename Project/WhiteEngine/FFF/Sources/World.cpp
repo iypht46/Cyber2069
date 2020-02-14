@@ -11,6 +11,7 @@
 #include "Core/EC/Components/SoundPlayer.hpp"
 #include "AirFollowing.hpp"
 #include "AirDash.hpp"
+#include "AirPatrol.hpp"
 
 #include "FlyerBehaviour.hpp"
 #include "PlayerController.hpp"
@@ -364,7 +365,7 @@ namespace World
 		Rabbit->GetComponent<PlayerController>()->assignPool(BulletPool);
 
 
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			GameObject* flyer = new GameObject();
 			flyer->AddComponent<MeshRenderer>();
@@ -386,9 +387,13 @@ namespace World
 			flyer->GetComponent<AirDash>()->SetPlayer(&(Rabbit->m_transform));
 			flyer->GetComponent<AirDash>()->SetGameObject(flyer);
 
+			flyer->AddComponent<AirPatrol>();
+			flyer->GetComponent<AirPatrol>()->SetPoint(-Graphic::Window::GetWidth() / 2, -Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / 2, -Graphic::Window::GetHeight() / 2);
+
 			flyer->AddComponent<FlyerBehaviour>();
 			flyer->GetComponent<FlyerBehaviour>()->af = flyer->GetComponent<AirFollowing>();
 			flyer->GetComponent<FlyerBehaviour>()->ad = flyer->GetComponent<AirDash>();
+			flyer->GetComponent<FlyerBehaviour>()->ap = flyer->GetComponent<AirPatrol>();
 
 
 			flyer->AddComponent<Animator>();

@@ -25,10 +25,11 @@ void FlyerBehaviour::OnDisable()
 
 void FlyerBehaviour::OnUpdate(float dt)
 {
-	af->FollowPlayer(dt);
+	//af->FollowPlayer(dt);
 	//if (Input::GetKeyHold(Input::KeyCode::KEY_M)) {
-		ad->Dash(dt);
+		//ad->Dash(dt);
 	//}
+	ap->Patrol(dt);
 
 }
 
