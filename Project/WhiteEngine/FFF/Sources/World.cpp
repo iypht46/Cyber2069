@@ -364,6 +364,8 @@ namespace World
 		Rabbit->GetComponent<PlayerController>()->OnStart();
 		Rabbit->GetComponent<PlayerController>()->assignPool(BulletPool);
 
+		float PosX = Graphic::Window::GetWidth() / 2;
+		float PosY = Graphic::Window::GetHeight() / 2;
 
 		for (int i = 0; i < 1; i++)
 		{
@@ -374,7 +376,7 @@ namespace World
 
 			flyer->AddComponent<Rigidbody>();
 			flyer->GetComponent<Rigidbody>()->Init();
-			flyer->GetComponent<Rigidbody>()->SetGravityScale(1);
+			flyer->GetComponent<Rigidbody>()->SetGravityScale(0);
 
 			g_physicScene->Add(flyer->GetComponent<Rigidbody>());
 
@@ -386,9 +388,11 @@ namespace World
 			flyer->AddComponent<AirDash>();
 			flyer->GetComponent<AirDash>()->SetPlayer(&(Rabbit->m_transform));
 			flyer->GetComponent<AirDash>()->SetGameObject(flyer);
-
+			
 			flyer->AddComponent<AirPatrol>();
-			flyer->GetComponent<AirPatrol>()->SetPoint(-Graphic::Window::GetWidth() / 2, -Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / 2, -Graphic::Window::GetHeight() / 2);
+			flyer->GetComponent<AirPatrol>()->SetPoint(-PosX, PosX);
+			flyer->GetComponent<AirPatrol>()->SetGameObject(flyer);
+			
 
 			flyer->AddComponent<FlyerBehaviour>();
 			flyer->GetComponent<FlyerBehaviour>()->af = flyer->GetComponent<AirFollowing>();

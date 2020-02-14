@@ -17,8 +17,8 @@ void EnemySpawner::OnUpdate(float dt)
 		GameObject* flyer = FlyerPool->GetInactiveObject();
 		if (flyer != nullptr) 
 		{
-			int testPosX = -Graphic::Window::GetWidth() / 2;
-			int testPosY = -Graphic::Window::GetHeight() / 2;
+			int testPosX = -(Graphic::Window::GetWidth() / 2);
+			int testPosY = Graphic::Window::GetHeight() / 2;
 			//int randPosX = (rand() % (Graphic::Window::GetWidth() * 2)) - Graphic::Window::GetWidth();
 			//int randPosY = (rand() % (Graphic::Window::GetHeight() * 2)) - Graphic::Window::GetHeight();
 
