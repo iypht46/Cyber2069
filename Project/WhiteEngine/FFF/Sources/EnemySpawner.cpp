@@ -24,7 +24,7 @@ void EnemySpawner::OnUpdate(float dt)
 
 			flyer->SetActive(true);
 			//
-			flyer->GetComponent<FlyerBehaviour>()->hp = 3;
+			//flyer->GetComponent<FlyerBehaviour>()->hp = 3;
 			//
 
 			flyer->m_transform.SetPosition(glm::vec3(testPosX, testPosY, 1.0f));

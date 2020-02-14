@@ -32,10 +32,9 @@ void AirFollowing::FollowPlayer(float dt) {
 	glm::vec3 myVel = m_gameObject->GetComponent<Rigidbody>()->GetVelocity();
 	glm::vec3 direction = glm::normalize(m_target->GetPosition() - flyer->GetPosition());
 	float rot = glm::cross(glm::normalize(myVel), direction).z;
-	flyer->SetRotation(flyer->GetRotation() + (rot * this->rotRate * dt));
+	//flyer->SetRotation(flyer->GetRotation() + (rot * rotRate * dt));
 
-	rb->SetVelocity(glm::vec3(m_speed * glm::cos(flyer->GetRotation() + this->rotAngle),
-		m_speed * glm::sin(flyer->GetRotation() + this->rotAngle), 0));
+	rb->SetVelocity(glm::vec3(glm::cos(flyer->GetRotation() + this->rotAngle), glm::sin(flyer->GetRotation() + this->rotAngle), 0) * m_speed);
 
 	if (direction.x > 0) {
 		flyer->SetScale(glm::vec3(glm::abs(flyer->GetScale().x) * -1, flyer->GetScale().y, 1.0f));

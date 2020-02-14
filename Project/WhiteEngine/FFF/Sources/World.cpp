@@ -11,6 +11,7 @@
 #include "Core/EC/Components/SoundPlayer.hpp"
 
 #include "FlyerBehaviour.hpp"
+#include "EnemyBehaviours.h"
 #include "PlayerController.hpp"
 #include "MachineGunBullet.hpp"
 #include "EnemySpawner.hpp"
@@ -53,7 +54,7 @@ namespace World
 	GameObject* Bg1;
 	GameObject* Bg2;
 	GameObject* Child;
-	GameObject* Flyer;
+	//GameObject* Flyer;
 	GameObject** platform;
 
 	GameObject* Enemy;
@@ -394,22 +395,30 @@ namespace World
 			BulletPool->AddObject(Bullet);
 		}
 
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			GameObject* flyer = new GameObject();
+			flyer->Name = "flyer";
+
 			flyer->AddComponent<MeshRenderer>();
 			flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
 			flyer->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Flyer_Vversion01.png");
 
 			flyer->AddComponent<Rigidbody>();
 			flyer->GetComponent<Rigidbody>()->Init(15, 15);
+			flyer->GetComponent<Rigidbody>()->SetGravityScale(0);
 
 			g_physicScene->Add(flyer->GetComponent<Rigidbody>());
 			g_physicScene->Add(flyer->GetComponent<BoxCollider>(), "Enemy");
 
-			flyer->AddComponent<FlyerBehaviour>();
-			//flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
-			flyer->GetComponent<FlyerBehaviour>()->SetGameObject(flyer);
+			//flyer->AddComponent<FlyerBehaviour>();
+			////flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
+			//flyer->GetComponent<FlyerBehaviour>()->SetGameObject(flyer);
+			flyer->AddComponent<AirFollowing>();
+			flyer->AddComponent<AirDash>();
+
+			flyer->AddComponent<Bomber>();
+			flyer->GetComponent<Bomber>()->Init(&(Rabbit->m_transform));
 
 			flyer->AddComponent<Animator>();
 			flyer->GetComponent<Animator>()->AssignController(EnemCon);

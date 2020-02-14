@@ -394,7 +394,7 @@ void PlayerController::shoot(float dt)
 	mouse_y = Input::GetMouseWorldPosition().y;
 
 	int hits = ps->RaycastAll(Physic::Ray(pos_x, pos_y, mouse_x, mouse_y), ps->GetLayerFromString("Enemy")).size();
-	ENGINE_INFO("{} enemies hit with ray", hits);
+	//ENGINE_INFO("{} enemies hit with ray", hits);
 	GLRenderer::GetInstance()->DrawDebug_Line(pos_x, pos_y, mouse_x, mouse_y, 1.0f, 0.0f, 0.0f);
 }
 
