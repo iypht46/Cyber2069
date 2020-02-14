@@ -6,6 +6,7 @@ void Enemy::OnTakeDamage() {
 
 void Enemy::OnDead() {
 	//call all funct from events vector
+	m_gameObject->SetActive(false);
 }
 
 //check if target in range
