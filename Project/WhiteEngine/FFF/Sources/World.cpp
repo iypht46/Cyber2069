@@ -9,9 +9,6 @@
 #include "Core/EC/Components/Animator.hpp"
 #include "Core/EC/Components/MeshRenderer.hpp"
 #include "Core/EC/Components/SoundPlayer.hpp"
-#include "AirFollowing.hpp"
-#include "AirDash.hpp"
-#include "AirPatrol.hpp"
 
 #include "FlyerBehaviour.hpp"
 #include "PlayerController.hpp"
@@ -56,6 +53,7 @@ namespace World
 	GameObject* Bg1;
 	GameObject* Bg2;
 	GameObject* Child;
+	GameObject* Flyer;
 	GameObject** platform;
 
 	GameObject* Enemy;
@@ -176,11 +174,7 @@ namespace World
 		//Physics
 		g_physicScene = new Physic::PhysicScene();
 
-		//std::cout << "Layer Collision: " << g_physicScene->GetLayerCollisions("Player") << std::endl;
-
 		ENGINE_WARN("Engine Initialized");
-		//ENGINE_INFO("Layer Static Cast: {}", static_cast<uint32_t>(Physic::Layer::PHYSIC_LAYER_1));
-		//ENGINE_INFO("Layer Static Cast: {}", static_cast<uint32_t>(Physic::Layer::PHYSIC_LAYER_2));
 
 		//GameObject
 		enemyNum = 10;
@@ -190,6 +184,7 @@ namespace World
 		Bg2 = new GameObject();
 		Bg1 = new GameObject();
 		Child = new GameObject();
+		//Flyer = new GameObject();
 		platform = new GameObject*[platformNum];
 
 		Spawner = new GameObject();
@@ -236,6 +231,10 @@ namespace World
 		Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_PlayerBody_Vversion03.png");
 
 		Child->m_transform.SetParent(&Rabbit->m_transform);
+
+		//Flyer->AddComponent<MeshRenderer>();
+		//Flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
+		//Flyer->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Flyer_Vversion01.png");
 
 
 
@@ -301,24 +300,10 @@ namespace World
 		EnemCon->setSheetSize(glm::vec2(6, 1));
 		EnemCon->AddState(Fly);
 
-		for (int i = 0; i < 100; i++)
-		{
-			GameObject* Bullet = new GameObject();
-			Bullet->AddComponent<MeshRenderer>();
-			Bullet->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
-			Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_bullet.png");
-
-			Bullet->AddComponent<Rigidbody>();
-			Bullet->GetComponent<Rigidbody>()->Init();
-
-			Bullet->AddComponent<MachineGunBullet>();
-			Bullet->GetComponent<MachineGunBullet>()->OnStart();
-
-			Bullet->m_transform.SetScale(glm::vec3(10, 10, 1));
-
-			Bullet->SetActive(false);
-			BulletPool->AddObject(Bullet);
-		}
+		/*Flyer->AddComponent<Animator>();
+		Flyer->GetComponent<Animator>()->AssignController(EnemCon);
+		Flyer->GetComponent<Animator>()->setCurrentState(0);
+		Flyer->GetComponent<Animator>()->setFramePerSec(12);*/
 
 		Child->AddComponent<MeshRenderer>();
 		Child->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
@@ -327,9 +312,6 @@ namespace World
 
 
 		//Set Transform
-
-		//Rabbit->m_transform.SetScale(glm::vec3(500, 500, 1));
-
 		Rabbit->m_transform.SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
 		Rabbit->m_transform.SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
 
@@ -338,6 +320,9 @@ namespace World
 		//Child->m_transform.SetPosition(glm::vec3(0, 0, 0));
 		Child->m_transform.SetLocalPosition(glm::vec3(1, 0, 0));
 		//Bg->m_transform.SetScale(glm::vec3(500, 500, 1));
+
+		//Flyer->m_transform.SetPosition(glm::vec3(100, 100, 0));
+		//Flyer->m_transform.SetScale(glm::vec3(50, 50, 1));
 
 		//Add Physic
 		//Set name to layer
@@ -359,12 +344,56 @@ namespace World
 		g_physicScene->Add(Rabbit->GetComponent<Rigidbody>());
 		//g_physicScene->Add(Flyer->GetComponent<Rigidbody>());
 
+		for (int i = 0; i < platformNum; i++)
+		{
+			platform[i] = new GameObject();
+			platform[i]->AddComponent<MeshRenderer>();
+			platform[i]->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			platform[i]->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
+			platform[i]->m_transform.SetScale(glm::vec3(400, 20, 1));
+			platform[i]->AddComponent<BoxCollider>()->Init(200, 5);
+			g_physicScene->Add(platform[i]->GetComponent<BoxCollider>(), "Platform");
+		}
+
+		platform[1]->m_transform.SetPosition(glm::vec3(300, 300, 0));
+		platform[2]->m_transform.SetPosition(glm::vec3(-300, 300, 0));
+		platform[3]->m_transform.SetPosition(glm::vec3(-300, -300, 0));
+		platform[4]->m_transform.SetPosition(glm::vec3(300, -300, 0));
+
 		//Behavior Script
 		Rabbit->AddComponent<PlayerController>();
 		Rabbit->GetComponent<PlayerController>()->OnStart();
 		Rabbit->GetComponent<PlayerController>()->assignPool(BulletPool);
 		Rabbit->GetComponent<PlayerController>()->PSSet(g_physicScene);
 
+		//Flyer->AddComponent<FlyerBehaviour>();
+		//Flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
+		//Flyer->GetComponent<FlyerBehaviour>()->SetGameObject(Flyer);
+
+		ENGINE_INFO("Creating Bullet");
+		for (int i = 0; i < 10; i++)
+		{
+			GameObject* Bullet = new GameObject();
+			Bullet->AddComponent<MeshRenderer>();
+			Bullet->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
+			Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_bullet.png");
+
+			Bullet->AddComponent<Rigidbody>();
+			Bullet->GetComponent<Rigidbody>()->Init(7, 7);
+			Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0f);
+
+			g_physicScene->Add(Bullet->GetComponent<Rigidbody>());
+			g_physicScene->Add(Bullet->GetComponent<BoxCollider>(), "Bullet");
+
+			Bullet->AddComponent<MachineGunBullet>();
+			Bullet->GetComponent<MachineGunBullet>()->OnStart();
+
+			Bullet->m_transform.SetScale(glm::vec3(10, 10, 1));
+
+			Bullet->SetActive(false);
+			BulletPool->AddObject(Bullet);
+		}
+		int PosX = -(Graphic::Window::GetWidth() / 2);
 
 		for (int i = 0; i < 1; i++)
 		{
@@ -374,28 +403,20 @@ namespace World
 			flyer->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Flyer_Vversion01.png");
 
 			flyer->AddComponent<Rigidbody>();
-			flyer->GetComponent<Rigidbody>()->Init();
-			flyer->GetComponent<Rigidbody>()->SetGravityScale(1);
+			flyer->GetComponent<Rigidbody>()->Init(15, 15);
+			flyer->GetComponent<Rigidbody>()->SetGravityScale(0.0f);
 
 			g_physicScene->Add(flyer->GetComponent<Rigidbody>());
-
-			
-			flyer->AddComponent<AirFollowing>();
-			flyer->GetComponent<AirFollowing>()->SetPlayer((Rabbit->m_transform));
-			flyer->GetComponent<AirFollowing>()->SetGameObject(flyer);
-
-			flyer->AddComponent<AirDash>();
-			flyer->GetComponent<AirDash>()->SetPlayer(&(Rabbit->m_transform));
-			flyer->GetComponent<AirDash>()->SetGameObject(flyer);
+			g_physicScene->Add(flyer->GetComponent<BoxCollider>(), "Enemy");
 
 			flyer->AddComponent<AirPatrol>();
-			flyer->GetComponent<AirPatrol>()->SetPoint(-Graphic::Window::GetWidth() / 2, -Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / 2, -Graphic::Window::GetHeight() / 2);
+			flyer->GetComponent<AirPatrol>()->SetGameObject(flyer);
+			flyer->GetComponent<AirPatrol>()->SetPoint(PosX, -PosX);
 
 			flyer->AddComponent<FlyerBehaviour>();
-			flyer->GetComponent<FlyerBehaviour>()->af = flyer->GetComponent<AirFollowing>();
-			flyer->GetComponent<FlyerBehaviour>()->ad = flyer->GetComponent<AirDash>();
+			//flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
+			flyer->GetComponent<FlyerBehaviour>()->SetGameObject(flyer);
 			flyer->GetComponent<FlyerBehaviour>()->ap = flyer->GetComponent<AirPatrol>();
-
 
 			flyer->AddComponent<Animator>();
 			flyer->GetComponent<Animator>()->AssignController(EnemCon);
@@ -412,48 +433,16 @@ namespace World
 		Spawner->GetComponent<EnemySpawner>()->OnStart();
 		Spawner->GetComponent<EnemySpawner>()->assignPool(FlyerPool);
 
-		for (int i = 0; i < platformNum; i++)
-		{
-			platform[i] = new GameObject();
-			platform[i]->AddComponent<MeshRenderer>();
-			platform[i]->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			platform[i]->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
-			platform[i]->m_transform.SetScale(glm::vec3(400, 20, 1));
-			platform[i]->AddComponent<BoxCollider>()->Init(180, 5);
-			g_physicScene->Add(platform[i]->GetComponent<BoxCollider>(), "Platform");
-		}
-
-		platform[1]->m_transform.SetPosition(glm::vec3(300, 300, 0));
-		platform[2]->m_transform.SetPosition(glm::vec3(-300, 300, 0));
-		platform[3]->m_transform.SetPosition(glm::vec3(-300, -300, 0));
-		platform[4]->m_transform.SetPosition(glm::vec3(300, -300, 0));
-
-		//g_physicScene->Add(Rabbit->AddComponent<Rigidbody>());
-		//Rabbit->GetComponent<Rigidbody>()->Init(0.83, 0.25f);
-
-		/*for (int i = 0; i < enemyNum; i++)
-		{
-			float randX = (float)((rand() % 350) - (rand() % 350));
-			float randY = (float)((rand() % 350) - (rand() % 350));
-			test[i] = new GameObject();
-			test[i]->AddComponent<MeshRenderer>();
-			test[i]->GetComponent<MeshRenderer>()->CreateMesh(6, 1);
-			test[i]->GetComponent<MeshRenderer>()->SetTexture("Sources/Mockup_Enemy_Flyer_Vversion01.png");
-			test[i]->m_transform.SetScale(glm::vec3(40.0f, 30.0f, 1));
-			test[i]->m_transform.SetPosition(glm::vec3(randX, randY, 0.0f));
-			Rigidbody* testRigid = test[i]->AddComponent<Rigidbody>();
-			testRigid->Init(5, 10);
-			g_physicScene->Add(testRigid->GetCollider(), "Enemy");
-
-		}*/
-
 		//Add Sound
 		Bg2->AddComponent<SoundPlayer>();
 		Bg2->GetComponent<SoundPlayer>()->CreateSoundPlayer();
-		Bg2->GetComponent<SoundPlayer>()->SetSound("Sources/Assets/testMusic.mp3");
+		Bg2->GetComponent<SoundPlayer>()->SetSound("Sources/Assets/BGMPrototype.mp3");
 		Bg2->GetComponent<SoundPlayer>()->SetLoop(true);
+		Bg2->GetComponent<SoundPlayer>()->SetVolume(0.5);
 		//Bg2->GetComponent<SoundPlayer>()->PlaySound();
 		//Bg->GetComponent<SoundPlayer>()->DeleteSoundPlayer();
+
+		GAME_INFO(*Rabbit);
 
 	}
 
@@ -473,10 +462,6 @@ namespace World
 
 			FactoryCollection::FixedUpdateComponents(dt);
 
-			/*Rabbit->GetComponent<Rigidbody>()->AddForce(glm::vec3(0.0f, -10.0f, 0.0f));
-			Rabbit->GetComponent<Rigidbody>()->UpdateTransform(dt);*/
-			//Flyer->GetComponent<Rigidbody>()->UpdateTransform(dt);
-
 			for (int i = 0; i < Factory<MachineGunBullet>::getCollection().size(); i++)
 			{
 				if (Factory<MachineGunBullet>::getCollection().at(i)->GetGameObject()->Active())
@@ -487,29 +472,17 @@ namespace World
 
 			g_physicScene->Update(c_targetDT);
 			//ENGINE_INFO("FixedUpdate: {}", dt
-			/*Physic::Manifold col(Rabbit->GetComponent<Collider>(), test->GetComponent<Collider>());
-			if (col.CheckCollision())
-			{
-				ENGINE_INFO("Collided");
-			}*/
-			//ENGINE_INFO("Velocity: {}, {}", Rabbit->GetComponent<Rigidbody>()->GetVelocity().x ,Rabbit->GetComponent<Rigidbody>()->GetVelocity().y);
 			accumulator -= c_targetDT;
+
+			g_physicScene->SendCollisionMsg();
 		}
 
-		//ENGINE_INFO()
-		//cout << Rabbit->m_transform.GetPosition().y << endl;
-
-		/*Factory<GameObject>::Create();
-		std::vector<GameObject*> a = Factory<GameObject>::getCollection();
-		a.back()->AddComponent<MeshRenderer>();
-		std::cout << Factory<MeshRenderer>::getCollection().size() << std::endl;*/
 	}
-
 
 	void Update(float dt)
 	{
-		//update sound
-		//Bg2->GetComponent<SoundPlayer>()->SetVolume();
+		//Update Sound
+		Bg2->GetComponent<SoundPlayer>()->UpdateVolume();
 
 		//Update All Systems
 		//Update Input
@@ -517,14 +490,9 @@ namespace World
 		//Core
 		DebugInput(dt);
 
-		//Flyer->GetComponent<FlyerBehaviour>()->OnUpdate(dt);
 		FactoryCollection::UpdateComponents(dt);
 
-		//for (int i = 0; i < Factory<Animator>::getCollection().size(); i++)
-		//{
-		//	Factory<Animator>::getCollection().at(i)->animUpdate();
-		//}
-
+		//ENGINE_INFO("FPS: {}", (1/dt));
 		//Update Graphic
 		Graphic::Render();
 
@@ -544,6 +512,7 @@ namespace World
 			if (Input::GetKeyDown(Input::KeyCode::KEY_ESCAPE))
 			{
 				g_gameInfo->GameShouldClose();
+				Graphic::Window::SetWindowShouldClose(true);
 			}
 
 			g_gameInfo->EndFrame();

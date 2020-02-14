@@ -127,13 +127,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Sources\AirPatrol.cpp" />
     <ClCompile Include="Sources\AirDash.cpp" />
     <ClCompile Include="Sources\AirFollowing.cpp" />
+    <ClCompile Include="Sources\AirPatrol.cpp" />
+    <ClCompile Include="Sources\Enemy.cpp" />
     <ClCompile Include="Sources\EnemySpawner.cpp" />
     <ClCompile Include="Sources\FactoryCollection.cpp" />
     <ClCompile Include="Sources\FlyerBehaviour.cpp" />
-    <ClCompile Include="Sources\GameController.cpp" />
     <ClCompile Include="Sources\HPsystem.cpp" />
     <ClCompile Include="Sources\MachineGunBullet.cpp" />
     <ClCompile Include="Sources\main.cpp" />
@@ -141,13 +141,13 @@
     <ClCompile Include="Sources\World.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Sources\AirPatrol.hpp" />
     <ClInclude Include="Sources\AirDash.hpp" />
     <ClInclude Include="Sources\AirFollowing.hpp" />
+    <ClInclude Include="Sources\AirPatrol.hpp" />
+    <ClInclude Include="Sources\Enemy.hpp" />
     <ClInclude Include="Sources\EnemySpawner.hpp" />
     <ClInclude Include="Sources\FactoryCollection.h" />
     <ClInclude Include="Sources\FlyerBehaviour.hpp" />
-    <ClInclude Include="Sources\GameController.hpp" />
     <ClInclude Include="Sources\HPsystem.hpp" />
     <ClInclude Include="Sources\MachineGunBullet.hpp" />
     <ClInclude Include="Sources\PlayerController.hpp" />
