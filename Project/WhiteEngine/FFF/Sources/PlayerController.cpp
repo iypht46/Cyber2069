@@ -52,7 +52,7 @@ void PlayerController::OnStart() {
 	rb = m_gameObject->GetComponent<Rigidbody>();
 	hpSystem = m_gameObject->GetComponent<HPsystem>();
 
-	hpSystem->SetMaxHP(100.0f);
+	hpSystem->SetMaxHP(200.0f);
 	hpSystem->ResetHP();
 
 	inverseGun = false;
@@ -210,17 +210,21 @@ void PlayerController::move()
 	if (Input::GetKeyDown(Input::KeyCode::KEY_R)) 
 	{
 		m_gameObject->m_transform.SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
+		hpSystem->ResetHP();
+		m_gameObject->SetActive(true);
 	}
 
-	if (Input::GetKeyDown(Input::KeyCode::KEY_N))
+	if (Input::GetKeyUp(Input::KeyCode::KEY_N))
 	{
 		if (GLRenderer::GetInstance()->drawDebug) {
 
 			GLRenderer::GetInstance()->drawDebug = false;
 		}
-		else {
-			GLRenderer::GetInstance()->drawDebug = true;
-		}
+	}
+
+	if (Input::GetKeyUp(Input::KeyCode::KEY_M))
+	{
+		GLRenderer::GetInstance()->drawDebug = true;
 	}
 
 	if ((!Input::GetKeyHold(Input::KeyCode::KEY_A) && !Input::GetKeyHold(Input::KeyCode::KEY_D)) && !jumping && !falling)
