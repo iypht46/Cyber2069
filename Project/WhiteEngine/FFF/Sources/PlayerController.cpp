@@ -34,7 +34,7 @@ void PlayerController::OnCollisionExit(const Physic::Collision col)
 
 void PlayerController::OnTriggerEnter(const Physic::Collision col)
 {
-	//GAME_INFO("HIT");
+	hpSystem->TakeDamage(1.0f);
 }
 
 void PlayerController::OnTriggerStay(const Physic::Collision col)
@@ -50,6 +50,10 @@ void PlayerController::OnTriggerExit(const Physic::Collision col)
 void PlayerController::OnStart() {
 	Gun = m_gameObject->m_transform.GetChild(0);
 	rb = m_gameObject->GetComponent<Rigidbody>();
+	hpSystem = m_gameObject->GetComponent<HPsystem>();
+
+	hpSystem->SetMaxHP(200.0f);
+	hpSystem->ResetHP();
 
 	inverseGun = false;
 
@@ -84,6 +88,13 @@ void PlayerController::OnUpdate(float dt)
 	{
 		jumping = false;
 		m_gameObject->m_transform.SetPosition(glm::vec3(m_gameObject->m_transform.GetPosition().x, -(720 / 2) + 1, m_gameObject->m_transform.GetPosition().z));
+	}*/
+
+	/*if (hpSystem->GetHP() > 10.0f) {
+		hpSystem->TakeDamage(1.0f);
+	}
+	else {
+		hpSystem->ResetHP();
 	}*/
 
 	Graphic::getCamera()->SetPos(glm::vec3(m_gameObject->m_transform.GetPosition().x, m_gameObject->m_transform.GetPosition().y, m_gameObject->m_transform.GetPosition().z));
@@ -199,17 +210,21 @@ void PlayerController::move()
 	if (Input::GetKeyDown(Input::KeyCode::KEY_R)) 
 	{
 		m_gameObject->m_transform.SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
+		hpSystem->ResetHP();
+		m_gameObject->SetActive(true);
 	}
 
-	if (Input::GetKeyDown(Input::KeyCode::KEY_N))
+	if (Input::GetKeyUp(Input::KeyCode::KEY_N))
 	{
 		if (GLRenderer::GetInstance()->drawDebug) {
 
 			GLRenderer::GetInstance()->drawDebug = false;
 		}
-		else {
-			GLRenderer::GetInstance()->drawDebug = true;
-		}
+	}
+
+	if (Input::GetKeyUp(Input::KeyCode::KEY_M))
+	{
+		GLRenderer::GetInstance()->drawDebug = true;
 	}
 
 	if ((!Input::GetKeyHold(Input::KeyCode::KEY_A) && !Input::GetKeyHold(Input::KeyCode::KEY_D)) && !jumping && !falling)
@@ -394,7 +409,7 @@ void PlayerController::shoot(float dt)
 	mouse_y = Input::GetMouseWorldPosition().y;
 
 	int hits = ps->RaycastAll(Physic::Ray(pos_x, pos_y, mouse_x, mouse_y), ps->GetLayerFromString("Enemy")).size();
-	ENGINE_INFO("{} enemies hit with ray", hits);
+	//ENGINE_INFO("{} enemies hit with ray", hits);
 	GLRenderer::GetInstance()->DrawDebug_Line(pos_x, pos_y, mouse_x, mouse_y, 1.0f, 0.0f, 0.0f);
 }
 
