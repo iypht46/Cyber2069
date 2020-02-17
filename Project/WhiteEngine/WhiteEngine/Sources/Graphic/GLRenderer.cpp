@@ -142,13 +142,19 @@ bool GLRenderer::Initialize(string vertexShaderFile, string fragmentShaderFile)
 
 void GLRenderer::Render()
 {
+	//Bind FBO
+	//if (framebuffer)
+	//{
+	//	framebuffer->BindFrameBuffer();
+	//	//ENGINE_INFO("Bind Frame Buffer");
+	//}
+		
 	// Clear color buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Update window with OpenGL rendering
-
 	glUseProgram(gProgramId);
-
+	
 	this->PrintProgramLog(gProgramId);
 	//Set up matrix uniform
 
@@ -162,7 +168,6 @@ void GLRenderer::Render()
 
 	glm::mat4 camera = glm::mat4(1.0);
 
-
 	//--------Render Object Here--------
 
 	for (MeshRenderer *obj : Factory<MeshRenderer>::getCollection()) {
@@ -173,10 +178,28 @@ void GLRenderer::Render()
 		}
 	}
 
+	//FBO Render
+	//if (framebuffer)
+	//{
+	//	framebuffer->UnBindFrameBuffer();
+	//	if (fboState == FBO_STATE::MAIN)
+	//	{
+	//		framebuffer->Render();
+	//		//ENGINE_INFO("Render form framebuffer");
+	//	}
+	//}
+	
 	//test->Render(camera);
 
 	//Unbind program
 	glUseProgram(NULL);
+}
+
+void GLRenderer::EnableFBO(FBO_STATE state, int w, int h)
+{
+	fboState = state;
+	framebuffer = new Graphic::Framebuffer();
+	framebuffer->Init(w, h);
 }
 
 void GLRenderer::SetMeshAttribId(MeshVbo * mesh)
@@ -221,6 +244,11 @@ GLRenderer::~GLRenderer()
 {
 	if (gPos2DLocation != -1) {
 		glDisableVertexAttribArray(gPos2DLocation);
+	}
+
+	if (framebuffer)
+	{
+		delete framebuffer;
 	}
 }
 
@@ -277,6 +305,11 @@ GLuint GLRenderer::GetOffsetXUniformId()
 GLuint GLRenderer::GetOffsetYUniformId()
 {
 	return this->offSetYId;
+}
+
+Graphic::Framebuffer * GLRenderer::GetFrameBuffer()
+{
+	return framebuffer;
 }
 
 GLuint GLRenderer::LoadTexture(string path)

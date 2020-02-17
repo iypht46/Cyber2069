@@ -166,7 +166,7 @@ namespace World
 		//Runtime
 		Core::Logger::Init();
 		Graphic::Init();
-
+		Graphic::EnableFrameBuffer(FBO_STATE::MAIN);
 		//Input
 		//Bool for debugging
 		Input::Init(false);

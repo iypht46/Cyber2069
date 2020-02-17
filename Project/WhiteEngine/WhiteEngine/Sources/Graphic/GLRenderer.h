@@ -10,10 +10,13 @@
 #include "SDL_surface.h"
 #include "SDL_image.h"
 #include "Graphic/SquareMeshVbo.h"
+#include "Graphic/Framebuffer.hpp"
 
 //#include "Core/EC/Components/MeshRenderer.hpp"
 
 using namespace std;
+
+enum FBO_STATE {MAIN, SUB};
 
 class GLRenderer
 {
@@ -42,6 +45,8 @@ protected:
 	Shader *vertexShader;
 	Shader *fragmentShader;
 
+	Graphic::Framebuffer* framebuffer;
+	FBO_STATE fboState;
 public:
 	void Render();
 	static GLRenderer* GetInstance();
@@ -49,6 +54,7 @@ public:
 
 	~GLRenderer();
 
+	void EnableFBO(FBO_STATE, int, int); //Should only be called in initialization
 	void SetMeshAttribId(MeshVbo * shape);
 
 	void SetOrthoProjection(float left, float right, float bottom, float top);
@@ -64,6 +70,7 @@ public:
 	GLuint GetModeUniformId();
 	GLuint GetOffsetXUniformId();
 	GLuint GetOffsetYUniformId();
+	Graphic::Framebuffer* GetFrameBuffer();
 
 	GLuint LoadTexture(string path);
 

@@ -43,6 +43,7 @@ namespace Tools
 		Core::Logger::Init();
 		//OpenGL and GLFW
 		Graphic::Init();
+		Graphic::EnableFrameBuffer(FBO_STATE::SUB);
 		//Input
 		Input::Init(false);
 
@@ -74,7 +75,7 @@ namespace Tools
 
 	void Update()
 	{
-		//MainMenuBar();
+		MainMenuBar();
 
 		{
 			// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
@@ -118,8 +119,11 @@ namespace Tools
 		//Update main editor
 		if (mainEditor)
 		{
+			Graphic::Render();
 			mainEditor->Update();
 		}
+
+		
 			
 	}
 

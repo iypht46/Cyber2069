@@ -85,7 +85,7 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 
 		/*glUniform1f(offsetXId, 0);
 		glUniform1f(offsetYId, 0);*/
-
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, this->texture);
 		squareMesh->Render();
 	}
