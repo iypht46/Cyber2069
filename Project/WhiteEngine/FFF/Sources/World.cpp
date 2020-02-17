@@ -369,7 +369,7 @@ namespace World
 		g_physicScene->SetLayerCollisions("Player", "Enemy", Physic::RESOLVE_TYPE::TRIGGER);
 		g_physicScene->SetLayerCollisions("Bullet", "Enemy", Physic::RESOLVE_TYPE::TRIGGER);
 		//Add Rigidbody
-		Rabbit->AddComponent<Rigidbody>()->Init(25, 25);
+		Rabbit->AddComponent<Rigidbody>()->Init(10, 20);
 		Rabbit->GetComponent<Rigidbody>()->SetDrag(0.01f);
 		//Flyer->AddComponent<Rigidbody>()->Init(10,10);
 		g_physicScene->Add(Rabbit->GetComponent<BoxCollider>(), "Player");
@@ -554,35 +554,35 @@ namespace World
 
 
 		GameObject* queen = new GameObject();
-		queen->m_transform.SetPosition(glm::vec3(-(Graphic::Window::GetWidth() / 2), (Graphic::Window::GetHeight() / 2), 1.0f));
+		queen->m_transform.SetPosition(glm::vec3(-(Graphic::Window::GetWidth() / 2), (Graphic::Window::GetHeight() / 2) + 700.0f, 1.0f));
 		queen->AddComponent<MeshRenderer>();
 		queen->GetComponent<MeshRenderer>()->CreateMesh(4, 2);
 		queen->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Queen_V[version01].png");
 
 		queen->AddComponent<Animator>();
 		queen->GetComponent<Animator>()->AssignController(queenAnimControl);
-		queen->GetComponent<Animator>()->setCurrentState(1);
-		queen->GetComponent<Animator>()->setFramePerSec(12);
+		queen->GetComponent<Animator>()->setCurrentState(0);
+		queen->GetComponent<Animator>()->setFramePerSec(3);
 
 		queen->AddComponent<Rigidbody>();
-		queen->GetComponent<Rigidbody>()->Init(15, 15);
+		queen->GetComponent<Rigidbody>()->Init(400, 300);
 		queen->GetComponent<Rigidbody>()->SetGravityScale(0.00001);
 
 		g_physicScene->Add(queen->GetComponent<Rigidbody>());
 		g_physicScene->Add(queen->GetComponent<BoxCollider>(), "Enemy");
 
 		queen->AddComponent<HPsystem>();
+		queen->GetComponent<HPsystem>()->SetMaxHP(1000.0f);
+		queen->GetComponent<HPsystem>()->SetHp(1000.0f);
 		queen->AddComponent<AirPatrol>();
 		queen->AddComponent<DeQueen>();
 		queen->GetComponent<DeQueen>()->Init();
-
-		queen->m_transform.SetScale(glm::vec3(50, 50, 1));
 
 
 		queen->GetComponent<DeQueen>()->assignFlyPool(FlyerPool);
 		queen->GetComponent<DeQueen>()->assignBombPool(BomberPool);
 
-		queen->m_transform.SetScale(glm::vec3(200.0f, 200.f, 1.0f));
+		queen->m_transform.SetScale(glm::vec3(1000.0f, 1000.f, 1.0f));
 
 
 		//Add Sound
