@@ -2,6 +2,7 @@
 
 SoundPlayer::SoundPlayer() {
 	isLooping = false;
+	volumeValue = 1.0f;
 }
 
 SoundPlayer::~SoundPlayer() {
@@ -29,6 +30,30 @@ void SoundPlayer::SetLoop(bool loop) {
 	isLooping = loop;
 }
 
-void SoundPlayer::SetVolume(ik_f32 volume) {
-	soundVolume->setVolume(volume);
+void SoundPlayer::UpdateVolume() {
+	if (soundVolume != nullptr) {
+		soundVolume->setVolume(volumeValue);
+	}
+}
+
+void SoundPlayer::SetVolume(float value) {
+	volumeValue = value;
+}
+
+void SoundPlayer::IncreaseVolume() {
+	if (volumeValue == 1) {
+		volumeValue += 0;
+	}
+	else {
+		volumeValue += 0.05f;
+	}
+}
+
+void SoundPlayer::DecreaseVolume() {
+	if (volumeValue == 0) {
+		volumeValue -= 0;
+	}
+	else {
+		volumeValue -= 0.05f;
+	}
 }

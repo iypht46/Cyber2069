@@ -11,6 +11,7 @@ private:
 	ISoundSource* soundSource;
 	ISound* soundVolume;
 	bool isLooping;
+	float volumeValue;
 public:
 	SoundPlayer();
 	~SoundPlayer();
@@ -19,6 +20,8 @@ public:
 	void PlaySound();
 	void DeleteSoundPlayer();
 	void SetLoop(bool loop);
-	void SetVolume(ik_f32 volume);
-
+	void UpdateVolume();
+	void SetVolume(float value);
+	void IncreaseVolume();
+	void DecreaseVolume();
 };

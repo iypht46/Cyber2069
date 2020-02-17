@@ -13,6 +13,7 @@ Rigidbody::Rigidbody()
 	m_transform = &m_gameObject->m_transform;
 	m_velocity = vec3(0.0f);
 	m_mass = 1;
+	m_drag = 0.0f;
 }
 
 //Create BoxCollider
@@ -59,6 +60,15 @@ void Rigidbody::SetVelocity(vec3 velocity)
 	m_velocity = velocity;
 }
 
+//not set that axis if target velocity in that axis is 0
+void Rigidbody::SetVelocity0Masked(vec3 velocity) {
+	for (int i = 0; i < 3; i++) {
+		if (velocity[i] != 0.0f) {
+			m_velocity[i] = velocity[i];
+		}
+	}
+}
+
 glm::vec3 Rigidbody::GetVelocity()
 {
 	return m_velocity;
@@ -93,7 +103,15 @@ void Rigidbody::AddRelativeForce(vec3 force)
 
 void Rigidbody::UpdateTransform(float dt) 
 {
+	m_velocity = m_velocity * (1 - m_drag);
 	m_transform->Translate(m_velocity * dt);
+}
+
+void Rigidbody::SetMass(float mass) {
+	if (automass) {
+		m_mass = mass;
+		m_invMass = 1.0 / m_mass;
+	}
 }
 
 float Rigidbody::GetInvMass(void)
@@ -104,4 +122,12 @@ float Rigidbody::GetInvMass(void)
 float Rigidbody::GetMass(void)
 {
 	return m_mass;
+}
+
+void Rigidbody::SetDrag(float drag) {
+	m_drag = drag;
+}
+
+float Rigidbody::GetDrag() {
+	return m_drag;
 }

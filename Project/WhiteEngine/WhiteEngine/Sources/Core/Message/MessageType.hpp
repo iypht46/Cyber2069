@@ -7,6 +7,8 @@ namespace Core
 		MSG_BASE = 0,
 		MSG_TEST,
 		MSG_GAME_CLOSE,
+		MSG_COLLISION,
+		MSG_TRIGGER,
 		MSG_COUNT
 	};
 }
