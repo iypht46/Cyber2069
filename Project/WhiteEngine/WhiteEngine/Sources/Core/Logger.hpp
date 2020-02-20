@@ -36,4 +36,3 @@ namespace Core
 #define ENGINE_ERROR(...) ::Core::Logger::GetEngineLogger()->error(__VA_ARGS__)
 #define ENGINE_FATAL(...) ::Core::Logger::GetEngineLogger()->fatal(__VA_ARGS__)
 
-

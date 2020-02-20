@@ -5,26 +5,42 @@
 #include <string>
 #include "Components/Transform.hpp"
 #include "Core/Factory.h"
+#include "Core/LogCustomType.hpp"
 
+//Forward Declaration
 class Component;
+class BehaviourScript;
+namespace Physic { struct Collision; }
 
 class GameObject
 {
 protected:
-	bool isActive;
-	std::string m_objectName;
+	friend class BehaviourScript;
+	friend class Collider;
 
+	bool isActive;
+
+	static int s_IDCounter;
 	int m_objectID;
 	
 	std::vector<Component*> m_components;
+	std::vector<BehaviourScript*> m_scripts;
 
+	void CollisionEnter(const Physic::Collision);
+	void CollisionStay(const Physic::Collision);
+	void CollisionExit(const Physic::Collision);
+	void TriggerEnter(const Physic::Collision);
+	void TriggerStay(const Physic::Collision);
+	void TriggerExit(const Physic::Collision);
 public:
 	GameObject();
-
+	std::string Name;
 	Transform m_transform;
 
 	void SetActive(bool activestate);
 	bool Active();
+
+	int GetID();
 
 	virtual void OnAwake() {};
 	virtual void OnEnable() {};
@@ -38,6 +54,10 @@ public:
 
 	template <class T>
 	T* GetComponent();
+
+	//Log to logger
+	LogCustomType_DC(GameObject);
+
 	//GameObject* GetGameObject();
 	//void SetGameObject(GameObject* obj);
 };
@@ -61,6 +81,12 @@ T* GameObject::GetComponent() {
 			return dynamic_cast<T*>(component);
 		}
 	}
-
+	
 	return nullptr;
 }
+
+LogCustomType_DF(GameObject)
+{
+	return os << "GameObject: " << obj.Name << "\n";
+}
+
