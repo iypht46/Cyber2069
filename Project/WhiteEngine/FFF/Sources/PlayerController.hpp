@@ -23,6 +23,12 @@ protected:
 
 	ObjectPool* MGbulletPool;
 	
+	float max_stamina;
+	float stamina;
+
+	float dashStamina;
+	float jumpStamina;
+
 	float max_move_speed;
 	float move_speed;
 	float dash_speed;
@@ -30,11 +36,12 @@ protected:
 	float dashTime;
 	float dashRemainingTime;
 	float delay;
-	float m_drag;
 
 	float camZoomSpeed;
 	float camDelay;
 	float camDelay_count;
+	float camMaxZoom;
+	float camMinZoom;
 
 	float bullet_speed;
 	float bullet_delay;
@@ -64,6 +71,11 @@ public:
 	void move();
 	void dash(float dt);
 	void shoot(float dt);
+	bool checkGround();
+
+	float GetStamina();
+	
+	void cameraZoom(float dt);
 
 	void assignPool(ObjectPool* pool);
 
