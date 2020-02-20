@@ -428,7 +428,7 @@ namespace World
 			BulletPool->AddObject(Bullet);
 		}
 
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < 200; i++)
 		{
 			GameObject* flyer = new GameObject();
 
@@ -496,7 +496,7 @@ namespace World
 		BomberAnimController->AddState(BomberExplode);
 		BomberAnimController->AddState(BomberDie);
 
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < 200; i++)
 		{
 			GameObject* bomber = new GameObject();
 
@@ -554,7 +554,7 @@ namespace World
 
 
 		GameObject* queen = new GameObject();
-		queen->m_transform.SetPosition(glm::vec3(-(Graphic::Window::GetWidth() / 2), (Graphic::Window::GetHeight() / 2) + 700.0f, 1.0f));
+		queen->m_transform.SetPosition(glm::vec3(-(Graphic::Window::GetWidth()), (Graphic::Window::GetHeight()*2/3) + 700.0f, 1.0f));
 		queen->AddComponent<MeshRenderer>();
 		queen->GetComponent<MeshRenderer>()->CreateMesh(4, 2);
 		queen->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Queen_V[version01].png");
@@ -575,6 +575,7 @@ namespace World
 		queen->GetComponent<HPsystem>()->SetMaxHP(1000.0f);
 		queen->GetComponent<HPsystem>()->SetHp(1000.0f);
 		queen->AddComponent<AirPatrol>();
+		queen->GetComponent<AirPatrol>()->SetPoint(-(Graphic::Window::GetWidth() * 2), Graphic::Window::GetWidth() * 2);
 		queen->AddComponent<DeQueen>();
 		queen->GetComponent<DeQueen>()->Init();
 
@@ -582,7 +583,7 @@ namespace World
 		queen->GetComponent<DeQueen>()->assignFlyPool(FlyerPool);
 		queen->GetComponent<DeQueen>()->assignBombPool(BomberPool);
 
-		queen->m_transform.SetScale(glm::vec3(1000.0f, 1000.f, 1.0f));
+		queen->m_transform.SetScale(glm::vec3(CHAR_SIZE * 10, CHAR_SIZE * 10, 1.0f));
 
 
 		//Add Sound

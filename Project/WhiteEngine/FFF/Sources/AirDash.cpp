@@ -4,8 +4,8 @@
 
 AirDash::AirDash()
 {
-	m_dashSpeed = 500.0f;
-	m_aimTime = 5.0f;
+	m_dashSpeed = 700.0f;
+	m_aimTime = 1.0f;
 	m_aimSpeed = 50.0f;
 	m_angle = 0.0f;
 	maxExplodeTime = 0.8f;
