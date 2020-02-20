@@ -59,8 +59,8 @@ void PlayerController::OnStart() {
 
 	jumping = false;
 	falling = false;
-	max_move_speed = 300.0f;
-	move_speed = 300.0f;
+	max_move_speed = 200.0f;
+	move_speed = 200.0f;
 	dash_speed = 750.0f;
 	jump_speed = 300.0f;
 	direction.x = 1;
@@ -72,10 +72,12 @@ void PlayerController::OnStart() {
 
 	stamina = max_stamina;
 
-	camZoomSpeed = 0.01f;
+	camZoomSpeed = 0.005f;
 	camDelay = 0.5f;
-	camMaxZoom = 0.75f;
-	camMinZoom = 1.25f;
+	//camMaxZoom = 0.75f;
+	camMaxZoom = 0.65f;
+	//camMinZoom = 1.00f;
+	camMinZoom = 1.50f;
 
 	bullet_speed = 300.0f;
 	bullet_delay = 0.1f;

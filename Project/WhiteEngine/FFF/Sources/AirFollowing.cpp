@@ -4,9 +4,9 @@
 
 AirFollowing::AirFollowing()
 {
-	m_speed = 100.0f;
+	m_speed = 300.0f;
 	rotAngle = 15.0f;
-	rotRate = 1.5f;
+	rotRate = 2.0f;
 }
 
 void AirFollowing::SetPlayer(Transform* player) {
