@@ -64,6 +64,7 @@ public:
 	void Init();
 	void assignFlyPool(ObjectPool* pool);
 	void assignBombPool(ObjectPool* pool);
+	void SetSpawnDelay(int time);
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);

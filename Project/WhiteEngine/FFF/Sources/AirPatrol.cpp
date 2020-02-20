@@ -34,6 +34,10 @@ void AirPatrol::SetPoint(float aX, float bX) {
 
 }
 
+void AirPatrol::SetSpeed(float speed) {
+	this->m_speed = speed;
+}
+
 void AirPatrol::OnAwake() {
 
 }
