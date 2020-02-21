@@ -69,6 +69,9 @@
     <ClCompile Include="Sources\GameController.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\MachineGun.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\EnemySpawner.hpp">
@@ -114,6 +117,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sources\GameController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Equipment.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Weapon.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\MachineGun.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

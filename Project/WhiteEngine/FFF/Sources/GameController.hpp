@@ -2,7 +2,16 @@
 #include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/GameObject.hpp"
 #include "Core/EC/Components/TextRenderer.hpp"
+#include "Utility/ObjectPool.h"
 #include "HPsystem.hpp"
+
+#include <map>
+
+enum POOL_TYPE {
+	BULLET_MG = 0,
+	ENEMY_FLYER,
+	ENEMY_BOMBER
+};
 
 class GameController : public BehaviourScript {
 private:
@@ -18,6 +27,9 @@ private:
 	HPsystem* PlayerHP;
 	GameObject* HPbar;
 	GameObject* ScoreText;
+
+	map<int, ObjectPool*> Pools;
+	ObjectPool* bl;
 public:
 	GameController();
 	static GameController* GetInstance();
@@ -36,6 +48,10 @@ public:
 	void AssignScoreText(GameObject* ScoreText);
 	void AssignHPbar(GameObject* hpbar);
 	void AssignPlayer(GameObject* player);
+
+	void AddPool(ObjectPool* pool, int type);
+	ObjectPool* GetPool(int type);
+
 	
 	virtual void OnAwake();
 	virtual void OnEnable();

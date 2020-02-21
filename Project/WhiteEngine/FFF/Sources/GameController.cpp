@@ -72,6 +72,15 @@ void GameController::updateHPui() {
 
 }
 
+void GameController::AddPool(ObjectPool* pool, int type) 
+{
+	Pools.insert(pair<int, ObjectPool*>(type, pool));
+}
+
+ObjectPool* GameController::GetPool(int type) {
+	return Pools[type];
+}
+
 void GameController::OnAwake() {
 
 }

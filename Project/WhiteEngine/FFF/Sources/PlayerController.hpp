@@ -8,6 +8,8 @@
 #include "Core/EC/GameObject.hpp"
 
 #include "HPsystem.hpp"
+#include "Weapon.hpp"
+
 
 #include "Utility/ObjectPool.h"
 
@@ -18,10 +20,13 @@ private://change later
 	Physic::PhysicScene* ps;
 protected:
 	HPsystem* hpSystem;
-	Transform* Gun;
 	Rigidbody* rb;
 
 	ObjectPool* MGbulletPool;
+
+	vector<Equipment*> Equipments;
+	Weapon* weapon;
+	Transform* weaponTranform;
 	
 	float max_stamina;
 	float stamina;
@@ -70,7 +75,6 @@ public:
 	void updateDirection();
 	void move();
 	void dash(float dt);
-	void shoot(float dt);
 	bool checkGround();
 
 	float GetStamina();
@@ -78,6 +82,7 @@ public:
 	void cameraZoom(float dt);
 
 	void assignPool(ObjectPool* pool);
+	void assignWeapon(Weapon* wp);
 
 	virtual void OnAwake();
 	virtual void OnEnable();
