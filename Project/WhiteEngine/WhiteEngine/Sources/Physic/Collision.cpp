@@ -2,69 +2,30 @@
 #include "Core/EC/Components/Collider.hpp"
 #include "Core/EC/Components/Rigidbody.hpp"
 #include "Core/EC/Components/Transform.hpp"
+#include "Core/EC/GameObject.hpp"
 #include "Core/Logger.hpp"
 #include <iostream>
+
 namespace Physic
 {
+	Ray::Ray(glm::vec2 from, glm::vec2 to) {
+		origin = from;
+		end = to;
+	}
 
-	//bool AABBtoAABB(Manifold* m)
-	//{
-	//	//Cast Collider to BoxCollider
-	//	BoxCollider* objectA = dynamic_cast<BoxCollider*>(m->m_objectA);
-	//	BoxCollider* objectB = dynamic_cast<BoxCollider*>(m->m_objectB);
-	//	//AABB data
-	//	AABB a, b;
-	//	//Generate AABB data from the collider data
-	//	objectA->ComputeAABB(a);
-	//	objectB->ComputeAABB(b);
+	Ray::Ray(glm::vec2 from, glm::vec2 direction, float length) {
+		origin = from;
+		end = glm::normalize(from + direction) * length;
+	}
 
-	//	if (a.m_max.x < b.m_min.x)
-	//	{
-	//		return false;
-	//	}
-	//	else
-	//	{
-	//		//Collide Right
-	//		ENGINE_INFO("Collision Right");
-	//		m->m_normal = glm::vec3(1.0f, 0.0f, 0.0f);
-	//	}
+	Ray::Ray(float originx, float originy, float endx, float endy) {
+		origin = glm::vec2(originx, originy);
+		end = glm::vec2(endx, endy);
+	}
 
-	//	if (a.m_min.x > b.m_max.x)
-	//	{
-	//		return false;
-	//	}
-	//	else
-	//	{
-	//		//Collide Left
-	//		ENGINE_INFO("Collision Left");
-	//		m->m_normal = glm::vec3(-1.0f, 0.0f, 0.0f);
-	//	}
-
-	//	if (a.m_max.y > b.m_min.y)
-	//	{
-	//		return false;
-	//	}
-	//	else
-	//	{
-	//		//Collide Down
-	//		ENGINE_INFO("Collision Down");
-	//		m->m_normal = glm::vec3(0.0f, -1.0f, 0.0f);
-	//	}
-
-	//	if (a.m_min.y < b.m_max.y)
-	//	{
-	//		return false;
-	//	}
-	//	else
-	//	{
-	//		//Collide Up
-	//		ENGINE_INFO("Collision Up");
-	//		m->m_normal = glm::vec3(0.0f, 1.0f, 0.0f);
-	//	}
-
-	//	//std::cout << "Collided\n";
-	//	return true;
-	//}
+	float Ray::distance() {
+		return glm::length(end - origin);
+	}
 
 	bool AABBtoAABB(Manifold* m)
 	{
@@ -115,7 +76,6 @@ namespace Physic
 				m->m_normal = glm::vec3(1.0f, 0.0f, 0.0f);
 
 			m->m_penetration = x_overlap;
-			//std::cout << "Collided\n";
 		}
 		else
 		{
@@ -126,29 +86,65 @@ namespace Physic
 				m->m_normal = glm::vec3(0.0f, 1.0f, 0.0f);
 
 			m->m_penetration = y_overlap;
-			//std::cout << "Collided\n";
 		}
 
 		return true;
+	}
+
+	bool RaytoRay(Ray rayA, Ray rayB) {
+		float x1 = rayA.origin.x;
+		float x2 = rayA.end.x;
+		float x3 = rayB.origin.x;
+		float x4 = rayB.end.x;
+		float y1 = rayA.origin.y;
+		float y2 = rayA.end.y;
+		float y3 = rayB.origin.y;
+		float y4 = rayB.end.y;
+
+		float uA = ((x4 - x3)*(y1 - y3) - (y4 - y3)*(x1 - x3)) / ((y4 - y3)*(x2 - x1) - (x4 - x3)*(y2 - y1));
+		float uB = ((x2 - x1)*(y1 - y3) - (y2 - y1)*(x1 - x3)) / ((y4 - y3)*(x2 - x1) - (x4 - x3)*(y2 - y1));
+
+		if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
+			return true;
+		}
+		return false;
+	}
+
+	bool RaytoAABB(Ray ray, AABB box) {
+		glm::vec2 tl = box.m_min; //box topleft
+		glm::vec2 lr = box.m_max; //box lowerright
+
+		bool up		= RaytoRay(ray, Ray(tl.x, tl.y, lr.x, tl.y));
+		bool down	= RaytoRay(ray, Ray(tl.x, lr.y, lr.x, lr.y));
+		bool left	= RaytoRay(ray, Ray(tl.x, tl.y, tl.x, lr.y));
+		bool right	= RaytoRay(ray, Ray(lr.x, tl.y, lr.x, lr.y));
+
+		return up || down || left || right;
+	}
+
+	//Default Constructor
+	Collision::Collision() {}
+	//Constructor
+	Collision::Collision(Collider* col, Collider* otherCol, RESOLVE_TYPE type)
+		: m_collider(col), m_otherCollider(otherCol), m_type(type) {}
+	
+	Manifold::Manifold(Collider* a, Collider* b, RESOLVE_TYPE type) : m_objectA(a), m_objectB(b), m_type(type)
+	{
+		m_objAResFlag = !a->IsStatic();
+		m_objBResFlag = !b->IsStatic();
 	}
 
 	bool Manifold::CheckCollision()
 	{
 		if (m_objectA && m_objectB)
 		{
-			if (m_objectA->GetType() == ColliderType::BOX
-				&& m_objectB->GetType() == ColliderType::BOX)
-			{
-				/*std::cout << "Object A:\n";
-				std::cout << "Min X: " << a.m_min.x << " , Y: " << a.m_min.y << std::endl;
-				std::cout << "Max X: " << a.m_max.x << " , Y: " << a.m_max.y << std::endl;
-
-				std::cout << "Object B:\n";
-				std::cout << "Min X: " << b.m_min.x << " , Y: " << b.m_min.y << std::endl;
-				std::cout << "Max X: " << b.m_max.x << " , Y: " << b.m_max.y << std::endl;*/
-
-				return (AABBtoAABB(this));
-				//return (AABBtoAABB(this));
+			if (m_objectA->GetGameObject()->Active() && m_objectB->GetGameObject()->Active()) {
+				//check shape
+				if (m_objectA->GetType() == COLLIDER_TYPE::BOX
+					&& m_objectB->GetType() == COLLIDER_TYPE::BOX)
+				{
+					return (AABBtoAABB(this));
+				}
 			}
 		}
 		else
@@ -156,26 +152,148 @@ namespace Physic
 			ENGINE_ERROR("Object reference in Manifold is NULL");
 		}
 
-
 		return false;
 	}
-
+#define RE_MUL 10.0f
 	void Manifold::Resolve(float dt)
 	{
-		if (!m_objectA->IsStatic())
+		if (m_type == RESOLVE_TYPE::COLLISION)
 		{
+			glm::vec3 resultVec = m_normal * (m_penetration * RESOLVE_MUL);
+			float meanFriction = (m_objectB->GetFriction() + m_objectA->GetFriction()) / 2.0f;
 
-			//m_objectA->m_rigidbody->SetVelocity(-1.0f * m_objectA->m_rigidbody->GetVelocity());
-			m_objectA->m_rigidbody->SetVelocity(-(m_normal * (m_penetration * 10.0f)));
-			m_objectA->m_rigidbody->UpdateTransform(dt);
-		}
+			//If both object is moving (Both is not static) then check its velocity
+			if (m_objAResFlag && m_objBResFlag)
+			{
+				glm::vec3 relativeVel = m_objectB->m_rigidbody->GetVelocity() - m_objectA->m_rigidbody->GetVelocity();
 
-		if (!m_objectB->IsStatic())
-		{
-			//m_objectB->m_rigidbody->SetVelocity(-1.0f  * m_objectB->m_rigidbody->GetVelocity());
-			m_objectB->m_rigidbody->SetVelocity(m_normal * (m_penetration * 10.0f));
-			m_objectB->m_rigidbody->UpdateTransform(dt);
+				//If object a is going in a different direction then do not resolve
+				if (glm::dot(relativeVel, m_normal) > 0)
+				{
+					return;
+				}
+			}
+			
+			if (m_objAResFlag)
+			{
+				glm::vec3 vel = m_objectA->m_rigidbody->GetVelocity();
+				vel.x *= (1.0f - meanFriction);
+
+				m_objectA->m_rigidbody->SetVelocity(vel);
+				m_objectA->m_rigidbody->SetVelocity0Masked(-resultVec);
+				//ENGINE_INFO("objA {}", m_objectA->GetGameObject()->GetID());
+			}
+
+			if (m_objBResFlag)
+			{
+				glm::vec3 vel = m_objectB->m_rigidbody->GetVelocity();
+				vel.x *= (1.0f - meanFriction);
+
+				m_objectB->m_rigidbody->SetVelocity(m_objectB->m_rigidbody->GetVelocity()*(1.0f - meanFriction));
+				m_objectB->m_rigidbody->SetVelocity0Masked(resultVec);
+				//ENGINE_INFO("objB {}", m_objectB->GetGameObject()->GetID());
+			}
+			//ENGINE_INFO("reslv\n");
 		}
+		
+		//glm::vec3 resultVec = m_normal * (m_penetration * RESOLVE_MUL);
+		//
+		//if (!m_objectA->IsStatic() && !m_objectB->IsStatic())
+		//{
+		//	glm::vec3 relativeVel = m_objectB->m_rigidbody->GetVelocity() - m_objectA->m_rigidbody->GetVelocity();
+
+		//	//If object a is going in a different direction then do not resolve
+		//	if (glm::dot(relativeVel, m_normal) > 0)
+		//	{
+		//		return;
+		//	}
+
+		//	//Resolve only resolve type is collision
+		//	if (m_type == RESOLVE_TYPE::COLLISION)
+		//	{
+		//		glm::vec3 ResolvedVelocity;
+
+		//		for (int i = 0; i < 3; i++) {
+		//			if (m_normal[i] == 0.0f) {
+		//				ResolvedVelocity[i] = m_objectA->m_rigidbody->GetVelocity()[i];
+		//			}
+		//			else {
+		//				ResolvedVelocity[i] = -resultVec[i];
+		//				//ENGINE_INFO(i);
+		//			}
+		//		}
+
+		//		m_objectA->m_rigidbody->SetVelocity(ResolvedVelocity);
+		//		//ENGINE_INFO(m_objectA->m_rigidbody->GetVelocity()[0]);
+		//		//m_objectA->m_rigidbody->SetVelocity(resultVec);
+		//	}
+
+		//	if (m_type == RESOLVE_TYPE::COLLISION)
+		//	{
+		//		glm::vec3 ResolvedVelocity;
+
+		//		for (int i = 0; i < 3; i++) {
+		//			if (m_normal[i] == 0.0f) {
+		//				ResolvedVelocity[i] = m_objectB->m_rigidbody->GetVelocity()[i];
+		//			}
+		//			else {
+		//				ResolvedVelocity[i] = resultVec[i];
+		//				//ENGINE_INFO(i);
+		//			}
+		//		}
+
+		//		m_objectB->m_rigidbody->SetVelocity(ResolvedVelocity);
+		//		//ENGINE_INFO(m_objectA->m_rigidbody->GetVelocity()[0]);
+
+		//		//m_objectB->m_rigidbody->SetVelocity(resultVec);
+		//	}
+		//}
+		//else
+		//{
+		//	if (!m_objectA->IsStatic())
+		//	{
+		//		if (m_type == RESOLVE_TYPE::COLLISION) 
+		//		{
+		//			glm::vec3 ResolvedVelocity;
+
+		//			for (int i = 0; i < 3; i++) {
+		//				if (m_normal[i] == 0.0f) {
+		//					ResolvedVelocity[i] = m_objectA->m_rigidbody->GetVelocity()[i];
+		//				}
+		//				else {
+		//					ResolvedVelocity[i] = -resultVec[i];
+		//					//ENGINE_INFO(i);
+		//				}
+		//			}
+
+		//			m_objectA->m_rigidbody->SetVelocity(ResolvedVelocity);
+		//			//ENGINE_INFO(m_objectA->m_rigidbody->GetVelocity()[0]);
+		//		}
+		//	}
+		//	else
+		//	{
+		//		if (m_type == RESOLVE_TYPE::COLLISION) 
+		//		{
+		//			glm::vec3 ResolvedVelocity;
+
+		//			for (int i = 0; i < 3; i++) 
+		//			{
+		//				if (m_normal[i] == 0.0f) 
+		//				{
+		//					ResolvedVelocity[i] = m_objectB->m_rigidbody->GetVelocity()[i];
+		//				}
+		//				else 
+		//				{
+		//					ResolvedVelocity[i] = resultVec[i];
+		//					//ENGINE_INFO(i);
+		//				}
+		//			}
+
+		//			m_objectB->m_rigidbody->SetVelocity(ResolvedVelocity);
+		//			//ENGINE_INFO(m_objectA->m_rigidbody->GetVelocity()[0]);
+		//		}
+		//	}
+		//}
 
 
 	}

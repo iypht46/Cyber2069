@@ -10,5 +10,7 @@ public:
 	//void setPrefab();
 	//void init(int amount);
 	void AddObject(GameObject*);
-	GameObject* GetObject();
+	int GetPoolSize();
+	GameObject* GetGameObject();
+	GameObject* GetInactiveObject();
 };
