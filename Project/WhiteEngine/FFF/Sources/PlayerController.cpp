@@ -81,6 +81,7 @@ void PlayerController::OnStart() {
 
 	bullet_speed = 300.0f;
 	bullet_delay = 0.1f;
+	bullet_delay_count = 0.0f;
 
 	dashTime = 0.35f;
 
@@ -326,13 +327,12 @@ void PlayerController::mouseAim()
 
 void PlayerController::shoot(float dt)
 {
+	bullet_delay_count += dt;
 	if (Input::GetMouseHold(Input::MouseKeyCode::MOUSE_LEFT) ||
 		Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT))
 	{
-		bullet_delay_count += dt;
 		if (bullet_delay_count > bullet_delay)
 		{
-
 			GameObject* bullet = MGbulletPool->GetInactiveObject();
 
 			if (bullet != nullptr) {
@@ -368,6 +368,12 @@ void PlayerController::shoot(float dt)
 
 				bullet_delay_count = 0.0f;
 			}
+			else {
+				//ENGINE_INFO("Where's ma bullet");
+			}
+		}
+		else {
+			//ENGINE_INFO("Firen't");
 		}
 	}
 

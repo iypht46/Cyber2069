@@ -32,6 +32,9 @@
 #include <stdlib.h>
 #include <time.h>
 
+//serialization test
+#include <fstream>
+
 namespace World
 {
 	//Constants
@@ -428,7 +431,7 @@ namespace World
 			BulletPool->AddObject(Bullet);
 		}
 
-		for (int i = 0; i < 200; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			GameObject* flyer = new GameObject();
 
@@ -455,6 +458,35 @@ namespace World
 			flyer->m_transform.SetScale(glm::vec3(50, 50, 1));
 
 			flyer->SetActive(false);
+
+
+			////FlyerPool->AddObject(flyer);
+			//ofstream ofile;
+			//ofile.open("serializatest.txt", ios::binary);
+			//if (ofile.is_open()) {
+			//	ENGINE_INFO("writing file");
+			//	ofile.write(reinterpret_cast<char*>(flyer), sizeof(Flyer));
+			//	ofile.close();
+			//	ENGINE_INFO("file written");
+			//}
+			//else {
+			//	ENGINE_ERROR("Write Failed");
+			//}
+
+
+			//GameObject *flyerinstance = nullptr;
+			//ifstream ifile;
+			//ifile.open("serializatest.txt", ios::binary);
+			//if (ifile.is_open()) {
+			//	ENGINE_INFO("reading file");
+			//	//ifile.read(reinterpret_cast<char*>(flyerinstance), sizeof(Flyer));
+			//	ifile.close();
+			//	ENGINE_INFO("file read");
+			//}
+			//else {
+			//	ENGINE_ERROR("Read Failed");
+			//}
+
 			FlyerPool->AddObject(flyer);
 		}
 
@@ -496,7 +528,7 @@ namespace World
 		BomberAnimController->AddState(BomberExplode);
 		BomberAnimController->AddState(BomberDie);
 
-		for (int i = 0; i < 200; i++)
+		for (int i = 0; i < 00; i++)
 		{
 			GameObject* bomber = new GameObject();
 

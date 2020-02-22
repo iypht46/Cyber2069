@@ -23,8 +23,8 @@ protected:
 	static int s_IDCounter;
 	int m_objectID;
 	
-	std::vector<Component*> m_components;
-	std::vector<BehaviourScript*> m_scripts;
+	std::vector<shared_ptr<Component>> m_components;
+	std::vector<shared_ptr<BehaviourScript>> m_scripts;
 
 	void CollisionEnter(const Physic::Collision);
 	void CollisionStay(const Physic::Collision);
@@ -64,21 +64,28 @@ public:
 
 template<class T>
 T* GameObject::AddComponent() {
-	T* component = Factory<T>::Create();
+	shared_ptr<T> component = Factory<T>::Create();
+
 	m_components.push_back(component);
 	m_components.back()->SetGameObject(this);
 
-	return component;
+	//if is behaviou script, also assign to script collection
+	shared_ptr<BehaviourScript> behaviour = dynamic_pointer_cast<BehaviourScript>(component);
+	if (behaviour) {
+		m_scripts.push_back(behaviour);
+	}
+
+	return component.get();
 }
 
 template<class T>
 T* GameObject::GetComponent() {
 
-	for (Component* component : m_components) 
+	for (shared_ptr<Component> component : m_components) 
 	{
-		if (dynamic_cast<T*>(component))
+		if (dynamic_pointer_cast<T>(component))
 		{
-			return dynamic_cast<T*>(component);
+			return dynamic_pointer_cast<T>(component).get();
 		}
 	}
 	

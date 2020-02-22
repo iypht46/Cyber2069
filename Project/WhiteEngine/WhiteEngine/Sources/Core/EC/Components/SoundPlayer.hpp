@@ -7,9 +7,9 @@ using namespace irrklang;
 
 class SoundPlayer : public Component {
 private:
-	ISoundEngine* soundPlayer;
-	ISoundSource* soundSource;
-	ISound* soundVolume;
+	ISoundEngine* soundPlayer = nullptr;
+	ISoundSource* soundSource = nullptr;
+	ISound* soundVolume = nullptr;
 	bool isLooping;
 	float volumeValue;
 public:
