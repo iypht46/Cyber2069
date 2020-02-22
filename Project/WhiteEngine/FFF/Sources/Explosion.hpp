@@ -11,18 +11,21 @@ class Explosion : public BehaviourScript
 private:
 	float m_damage;
 	float m_radius;
-	Transform* bomber;
-	HPsystem* hp;
+	Transform* thisTransform;
+	Physic::PhysicScene* ps;
+	Physic::Layer targetLayer;
 	
 public:
 	Explosion();
 	~Explosion();
+	void Init();
 	void Explode();
-	virtual void OnAwake();
-	virtual void OnEnable();
+	void SetLayer(std::string layer);
+	void SetDamage(float val);
+	void SetRadius(float val);
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
-	virtual void OnDisable();
+
 };
 

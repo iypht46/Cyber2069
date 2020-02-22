@@ -7,24 +7,26 @@ class AirDash : public BehaviourScript
 {
 private: 
 	float timer;
-	float maxExplodeTime;
 	bool dashState;
+	bool dashEnd;
+	bool targetLocked;
 protected:
-	Transform* m_target;
+	glm::vec3 m_target;
 	Transform* bomber;
 	Rigidbody* rb;
 	float m_dashSpeed;
 	float m_aimTime;
 	float m_aimSpeed;
 	float m_angle;
-	float m_explodeCountDown;
 public:
 	AirDash();
-	void SetPlayer(Transform* player);
+	void Init();
 	void SetDashSpeed(float value);
 	void SetAimTime(float value);
 	void SetAimSpeed(float value);
 	void Dash(float dt);
+	void TargetLock(glm::vec3 pos);
+	bool DashEnd();
 	virtual void OnAwake();
 	virtual void OnEnable();
 	virtual void OnStart();

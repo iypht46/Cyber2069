@@ -8,15 +8,15 @@ AirDash::AirDash()
 	m_aimTime = 1.0f;
 	m_aimSpeed = 50.0f;
 	m_angle = 0.0f;
-	maxExplodeTime = 0.8f;
-	m_explodeCountDown = maxExplodeTime;
 	timer = m_aimTime;
 	dashState = false;
+	dashEnd = false;
+	targetLocked = false;
 }
 
-void AirDash::SetPlayer(Transform* player) {
-	this->m_target = player;
-	bomber = &m_gameObject->m_transform;
+void AirDash::Init() {
+	this->m_target = glm::vec3(0);
+	bomber = &(m_gameObject->m_transform);
 	rb = m_gameObject->GetComponent<Rigidbody>();
 }
 
@@ -35,10 +35,8 @@ void AirDash::SetAimSpeed(float value) {
 void AirDash::Dash(float dt) {
 	
 	float detectRange = 500.0f;
-	glm::vec3 dir = m_target->GetPosition() - bomber->GetPosition();
+	glm::vec3 dir = m_target - bomber->GetPosition();
 	float distance = glm::length(dir);
-	/*float rangeX = m_target->GetPosition().x - bomber->GetPosition().x;
-	float rangeY = m_target->GetPosition().y - bomber->GetPosition().y;*/
 	m_angle = glm::atan(dir.y, dir.x);
 
 	if (distance <= detectRange && !dashState) {
@@ -54,19 +52,30 @@ void AirDash::Dash(float dt) {
 	}
 
 	if (dashState) {
-		m_explodeCountDown -= dt;
-		if (distance > 10.0f && m_explodeCountDown > 0) {
+		if (distance > 50.0f) {
 			rb->SetVelocity(glm::vec3(m_dashSpeed*glm::cos(bomber->GetRotation()), m_dashSpeed*glm::sin(bomber->GetRotation()), 0));
 		}
 		else 
 		{
-			m_explodeCountDown = maxExplodeTime;
 			timer = m_aimTime;
 			dashState = false;
+			dashEnd = true;
 		}
 
 	}
 }
+
+bool AirDash::DashEnd() {
+	return dashEnd;
+}
+
+void AirDash::TargetLock(glm::vec3 pos) {
+	if (!targetLocked) {
+		this->m_target = pos;
+		targetLocked = true;
+	}
+}
+
 
 void AirDash::OnAwake() {
 
