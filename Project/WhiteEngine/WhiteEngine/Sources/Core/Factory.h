@@ -21,11 +21,6 @@ template <class T>
 T* Factory<T>::Create() {
 	T* newT = new T();
 
-	BehaviourScript* script = dynamic_cast<BehaviourScript*>(newT);
-	if (script != nullptr) {
-		Factory<BehaviourScript>().Add(script);
-	}
-
 	m_Collection.push_back(newT);
 
 	return newT;

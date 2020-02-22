@@ -47,7 +47,7 @@ namespace Physic
 	class PhysicScene
 	{
 	private:
-		
+		static PhysicScene* instance;
 		//Store layerbit as key and collider as value.
 		CollidersMap m_colliders;
 		Bodies m_bodies;
@@ -123,6 +123,8 @@ namespace Physic
 		//Reset Layer to Collide With
 		void ResetLayerCollisions(Layer, Layer);
 		void ResetLayerCollisions(std::string, std::string);
+
+		static PhysicScene* GetInstance();
 
 		PhysicScene();
 		~PhysicScene() {}

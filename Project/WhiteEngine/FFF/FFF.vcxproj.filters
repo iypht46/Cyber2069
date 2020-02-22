@@ -18,9 +18,6 @@
     <ClCompile Include="Sources\EnemySpawner.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\FlyerBehaviour.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\MachineGunBullet.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
@@ -78,9 +75,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\EnemySpawner.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\FlyerBehaviour.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sources\MachineGunBullet.hpp">
