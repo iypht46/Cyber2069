@@ -9,25 +9,30 @@
 namespace Tools
 {
 	class PrefabEditor;
-	using GameObjectHandle = std::unique_ptr<GameObject>;
-	using ComponentHandle = std::unique_ptr<EditorComponent>;
+	using GameObjectHandle = UNIQUE_HANDLE(GameObject);
+	using ComponentHandle = UNIQUE_HANDLE(EditorComponent);
+	using TransformHandle = UNIQUE_HANDLE(TransformEC);
+	//using MeshRendererHandle = UNIQUE_HANDLE(MeshRendererEC);
 	//using ComponentList = std::vector<std::unique_ptr<EditorComponent>>;
 
 	class EditorEntity
 	{
 		friend class PrefabEditor;
+		friend class Inspector;
 	private:
-		std::string m_objectName;
-		int m_objectID;
+		std::string* m_objectName;
+		int* m_objectID;
+		bool* m_isActive;
 		GameObjectHandle m_gameObject;
-		std::vector<std::unique_ptr<EditorComponent>> m_components;
+		std::vector<EditorComponent*> m_components;
 
 	public:
 		EditorEntity();
+		EditorEntity(GameObject* gameObject);
 		
 		//Interface
 		void AddComponent(const char*);
-		std::vector<std::unique_ptr<EditorComponent>>& GetComponentList();
+		std::vector<EditorComponent*>& GetComponentList();
 		std::string GetName();
 		int GetID();
 	};

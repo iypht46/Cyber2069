@@ -1,4 +1,6 @@
 #pragma once
+
+#include "Graphic/Framebuffer.hpp"
 #include "UIWindow.hpp"
 
 namespace Tools
@@ -6,12 +8,17 @@ namespace Tools
 	class PreviewWindow : public UIWindow
 	{
 	private:
-		bool m_run;
+		Graphic::Framebuffer m_framebuffer;
+		unsigned int m_textureID;
+		bool m_textureLoaded;
+	protected:
+		virtual void Init() override;
+		virtual void Terminate() override;
+		virtual void OnRender() override;
 	public:
-		PreviewWindow() : UIWindow("Preview", 800, 800) { Init(); }
-		void Init() override;
-		void OnRender() override;
-		void Terminate() override;
+		PreviewWindow();
+		~PreviewWindow();
+		bool SetTexture(unsigned int textureID);
 	};
 }
 

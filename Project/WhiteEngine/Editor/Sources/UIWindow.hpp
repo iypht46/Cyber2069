@@ -6,32 +6,21 @@ namespace Tools
 	class UIWindow
 	{
 	private:
-		bool m_show = true;
+		bool* m_show;
 		std::string m_windowName;
 	protected:
 		int m_width, m_height;
+		ImVec2 m_position;
+		ImGuiWindowFlags m_windowFlags;
 		virtual void OnRender(void) = 0;
-		virtual void Init(void) = 0;
-		virtual void Terminate(void) = 0;
+		virtual void Init(void) {}
+		virtual void Terminate(void) {}
 	public:
-		UIWindow(std::string);
-		UIWindow(std::string, int, int);
+		UIWindow(std::string name = "Window", int width = 500, int height = 500, bool* open = NULL);
 		~UIWindow();
 		void Render();
 		bool GetBool();
 		void ToggleBool();
 	};
-
-	inline void UIWindow::Render()
-	{
-		ImGui::Begin(m_windowName.c_str(), &m_show);
-		OnRender();
-		ImGui::End();
-	}
-	inline UIWindow::UIWindow(std::string name) : m_windowName(name) { m_show = true; Init(); }
-	inline UIWindow::UIWindow(std::string name, int width, int height) 
-		: m_windowName(name), m_width(width), m_height(height) { m_show = true; Init(); }
-	inline bool UIWindow::GetBool(void) { return m_show; }
-	inline void UIWindow::ToggleBool() { m_show = !m_show; }
-	inline UIWindow::~UIWindow() { Terminate(); }
+	
 }

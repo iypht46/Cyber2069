@@ -9,7 +9,11 @@
 
 using namespace std;
 
-class Transform : public Component {
+namespace Tools { class TransformEC; }
+
+class Transform : public Component 
+{
+	friend class Tools::TransformEC;
 private:
 	Transform* parent;
 	std::vector<Transform*> children;

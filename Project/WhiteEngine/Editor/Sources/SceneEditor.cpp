@@ -13,19 +13,19 @@ namespace Tools
 	void SceneEditor::Terminate(void)
 	{
 	}
-	bool SceneEditor::Save(const char *)
+	bool SceneEditor::Save(const char * path, const char* returnMessage)
 	{
 		return false;
 	}
-	bool SceneEditor::Load(const char *)
+	bool SceneEditor::Load(const char * path, const char* returnMessage)
 	{
 		return false;
 	}
-	bool SceneEditor::LoadScene()
+	bool SceneEditor::LoadScene(const char*)
 	{
 		return false;
 	}
-	bool SceneEditor::SaveScene()
+	bool SceneEditor::SaveScene(const char*)
 	{
 		return false;
 	}

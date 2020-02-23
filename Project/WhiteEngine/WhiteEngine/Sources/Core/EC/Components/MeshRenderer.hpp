@@ -25,4 +25,5 @@ public:
 	void CreateMesh(float NumframeX, float NumFrameY);
 	void SetTexture(std::string path);
 	void Render(glm::mat4 globalModelTransform);
+	unsigned int GetTexture();
 };

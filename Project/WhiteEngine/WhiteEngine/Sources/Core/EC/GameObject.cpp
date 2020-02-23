@@ -12,6 +12,16 @@ bool GameObject::Active() {
 	return isActive;
 }
 
+std::string GameObject::GetName()
+{
+	return m_objectName;
+}
+
+void GameObject::SetName(std::string name)
+{
+	m_objectName = name;
+}
+
 void GameObject::AddComponent(Component * component)
 {
 	m_components.push_back(component);

@@ -24,16 +24,6 @@ namespace Graphic
 		m_screenShader->use();
 		m_screenShader->setInt("screenTexture", 0);
 		
-	//	float quadVertices[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates. NOTE that this plane is now much smaller and at the top of the screen
-	//    // positions   // texCoords
-	//    -0.3f,  1.0f,  0.0f, 1.0f,
-	//    -0.3f,  0.7f,  0.0f, 0.0f,
-	//     0.3f,  0.7f,  1.0f, 0.0f,
-
-	//    -0.3f,  1.0f,  0.0f, 1.0f,
-	//     0.3f,  0.7f,  1.0f, 0.0f,
-	//     0.3f,  1.0f,  1.0f, 1.0f
-	//};
 		float quadVertices[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
 			// positions   // texCoords
 			-1.0f,  1.0f,  0.0f, 1.0f,
@@ -56,46 +46,43 @@ namespace Graphic
 		glEnableVertexAttribArray(1);
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 
-		glGenBuffers(1, &m_fboID);
-		glBindFramebuffer(GL_FRAMEBUFFER, m_fboID); 
-
-		// create a color attachment texture
-		glGenTextures(1, &m_texID);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, m_texID);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_frameW, m_frameH, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		//Generate framebuffer and assign it to m_fboID of this class
+		GenFrameBuffer();
+		//Bind generated framebuffer
+		BindFrameBuffer();
+		GenTexture(m_frameW, m_frameH);
+		//Bind Texture with frame buffer
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_texID, 0);
 
-		//Check if framebuffer have been initialized
-		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE)
-		{
-			ENGINE_INFO("Generate Framebuffer Complete");
-			return true;
-		}
-		else
+		//Check if framebuffer have been initialized properly
+		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		{
 			ENGINE_ERROR("ERROR::FRAMEBUFFER:: Framebuffer is not complete!");
 			return false;
 		}
 
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		//Unbind framebuffer
+		UnBindFrameBuffer();
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		ENGINE_INFO("Generate Framebuffer Complete");
+		return true;
 	}
 
 	void Framebuffer::Render()
 	{
 		m_screenShader->use();
-		//glDisable(GL_DEPTH_TEST); // disable depth test so screen-space quad isn't discarded due to depth test.
+		glDisable(GL_BLEND);
+		glDisable(GL_DEPTH_TEST); // disable depth test so screen-space quad isn't discarded due to depth test.
 		// clear all relevant buffers
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glBindVertexArray(m_screenVAO);
-		glActiveTexture(GL_TEXTURE0);
+		//glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, m_texID);	// use the color attachment texture as the texture of the quad plane
 		glDrawArrays(GL_TRIANGLES, 0, 6);
-		
+		glEnable(GL_BLEND);
+		glEnable(GL_DEPTH_TEST);
+
 	}
 
 	void Framebuffer::Terminate()
@@ -115,5 +102,22 @@ namespace Graphic
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
+
+	void Framebuffer::GenFrameBuffer()
+	{
+		glGenBuffers(1, &m_fboID);
+	}
+
+	void Framebuffer::GenTexture(int w, int h)
+	{
+		// create a color attachment texture
+		glGenTextures(1, &m_texID);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, m_texID);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	}
+
 }
 

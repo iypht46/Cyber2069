@@ -142,38 +142,31 @@ bool GLRenderer::Initialize(string vertexShaderFile, string fragmentShaderFile)
 
 void GLRenderer::Render()
 {
-	//Bind FBO
+	////Bind FBO
 	//if (framebuffer)
 	//{
 	//	framebuffer->BindFrameBuffer();
 	//	//ENGINE_INFO("Bind Frame Buffer");
 	//}
-		
+	
 	// Clear color buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Update window with OpenGL rendering
-	glUseProgram(gProgramId);
+	glUseProgram(gProgramId); //Use gameobject shader program
 	
 	this->PrintProgramLog(gProgramId);
+
 	//Set up matrix uniform
-
-	/*if (pMatrixId != -1) {
-		glUniformMatrix4fv(pMatrixId, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix));
-	}
-	else
-	{
-		cout << "pMatrixId = -1\n";
-	}*/
-
 	glm::mat4 camera = glm::mat4(1.0);
 
 	//--------Render Object Here--------
-
+	
 	for (MeshRenderer *obj : Factory<MeshRenderer>::getCollection()) {
 		
 		if (obj->GetGameObject()->Active()) 
 		{
+			glActiveTexture(GL_TEXTURE0);
 			obj->Render(camera);
 		}
 	}
@@ -188,8 +181,6 @@ void GLRenderer::Render()
 	//		//ENGINE_INFO("Render form framebuffer");
 	//	}
 	//}
-	
-	//test->Render(camera);
 
 	//Unbind program
 	glUseProgram(NULL);

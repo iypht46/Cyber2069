@@ -10,15 +10,17 @@
 class Component;
 class BehaviourScript;
 namespace Physic { struct Collision; }
+namespace Tools { class EditorEntity; }
 
 class GameObject
 {
 protected:
 	friend class BehaviourScript;
 	friend class Collider;
+	friend class Tools::EditorEntity;
 
 	bool isActive;
-	std::string m_objectName;
+	std::string m_objectName = "GameObject";
 
 	int m_objectID;
 	
@@ -45,6 +47,8 @@ public:
 	virtual void OnUpdate(float dt) {};
 	virtual void OnFixedUpdate(float dt) {};
 	virtual void OnDisable() {};
+	std::string GetName();
+	void SetName(std::string);
 
 	void AddComponent(Component*);
 

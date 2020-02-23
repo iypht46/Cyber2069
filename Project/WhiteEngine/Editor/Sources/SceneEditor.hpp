@@ -2,7 +2,6 @@
 
 #include "Editor.hpp"
 #include "Inspector.hpp"
-#include "ComponentsBrowser.hpp"
 #include "Core/EC/GameObject.hpp"
 
 namespace Tools
@@ -15,17 +14,17 @@ namespace Tools
 		//TODO: Add UI Window
 		//GameObjectHierarchy
 		//Inspector
+	protected:
+		virtual void Init(void) override;
+		virtual void Terminate(void) override;
+		bool LoadScene(const char*);
+		bool SaveScene(const char*);
 	public:
 		SceneEditor() : Editor(EDITOR_TYPE::SCENE_EDITOR) {}
-		virtual void Init(void) override;
-		virtual void Update(void) override;
-		virtual void Terminate(void) override;
-		virtual bool Save(const char*) override;
-		virtual bool Load(const char*) override;
-
 		//Interface
-		bool LoadScene();
-		bool SaveScene();
+		virtual void Update(void) override;
+		virtual bool Save(const char* path, const char* returnMessage) override;
+		virtual bool Load(const char* path, const char* returnMessage) override;
 		//GameObject* GetSelectedGameObject(void);
 	};
 }

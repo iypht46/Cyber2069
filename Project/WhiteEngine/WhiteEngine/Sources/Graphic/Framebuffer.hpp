@@ -4,8 +4,9 @@
 
 namespace Graphic
 {
-	struct Framebuffer
+	class Framebuffer
 	{
+	public:
 		int m_frameW = 800, m_frameH = 800;
 		GLuint m_fboID;
 		GLuint m_texID;
@@ -20,8 +21,11 @@ namespace Graphic
 		bool Init(int w, int h);
 		void Render();
 		void Terminate();
+		//Interface
 		void BindFrameBuffer();
 		void UnBindFrameBuffer();
+		void GenFrameBuffer();
+		void GenTexture(int w, int h);
 
 	};
 }
