@@ -30,9 +30,6 @@
     <ClInclude Include="Sources\Core\EC\Components\Component.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Core\World.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Graphic\Window.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -81,9 +78,6 @@
     <ClInclude Include="Sources\Core\Animator\AnimationController.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Core\FactoryCollection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Core\Factory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -93,16 +87,7 @@
     <ClInclude Include="Sources\Physic\PhysicScene.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Core\EC\Components\BehaviourScript.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Core\EC\Components\Animator.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Core\EC\Components\FlyerBehaviour.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Core\EC\Components\PlayerController.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Core\EC\Components\SoundPlayer.hpp">
@@ -114,24 +99,21 @@
     <ClInclude Include="Sources\Utility\ObjectPool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Core\EC\Components\MachineGunBullet.hpp">
+    <ClInclude Include="Sources\Core\EC\Components\BehaviourScript.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Core\EC\Components\EnemySpawner.hpp">
+    <ClInclude Include="Sources\Core\Message\Observer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Core\EC\Components\AirFollowing.hpp">
+    <ClInclude Include="Sources\Core\EC\Components\TextRenderer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Core\LogCustomType.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\Core\EC\GameObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Core\World.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Core\EC\Components\Component.cpp">
@@ -188,9 +170,6 @@
     <ClCompile Include="Sources\Core\EC\Components\Rigidbody.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Core\FactoryCollection.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Graphic\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -198,15 +177,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Core\EC\Components\Animator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Core\EC\Components\FlyerBehaviour.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Core\EC\Components\BehaviourScript.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Core\EC\Components\PlayerController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Core\EC\Components\SoundPlayer.cpp">
@@ -218,13 +188,13 @@
     <ClCompile Include="Sources\Utility\ObjectPool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Core\EC\Components\MachineGunBullet.cpp">
+    <ClCompile Include="Sources\Core\EC\Components\BehaviourScript.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Core\EC\Components\EnemySpawner.cpp">
+    <ClCompile Include="Sources\Core\EC\Components\TextRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Core\EC\Components\AirFollowing.cpp">
+    <ClCompile Include="Sources\Physic\Raycast.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
