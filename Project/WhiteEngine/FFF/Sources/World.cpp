@@ -428,7 +428,7 @@ namespace World
 			BulletPool->AddObject(Bullet);
 		}
 
-		for (int i = 0; i < 200; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			GameObject* flyer = new GameObject();
 
@@ -444,6 +444,7 @@ namespace World
 
 			flyer->AddComponent<HPsystem>();
 			flyer->AddComponent<AirFollowing>();
+			flyer->AddComponent<GroundPatrol>();
 			flyer->AddComponent<Flyer>();
 			flyer->GetComponent<Flyer>()->Init(&(Rabbit->m_transform));
 
@@ -496,7 +497,7 @@ namespace World
 		BomberAnimController->AddState(BomberExplode);
 		BomberAnimController->AddState(BomberDie);
 
-		for (int i = 0; i < 200; i++)
+		for (int i = 0; i < 0; i++)
 		{
 			GameObject* bomber = new GameObject();
 

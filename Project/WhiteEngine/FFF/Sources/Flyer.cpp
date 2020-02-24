@@ -3,9 +3,10 @@
 void Flyer::Init(Transform* player) {
 	SetTarget(player);
 	airFollow = m_gameObject->GetComponent<AirFollowing>();
+	groundPatrol = m_gameObject->GetComponent<GroundPatrol>();
 
 	airFollow->SetPlayer(target);
-
+	groundPatrol->Init();
 	targetDetectionRange = 1000.0f;
 
 	rigidbody = m_gameObject->GetComponent<Rigidbody>();
@@ -36,9 +37,11 @@ void Flyer::OnFixedUpdate(float dt) {
 		case Idle:
 			//rigidbody->SetVelocity(glm::vec3(0));
 			airFollow->FollowPlayer(dt);
+			groundPatrol->Patrol();
 			break;
 		case Chase:
 			airFollow->FollowPlayer(dt);
+			groundPatrol->Patrol();
 			break;
 		case Active:
 		default:
