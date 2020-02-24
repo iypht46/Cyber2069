@@ -40,9 +40,11 @@ namespace Tools
 
 	void TransformEC::OnRender()
 	{
-		ImGui::DragFloat3("Position", &m_position->x, 0.1, -500.0f, 500.0f, "%.1f", 1.0f);
-		ImGui::DragFloat3("Scale", &m_scale->x, 0.1f, 0.0f, 10.0f, "%.1f", 1.0f);
-		ImGui::DragFloat("Rotation (Euler)", m_rotation, 0.1f, 0.0f, 360.0f, "%.1f", 1.0f);
+		ImGui::PushItemWidth(-1 * (ImGui::GetWindowWidth()/4));
+		ImGui::AlignTextToFramePadding(); ImGui::Text("Position"); ImGui::SameLine(); ImGui::DragFloat3("##Position", &m_position->x, 0.1, -500.0f, 500.0f, "%.1f", 1.0f);
+		ImGui::AlignTextToFramePadding(); ImGui::Text("Scale"); ImGui::SameLine(); ImGui::DragFloat3("##Scale", &m_scale->x, 0.1f, 0.0f, 10.0f, "%.1f", 1.0f);
+		ImGui::AlignTextToFramePadding(); ImGui::Text("Rotation"); ImGui::SameLine(); ImGui::DragFloat("##Rotation (Euler)", m_rotation, 0.1f, 0.0f, 360.0f, "%.1f", 1.0f);
+		ImGui::PopItemWidth();
 	}
 
 	void TransformEC::SetChild(bool isChild)
@@ -82,7 +84,24 @@ namespace Tools
 
 	void MeshRendererEC::OnRender()
 	{
+		ImGui::PushItemWidth(-1);
+		ImGui::AlignTextToFramePadding();
+		if (!m_tex)
+		{
+			ImGui::TextDisabled("None"); 
+		}
+		else
+		{
+			ImGui::Text(m_textureName.c_str());
+		}
+		ImGui::SameLine();
+		ImGui::Button("..##AddTextureButton");
+		ImGui::PopItemWidth();
+	}
 
+	bool MeshRendererEC::AddTexture(const char * path)
+	{
+		return false;
 	}
 
 	

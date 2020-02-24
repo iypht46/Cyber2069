@@ -11,7 +11,7 @@ namespace Tools
 		ImVec2 main_window_size = ImVec2(Graphic::Window::GetWidth(), Graphic::Window::GetHeight());
 		ImVec2 main_window_pos = ImGui::GetMainViewport()->Pos;
 		std::cout << "Viewport Pos " << main_window_pos.x << " ," << main_window_pos.y << std::endl;
-		m_width = main_window_size.x / 5;
+		m_width = main_window_size.x / 4;
 		m_height = main_window_size.y - 20;
 		m_position.x = (main_window_size.x - m_width);
 		m_position.y = main_window_pos.y + 20;
@@ -23,8 +23,9 @@ namespace Tools
 
 	void Inspector::OnRender(void)
 	{
+
 		//TODO: Render some header or some shit first
-		
+			
 		
 		if (!m_entityToRender && !m_componentList)
 		{
@@ -32,13 +33,11 @@ namespace Tools
 		}
 		ImVec2 window_size = ImGui::GetWindowSize();
 
-		ImGui::Checkbox("Active", m_entityToRender->m_isActive);
-		//ImGui::SameLine();
-		
-		if (ImGui::InputText("Name", &*m_entityToRender->m_objectName))
-		{
-
-		}
+		ImGui::PushItemWidth(-1);
+		ImGui::Checkbox("##Active", m_entityToRender->m_isActive);
+		ImGui::SameLine();
+		ImGui::InputText("##EntityName", &*m_entityToRender->m_objectName);
+		ImGui::PopItemWidth();
 
 		ImGui::Separator();
 		ImGui::NewLine();

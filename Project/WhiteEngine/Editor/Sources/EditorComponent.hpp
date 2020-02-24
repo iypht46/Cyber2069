@@ -44,9 +44,10 @@ namespace Tools
 	private:
 		//TODO: Add pointer to members of each component
 		unsigned int* m_tex;
-		
+		std::string m_textureName;
 	protected:
 		virtual void OnRender() override;
+		virtual bool AddTexture(const char* path);
 	public:
 		MeshRendererEC(MeshRenderer* component);
 		virtual void Init() override;
