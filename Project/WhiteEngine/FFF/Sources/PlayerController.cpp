@@ -344,7 +344,6 @@ bool PlayerController::checkGround()
 	raycastRange = 25.0f;
 
 	hits = PhySc->RaycastAll(Physic::Ray(pos_x, pos_y, pos_x, pos_y - raycastRange), PhySc->GetLayerFromString("Platform")).size();
-	ENGINE_INFO("{} Platform hit with ray", hits);
 	GLRenderer::GetInstance()->DrawDebug_Line(pos_x, pos_y, pos_x, pos_y - raycastRange, 1.0f, 0.0f, 0.0f);
 
 	if (hits > 0) 

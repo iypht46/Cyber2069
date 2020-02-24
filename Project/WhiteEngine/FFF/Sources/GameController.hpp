@@ -4,6 +4,7 @@
 #include "Core/EC/Components/TextRenderer.hpp"
 #include "Utility/ObjectPool.h"
 #include "HPsystem.hpp"
+#include "EnemySpawner.hpp"
 
 #include <map>
 
@@ -29,7 +30,9 @@ private:
 	GameObject* ScoreText;
 
 	map<int, ObjectPool*> Pools;
-	ObjectPool* bl;
+	GameObject* FlyerSpawner;
+	GameObject* BomberSpawner;
+
 public:
 	GameController();
 	static GameController* GetInstance();
@@ -52,7 +55,6 @@ public:
 	void AddPool(ObjectPool* pool, int type);
 	ObjectPool* GetPool(int type);
 
-	
 	virtual void OnAwake();
 	virtual void OnEnable();
 	virtual void OnStart();

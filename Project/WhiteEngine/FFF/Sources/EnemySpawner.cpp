@@ -9,30 +9,35 @@ void EnemySpawner::OnStart()
 
 void EnemySpawner::OnUpdate(float dt)
 {
-
 	SpawnDelayCount -= dt;
 	if (SpawnDelayCount <= 0)
 	{
 		SpawnDelayCount = SpawnDelay;
-		int randSpawn = rand() % 2;
-		int randPosX = (rand() % (Graphic::Window::GetWidth() * 2)) - Graphic::Window::GetWidth();
-		int randPosY = (rand() % (Graphic::Window::GetHeight() * 2)) - Graphic::Window::GetHeight();
-		if (randSpawn == 0) {
-			GameObject* flyer = FlyerPool->GetInactiveObject();
-			if (flyer != nullptr)
-			{
-				flyer->SetActive(true);
+		int randSpawn = rand() % 101;
 
-				flyer->m_transform.SetPosition(glm::vec3(randPosX, randPosY, 1.0f));
-			}
+		float randPosX, randPosY;
+
+		if (x2 > x1) {
+			randPosX = (rand() % (x2 - x1 + 1)) + x1;
 		}
 		else {
-			GameObject* bomber = BomberPool->GetInactiveObject();
-			if (bomber != nullptr)
-			{
-				bomber->SetActive(true);
+			randPosX = (rand() % (x1 - x2 + 1)) + x2;
+		}
 
-				bomber->m_transform.SetPosition(glm::vec3(randPosX, randPosY, 1.0f));
+		if (y2 > y1) {
+			randPosY = (rand() % (y2 - y1 + 1)) + y1;
+		}
+		else {
+			randPosY = (rand() % (y1 - y2 + 1)) + y2;
+		}
+		
+		if (randSpawn <= SpawnRate) {
+			GameObject* enemy = EnemyPool->GetInactiveObject();
+			if (enemy != nullptr)
+			{
+				enemy->SetActive(true);
+
+				enemy->m_transform.SetPosition(glm::vec3(randPosX, randPosY, 1.0f));
 			}
 		}
 
@@ -56,11 +61,19 @@ void EnemySpawner::OnDisable() {
 
 }
 
-void EnemySpawner::assignFlyPool(ObjectPool* pool)
-{
-	this->FlyerPool = pool;
+void EnemySpawner::SetSpawnDelay(float value) {
+	this->SpawnDelay = value;
 }
 
-void EnemySpawner::assignBombPool(ObjectPool* pool) {
-	this->BomberPool = pool;
+void EnemySpawner::SetSpawnRange(float x1, float y1, float x2, float y2) {
+	this->x1 = x1; this->x2 = x2; this->y1 = y1; this->y2 = y2;
+}
+
+void EnemySpawner::SetSpawnRate(float value) {
+	this->SpawnRate = value;
+}
+
+void EnemySpawner::SetSpawnType(int type) {
+	this->SpawnType = type;
+	EnemyPool = GameController::GetInstance()->GetPool(type);
 }

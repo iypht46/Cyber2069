@@ -451,6 +451,8 @@ namespace World
 			FlyerPool->AddObject(flyer);
 		}
 
+		gamecontroller->GetComponent<GameController>()->AddPool(FlyerPool, POOL_TYPE::ENEMY_FLYER);
+
 		Animation* BomberIdle = new Animation();
 		BomberIdle->setStartPosition(0, 0);
 		BomberIdle->setEndPosition(4, 0);
@@ -520,11 +522,7 @@ namespace World
 			BomberPool->AddObject(bomber);
 		}
 
-	
-		Spawner->AddComponent<EnemySpawner>();
-		Spawner->GetComponent<EnemySpawner>()->OnStart();
-		Spawner->GetComponent<EnemySpawner>()->assignFlyPool(FlyerPool);
-		Spawner->GetComponent<EnemySpawner>()->assignBombPool(BomberPool);
+		gamecontroller->GetComponent<GameController>()->AddPool(BomberPool, POOL_TYPE::ENEMY_BOMBER);
 
 		Animation* queenIdle = new Animation();
 
@@ -546,7 +544,7 @@ namespace World
 		queenAnimControl->AddState(queenSpawning);
 
 
-		GameObject* queen = new GameObject();
+		/*GameObject* queen = new GameObject();
 		queen->m_transform.SetPosition(glm::vec3(-(Graphic::Window::GetWidth()), (Graphic::Window::GetHeight()*2/3) + 700.0f, 1.0f));
 		queen->AddComponent<MeshRenderer>();
 		queen->GetComponent<MeshRenderer>()->CreateMesh(4, 2);
@@ -576,7 +574,7 @@ namespace World
 		queen->GetComponent<DeQueen>()->assignFlyPool(FlyerPool);
 		queen->GetComponent<DeQueen>()->assignBombPool(BomberPool);
 
-		queen->m_transform.SetScale(glm::vec3(CHAR_SIZE * 10, CHAR_SIZE * 10, 1.0f));
+		queen->m_transform.SetScale(glm::vec3(CHAR_SIZE * 10, CHAR_SIZE * 10, 1.0f));*/
 
 
 		//Add Sound
@@ -587,6 +585,8 @@ namespace World
 		Bg2->GetComponent<SoundPlayer>()->SetVolume(0.5);
 		//Bg2->GetComponent<SoundPlayer>()->PlaySound();
 		//Bg->GetComponent<SoundPlayer>()->DeleteSoundPlayer();
+
+		gamecontroller->GetComponent<GameController>()->OnStart();
 
 		GAME_INFO(*Rabbit);
 
