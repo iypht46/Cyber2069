@@ -5,6 +5,10 @@
 #include "AirDash.hpp"
 #include "AirPatrol.hpp"
 
+///test only
+#include "Utility/Event.h" 
+#include"Core/Logger.hpp"
+
 enum EnemyState
 {
 	Idle = 0,
@@ -37,6 +41,7 @@ protected:
 	AirFollowing* airFollow;
 	AirDash* airDash;
 	//Explosion expl
+	EventSystem OnExplode;
 
 public:
 	EnemyState state = EnemyState::Idle;
@@ -45,6 +50,10 @@ public:
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
+
+	void test(int s) {
+		ENGINE_INFO("test event {}", s);
+	}
 };
 
 class DeQueen :public Enemy {

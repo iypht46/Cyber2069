@@ -14,6 +14,9 @@ void Bomber::Init(Transform* player) {
 
 	rigidbody = m_gameObject->GetComponent<Rigidbody>();
 
+	//test
+	OnExplode.addEvent(&test,9);
+	//test
 	Enemy::Init();
 }
 
