@@ -19,7 +19,7 @@ void PlayerController::OnDisable() {
 
 void PlayerController::OnCollisionEnter(const Physic::Collision col)
 {
-	GAME_INFO("Collider Enter");
+	//GAME_INFO("Collider Enter");
 }
 
 void PlayerController::OnCollisionStay(const Physic::Collision col)
@@ -34,7 +34,7 @@ void PlayerController::OnCollisionExit(const Physic::Collision col)
 
 void PlayerController::OnTriggerEnter(const Physic::Collision col)
 {
-	GAME_INFO("HIT");
+	hpSystem->TakeDamage(1.0f);
 }
 
 void PlayerController::OnTriggerStay(const Physic::Collision col)
@@ -50,20 +50,34 @@ void PlayerController::OnTriggerExit(const Physic::Collision col)
 void PlayerController::OnStart() {
 	Gun = m_gameObject->m_transform.GetChild(0);
 	rb = m_gameObject->GetComponent<Rigidbody>();
+	hpSystem = m_gameObject->GetComponent<HPsystem>();
+
+	hpSystem->SetMaxHP(200.0f);
+	hpSystem->ResetHP();
 
 	inverseGun = false;
 
 	jumping = false;
 	falling = false;
-	max_move_speed = 300.0f;
-	move_speed = 300.0f;
+	max_move_speed = 200.0f;
+	move_speed = 200.0f;
 	dash_speed = 750.0f;
 	jump_speed = 300.0f;
 	direction.x = 1;
 	direction.y = 1;
 
-	camZoomSpeed = 0.01f;
+	max_stamina = 50.0f;
+	dashStamina = 5.0f;
+	jumpStamina = 5.0f;
+
+	stamina = max_stamina;
+
+	camZoomSpeed = 0.005f;
 	camDelay = 0.5f;
+	//camMaxZoom = 0.75f;
+	camMaxZoom = 0.65f;
+	//camMinZoom = 1.00f;
+	camMinZoom = 1.50f;
 
 	bullet_speed = 300.0f;
 	bullet_delay = 0.1f;
@@ -80,42 +94,9 @@ void PlayerController::OnEnable() {
 
 void PlayerController::OnUpdate(float dt)
 {
-	/*if (m_gameObject->m_transform.GetPosition().y < -(720 / 2))
-	{
-		jumping = false;
-		m_gameObject->m_transform.SetPosition(glm::vec3(m_gameObject->m_transform.GetPosition().x, -(720 / 2) + 1, m_gameObject->m_transform.GetPosition().z));
-	}*/
-
 	Graphic::getCamera()->SetPos(glm::vec3(m_gameObject->m_transform.GetPosition().x, m_gameObject->m_transform.GetPosition().y, m_gameObject->m_transform.GetPosition().z));
 
-
-	if (!falling && jumping)
-	{
-		camDelay_count = 0.0f;
-		if (Graphic::getCamera()->GetZoom() < 1.5f)
-		{
-			Graphic::getCamera()->Zoom(camZoomSpeed);
-		}
-		else
-		{
-			Graphic::getCamera()->SetZoom(1.5f);
-		}
-	}
-	else {
-		camDelay_count += dt;
-
-		if (camDelay_count > camDelay) {
-
-			if (Graphic::getCamera()->GetZoom() > 0.75f)
-			{
-				Graphic::getCamera()->Zoom(-camZoomSpeed);
-			}
-			else
-			{
-				Graphic::getCamera()->SetZoom(0.75f);
-			}
-		}
-	}
+	cameraZoom(dt);
 
 	if ((rb->GetVelocity().y < -5.0f) && !falling)
 	{
@@ -124,10 +105,12 @@ void PlayerController::OnUpdate(float dt)
 
 	if (falling)
 	{
-		if (rb->GetVelocity().y >= 0)
+		if (checkGround())
 		{
 			jumping = false;
 			falling = false;
+
+			stamina = max_stamina;
 		}
 	}
 
@@ -186,9 +169,10 @@ void PlayerController::move()
 		m_gameObject->m_transform.SetScale(glm::vec3(glm::abs(m_gameObject->m_transform.GetScale().x), m_gameObject->m_transform.GetScale().y, m_gameObject->m_transform.GetScale().z));
 	}
 
-	if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE))
+	if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE) && (stamina > 0))
 	{
 		rb->SetVelocity(glm::vec3(0, jump_speed, 0));
+		stamina -= jumpStamina;
 		jumping = true;
 		running = false;
 		falling = false;
@@ -199,9 +183,11 @@ void PlayerController::move()
 	if (Input::GetKeyDown(Input::KeyCode::KEY_R)) 
 	{
 		m_gameObject->m_transform.SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
+		hpSystem->ResetHP();
+		m_gameObject->SetActive(true);
 	}
 
-	if (Input::GetKeyDown(Input::KeyCode::KEY_N))
+	if (Input::GetKeyUp(Input::KeyCode::KEY_N))
 	{
 		if (GLRenderer::GetInstance()->drawDebug) {
 
@@ -227,8 +213,9 @@ void PlayerController::move()
 		}
 	}
 
-	if (Input::GetKeyDown(Input::KeyCode::KEY_LEFT_SHIFT) && !Dash)
+	if (Input::GetKeyDown(Input::KeyCode::KEY_LEFT_SHIFT) && !Dash && !checkGround() && (stamina > 0))
 	{
+		stamina -= dashStamina;
 		dashRemainingTime = dashTime;
 		Dash = true;
 		setDashAnim = false;
@@ -249,15 +236,16 @@ void PlayerController::move()
 
 void PlayerController::dash(float dt)
 {
-
 	if (dashRemainingTime <= 0)
 	{
+		hpSystem->SetInvincible(false);
 		running = false;
 		m_gameObject->GetComponent<Animator>()->setCurrentState(4);
 		Dash = false;
 	}
 	else
 	{
+		hpSystem->SetInvincible(true);
 		dashRemainingTime -= dt;
 		delay -= dt;
 
@@ -291,8 +279,6 @@ void PlayerController::mouseAim()
 
 	mouse_x = Input::GetMouseWorldPosition().x;
 	mouse_y = Input::GetMouseWorldPosition().y;
-
-	GLRenderer::GetInstance()->DrawDebug_Line(mouse_x, mouse_y, pos_x, pos_y, 1.0f, 0.0f, 0.0f);
 
 	angle_deg = ((atan2(mouse_x - pos_x, mouse_y - pos_y) * 180 / PI) - 90) * -1.0f;
 
@@ -336,14 +322,12 @@ void PlayerController::mouseAim()
 
 		Gun->SetLocalPosition(glm::vec3( -1.0f * GunDistance * cos(angle_rad), GunDistance * sin(angle_rad) + 0.05f, 1));
 	}
-
-
-	//std::cout << angle_deg << std::endl;
 }
 
 void PlayerController::shoot(float dt)
 {
-	if (Input::GetMouseHold(Input::MouseKeyCode::MOUSE_LEFT))
+	if (Input::GetMouseHold(Input::MouseKeyCode::MOUSE_LEFT) ||
+		Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT))
 	{
 		bullet_delay_count += dt;
 		if (bullet_delay_count > bullet_delay)
@@ -383,6 +367,76 @@ void PlayerController::shoot(float dt)
 				bullet->GetComponent<Rigidbody>()->SetVelocity(glm::vec3(speedX, speedY, 0.0f));
 
 				bullet_delay_count = 0.0f;
+			}
+		}
+	}
+
+	float mouse_x, mouse_y, pos_x, pos_y;
+
+	pos_x = m_gameObject->m_transform.GetPosition().x;
+	pos_y = m_gameObject->m_transform.GetPosition().y;
+
+	mouse_x = Input::GetMouseWorldPosition().x;
+	mouse_y = Input::GetMouseWorldPosition().y;
+
+	int hits = ps->RaycastAll(Physic::Ray(pos_x, pos_y, mouse_x, mouse_y), ps->GetLayerFromString("Enemy")).size();
+	//ENGINE_INFO("{} enemies hit with ray", hits);
+	GLRenderer::GetInstance()->DrawDebug_Line(pos_x, pos_y, mouse_x, mouse_y, 1.0f, 0.0f, 0.0f);
+}
+
+bool PlayerController::checkGround() 
+{
+	int hits = 0;
+	float pos_x, pos_y, raycastRange;
+	Physic::PhysicScene* PhySc = Physic::PhysicScene::GetInstance();
+	
+	pos_x = m_gameObject->m_transform.GetPosition().x;
+	pos_y = m_gameObject->m_transform.GetPosition().y;
+	raycastRange = 25.0f;
+
+	hits = PhySc->RaycastAll(Physic::Ray(pos_x, pos_y, pos_x, pos_y - raycastRange), PhySc->GetLayerFromString("Platform")).size();
+	ENGINE_INFO("{} Platform hit with ray", hits);
+	GLRenderer::GetInstance()->DrawDebug_Line(pos_x, pos_y, pos_x, pos_y - raycastRange, 1.0f, 0.0f, 0.0f);
+
+	if (hits > 0) 
+	{
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+float PlayerController::GetStamina() {
+	return this->stamina;
+}
+
+void PlayerController::cameraZoom(float dt) {
+
+	if (!falling && jumping)
+	{
+		camDelay_count = 0.0f;
+		if (Graphic::getCamera()->GetZoom() < camMinZoom)
+		{
+			Graphic::getCamera()->Zoom(camZoomSpeed);
+		}
+		else
+		{
+			Graphic::getCamera()->SetZoom(camMinZoom);
+		}
+	}
+	else {
+		camDelay_count += dt;
+
+		if (camDelay_count > camDelay) {
+
+			if (Graphic::getCamera()->GetZoom() > camMaxZoom)
+			{
+				Graphic::getCamera()->Zoom(-camZoomSpeed);
+			}
+			else
+			{
+				Graphic::getCamera()->SetZoom(camMaxZoom);
 			}
 		}
 	}

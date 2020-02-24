@@ -25,6 +25,7 @@
 		bool m_isStatic = true;
 		bool m_hasCollided = false;
 		float m_density;
+		float m_friction = 0.1f;
 	public:
 		Transform* m_transform;
 		Rigidbody* m_rigidbody;
@@ -38,6 +39,9 @@
 		COLLIDER_TYPE GetType();
 		bool IsStatic();
 		COL_STATE GetCollisionState();
+
+		void SetFriction(float friction) { m_friction = friction; }
+		float GetFriction() { return m_friction; }
 
 		//Virtual
 		virtual void SetOrient() {};

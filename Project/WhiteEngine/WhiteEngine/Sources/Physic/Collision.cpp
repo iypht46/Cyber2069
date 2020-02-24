@@ -8,6 +8,24 @@
 
 namespace Physic
 {
+	Ray::Ray(glm::vec2 from, glm::vec2 to) {
+		origin = from;
+		end = to;
+	}
+
+	Ray::Ray(glm::vec2 from, glm::vec2 direction, float length) {
+		origin = from;
+		end = glm::normalize(from + direction) * length;
+	}
+
+	Ray::Ray(float originx, float originy, float endx, float endy) {
+		origin = glm::vec2(originx, originy);
+		end = glm::vec2(endx, endy);
+	}
+
+	float Ray::distance() {
+		return glm::length(end - origin);
+	}
 
 	bool AABBtoAABB(Manifold* m)
 	{
@@ -73,6 +91,37 @@ namespace Physic
 		return true;
 	}
 
+	bool RaytoRay(Ray rayA, Ray rayB) {
+		float x1 = rayA.origin.x;
+		float x2 = rayA.end.x;
+		float x3 = rayB.origin.x;
+		float x4 = rayB.end.x;
+		float y1 = rayA.origin.y;
+		float y2 = rayA.end.y;
+		float y3 = rayB.origin.y;
+		float y4 = rayB.end.y;
+
+		float uA = ((x4 - x3)*(y1 - y3) - (y4 - y3)*(x1 - x3)) / ((y4 - y3)*(x2 - x1) - (x4 - x3)*(y2 - y1));
+		float uB = ((x2 - x1)*(y1 - y3) - (y2 - y1)*(x1 - x3)) / ((y4 - y3)*(x2 - x1) - (x4 - x3)*(y2 - y1));
+
+		if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
+			return true;
+		}
+		return false;
+	}
+
+	bool RaytoAABB(Ray ray, AABB box) {
+		glm::vec2 tl = box.m_min; //box topleft
+		glm::vec2 lr = box.m_max; //box lowerright
+
+		bool up		= RaytoRay(ray, Ray(tl.x, tl.y, lr.x, tl.y));
+		bool down	= RaytoRay(ray, Ray(tl.x, lr.y, lr.x, lr.y));
+		bool left	= RaytoRay(ray, Ray(tl.x, tl.y, tl.x, lr.y));
+		bool right	= RaytoRay(ray, Ray(lr.x, tl.y, lr.x, lr.y));
+
+		return up || down || left || right;
+	}
+
 	//Default Constructor
 	Collision::Collision() {}
 	//Constructor
@@ -90,6 +139,7 @@ namespace Physic
 		if (m_objectA && m_objectB)
 		{
 			if (m_objectA->GetGameObject()->Active() && m_objectB->GetGameObject()->Active()) {
+				//check shape
 				if (m_objectA->GetType() == COLLIDER_TYPE::BOX
 					&& m_objectB->GetType() == COLLIDER_TYPE::BOX)
 				{
@@ -110,6 +160,7 @@ namespace Physic
 		if (m_type == RESOLVE_TYPE::COLLISION)
 		{
 			glm::vec3 resultVec = m_normal * (m_penetration * RESOLVE_MUL);
+			float meanFriction = (m_objectB->GetFriction() + m_objectA->GetFriction()) / 2.0f;
 
 			//If both object is moving (Both is not static) then check its velocity
 			if (m_objAResFlag && m_objBResFlag)
@@ -125,16 +176,24 @@ namespace Physic
 			
 			if (m_objAResFlag)
 			{
+				glm::vec3 vel = m_objectA->m_rigidbody->GetVelocity();
+				vel.x *= (1.0f - meanFriction);
+
+				m_objectA->m_rigidbody->SetVelocity(vel);
 				m_objectA->m_rigidbody->SetVelocity0Masked(-resultVec);
-				ENGINE_INFO("objA {}", m_objectA->GetGameObject()->GetID());
+				//ENGINE_INFO("objA {}", m_objectA->GetGameObject()->GetID());
 			}
 
 			if (m_objBResFlag)
 			{
-				m_objectA->m_rigidbody->SetVelocity0Masked(resultVec);
-				ENGINE_INFO("objB {}", m_objectB->GetGameObject()->GetID());
+				glm::vec3 vel = m_objectB->m_rigidbody->GetVelocity();
+				vel.x *= (1.0f - meanFriction);
+
+				m_objectB->m_rigidbody->SetVelocity(m_objectB->m_rigidbody->GetVelocity()*(1.0f - meanFriction));
+				m_objectB->m_rigidbody->SetVelocity0Masked(resultVec);
+				//ENGINE_INFO("objB {}", m_objectB->GetGameObject()->GetID());
 			}
-			ENGINE_INFO("reslv\n");
+			//ENGINE_INFO("reslv\n");
 		}
 		
 		//glm::vec3 resultVec = m_normal * (m_penetration * RESOLVE_MUL);

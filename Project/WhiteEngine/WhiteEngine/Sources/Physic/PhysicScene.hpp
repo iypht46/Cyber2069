@@ -47,7 +47,7 @@ namespace Physic
 	class PhysicScene
 	{
 	private:
-		
+		static PhysicScene* instance;
 		//Store layerbit as key and collider as value.
 		CollidersMap m_colliders;
 		Bodies m_bodies;
@@ -111,6 +111,11 @@ namespace Physic
 		//Convert Layer Enum to number
 		static uint32_t LayerToNum(Layer);
 
+		Colliders GetColliderLayer(Layer);
+
+		Colliders RaycastAll (Ray,Layer);
+		Collider* Raycast (Ray,Layer);
+
 		//@Physic Settings
 		//Set Scene Gravity
 		void SetGravity(glm::vec3);
@@ -121,6 +126,8 @@ namespace Physic
 		void ResetLayerCollisions(Layer, Layer);
 		void ResetLayerCollisions(std::string, std::string);
 
+		static PhysicScene* GetInstance();
+		
 		PhysicScene();
 		~PhysicScene() {}
 	};

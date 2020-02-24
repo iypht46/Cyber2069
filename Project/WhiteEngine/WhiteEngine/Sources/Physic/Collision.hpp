@@ -17,8 +17,19 @@ namespace Physic
 
 	struct AABB
 	{
-		glm::vec2 m_min;
-		glm::vec2 m_max;
+		glm::vec2 m_min; //topleft
+		glm::vec2 m_max; //lowerright
+	};
+
+	struct Ray
+	{
+		glm::vec2 origin;
+		glm::vec2 end;
+
+		Ray(glm::vec2 origin, glm::vec2 end);
+		Ray(glm::vec2 origin, glm::vec2 direction, float distance);
+		Ray(float originx, float originy, float endx, float endy);
+		float distance();
 	};
 
 	struct Collision
@@ -56,6 +67,8 @@ namespace Physic
 
 	//For Box to Box
 	bool AABBtoAABB(AABB, AABB);
+	bool RaytoRay(Ray, Ray);
+	bool RaytoAABB(Ray, AABB);
 
 	//typedef void(*CollisionFunc)(Collider*, Collider*);
 

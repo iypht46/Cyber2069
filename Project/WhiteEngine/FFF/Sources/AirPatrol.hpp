@@ -1,23 +1,22 @@
 #pragma once
-#include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/Components/Transform.hpp"
+#include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/GameObject.hpp"
 #include "Core/EC/Components/Rigidbody.hpp"
-
-#define MOVE_SPEED_FLYER 100.0f
-#define ROT_ANGLE 15.0f
-#define ROT_RATE 1.5f
-
-class FlyerBehaviour : public BehaviourScript {
-protected:
-	Transform* player;
-	Transform* flyer;
+class AirPatrol : public BehaviourScript
+{
+private:
+	float m_pointAX;
+	float m_pointBX;
+	float m_speed;
 public:
-	int hp = 0;
-
-	FlyerBehaviour();
-	void SetPlayer(Transform&);
-
+	Transform* queen;
+	Rigidbody* rb;
+	AirPatrol();
+	~AirPatrol();
+	void Patrol();
+	void SetPoint(float aX, float bX);
+	void SetSpeed(float speed);
 	virtual void OnAwake();
 	virtual void OnEnable();
 	virtual void OnStart();
@@ -25,3 +24,4 @@ public:
 	virtual void OnFixedUpdate(float dt);
 	virtual void OnDisable();
 };
+

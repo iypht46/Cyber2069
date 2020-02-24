@@ -19,7 +19,6 @@ protected:
 	friend class Collider;
 
 	bool isActive;
-	std::string m_objectName;
 
 	static int s_IDCounter;
 	int m_objectID;
@@ -35,7 +34,7 @@ protected:
 	void TriggerExit(const Physic::Collision);
 public:
 	GameObject();
-
+	std::string Name;
 	Transform m_transform;
 
 	void SetActive(bool activestate);
@@ -88,6 +87,6 @@ T* GameObject::GetComponent() {
 
 LogCustomType_DF(GameObject)
 {
-	return os << "GameObject: " << obj.m_objectName << "\n";
+	return os << "GameObject: " << obj.Name << "\n";
 }
 

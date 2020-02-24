@@ -9,14 +9,17 @@
 #include "Graphic/Camera.hpp"
 #include "Graphic/Window.hpp"
 
+
 class EnemySpawner : public BehaviourScript 
 {
 protected:
 	float SpawnDelay;
 	float SpawnDelayCount;
 	ObjectPool* FlyerPool;
+	ObjectPool* BomberPool;
 public:
-	void assignPool(ObjectPool* pool);
+	void assignFlyPool(ObjectPool* pool);
+	void assignBombPool(ObjectPool* pool);
 
 	virtual void OnAwake();
 	virtual void OnEnable();

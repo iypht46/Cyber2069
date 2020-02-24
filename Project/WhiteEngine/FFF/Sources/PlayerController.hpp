@@ -3,20 +3,32 @@
 #include "Core/EC/Components/Transform.hpp"
 #include "Core/EC/Components/Rigidbody.hpp"
 #include "Core/EC/Components/Animator.hpp"
+#include "Physic/PhysicScene.hpp"
 #include "Input/Input.hpp"
 #include "Core/EC/GameObject.hpp"
+
+#include "HPsystem.hpp"
 
 #include "Utility/ObjectPool.h"
 
 #define PI 3.14159265358979323846
 
 class PlayerController : public BehaviourScript {
+private://change later
+	Physic::PhysicScene* ps;
 protected:
+	HPsystem* hpSystem;
 	Transform* Gun;
 	Rigidbody* rb;
 
 	ObjectPool* MGbulletPool;
 	
+	float max_stamina;
+	float stamina;
+
+	float dashStamina;
+	float jumpStamina;
+
 	float max_move_speed;
 	float move_speed;
 	float dash_speed;
@@ -24,11 +36,12 @@ protected:
 	float dashTime;
 	float dashRemainingTime;
 	float delay;
-	float m_drag;
 
 	float camZoomSpeed;
 	float camDelay;
 	float camDelay_count;
+	float camMaxZoom;
+	float camMinZoom;
 
 	float bullet_speed;
 	float bullet_delay;
@@ -49,6 +62,7 @@ protected:
 	float angle_deg, angle_rad;
 
 public:
+	void PSSet(Physic::PhysicScene* ps) { this->ps = ps; }
 	PlayerController();
 	
 	void mouseAim();
@@ -57,6 +71,11 @@ public:
 	void move();
 	void dash(float dt);
 	void shoot(float dt);
+	bool checkGround();
+
+	float GetStamina();
+	
+	void cameraZoom(float dt);
 
 	void assignPool(ObjectPool* pool);
 
