@@ -1,5 +1,6 @@
 #include "EnemyBehaviours.h"
 #include "Core/Logger.hpp"
+#include "Graphic/GLRenderer.h"
 
 void Bomber::Init(Transform* player) {
 	SetTarget(player);
@@ -27,6 +28,8 @@ void Bomber::OnStart() {
 void Bomber::OnUpdate(float dt) {
 	if (m_gameObject->Active()) {
 		Enemy::OnUpdate(dt);
+
+		GLRenderer::GetInstance()->DrawDebug_Circle(m_gameObject->m_transform.GetPosition().x, m_gameObject->m_transform.GetPosition().y, DashTriggerRadius, 1.0f, 0.0f, 0.0f);
 
 		if (glm::length(target->GetPosition() - m_gameObject->m_transform.GetPosition()) < DashTriggerRadius) {
 			airDash->TargetLock(target->GetPosition());
