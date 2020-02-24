@@ -139,6 +139,7 @@
     <ClCompile Include="Sources\Flyer.cpp" />
     <ClCompile Include="Sources\GameController.cpp" />
     <ClCompile Include="Sources\HPsystem.cpp" />
+    <ClCompile Include="Sources\MachineGun.cpp" />
     <ClCompile Include="Sources\MachineGunBullet.cpp" />
     <ClCompile Include="Sources\main.cpp" />
     <ClCompile Include="Sources\PlayerController.cpp" />
@@ -153,11 +154,14 @@
     <ClInclude Include="Sources\EnemyBehaviour.hpp" />
     <ClInclude Include="Sources\EnemyBehaviours.h" />
     <ClInclude Include="Sources\EnemySpawner.hpp" />
+    <ClInclude Include="Sources\Equipment.hpp" />
     <ClInclude Include="Sources\FactoryCollection.h" />
     <ClInclude Include="Sources\GameController.hpp" />
     <ClInclude Include="Sources\HPsystem.hpp" />
+    <ClInclude Include="Sources\MachineGun.hpp" />
     <ClInclude Include="Sources\MachineGunBullet.hpp" />
     <ClInclude Include="Sources\PlayerController.hpp" />
+    <ClInclude Include="Sources\Weapon.hpp" />
     <ClInclude Include="Sources\World.hpp" />
   </ItemGroup>
   <ItemGroup>
