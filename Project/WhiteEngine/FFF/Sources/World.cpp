@@ -431,7 +431,7 @@ namespace World
 			BulletPool->AddObject(Bullet);
 		}
 
-		for (int i = 0; i < 1; i++)
+		for (int i = 0; i < 0; i++)
 		{
 			GameObject* flyer = new GameObject();
 
@@ -528,7 +528,7 @@ namespace World
 		BomberAnimController->AddState(BomberExplode);
 		BomberAnimController->AddState(BomberDie);
 
-		for (int i = 0; i < 00; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			GameObject* bomber = new GameObject();
 

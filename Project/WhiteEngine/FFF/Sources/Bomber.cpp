@@ -15,7 +15,7 @@ void Bomber::Init(Transform* player) {
 	rigidbody = m_gameObject->GetComponent<Rigidbody>();
 
 	//test
-	OnExplode.addEvent(&test,9);
+	OnExplode.addEvent(this, &Bomber::test, m_componentID);
 	//test
 	Enemy::Init();
 }
@@ -27,6 +27,8 @@ void Bomber::OnStart() {
 void Bomber::OnUpdate(float dt) {
 	if (m_gameObject->Active()) {
 		Enemy::OnUpdate(dt);
+
+		OnExplode.Trigger();
 
 		if (glm::length(target->GetPosition() - m_gameObject->m_transform.GetPosition()) < DashTriggerRadius) {
 			state = EnemyState::Active;

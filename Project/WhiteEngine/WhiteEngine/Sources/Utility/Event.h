@@ -18,23 +18,25 @@ private:
 	//============================================
 	//Event Template
 	//============================================
-	template<class ParamT>
+	template<class T, class ParamT>
 	class TypedEvent :public Event {
 	protected:
-		void (*m_Function) (ParamT param);
+		T* m_HostObject;
+		void (T::*m_Function) (ParamT param);
 
 	public:
-		ParamT m_param;
+		ParamT m_Param;
 
-		TypedEvent(void(*functionptr)(ParamT), ParamT defaultParam);
+		TypedEvent(T* host, void(T::*functionptr)(ParamT), ParamT defaultParam);
 		virtual void Call();
 	};
+
 
 	std::vector<Event*> m_events;
 
 public:
-	template<class ParamT>
-	void addEvent(void(*fuctionptr)(ParamT defaultParam));
+	template<class T, class ParamT>
+	void addEvent(T* host, void(T::*fuctionptr)(ParamT), ParamT defaultParam);
 
 	void Trigger();
 
@@ -46,15 +48,16 @@ public:
 //Event Definition
 //============================================
 
-template<class ParamT>
-void EventSystem::TypedEvent<ParamT>::Call() {
-	return (*m_Function)(m_param);
+template<class T, class ParamT>
+void EventSystem::TypedEvent<T, ParamT>::Call() {
+	(m_HostObject->*m_Function)(m_Param);
 }
 
-template<class ParamT>
-EventSystem::TypedEvent<ParamT>::TypedEvent(void(*functionptr)(ParamT), ParamT defaultParam) {
+template<class T, class ParamT>
+EventSystem::TypedEvent<T, ParamT>::TypedEvent(T* host, void(T::*functionptr)(ParamT), ParamT defaultParam) {
+	m_HostObject = host;
 	m_Function = functionptr;
-	m_param = defaultParam;
+	m_Param = defaultParam;
 }
 
 
@@ -63,9 +66,10 @@ EventSystem::TypedEvent<ParamT>::TypedEvent(void(*functionptr)(ParamT), ParamT d
 //Event Controller Definition
 //============================================
 
-template<class ParamT>
-void EventSystem::addEvent(void(*fuctionptr)(ParamT defaultParam)) {
-	Event = new TypedEvent<ParamT>(fuctionptr, defaultParam);
+template<class T, class ParamT>
+void EventSystem::addEvent(T* host, void(T::*fuctionptr)(ParamT), ParamT defaultParam) {
+	Event* newEvent = new TypedEvent<T, ParamT>(host, fuctionptr, defaultParam);
+	m_events.push_back(newEvent);
 }
 
 void EventSystem::Trigger() {
