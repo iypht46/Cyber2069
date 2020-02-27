@@ -33,6 +33,7 @@ protected:
 
 	float dashStamina;
 	float jumpStamina;
+	float staminaRegenRate;
 
 	float max_move_speed;
 	float move_speed;
@@ -42,11 +43,12 @@ protected:
 	float dashRemainingTime;
 	float delay;
 
-	float camZoomSpeed;
-	float camDelay;
+	float camZoomInSpeed;
+	float camZoomOutSpeed;
+	float camZoomInDelay;
 	float camDelay_count;
-	float camMaxZoom;
-	float camMinZoom;
+	float camSmall;
+	float camLarge;
 
 	float bullet_speed;
 	float bullet_delay;
@@ -57,6 +59,7 @@ protected:
 	bool running;
 	bool jumping;
 	bool falling;
+	bool onGround;
 	bool Dash;
 	bool setDashAnim;
 	
@@ -77,7 +80,8 @@ public:
 	void dash(float dt);
 	bool checkGround();
 
-	float GetStamina();
+	float GetStamina() { return this->stamina; }
+	float GetMaxStamina() { return this->max_stamina; }
 	
 	void cameraZoom(float dt);
 

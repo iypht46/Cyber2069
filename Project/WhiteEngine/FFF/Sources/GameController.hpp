@@ -5,6 +5,7 @@
 #include "Utility/ObjectPool.h"
 #include "HPsystem.hpp"
 #include "EnemySpawner.hpp"
+#include "PlayerController.hpp"
 
 #include <map>
 
@@ -23,10 +24,16 @@ private:
 	float startHPscaleX;
 	float startHPscaleY;
 
+	float startStaminascaleX;
+	float startStaminascaleY;
+
 	float startHPposX;
+	float startStaminaposX;
 	
+	PlayerController* player;
 	HPsystem* PlayerHP;
 	GameObject* HPbar;
+	GameObject* Staminabar;
 	GameObject* ScoreText;
 
 	map<int, ObjectPool*> Pools;
@@ -47,9 +54,11 @@ public:
 	void ResetScore();
 
 	void updateHPui();
+	void updateStaminaUI();
 
 	void AssignScoreText(GameObject* ScoreText);
 	void AssignHPbar(GameObject* hpbar);
+	void AssignStaminabar(GameObject* staminabar);
 	void AssignPlayer(GameObject* player);
 
 	void AddPool(ObjectPool* pool, int type);

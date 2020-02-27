@@ -63,6 +63,7 @@ namespace World
 	GameObject* gamecontroller;
 	GameObject* ui_ScoreText;
 	GameObject* ui_HPbar;
+	GameObject* ui_StaminaBar;
 
 	GameObject* Enemy;
 	GameObject* Spawner;
@@ -198,6 +199,7 @@ namespace World
 		gamecontroller = new GameObject();
 		ui_ScoreText = new GameObject();
 		ui_HPbar = new GameObject();
+		ui_StaminaBar = new GameObject();
 
 		Spawner = new GameObject();
 
@@ -239,9 +241,16 @@ namespace World
 		ui_HPbar->m_transform.SetScale(glm::vec3(500.0f, 40.0f, 1.0f));
 		ui_HPbar->m_transform.SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 280.0f, (Graphic::Window::GetHeight() / 2) - 40.0f, 1.0f));
 
+		ui_StaminaBar->AddComponent<MeshRenderer>();
+		ui_StaminaBar->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+		ui_StaminaBar->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Blue.jpg");
+		ui_StaminaBar->GetComponent<MeshRenderer>()->SetUI(true);
+		ui_StaminaBar->GetComponent<MeshRenderer>()->SetLayer(10);
+		ui_StaminaBar->m_transform.SetScale(glm::vec3(500.0f, 20.0f, 1.0f));
+		ui_StaminaBar->m_transform.SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 280.0f, (Graphic::Window::GetHeight() / 2) - 80.0f, 1.0f));
+
+
 		gamecontroller->AddComponent<GameController>();
-		gamecontroller->GetComponent<GameController>()->AssignScoreText(ui_ScoreText);
-		gamecontroller->GetComponent<GameController>()->AssignHPbar(ui_HPbar);
 
 		Bg2->AddComponent<MeshRenderer>();
 		Bg2->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
@@ -262,7 +271,6 @@ namespace World
 		Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_PlayerBody_Vversion03.png");
 
 		Rabbit->AddComponent<HPsystem>();
-		gamecontroller->GetComponent<GameController>()->AssignPlayer(Rabbit);
 
 		//Flyer->AddComponent<MeshRenderer>();
 		//Flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
@@ -585,6 +593,13 @@ namespace World
 		Bg2->GetComponent<SoundPlayer>()->SetVolume(0.5);
 		//Bg2->GetComponent<SoundPlayer>()->PlaySound();
 		//Bg->GetComponent<SoundPlayer>()->DeleteSoundPlayer();
+
+
+		gamecontroller->GetComponent<GameController>()->AssignPlayer(Rabbit);
+
+		gamecontroller->GetComponent<GameController>()->AssignScoreText(ui_ScoreText);
+		gamecontroller->GetComponent<GameController>()->AssignHPbar(ui_HPbar);
+		gamecontroller->GetComponent<GameController>()->AssignStaminabar(ui_StaminaBar);
 
 		gamecontroller->GetComponent<GameController>()->OnStart();
 
