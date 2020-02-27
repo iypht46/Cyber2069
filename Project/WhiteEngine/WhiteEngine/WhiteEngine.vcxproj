@@ -157,6 +157,7 @@
     <ClInclude Include="Sources\Graphic\SquareMeshVbo.h" />
     <ClInclude Include="Sources\Graphic\Window.hpp" />
     <ClInclude Include="Sources\Input\Input.hpp" />
+    <ClInclude Include="Sources\Utility\Event.h" />
     <ClInclude Include="Sources\Utility\ObjectPool.h" />
   </ItemGroup>
   <ItemGroup>
@@ -187,6 +188,7 @@
     <ClCompile Include="Sources\Graphic\Window.cpp" />
     <ClCompile Include="Sources\Input\Input.cpp" />
     <ClCompile Include="Sources\Physic\Raycast.cpp" />
+    <ClCompile Include="Sources\Utility\Event.cpp" />
     <ClCompile Include="Sources\Utility\ObjectPool.cpp" />
   </ItemGroup>
   <ItemGroup>

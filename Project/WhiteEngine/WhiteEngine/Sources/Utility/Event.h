@@ -71,14 +71,3 @@ void EventSystem::addEvent(T* host, void(T::*fuctionptr)(ParamT), ParamT default
 	Event* newEvent = new TypedEvent<T, ParamT>(host, fuctionptr, defaultParam);
 	m_events.push_back(newEvent);
 }
-
-void EventSystem::Trigger() {
-	for (Event* event : m_events) {
-		event->Call();
-	}
-}
-
-EventSystem::~EventSystem() {
-	delete[] m_events.data();
-	m_events.clear();
-}
