@@ -16,6 +16,7 @@
 #include "MachineGunBullet.hpp"
 #include "EnemySpawner.hpp"
 #include "GameController.hpp"
+#include "MachineGun.hpp"
 
 #include "Core/EC/Components/Collider.hpp"
 #include "Core/EC/Components/Rigidbody.hpp"
@@ -263,8 +264,6 @@ namespace World
 		Rabbit->AddComponent<HPsystem>();
 		gamecontroller->GetComponent<GameController>()->AssignPlayer(Rabbit);
 
-		Child->m_transform.SetParent(&Rabbit->m_transform);
-
 		//Flyer->AddComponent<MeshRenderer>();
 		//Flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
 		//Flyer->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Flyer_Vversion01.png");
@@ -337,21 +336,13 @@ namespace World
 		Flyer->GetComponent<Animator>()->AssignController(EnemCon);
 		Flyer->GetComponent<Animator>()->setCurrentState(0);
 		Flyer->GetComponent<Animator>()->setFramePerSec(12);*/
-
-		Child->AddComponent<MeshRenderer>();
-		Child->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
-		Child->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_shoot.png");
 		//std::cout << "Layer Collision: " << g_physicScene->GetLayerCollisions("Player") << std::endl;
-
 
 		//Set Transform
 		Rabbit->m_transform.SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
 		Rabbit->m_transform.SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
-
-		Child->m_transform.SetScale(glm::vec3(70, 70, 1));
 		//Child->m_transform.SetLocalScale(glm::vec3(1, 1, 1));
 		//Child->m_transform.SetPosition(glm::vec3(0, 0, 0));
-		Child->m_transform.SetLocalPosition(glm::vec3(1, 0, 0));
 		//Bg->m_transform.SetScale(glm::vec3(500, 500, 1));
 
 		//Flyer->m_transform.SetPosition(glm::vec3(100, 100, 0));
@@ -397,8 +388,8 @@ namespace World
 		Rabbit->AddComponent<HPsystem>();
 		Rabbit->AddComponent<PlayerController>();
 		Rabbit->GetComponent<PlayerController>()->OnStart();
-		Rabbit->GetComponent<PlayerController>()->assignPool(BulletPool);
 		Rabbit->GetComponent<PlayerController>()->PSSet(g_physicScene);
+		Rabbit->GetComponent<PlayerController>()->assignWeapon(new MachineGun());
 
 		//Flyer->AddComponent<FlyerBehaviour>();
 		//Flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
@@ -428,7 +419,9 @@ namespace World
 			BulletPool->AddObject(Bullet);
 		}
 
-		for (int i = 0; i < 100; i++)
+		gamecontroller->GetComponent<GameController>()->AddPool(BulletPool, POOL_TYPE::BULLET_MG);
+
+		for (int i = 0; i < 200; i++)
 		{
 			GameObject* flyer = new GameObject();
 
@@ -457,6 +450,8 @@ namespace World
 			flyer->SetActive(false);
 			FlyerPool->AddObject(flyer);
 		}
+
+		gamecontroller->GetComponent<GameController>()->AddPool(FlyerPool, POOL_TYPE::ENEMY_FLYER);
 
 		Animation* BomberIdle = new Animation();
 		BomberIdle->setStartPosition(0, 0);
@@ -496,7 +491,7 @@ namespace World
 		BomberAnimController->AddState(BomberExplode);
 		BomberAnimController->AddState(BomberDie);
 
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < 200; i++)
 		{
 			GameObject* bomber = new GameObject();
 
@@ -527,11 +522,7 @@ namespace World
 			BomberPool->AddObject(bomber);
 		}
 
-	
-		Spawner->AddComponent<EnemySpawner>();
-		Spawner->GetComponent<EnemySpawner>()->OnStart();
-		Spawner->GetComponent<EnemySpawner>()->assignFlyPool(FlyerPool);
-		Spawner->GetComponent<EnemySpawner>()->assignBombPool(BomberPool);
+		gamecontroller->GetComponent<GameController>()->AddPool(BomberPool, POOL_TYPE::ENEMY_BOMBER);
 
 		Animation* queenIdle = new Animation();
 
@@ -553,8 +544,8 @@ namespace World
 		queenAnimControl->AddState(queenSpawning);
 
 
-		GameObject* queen = new GameObject();
-		queen->m_transform.SetPosition(glm::vec3(-(Graphic::Window::GetWidth() / 2), (Graphic::Window::GetHeight() / 2) + 700.0f, 1.0f));
+		/*GameObject* queen = new GameObject();
+		queen->m_transform.SetPosition(glm::vec3(-(Graphic::Window::GetWidth()), (Graphic::Window::GetHeight()*2/3) + 700.0f, 1.0f));
 		queen->AddComponent<MeshRenderer>();
 		queen->GetComponent<MeshRenderer>()->CreateMesh(4, 2);
 		queen->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Queen_V[version01].png");
@@ -575,6 +566,7 @@ namespace World
 		queen->GetComponent<HPsystem>()->SetMaxHP(1000.0f);
 		queen->GetComponent<HPsystem>()->SetHp(1000.0f);
 		queen->AddComponent<AirPatrol>();
+		queen->GetComponent<AirPatrol>()->SetPoint(-(Graphic::Window::GetWidth() * 2), Graphic::Window::GetWidth() * 2);
 		queen->AddComponent<DeQueen>();
 		queen->GetComponent<DeQueen>()->Init();
 
@@ -582,7 +574,7 @@ namespace World
 		queen->GetComponent<DeQueen>()->assignFlyPool(FlyerPool);
 		queen->GetComponent<DeQueen>()->assignBombPool(BomberPool);
 
-		queen->m_transform.SetScale(glm::vec3(1000.0f, 1000.f, 1.0f));
+		queen->m_transform.SetScale(glm::vec3(CHAR_SIZE * 10, CHAR_SIZE * 10, 1.0f));*/
 
 
 		//Add Sound
@@ -593,6 +585,8 @@ namespace World
 		Bg2->GetComponent<SoundPlayer>()->SetVolume(0.5);
 		//Bg2->GetComponent<SoundPlayer>()->PlaySound();
 		//Bg->GetComponent<SoundPlayer>()->DeleteSoundPlayer();
+
+		gamecontroller->GetComponent<GameController>()->OnStart();
 
 		GAME_INFO(*Rabbit);
 

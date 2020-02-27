@@ -6,6 +6,9 @@ GameController::GameController() {
 	if (instance == nullptr) 
 	{
 		instance = this;
+
+		FlyerSpawner = new GameObject();
+		BomberSpawner = new GameObject();
 	}
 }
 
@@ -72,6 +75,15 @@ void GameController::updateHPui() {
 
 }
 
+void GameController::AddPool(ObjectPool* pool, int type) 
+{
+	Pools.insert(pair<int, ObjectPool*>(type, pool));
+}
+
+ObjectPool* GameController::GetPool(int type) {
+	return Pools[type];
+}
+
 void GameController::OnAwake() {
 
 }
@@ -81,6 +93,19 @@ void GameController::OnEnable() {
 }
 
 void GameController::OnStart() {
+
+	FlyerSpawner->AddComponent<EnemySpawner>();
+	FlyerSpawner->GetComponent<EnemySpawner>()->SetSpawnDelay(0.5f);
+	FlyerSpawner->GetComponent<EnemySpawner>()->SetSpawnRate(100.0f);
+	FlyerSpawner->GetComponent<EnemySpawner>()->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() / -2);
+	FlyerSpawner->GetComponent<EnemySpawner>()->SetSpawnType(POOL_TYPE::ENEMY_FLYER);
+
+
+	BomberSpawner->AddComponent<EnemySpawner>();
+	BomberSpawner->GetComponent<EnemySpawner>()->SetSpawnDelay(0.5f);
+	BomberSpawner->GetComponent<EnemySpawner>()->SetSpawnRate(20.0f);
+	BomberSpawner->GetComponent<EnemySpawner>()->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() / -2);
+	BomberSpawner->GetComponent<EnemySpawner>()->SetSpawnType(POOL_TYPE::ENEMY_BOMBER);
 
 }
 

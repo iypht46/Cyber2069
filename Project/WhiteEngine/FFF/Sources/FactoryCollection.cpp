@@ -9,7 +9,6 @@
 #include "Core/EC/Components/Transform.hpp"
 
 #include "Core/EC/Components/BehaviourScript.h"
-#include "FlyerBehaviour.hpp"
 #include "PlayerController.hpp"
 #include "MachineGunBullet.hpp"
 #include "EnemySpawner.hpp"

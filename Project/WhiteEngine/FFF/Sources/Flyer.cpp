@@ -34,7 +34,8 @@ void Flyer::OnFixedUpdate(float dt) {
 		switch (state)
 		{
 		case Idle:
-			rigidbody->SetVelocity(glm::vec3(0));
+			//rigidbody->SetVelocity(glm::vec3(0));
+			airFollow->FollowPlayer(dt);
 			break;
 		case Chase:
 			airFollow->FollowPlayer(dt);

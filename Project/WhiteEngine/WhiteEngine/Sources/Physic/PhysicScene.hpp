@@ -111,6 +111,8 @@ namespace Physic
 		//Convert Layer Enum to number
 		static uint32_t LayerToNum(Layer);
 
+		Colliders GetColliderLayer(Layer);
+
 		Colliders RaycastAll (Ray,Layer);
 		Collider* Raycast (Ray,Layer);
 
@@ -125,7 +127,7 @@ namespace Physic
 		void ResetLayerCollisions(std::string, std::string);
 
 		static PhysicScene* GetInstance();
-
+		
 		PhysicScene();
 		~PhysicScene() {}
 	};

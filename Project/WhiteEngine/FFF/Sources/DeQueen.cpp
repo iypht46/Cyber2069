@@ -9,7 +9,7 @@ void DeQueen::Init() {
 	PosY = Graphic::Window::GetHeight() / 2;
 	
 	airPatrol->SetPoint(PosX, -PosX);
-	SpawnDelay = 1;
+	SpawnDelay = 0.2f;
 	SpawnDelayCount = SpawnDelay;
 
 	Enemy::Init();
@@ -66,4 +66,8 @@ void DeQueen::assignFlyPool(ObjectPool* pool) {
 
 void DeQueen::assignBombPool(ObjectPool* pool) {
 	this->BomberPool = pool;
+}
+
+void DeQueen::SetSpawnDelay(int time) {
+	this->SpawnDelay = time;
 }
