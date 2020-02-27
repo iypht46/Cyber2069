@@ -1,74 +1,41 @@
 #pragma once
+#include <vector>
 #include <string>
+#include <map>
 #include "EngineCore.hpp"
-#define EDITOR_COMP(NAME, TYPE)	\
-class NAME : EditorComponent	\
-{	private: TYPE* m_component;	\
+
+#define IMPLEMENT_CLONE(TYPE)	EditorComponent* clone() const { return new TYPE(*this); }
+#define MAKE_COMPONENT(TYPE)	EditorComponent* TYPE ## _myComponent = EditorComponent::addComponent(#TYPE, new TYPE());
 
 namespace Tools
 {
+	using AvailableComponent = std::vector<std::string>;
+
 	class EditorComponent
 	{
 	protected:
+		static std::map<std::string, EditorComponent*> m_componentTable;
+		static AvailableComponent m_availableComponent;
 		bool m_open = true;
 		Component* m_component;
 		std::string m_componentName;
+		bool* m_enable;
 		virtual void OnRender() {}
-		virtual void Init() {}
+		
 		virtual void SetChild(bool isChild) {}
 	public:
-		EditorComponent(std::string name, Component* comp) 
-			: m_componentName(name) , m_component(comp) {}
+		EditorComponent(std::string name) : m_componentName(name) {}
+		virtual void Init(Component* engineComponent) {}
 		void Render();
-		
+		virtual EditorComponent* clone() const = 0;
+		static EditorComponent* makeComponent(std::string name);
+		static EditorComponent* addComponent(std::string type, EditorComponent* comp);
+		static AvailableComponent* GetTableList();
 	};
 
-	class TransformEC : public EditorComponent
-	{
-	private:
-		//TODO: Add pointer to members of each component
-		glm::vec3* m_position;
-		glm::vec3* m_scale;
-		float* m_rotation;
-	protected:
-		virtual void Init();
-		virtual void OnRender() override;
-		virtual void SetChild(bool isChild) override;
-	public:
-		TransformEC(Transform* component);
-		
-	};
+	
 
-	class MeshRendererEC : public EditorComponent
-	{
-	private:
-		//TODO: Add pointer to members of each component
-		unsigned int* m_tex;
-		std::string m_textureName;
-	protected:
-		virtual void OnRender() override;
-		virtual bool AddTexture(const char* path);
-	public:
-		MeshRendererEC(MeshRenderer* component);
-		virtual void Init() override;
-		
-	};
 
-	//EDITOR_COMP(ColliderEC, Collider)
-	//	//TODO: Add pointer to members of each component
-	//public:
-	//	ColliderEC(Collider* component) : m_component(component) { this->Init(); }
-	//	virtual void Init() override;
-	//	virtual void Render() override;
-	//};
-
-	//EDITOR_COMP(RigidbodyEC, Rigidbody)
-	//	//TODO: Add pointer to members of each component
-	//public:
-	//	RigidbodyEC(Rigidbody* component) : m_component(component) { this->Init(); }
-	//	virtual void Init() override;
-	//	virtual void Render() override;
-	//};
 
 	
 

@@ -19,6 +19,7 @@ namespace Tools
 		m_windowFlags |= ImGuiWindowFlags_NoCollapse;
 		m_windowFlags |= ImGuiWindowFlags_NoMove;
 		m_windowFlags |= ImGuiWindowFlags_NoResize;
+		m_editorComponentList = EditorComponent::GetTableList();
 	}
 
 	void Inspector::OnRender(void)
@@ -61,11 +62,24 @@ namespace Tools
 		{
 			//TODO: Add component to entity
 			ImGui::OpenPopup("AddComponent");
+			
 		}
 
 		if (ImGui::BeginPopup("AddComponent"))
 		{
-			ImGui::Selectable("Test Component");
+			filter.Draw("Search", m_width/2);
+			for (auto comp : *m_editorComponentList)
+			{
+				if (filter.PassFilter(comp.c_str()))
+				{
+					if (ImGui::Selectable(comp.c_str()))
+					{
+						m_entityToRender->AddComponent(comp);
+						//std::cout << "Add Component: " << comp << std::endl;
+					}
+				}
+					
+			}
 			ImGui::EndPopup();
 		}
 

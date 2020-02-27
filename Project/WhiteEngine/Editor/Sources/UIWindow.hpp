@@ -21,6 +21,7 @@ namespace Tools
 		void Render();
 		bool GetBool();
 		void ToggleBool();
+		bool IsFocused();
 	};
 	
 }

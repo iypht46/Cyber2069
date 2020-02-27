@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Graphic/Framebuffer.hpp"
+#include "Graphic/Shader.hpp"
 #include "UIWindow.hpp"
 
 namespace Tools
@@ -9,6 +10,7 @@ namespace Tools
 	{
 	private:
 		Graphic::Framebuffer m_framebuffer;
+		Graphic::Shader* m_shader;
 		unsigned int m_textureID;
 		bool m_textureLoaded;
 	protected:

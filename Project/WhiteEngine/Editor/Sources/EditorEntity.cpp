@@ -1,6 +1,8 @@
 #include "EditorEntity.hpp"
+#include "CoreComponentEC.hpp"
 #include "Core/EC/GameObject.hpp"
 #include "Core/EC/Components/MeshRenderer.hpp"
+
 
 namespace Tools
 {
@@ -8,8 +10,9 @@ namespace Tools
 	{
 		//Create transform
 		m_gameObject = std::make_unique<GameObject>();
-		 TransformEC* tranform = new TransformEC(&m_gameObject->m_transform);
-		 m_components.push_back(tranform);
+		 TransformEC* transform = new TransformEC();
+		 transform->Init(&m_gameObject->m_transform);
+		 m_components.push_back(transform);
 		 //Point to gameobject member
 		 m_objectName = &m_gameObject->m_objectName;
 		 m_isActive = &m_gameObject->isActive;
@@ -20,23 +23,32 @@ namespace Tools
 		//Create gameobject from parameter
 		m_gameObject = std::make_unique<GameObject>(*gameObject);
 		//Create transform
-		TransformHandle tranform = make_unique<TransformEC>(&m_gameObject->m_transform);
-		m_components.push_back(tranform.get());
+		TransformHandle transform = make_unique<TransformEC>();
+		transform->Init(&m_gameObject->m_transform);
+		m_components.push_back(transform.get());
 		//Point to gameobject member
 		m_objectName = &m_gameObject->m_objectName;
 		m_isActive = &m_gameObject->isActive;
 	}
 
-	void EditorEntity::AddComponent(const char* type)
+	void EditorEntity::AddComponent(std::string type)
 	{
-		Component* component = nullptr;
-		if (type == "MeshRenderer")
+		std::cout << "Adding Component...: " << type << std::endl;
+		Component* comp = nullptr;
+		if (type.find("MeshRendererEC") != std::string::npos)
 		{
-			component = m_gameObject->AddComponent<MeshRenderer>();
+			comp = m_gameObject->AddComponent<MeshRenderer>();
+		}
+		else if (type.find("BoxColliderEC") != std::string::npos)
+		{
+			comp = m_gameObject->AddComponent<BoxCollider>();
 		}
 
-		if (component)
+		if (comp)
 		{
+			EditorComponent* compEC = EditorComponent::makeComponent(type);
+			compEC->Init(comp);
+			m_components.push_back(compEC);
 			//ComponentHandle editorComp = make_unique<EditorComponent>(component);
 			//m_components.push_back(std::move(editorComp));
 		}

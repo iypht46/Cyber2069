@@ -9,9 +9,11 @@
 
 class GameObject;
 class Component;
+namespace Tools { class MeshRendererEC; }
 
 class MeshRenderer : public Component
 {
+	friend class Tools::MeshRendererEC;
 private:
 	unsigned int texture;
 	MeshVbo* mesh;

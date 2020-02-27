@@ -31,7 +31,7 @@ namespace Tools
 		EditorEntity(GameObject* gameObject);
 		
 		//Interface
-		void AddComponent(const char*);
+		void AddComponent(std::string);
 		std::vector<EditorComponent*>& GetComponentList();
 		std::string GetName();
 		int GetID();

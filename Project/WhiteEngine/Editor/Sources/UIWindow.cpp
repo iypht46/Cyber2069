@@ -32,6 +32,11 @@ namespace Tools
 		*m_show = !m_show;
 	}
 
+	bool UIWindow::IsFocused()
+	{
+		return ImGui::IsWindowFocused();
+	}
+
 	UIWindow::~UIWindow() 
 	{ 
 		this->Terminate(); 

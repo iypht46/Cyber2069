@@ -63,6 +63,9 @@
     <ClInclude Include="Sources\ImUtility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\CoreComponentEC.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -104,5 +107,12 @@
     <ClCompile Include="Sources\MainEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\CoreComponentEC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sources\Shader\fbo_frag.shd" />
+    <None Include="Sources\Shader\fbo_ver.shd" />
   </ItemGroup>
 </Project>

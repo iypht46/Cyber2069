@@ -77,6 +77,11 @@ namespace Graphic
 		{
 			glUseProgram(ID);
 		}
+
+		void unUse() const
+		{
+			glUseProgram(NULL);
+		}
 		// utility uniform functions
 		// ------------------------------------------------------------------------
 		void setBool(const std::string &name, bool value) const
