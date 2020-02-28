@@ -534,6 +534,7 @@ namespace World
 		Spawner->GetComponent<EnemySpawner>()->assignFlyPool(FlyerPool);
 		Spawner->GetComponent<EnemySpawner>()->assignBombPool(BomberPool);
 
+		/*
 		Animation* queenIdle = new Animation();
 
 		queenIdle->setStartPosition(0, 0);
@@ -585,7 +586,7 @@ namespace World
 		queen->GetComponent<DeQueen>()->assignBombPool(BomberPool);
 
 		queen->m_transform.SetScale(glm::vec3(CHAR_SIZE * 10, CHAR_SIZE * 10, 1.0f));
-
+		*/
 
 		//Add Sound
 		Bg2->AddComponent<SoundPlayer>();
