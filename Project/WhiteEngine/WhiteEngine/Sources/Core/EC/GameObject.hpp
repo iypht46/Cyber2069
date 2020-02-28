@@ -12,6 +12,16 @@ class Component;
 class BehaviourScript;
 namespace Physic { struct Collision; }
 
+//cereal test
+#include <fstream>
+#include <cereal/cereal.hpp>
+#include <cereal/archives/binary.hpp>
+#include <cereal/types/string.hpp>
+#include <cereal/types/vector.hpp>
+#include <cereal/types/memory.hpp>
+#include "Serialization/SomeClass.h"
+//cereal test
+
 class GameObject
 {
 protected:
@@ -58,6 +68,18 @@ public:
 	//Log to logger
 	LogCustomType_DC(GameObject);
 
+	//===========================
+	//test serialzation
+	template<class Archive>
+	void serialize(Archive &archive);
+
+	void Save();
+	void Load();
+	shared_ptr<SomeClass> outside;
+	std::vector<shared_ptr<SomeClass>> scv;
+
+	//===========================
+
 	//GameObject* GetGameObject();
 	//void SetGameObject(GameObject* obj);
 };
@@ -97,3 +119,13 @@ LogCustomType_DF(GameObject)
 	return os << "GameObject: " << obj.Name << "\n";
 }
 
+//==============
+//serialazation test
+//==============
+
+template<class Archive>
+void GameObject::serialize(Archive &archive) {
+	archive(Name, isActive, outside, scv);
+
+	archive.serializeDeferment();
+}

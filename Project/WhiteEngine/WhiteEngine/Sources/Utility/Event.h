@@ -13,6 +13,7 @@ private:
 	class Event {
 	public:
 		virtual void Call() = 0;
+		virtual ~Event() {}
 	};
 
 	//============================================
@@ -29,6 +30,8 @@ private:
 
 		TypedEvent(T* host, void(T::*functionptr)(ParamT), ParamT defaultParam);
 		virtual void Call();
+
+		virtual ~TypedEvent() {}
 	};
 
 

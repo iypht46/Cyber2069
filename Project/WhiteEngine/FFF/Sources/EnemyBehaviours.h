@@ -1,13 +1,10 @@
 #pragma once
 #include "Enemy.hpp"
 #include "Utility/ObjectPool.h"
+#include "Utility/Event.h" 
 #include "AirFollowing.hpp"
 #include "AirDash.hpp"
 #include "AirPatrol.hpp"
-
-///test only
-#include "Utility/Event.h" 
-#include"Core/Logger.hpp"
 
 enum EnemyState
 {
@@ -40,7 +37,6 @@ private:
 protected:
 	AirFollowing* airFollow;
 	AirDash* airDash;
-	//Explosion expl
 	EventSystem OnExplode;
 
 public:
@@ -50,10 +46,6 @@ public:
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
-
-	void test(int s) {
-		ENGINE_INFO("test event {}", s);
-	}
 };
 
 class DeQueen :public Enemy {

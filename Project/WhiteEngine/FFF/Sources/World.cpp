@@ -629,6 +629,29 @@ namespace World
 
 		GAME_INFO(*Rabbit);
 
+		GameObject* serialtarget = new GameObject();
+		serialtarget->Name = "Pomeranian";
+		serialtarget->SetActive(true);
+		std::shared_ptr<SomeClass> os = std::make_shared<SomeClass>();
+		os->farr = 69;
+		os->v3 = glm::vec3(69, 69, 69);
+		serialtarget->outside = os;
+
+		serialtarget->scv.push_back(os);
+		//serialtarget->scv.push_back(std::make_shared<SomeClass>());
+		serialtarget->scv[0]->farr = 7;
+		serialtarget->scv[0]->v3 = glm::vec3(0, 0, 0);
+		//serialtarget->scv[0]->inside = os;
+		serialtarget->scv[0]->farr = 15973;
+		//serialtarget->scv[1]->v3 = glm::vec3(7, 7, 7);
+		serialtarget->Load();
+		serialtarget->outside->farr = 987;
+		ENGINE_INFO("serial result: {},{}", serialtarget->Name, serialtarget->Active());
+		ENGINE_INFO("outside");
+		serialtarget->outside->out();
+		ENGINE_INFO("inside");
+		serialtarget->scv[0]->out();
+		//serialtarget->scv[1]->out();
 	}
 
 	void FixedUpdate(float dt)
@@ -647,13 +670,13 @@ namespace World
 
 			FactoryCollection::FixedUpdateComponents(dt);
 
-			for (int i = 0; i < Factory<MachineGunBullet>::getCollection().size(); i++)
-			{
-				if (Factory<MachineGunBullet>::getCollection().at(i)->GetGameObject()->Active())
-				{
-					Factory<MachineGunBullet>::getCollection().at(i)->GetGameObject()->GetComponent<Rigidbody>()->UpdateTransform(dt);
-				}
-			}
+			//for (int i = 0; i < Factory<MachineGunBullet>::getCollection().size(); i++)
+			//{
+			//	if (Factory<MachineGunBullet>::getCollection().at(i)->GetGameObject()->Active())
+			//	{
+			//		Factory<MachineGunBullet>::getCollection().at(i)->GetGameObject()->GetComponent<Rigidbody>()->UpdateTransform(dt);
+			//	}
+			//}
 
 			g_physicScene->Update(c_targetDT);
 			//ENGINE_INFO("FixedUpdate: {}", dt

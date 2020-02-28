@@ -80,3 +80,22 @@ GameObject::GameObject()
 	ENGINE_INFO("{}", m_objectID);
 	isActive = true;
 }
+
+//==============
+//serialazation test
+//==============
+
+void GameObject::Save() {
+	std::ofstream file("srlztest.bin", std::ios::binary);
+	cereal::BinaryOutputArchive oarchive(file);
+
+	oarchive(Name, isActive, scv, outside);
+}
+
+void GameObject::Load() {
+	std::ifstream file("srlztest.bin", std::ios::binary);
+
+	cereal::BinaryInputArchive iarchive(file);
+
+	iarchive(Name, isActive, scv, outside);
+}

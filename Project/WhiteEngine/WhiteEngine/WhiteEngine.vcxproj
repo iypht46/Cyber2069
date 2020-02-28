@@ -87,6 +87,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)\WhiteEngine\Vendors\cereal-1.3.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -157,6 +158,8 @@
     <ClInclude Include="Sources\Graphic\SquareMeshVbo.h" />
     <ClInclude Include="Sources\Graphic\Window.hpp" />
     <ClInclude Include="Sources\Input\Input.hpp" />
+    <ClInclude Include="Sources\Serialization\glmCereal.h" />
+    <ClInclude Include="Sources\Serialization\SomeClass.h" />
     <ClInclude Include="Sources\Utility\Event.h" />
     <ClInclude Include="Sources\Utility\ObjectPool.h" />
   </ItemGroup>
