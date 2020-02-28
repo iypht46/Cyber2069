@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <vector>
+#include <map>
 
 #include "Core/Factory.h"
 #include "Core/EC/GameObject.hpp"
@@ -12,6 +13,7 @@ namespace Tools
 	using GameObjectHandle = UNIQUE_HANDLE(GameObject);
 	using ComponentHandle = UNIQUE_HANDLE(EditorComponent);
 	using TransformHandle = UNIQUE_HANDLE(TransformEC);
+	using ComponentsMap = std::map<std::string, bool>;
 	//using MeshRendererHandle = UNIQUE_HANDLE(MeshRendererEC);
 	//using ComponentList = std::vector<std::unique_ptr<EditorComponent>>;
 
@@ -25,6 +27,7 @@ namespace Tools
 		bool* m_isActive;
 		GameObjectHandle m_gameObject;
 		std::vector<EditorComponent*> m_components;
+		ComponentsMap m_componentsMap;
 
 	public:
 		EditorEntity();
@@ -32,6 +35,7 @@ namespace Tools
 		
 		//Interface
 		void AddComponent(std::string);
+		bool RemoveComponent(std::string);
 		std::vector<EditorComponent*>& GetComponentList();
 		std::string GetName();
 		int GetID();

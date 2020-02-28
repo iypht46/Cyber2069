@@ -10,20 +10,21 @@ namespace Tools
 
 	//*****          END            *****//
 
-	void EditorComponent::Render()
+	bool EditorComponent::Render()
 	{
-		if (!ImGui::CollapsingHeader(m_componentName.c_str(), &m_open))
-		{
-			//TODO: Remove Component
-			
-		}
-		else
+		if (ImGui::CollapsingHeader(m_componentName.c_str(), &m_open))
 		{
 			ImGui::Text("Enable"); ImGui::SameLine();
 			ImGui::Checkbox("##IsEnable", m_enable);
 			OnRender();
 		}
-		
+
+		return m_open;
+	}
+
+	std::string EditorComponent::GetName()
+	{
+		return m_componentName;
 	}
 
 	EditorComponent* EditorComponent::makeComponent(std::string type)

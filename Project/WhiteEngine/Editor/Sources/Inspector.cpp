@@ -28,7 +28,7 @@ namespace Tools
 		//TODO: Render some header or some shit first
 			
 		
-		if (!m_entityToRender && !m_componentList)
+		if (!m_entityToRender)
 		{
 			return;
 		}
@@ -45,9 +45,13 @@ namespace Tools
 		ImGui::Text("Component:");
 
 		//Render Component
-		for (auto component : (*m_componentList))
+		for (auto component : m_entityToRender->GetComponentList())
 		{
-			component->Render();
+			if (component->Render())
+			{
+				//TODO: Remove Component
+				m_entityToRender->RemoveComponent(component->GetName());
+			}
 		}
 
 		//End Component Section
@@ -88,6 +92,5 @@ namespace Tools
 	void Inspector::SetEntity(EditorEntity * ent)
 	{
 		m_entityToRender = ent;
-		m_componentList = &m_entityToRender->GetComponentList();
 	}
 }

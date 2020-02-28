@@ -71,7 +71,8 @@ namespace Tools
 		if (meshRenderer)
 		{
 			m_enable = &meshRenderer->enabled;
-			m_tex = &meshRenderer->texture;
+			if (meshRenderer->m_texLoaded)
+				m_tex = &meshRenderer->texture;
 			return;
 		}
 		ENGINE_ERROR("ERROR::Component is not transfrom");

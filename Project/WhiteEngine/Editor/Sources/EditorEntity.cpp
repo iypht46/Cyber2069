@@ -33,7 +33,12 @@ namespace Tools
 
 	void EditorEntity::AddComponent(std::string type)
 	{
-		std::cout << "Adding Component...: " << type << std::endl;
+		//Check if component have been added
+		if (m_componentsMap[type])
+		{
+			return;
+		}
+
 		Component* comp = nullptr;
 		if (type.find("MeshRendererEC") != std::string::npos)
 		{
@@ -49,11 +54,20 @@ namespace Tools
 			EditorComponent* compEC = EditorComponent::makeComponent(type);
 			compEC->Init(comp);
 			m_components.push_back(compEC);
+			m_componentsMap[type] = true;
 			//ComponentHandle editorComp = make_unique<EditorComponent>(component);
 			//m_components.push_back(std::move(editorComp));
 		}
-		//m_gameObject.get()->
+	}
 
+	bool EditorEntity::RemoveComponent(std::string name)
+	{
+		if (m_componentsMap[name])
+		{
+			//Retrieve component from vector and erased it
+		}
+
+		return false;
 	}
 
 	std::vector<EditorComponent*>& EditorEntity::GetComponentList()

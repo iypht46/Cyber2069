@@ -27,6 +27,7 @@ MeshRenderer::MeshRenderer(std::string texture_path,float NumframeX,float NumFra
 void MeshRenderer::SetTexture(std::string path)
 {
 	texture = GLRenderer::GetInstance()->LoadTexture(path);
+	m_texLoaded = true;
 }
 
 void  MeshRenderer::CreateMesh(float NumframeX, float NumFrameY)

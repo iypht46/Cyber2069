@@ -16,7 +16,6 @@ namespace Tools
 	{
 	private:
 		EditorEntity* m_entityToRender;
-		std::vector<EditorComponent*>* m_componentList;
 		AvailableComponent* m_editorComponentList;
 		ImGuiTextFilter filter;
 	protected:

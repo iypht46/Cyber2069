@@ -26,7 +26,8 @@ namespace Tools
 	public:
 		EditorComponent(std::string name) : m_componentName(name) {}
 		virtual void Init(Component* engineComponent) {}
-		void Render();
+		bool Render();
+		std::string GetName();
 		virtual EditorComponent* clone() const = 0;
 		static EditorComponent* makeComponent(std::string name);
 		static EditorComponent* addComponent(std::string type, EditorComponent* comp);

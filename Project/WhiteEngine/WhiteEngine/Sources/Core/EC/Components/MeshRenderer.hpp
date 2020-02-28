@@ -17,8 +17,8 @@ class MeshRenderer : public Component
 private:
 	unsigned int texture;
 	MeshVbo* mesh;
-
 	Animator* anim;
+	bool m_texLoaded = false;
 
 public:
 	MeshRenderer();
