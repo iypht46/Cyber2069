@@ -370,3 +370,6 @@ ASALocalRun/
 .localhistory/
 
 *.ipch
+
+# Visual Studio Build File
+Project\WhiteEngine\bin-int
