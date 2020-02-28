@@ -372,4 +372,4 @@ ASALocalRun/
 *.ipch
 
 # Visual Studio Build File
-Project\WhiteEngine\bin-int
+Project/WhiteEngine/bin-int/
