@@ -19,7 +19,7 @@ class Flyer :public Enemy {
 private:
 	Rigidbody* rigidbody;
 protected:
-	AirFollowing* airFollow;
+	//AirFollowing* airFollow;
 	GroundPatrol* groundPatrol;
 public:
 	EnemyState state = EnemyState::Idle;

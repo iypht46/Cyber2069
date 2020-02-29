@@ -387,7 +387,7 @@ namespace World
 			platform[i]->AddComponent<BoxCollider>()->Init(200, 5);
 			g_physicScene->Add(platform[i]->GetComponent<BoxCollider>(), "Platform");
 		}
-
+		//platform[0]->m_transform.SetPosition(glm::vec3(230, 0, 0));
 		platform[1]->m_transform.SetPosition(glm::vec3(300, 300, 0));
 		platform[2]->m_transform.SetPosition(glm::vec3(-300, 300, 0));
 		platform[3]->m_transform.SetPosition(glm::vec3(-300, -300, 0));
@@ -443,7 +443,7 @@ namespace World
 			g_physicScene->Add(flyer->GetComponent<BoxCollider>(), "Enemy");
 
 			flyer->AddComponent<HPsystem>();
-			flyer->AddComponent<AirFollowing>();
+			//flyer->AddComponent<AirFollowing>();
 			flyer->AddComponent<GroundPatrol>();
 			flyer->AddComponent<Flyer>();
 			flyer->GetComponent<Flyer>()->Init(&(Rabbit->m_transform));

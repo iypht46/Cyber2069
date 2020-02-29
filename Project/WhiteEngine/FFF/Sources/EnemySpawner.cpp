@@ -23,7 +23,7 @@ void EnemySpawner::OnUpdate(float dt)
 			{
 				flyer->SetActive(true);
 
-				flyer->m_transform.SetPosition(glm::vec3(0, 50.0f, 1.0f));
+				flyer->m_transform.SetPosition(glm::vec3(0.0f, 25.0f, 1.0f));
 			}
 		}
 		else {

@@ -12,11 +12,12 @@ GroundPatrol::~GroundPatrol()
 }
 
 void GroundPatrol::Init() {
-	m_stoppingDistance = 100.0f;
-	m_speed = 150.0f;
+	m_stoppingDistance = 50.0f;
+	m_speed = 10.0f;
 	thisTransform = &(m_gameObject->m_transform);
 	rb = m_gameObject->GetComponent<Rigidbody>();
 	ps = Physic::PhysicScene::GetInstance();
+	rb->SetVelocity(glm::vec3(m_speed, 0, 0));
 }
 
 void GroundPatrol::SetStopDis(float val) {
@@ -33,20 +34,29 @@ void GroundPatrol::Patrol() {
 
 	posX = thisTransform->GetPosition().x;
 	posY = thisTransform->GetPosition().y;
-	float sign = posX / glm::abs(posX);
+	float sign = thisTransform->GetScale().x / glm::abs(thisTransform->GetScale().x);
 
-	Ground = ps->Raycast(Physic::Ray(posX, posY, posX + (sign*m_stoppingDistance), posY - (thisTransform->GetScale().y / 2)), ps->GetLayerFromString("Platform"));
+	Ground = ps->Raycast(Physic::Ray(posX, posY, (posX + (sign*m_stoppingDistance)), (posY - (thisTransform->GetScale().y / 2.0f))), ps->GetLayerFromString("Platform"));
+	GLRenderer::GetInstance()->DrawDebug_Line(posX, posY, (posX + (sign*m_stoppingDistance)), (posY - (thisTransform->GetScale().y / 2.0f)), 1.0f, 0.0f, 0.0f);
 
-	if (Ground->GetCollisionState() == COL_STATE::NONE) {
+	//ENGINE_INFO("{}", (int)Ground);
+	if (Ground == nullptr) {
+		ENGINE_INFO("HELLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
 		if (rb->GetVelocity().x < 0) {
-			rb->SetVelocity(glm::vec3(50.0f, 0, 0));
+			thisTransform->SetScale(glm::vec3(glm::abs(thisTransform->GetScale().x), thisTransform->GetScale().y, 1.0f));
+			rb->SetVelocity(glm::vec3(m_speed, 0, 0));
+			
+
 		}
 		else {
-			rb->SetVelocity(glm::vec3(-50.0f, 0, 0));
+			thisTransform->SetScale(glm::vec3(glm::abs(thisTransform->GetScale().x) * - 1, thisTransform->GetScale().y, 1.0f));
+			rb->SetVelocity(glm::vec3(-m_speed, 0, 0));
 		}
 	}
+	else {
+		ENGINE_INFO("HITO");
+	}
 
-	GLRenderer::GetInstance()->DrawDebug_Line(posX, posY, posX + (sign*m_stoppingDistance), posY - (thisTransform->GetScale().y / 2), 1.0f, 0.0f, 0.0f);
 	
 }
 
