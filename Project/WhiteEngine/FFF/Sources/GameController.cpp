@@ -59,13 +59,29 @@ void GameController::AssignHPbar(GameObject* hpbar) {
 	startHPposX = hpbar->m_transform.GetPosition().x;
 }
 
+void GameController::AssignStaminabar(GameObject* staminabar) 
+{
+	this->Staminabar = staminabar;
+	startStaminascaleX = staminabar->m_transform.GetScale().x;
+	startStaminascaleY = staminabar->m_transform.GetScale().y;
+	startStaminaposX = staminabar->m_transform.GetPosition().x;
+}
+
 void GameController::AssignPlayer(GameObject* player) {
 	this->PlayerHP = player->GetComponent<HPsystem>();
+	this->player = player->GetComponent<PlayerController>();
 }
 
 void GameController::updateHPui() {
-	float currentX = (PlayerHP->GetHP() * startHPscaleX) / PlayerHP->GetMaxHP();
-	float hpDiff = PlayerHP->GetMaxHP() - PlayerHP->GetHP();
+	float playerHP = PlayerHP->GetHP();
+
+	if (playerHP < 0)
+	{
+		playerHP = 0;
+	}
+	
+	float currentX = (playerHP * startHPscaleX) / PlayerHP->GetMaxHP();
+	float hpDiff = PlayerHP->GetMaxHP() - playerHP;
 
 	float movePos = ((hpDiff / 2) * startHPscaleX) / PlayerHP->GetMaxHP();
 
@@ -73,6 +89,24 @@ void GameController::updateHPui() {
 	HPbar->m_transform.SetPosition(glm::vec3(startHPposX - movePos , HPbar->m_transform.GetPosition().y, 1.0f));
 
 
+}
+
+void GameController::updateStaminaUI() 
+{
+	float playerSta = player->GetStamina();
+
+	if (playerSta < 0) 
+	{
+		playerSta = 0;
+	}
+
+	float currentX = (playerSta * startStaminascaleX) / player->GetMaxStamina();
+	float staDiff = player->GetMaxStamina() - playerSta;
+
+	float movePos = ((staDiff / 2) * startStaminascaleX) / player->GetMaxStamina();
+
+	Staminabar->m_transform.SetScale(glm::vec3(currentX, startStaminascaleY, 1.0f));
+	Staminabar->m_transform.SetPosition(glm::vec3(startStaminaposX - movePos, Staminabar->m_transform.GetPosition().y, 1.0f));
 }
 
 void GameController::AddPool(ObjectPool* pool, int type) 
@@ -94,7 +128,7 @@ void GameController::OnEnable() {
 
 void GameController::OnStart() {
 
-	FlyerSpawner->AddComponent<EnemySpawner>();
+	/*FlyerSpawner->AddComponent<EnemySpawner>();
 	FlyerSpawner->GetComponent<EnemySpawner>()->SetSpawnDelay(0.5f);
 	FlyerSpawner->GetComponent<EnemySpawner>()->SetSpawnRate(100.0f);
 	FlyerSpawner->GetComponent<EnemySpawner>()->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() / -2);
@@ -105,7 +139,7 @@ void GameController::OnStart() {
 	BomberSpawner->GetComponent<EnemySpawner>()->SetSpawnDelay(0.5f);
 	BomberSpawner->GetComponent<EnemySpawner>()->SetSpawnRate(20.0f);
 	BomberSpawner->GetComponent<EnemySpawner>()->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() / -2);
-	BomberSpawner->GetComponent<EnemySpawner>()->SetSpawnType(POOL_TYPE::ENEMY_BOMBER);
+	BomberSpawner->GetComponent<EnemySpawner>()->SetSpawnType(POOL_TYPE::ENEMY_BOMBER);*/
 
 }
 
@@ -114,6 +148,7 @@ void GameController::OnUpdate(float dt)
 	int sc = ScoreValue;
 	this->ScoreText->GetComponent<TextRenderer>()->SetText("Score: " + to_string(sc));
 	updateHPui();
+	updateStaminaUI();
 }
 
 void GameController::OnFixedUpdate(float dt) {
