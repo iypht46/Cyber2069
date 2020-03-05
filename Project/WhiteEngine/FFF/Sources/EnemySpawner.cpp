@@ -62,14 +62,13 @@ GameObject* EnemySpawner::SpawnEnemy(float posX,float posY)
 
 		/*switch (SpawnType) {
 		case POOL_TYPE::ENEMY_FLYER:
-			enemy->GetComponent<Flyer>();
+			enemy->GetComponent<Flyer>()->SetStats(SpawnEnemySpeed, SpawnEnemyHP, SpawnEnemyDamage);
 			break;
 		case POOL_TYPE::ENEMY_BOMBER:
-			enemy->GetComponent<Bomber>();
+			enemy->GetComponent<Bomber>()->SetStats(SpawnEnemySpeed, SpawnEnemyHP, SpawnEnemyDamage,SpawnEnemyAimTime,SpawnEnemyDashSpeed,SpawnEnemyExplodeDMG,SpawnEnemyExplodeRadius);
 			break;
 		default:
 			break;
-
 		}*/
 
 		return enemy;
@@ -104,6 +103,18 @@ void EnemySpawner::SetSpawnEnemyDamage(float value) {
 	this->SpawnEnemyDamage = value;
 }
 
-void EnemySpawner::SetSpawnEnemyStats(float Speed, float HP, float Dmg) {
+void EnemySpawner::SetSpawnEnemyBasicStats(float Speed, float HP, float Dmg) {
+	this->SpawnEnemySpeed = Speed;
+	this->SpawnEnemyHP = HP;
+	this->SpawnEnemyDamage = Dmg;
+}
 
+void EnemySpawner::SetSpawnEnemyDashStats(float AimTime, float DashSpeed) {
+	this->SpawnEnemyAimTime = AimTime;
+	this->SpawnEnemyDashSpeed = DashSpeed;
+}
+
+void EnemySpawner::SetSpawnEnemyExplodeStats(float ExplodeDmg, float ExplodeRadius) {
+	this->SpawnEnemyExplodeDMG = ExplodeDmg;
+	this->SpawnEnemyExplodeRadius = ExplodeRadius;
 }

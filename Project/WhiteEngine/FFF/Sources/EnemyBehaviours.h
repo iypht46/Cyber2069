@@ -22,6 +22,8 @@ protected:
 public:
 	EnemyState state = EnemyState::Idle;
 
+	void SetStats(float Speed, float HP, float Dmg);
+
 	void Init(Transform* player);
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
@@ -42,6 +44,8 @@ protected:
 
 public:
 	EnemyState state = EnemyState::Idle;
+
+	void SetStats(float Speed, float HP, float Dmg, float AimTime, float DashSpeed, float ExplodeDmg, float ExplodeRadius);
 
 	void Init(Transform* player);
 	virtual void OnStart();

@@ -10,6 +10,8 @@
 #include "HPsystem.hpp"
 #include "Weapon.hpp"
 
+#include "Enemy.hpp"
+
 
 #include "Utility/ObjectPool.h"
 

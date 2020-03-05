@@ -2,6 +2,7 @@
 
 void HPsystem::SetMaxHP(float hp) {
 	this->Maxhp = hp;
+	this->hp = Maxhp;
 }
 
 void HPsystem::SetHp(float hp) {

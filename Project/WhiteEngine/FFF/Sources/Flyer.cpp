@@ -46,3 +46,10 @@ void Flyer::OnFixedUpdate(float dt) {
 		}
 	}
 }
+
+void Flyer::SetStats(float Speed, float HP, float Dmg) 
+{
+	airFollow->SetFlySpeed(Speed);
+	hpSystem->SetMaxHP(HP);
+	CollideDamage = Dmg;
+}

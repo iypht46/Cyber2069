@@ -71,3 +71,15 @@ void Bomber::OnFixedUpdate(float dt) {
 		}
 	}
 }
+
+void Bomber::SetStats(float Speed, float HP, float Dmg, float AimTime, float DashSpeed, float ExplodeDmg, float ExplodeRadius) {
+	airFollow->SetFlySpeed(Speed);
+	hpSystem->SetMaxHP(HP);
+	CollideDamage = Dmg;
+
+	airDash->SetAimTime(AimTime);
+	airDash->SetDashSpeed(DashSpeed);
+
+	explosion->SetDamage(ExplodeDmg);
+	explosion->SetRadius(ExplodeRadius);
+}

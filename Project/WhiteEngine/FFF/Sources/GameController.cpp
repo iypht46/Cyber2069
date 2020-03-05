@@ -36,7 +36,6 @@ void GameController::OnStart() {
 	FlyerSpawner->AddComponent<EnemySpawner>();
 	FlyerSpawner->GetComponent<EnemySpawner>()->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() / -2);
 	FlyerSpawner->GetComponent<EnemySpawner>()->SetSpawnType(POOL_TYPE::ENEMY_FLYER);
-	FlyerSpawner->GetComponent<EnemySpawner>()->SetSpawnRate(10000.0f);
 
 	BomberSpawner->AddComponent<EnemySpawner>();
 	BomberSpawner->GetComponent<EnemySpawner>()->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() / -2);
@@ -186,9 +185,14 @@ void GameController::updateSpawner()
 				{
 				case POOL_TYPE::ENEMY_FLYER:
 					es->SetSpawnRate((Amplifier[currScoreCheckpoint]->EnemySpawnRate) / Preset[randPreset]->FlyerRatio);
+					//es->SetSpawnEnemyBasicStats(Amplifier[currScoreCheckpoint]->FlyerSpeed, Amplifier[currScoreCheckpoint]->FlyerHP, Amplifier[currScoreCheckpoint]->FlyerDmg);
+					
 					break;
 				case POOL_TYPE::ENEMY_BOMBER:
 					es->SetSpawnRate((Amplifier[currScoreCheckpoint]->EnemySpawnRate) / Preset[randPreset]->BomberRatio);
+					//es->SetSpawnEnemyBasicStats(Amplifier[currScoreCheckpoint]->BomberSpeed, Amplifier[currScoreCheckpoint]->BomberHP, Amplifier[currScoreCheckpoint]->BomberDmg);
+					//es->SetSpawnEnemyDashStats(Amplifier[currScoreCheckpoint]->BomberAimTime, Amplifier[currScoreCheckpoint]->BomberDashSpeed);
+					//es->SetSpawnEnemyExplodeStats(Amplifier[currScoreCheckpoint]->BomberExplodeDMG, Amplifier[currScoreCheckpoint]->BomberExplodeRadius);
 					break;
 				default:
 					break;

@@ -22,6 +22,13 @@ protected:
 	float SpawnEnemySpeed;
 	float SpawnEnemyHP;
 	float SpawnEnemyDamage;
+	
+	float SpawnEnemyAimTime;
+	float SpawnEnemyDashSpeed;
+
+	float SpawnEnemyExplodeDMG;
+	float SpawnEnemyExplodeRadius;
+
 
 	int SpawnType;
 
@@ -39,7 +46,10 @@ public:
 	void SetSpawnEnemySpeed(float value);
 	void SetSpawnEnemyHP(float value);
 	void SetSpawnEnemyDamage(float value);
-	void SetSpawnEnemyStats(float Speed, float HP, float Dmg);
+
+	void SetSpawnEnemyBasicStats(float Speed, float HP, float Dmg);
+	void SetSpawnEnemyDashStats(float AimTime, float DashSpeed);
+	void SetSpawnEnemyExplodeStats(float ExplodeDmg, float ExplodeRadius);
 
 	int GetType() { return this->SpawnType; }
 

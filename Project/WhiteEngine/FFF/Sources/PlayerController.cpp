@@ -34,7 +34,12 @@ void PlayerController::OnCollisionExit(const Physic::Collision col)
 
 void PlayerController::OnTriggerEnter(const Physic::Collision col)
 {
-	hpSystem->TakeDamage(1.0f);
+	GameObject* obj = col.m_otherCollider->GetGameObject();
+	Enemy* enem = obj->GetComponent<Enemy>();
+	
+	if (enem != nullptr) {
+		hpSystem->TakeDamage(enem->GetCollideDamage());
+	}
 }
 
 void PlayerController::OnTriggerStay(const Physic::Collision col)
@@ -51,8 +56,7 @@ void PlayerController::OnStart() {
 	rb = m_gameObject->GetComponent<Rigidbody>();
 	hpSystem = m_gameObject->GetComponent<HPsystem>();
 
-	hpSystem->SetMaxHP(200.0f);
-	hpSystem->ResetHP();
+	hpSystem->SetMaxHP(100.0f);
 
 	inverseGun = false;
 

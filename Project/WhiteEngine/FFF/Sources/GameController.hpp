@@ -26,12 +26,13 @@ struct EnemyPreset {
 struct EnemyAmplifier {
 	float FlyerHP;
 	float FlyerSpeed;
+	float FlyerDmg;
 
 	float BomberHP;
 	float BomberSpeed;
-	float BomberDashSpeed;
+	float BomberDmg;
 	float BomberAimTime;
-	float BomberAimSpeed;
+	float BomberDashSpeed;
 	float BomberExplodeDMG;
 	float BomberExplodeRadius;
 
