@@ -32,6 +32,9 @@
 #include <stdlib.h>
 #include <time.h>
 
+//serialization test
+#include <fstream>
+
 namespace World
 {
 	//Constants
@@ -428,7 +431,7 @@ namespace World
 			BulletPool->AddObject(Bullet);
 		}
 
-		for (int i = 0; i < 200; i++)
+		for (int i = 0; i < 0; i++)
 		{
 			GameObject* flyer = new GameObject();
 
@@ -455,6 +458,35 @@ namespace World
 			flyer->m_transform.SetScale(glm::vec3(50, 50, 1));
 
 			flyer->SetActive(false);
+
+
+			////FlyerPool->AddObject(flyer);
+			//ofstream ofile;
+			//ofile.open("serializatest.txt", ios::binary);
+			//if (ofile.is_open()) {
+			//	ENGINE_INFO("writing file");
+			//	ofile.write(reinterpret_cast<char*>(flyer), sizeof(Flyer));
+			//	ofile.close();
+			//	ENGINE_INFO("file written");
+			//}
+			//else {
+			//	ENGINE_ERROR("Write Failed");
+			//}
+
+
+			//GameObject *flyerinstance = nullptr;
+			//ifstream ifile;
+			//ifile.open("serializatest.txt", ios::binary);
+			//if (ifile.is_open()) {
+			//	ENGINE_INFO("reading file");
+			//	//ifile.read(reinterpret_cast<char*>(flyerinstance), sizeof(Flyer));
+			//	ifile.close();
+			//	ENGINE_INFO("file read");
+			//}
+			//else {
+			//	ENGINE_ERROR("Read Failed");
+			//}
+
 			FlyerPool->AddObject(flyer);
 		}
 
@@ -496,7 +528,7 @@ namespace World
 		BomberAnimController->AddState(BomberExplode);
 		BomberAnimController->AddState(BomberDie);
 
-		for (int i = 0; i < 200; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			GameObject* bomber = new GameObject();
 
@@ -597,6 +629,29 @@ namespace World
 
 		GAME_INFO(*Rabbit);
 
+		GameObject* serialtarget = new GameObject();
+		serialtarget->Name = "Pomeranian";
+		serialtarget->SetActive(true);
+		std::shared_ptr<SomeClass> os = std::make_shared<SomeClass>();
+		os->farr = 69;
+		os->v3 = glm::vec3(69, 69, 69);
+		serialtarget->outside = os;
+
+		serialtarget->scv.push_back(os);
+		//serialtarget->scv.push_back(std::make_shared<SomeClass>());
+		serialtarget->scv[0]->farr = 7;
+		serialtarget->scv[0]->v3 = glm::vec3(0, 0, 0);
+		//serialtarget->scv[0]->inside = os;
+		serialtarget->scv[0]->farr = 15973;
+		//serialtarget->scv[1]->v3 = glm::vec3(7, 7, 7);
+		serialtarget->Load();
+		serialtarget->outside->farr = 987;
+		ENGINE_INFO("serial result: {},{}", serialtarget->Name, serialtarget->Active());
+		ENGINE_INFO("outside");
+		serialtarget->outside->out();
+		ENGINE_INFO("inside");
+		serialtarget->scv[0]->out();
+		//serialtarget->scv[1]->out();
 	}
 
 	void FixedUpdate(float dt)
@@ -615,13 +670,13 @@ namespace World
 
 			FactoryCollection::FixedUpdateComponents(dt);
 
-			for (int i = 0; i < Factory<MachineGunBullet>::getCollection().size(); i++)
-			{
-				if (Factory<MachineGunBullet>::getCollection().at(i)->GetGameObject()->Active())
-				{
-					Factory<MachineGunBullet>::getCollection().at(i)->GetGameObject()->GetComponent<Rigidbody>()->UpdateTransform(dt);
-				}
-			}
+			//for (int i = 0; i < Factory<MachineGunBullet>::getCollection().size(); i++)
+			//{
+			//	if (Factory<MachineGunBullet>::getCollection().at(i)->GetGameObject()->Active())
+			//	{
+			//		Factory<MachineGunBullet>::getCollection().at(i)->GetGameObject()->GetComponent<Rigidbody>()->UpdateTransform(dt);
+			//	}
+			//}
 
 			g_physicScene->Update(c_targetDT);
 			//ENGINE_INFO("FixedUpdate: {}", dt

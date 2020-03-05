@@ -12,6 +12,16 @@ class Component;
 class BehaviourScript;
 namespace Physic { struct Collision; }
 
+//cereal test
+#include <fstream>
+#include <cereal/cereal.hpp>
+#include <cereal/archives/binary.hpp>
+#include <cereal/types/string.hpp>
+#include <cereal/types/vector.hpp>
+#include <cereal/types/memory.hpp>
+#include "Serialization/SomeClass.h"
+//cereal test
+
 class GameObject
 {
 protected:
@@ -23,8 +33,8 @@ protected:
 	static int s_IDCounter;
 	int m_objectID;
 	
-	std::vector<Component*> m_components;
-	std::vector<BehaviourScript*> m_scripts;
+	std::vector<shared_ptr<Component>> m_components;
+	std::vector<shared_ptr<BehaviourScript>> m_scripts;
 
 	void CollisionEnter(const Physic::Collision);
 	void CollisionStay(const Physic::Collision);
@@ -58,27 +68,46 @@ public:
 	//Log to logger
 	LogCustomType_DC(GameObject);
 
+	//===========================
+	//test serialzation
+	template<class Archive>
+	void serialize(Archive &archive);
+
+	void Save();
+	void Load();
+	shared_ptr<SomeClass> outside;
+	std::vector<shared_ptr<SomeClass>> scv;
+
+	//===========================
+
 	//GameObject* GetGameObject();
 	//void SetGameObject(GameObject* obj);
 };
 
 template<class T>
 T* GameObject::AddComponent() {
-	T* component = Factory<T>::Create();
+	shared_ptr<T> component = Factory<T>::Create();
+
 	m_components.push_back(component);
 	m_components.back()->SetGameObject(this);
 
-	return component;
+	//if is behaviou script, also assign to script collection
+	shared_ptr<BehaviourScript> behaviour = dynamic_pointer_cast<BehaviourScript>(component);
+	if (behaviour) {
+		m_scripts.push_back(behaviour);
+	}
+
+	return component.get();
 }
 
 template<class T>
 T* GameObject::GetComponent() {
 
-	for (Component* component : m_components) 
+	for (shared_ptr<Component> component : m_components) 
 	{
-		if (dynamic_cast<T*>(component))
+		if (dynamic_pointer_cast<T>(component))
 		{
-			return dynamic_cast<T*>(component);
+			return dynamic_pointer_cast<T>(component).get();
 		}
 	}
 	
@@ -90,3 +119,13 @@ LogCustomType_DF(GameObject)
 	return os << "GameObject: " << obj.Name << "\n";
 }
 
+//==============
+//serialazation test
+//==============
+
+template<class Archive>
+void GameObject::serialize(Archive &archive) {
+	archive(Name, isActive, outside, scv);
+
+	archive.serializeDeferment();
+}

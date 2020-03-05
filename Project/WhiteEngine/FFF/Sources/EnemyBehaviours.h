@@ -1,6 +1,7 @@
 #pragma once
 #include "Enemy.hpp"
 #include "Utility/ObjectPool.h"
+#include "Utility/Event.h" 
 #include "AirFollowing.hpp"
 #include "AirDash.hpp"
 #include "AirPatrol.hpp"
@@ -36,7 +37,7 @@ private:
 protected:
 	AirFollowing* airFollow;
 	AirDash* airDash;
-	//Explosion expl
+	EventSystem OnExplode;
 
 public:
 	EnemyState state = EnemyState::Idle;

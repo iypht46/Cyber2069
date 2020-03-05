@@ -4,13 +4,8 @@
 #include "Physic/Collision.hpp"
 
 BehaviourScript::BehaviourScript() {
-	Factory<BehaviourScript>::Add(this);
-}
-
-void BehaviourScript::SetGameObject(GameObject * obj)
-{
-	m_gameObject = obj;
-	m_gameObject->m_scripts.push_back(this);
+	shared_ptr<BehaviourScript> thisShared(this);
+	Factory<BehaviourScript>::Add(thisShared);
 }
 
 void BehaviourScript::OnAwake() { }

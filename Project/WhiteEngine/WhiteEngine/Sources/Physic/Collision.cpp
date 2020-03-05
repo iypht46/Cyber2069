@@ -160,6 +160,7 @@ namespace Physic
 		if (m_type == RESOLVE_TYPE::COLLISION)
 		{
 			glm::vec3 resultVec = m_normal * (m_penetration * RESOLVE_MUL);
+			float meanFriction = (m_objectB->GetFriction() + m_objectA->GetFriction()) / 2.0f;
 
 			//If both object is moving (Both is not static) then check its velocity
 			if (m_objAResFlag && m_objBResFlag)
@@ -175,13 +176,21 @@ namespace Physic
 			
 			if (m_objAResFlag)
 			{
+				glm::vec3 vel = m_objectA->m_rigidbody->GetVelocity();
+				vel.x *= (1.0f - meanFriction);
+
+				m_objectA->m_rigidbody->SetVelocity(vel);
 				m_objectA->m_rigidbody->SetVelocity0Masked(-resultVec);
 				//ENGINE_INFO("objA {}", m_objectA->GetGameObject()->GetID());
 			}
 
 			if (m_objBResFlag)
 			{
-				m_objectA->m_rigidbody->SetVelocity0Masked(resultVec);
+				glm::vec3 vel = m_objectB->m_rigidbody->GetVelocity();
+				vel.x *= (1.0f - meanFriction);
+
+				m_objectB->m_rigidbody->SetVelocity(m_objectB->m_rigidbody->GetVelocity()*(1.0f - meanFriction));
+				m_objectB->m_rigidbody->SetVelocity0Masked(resultVec);
 				//ENGINE_INFO("objB {}", m_objectB->GetGameObject()->GetID());
 			}
 			//ENGINE_INFO("reslv\n");
