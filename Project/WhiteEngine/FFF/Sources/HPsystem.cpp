@@ -37,6 +37,10 @@ bool HPsystem::isDead() {
 	return this->dead;
 }
 
+bool HPsystem::isInvicible() {
+	return this->invincible;
+}
+
 void HPsystem::Dead() 
 {
 	this->dead = true;

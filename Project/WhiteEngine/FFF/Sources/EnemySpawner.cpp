@@ -3,17 +3,17 @@
 
 void EnemySpawner::OnStart()
 {
-	SpawnDelay = 1;
-	SpawnDelayCount = SpawnDelay;
+	SpawnRate = 1.0f;
+	SpawnRateCount = SpawnRate;
 }
 
 void EnemySpawner::OnUpdate(float dt)
 {
-	SpawnDelayCount -= dt;
-	if (SpawnDelayCount <= 0)
+	SpawnRateCount -= dt;
+
+	if (SpawnRateCount <= 0)
 	{
-		SpawnDelayCount = SpawnDelay;
-		int randSpawn = rand() % 101;
+		SpawnRateCount = SpawnRate;
 
 		float randPosX, randPosY;
 
@@ -30,19 +30,9 @@ void EnemySpawner::OnUpdate(float dt)
 		else {
 			randPosY = (rand() % (y1 - y2 + 1)) + y2;
 		}
-		
-		if (randSpawn <= SpawnRate) {
-			GameObject* enemy = EnemyPool->GetInactiveObject();
-			if (enemy != nullptr)
-			{
-				enemy->SetActive(true);
 
-				enemy->m_transform.SetPosition(glm::vec3(randPosX, randPosY, 1.0f));
-			}
-		}
-
+		SpawnEnemy(randPosX, randPosY);
 	}
-
 }
 
 void EnemySpawner::OnFixedUpdate(float dt) {
@@ -61,8 +51,31 @@ void EnemySpawner::OnDisable() {
 
 }
 
-void EnemySpawner::SetSpawnDelay(float value) {
-	this->SpawnDelay = value;
+GameObject* EnemySpawner::SpawnEnemy(float posX,float posY)
+{
+	GameObject* enemy = EnemyPool->GetInactiveObject();
+	if (enemy != nullptr)
+	{
+		enemy->SetActive(true);
+
+		enemy->m_transform.SetPosition(glm::vec3(posX, posY, 1.0f));
+
+		/*switch (SpawnType) {
+		case POOL_TYPE::ENEMY_FLYER:
+			enemy->GetComponent<Flyer>();
+			break;
+		case POOL_TYPE::ENEMY_BOMBER:
+			enemy->GetComponent<Bomber>();
+			break;
+		default:
+			break;
+
+		}*/
+
+		return enemy;
+	}
+
+	return nullptr;
 }
 
 void EnemySpawner::SetSpawnRange(float x1, float y1, float x2, float y2) {
@@ -71,9 +84,26 @@ void EnemySpawner::SetSpawnRange(float x1, float y1, float x2, float y2) {
 
 void EnemySpawner::SetSpawnRate(float value) {
 	this->SpawnRate = value;
+	SpawnRateCount = SpawnRate;
 }
 
 void EnemySpawner::SetSpawnType(int type) {
 	this->SpawnType = type;
 	EnemyPool = GameController::GetInstance()->GetPool(type);
+}
+
+void EnemySpawner::SetSpawnEnemySpeed(float value) {
+	this->SpawnEnemySpeed = value;
+}
+
+void EnemySpawner::SetSpawnEnemyHP(float value) {
+	this->SpawnEnemyHP = value;
+}
+
+void EnemySpawner::SetSpawnEnemyDamage(float value) {
+	this->SpawnEnemyDamage = value;
+}
+
+void EnemySpawner::SetSpawnEnemyStats(float Speed, float HP, float Dmg) {
+
 }

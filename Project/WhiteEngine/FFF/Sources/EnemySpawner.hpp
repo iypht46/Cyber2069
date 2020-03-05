@@ -11,22 +11,37 @@
 
 #include "GameController.hpp"
 
+#include "EnemyBehaviours.h"
 
 class EnemySpawner : public BehaviourScript 
 {
 protected:
-	float SpawnDelay;
-	float SpawnDelayCount;
+	float SpawnRateCount;
 	float SpawnRate;
+
+	float SpawnEnemySpeed;
+	float SpawnEnemyHP;
+	float SpawnEnemyDamage;
+
 	int SpawnType;
 
 	int x1, x2, y1, y2;
 	ObjectPool* EnemyPool;
+
+
 public:
-	void SetSpawnDelay(float value);
+	GameObject* SpawnEnemy(float rangeX, float rangeY);
+
 	void SetSpawnRate(float value);
 	void SetSpawnRange(float x1, float y1, float x2, float y2);
 	void SetSpawnType(int type);
+
+	void SetSpawnEnemySpeed(float value);
+	void SetSpawnEnemyHP(float value);
+	void SetSpawnEnemyDamage(float value);
+	void SetSpawnEnemyStats(float Speed, float HP, float Dmg);
+
+	int GetType() { return this->SpawnType; }
 
 	virtual void OnAwake();
 	virtual void OnEnable();

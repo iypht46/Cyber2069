@@ -38,6 +38,7 @@ void AirDash::Dash(float dt) {
 	glm::vec3 dir = m_target - bomber->GetPosition();
 	float distance = glm::length(dir);
 	m_angle = glm::atan(dir.y, dir.x);
+	dashEnd = false;
 
 	if (distance <= detectRange && !dashState) {
 		timer -= dt;
@@ -60,6 +61,7 @@ void AirDash::Dash(float dt) {
 			timer = m_aimTime;
 			dashState = false;
 			dashEnd = true;
+			targetLocked = false;
 		}
 
 	}

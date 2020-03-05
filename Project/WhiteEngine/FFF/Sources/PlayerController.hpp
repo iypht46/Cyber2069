@@ -73,6 +73,8 @@ public:
 	void PSSet(Physic::PhysicScene* ps) { this->ps = ps; }
 	PlayerController();
 	
+	void DebugInput();
+
 	void mouseAim();
 
 	void updateDirection();

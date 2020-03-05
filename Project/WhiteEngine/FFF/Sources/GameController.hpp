@@ -8,12 +8,36 @@
 #include "PlayerController.hpp"
 
 #include <map>
+#include <vector>
+
+class EnemySpawner;
 
 enum POOL_TYPE {
 	BULLET_MG = 0,
 	ENEMY_FLYER,
 	ENEMY_BOMBER
 };
+
+struct EnemyPreset {
+	float FlyerRatio;
+	float BomberRatio;
+};
+
+struct EnemyAmplifier {
+	float FlyerHP;
+	float FlyerSpeed;
+
+	float BomberHP;
+	float BomberSpeed;
+	float BomberDashSpeed;
+	float BomberAimTime;
+	float BomberAimSpeed;
+	float BomberExplodeDMG;
+	float BomberExplodeRadius;
+
+	float EnemySpawnRate;
+};
+
 
 class GameController : public BehaviourScript {
 private:
@@ -40,6 +64,16 @@ private:
 	GameObject* FlyerSpawner;
 	GameObject* BomberSpawner;
 
+	vector<EnemySpawner*> Spawner;
+
+	vector<EnemyPreset*> Preset;
+	vector<EnemyAmplifier*> Amplifier;
+
+	int currScoreCheckpoint = 0;
+
+	float scoreCheckpoint[4] = { 0.0f, 10.0f,200.0f,300.0f };
+	
+
 public:
 	GameController();
 	static GameController* GetInstance();
@@ -55,6 +89,8 @@ public:
 
 	void updateHPui();
 	void updateStaminaUI();
+
+	void updateSpawner();
 
 	void AssignScoreText(GameObject* ScoreText);
 	void AssignHPbar(GameObject* hpbar);

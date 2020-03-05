@@ -125,6 +125,7 @@ void PlayerController::OnUpdate(float dt)
 		stamina += staminaRegenRate;
 	}
 
+	DebugInput();
 	move();
 
 	if (Dash) {
@@ -147,6 +148,38 @@ void PlayerController::OnFixedUpdate(float dt)
 
 void PlayerController::updateDirection() {
 
+}
+
+void PlayerController::DebugInput() {
+	
+	if (Input::GetKeyDown(Input::KeyCode::KEY_R))
+	{
+		m_gameObject->m_transform.SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
+		hpSystem->ResetHP();
+		m_gameObject->SetActive(true);
+	}
+
+	if (Input::GetKeyUp(Input::KeyCode::KEY_N))
+	{
+		if (GLRenderer::GetInstance()->drawDebug) {
+
+			GLRenderer::GetInstance()->drawDebug = false;
+		}
+		else {
+			GLRenderer::GetInstance()->drawDebug = true;
+		}
+	}
+
+	if (Input::GetKeyUp(Input::KeyCode::KEY_M))
+	{
+		if (!hpSystem->isInvicible()) {
+
+			hpSystem->SetInvincible(true);
+		}
+		else {
+			hpSystem->SetInvincible(false);
+		}
+	}
 }
 
 void PlayerController::move()
@@ -200,24 +233,6 @@ void PlayerController::move()
 		onGround = false;
 
 		m_gameObject->GetComponent<Animator>()->setCurrentState(3);
-	}
-
-	if (Input::GetKeyDown(Input::KeyCode::KEY_R)) 
-	{
-		m_gameObject->m_transform.SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
-		hpSystem->ResetHP();
-		m_gameObject->SetActive(true);
-	}
-
-	if (Input::GetKeyUp(Input::KeyCode::KEY_N))
-	{
-		if (GLRenderer::GetInstance()->drawDebug) {
-
-			GLRenderer::GetInstance()->drawDebug = false;
-		}
-		else {
-			GLRenderer::GetInstance()->drawDebug = true;
-		}
 	}
 
 	if ((!Input::GetKeyHold(Input::KeyCode::KEY_A) && !Input::GetKeyHold(Input::KeyCode::KEY_D)) && !jumping && !falling)
