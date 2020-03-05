@@ -5,6 +5,7 @@
 #include "AirDash.hpp"
 #include "AirPatrol.hpp"
 #include "Explosion.hpp"
+#include "GroundPatrol.hpp"
 
 enum EnemyState
 {
