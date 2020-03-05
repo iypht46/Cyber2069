@@ -38,11 +38,11 @@ void Flyer::OnFixedUpdate(float dt) {
 		case Idle:
 			//rigidbody->SetVelocity(glm::vec3(0));
 			//airFollow->FollowPlayer(dt);
-			groundPatrol->Patrol();
+			groundPatrol->Patrol(dt);
 			break;
 		case Chase:
 			//airFollow->FollowPlayer(dt);
-			groundPatrol->Patrol();
+			groundPatrol->Patrol(dt);
 			break;
 		case Active:
 		default:

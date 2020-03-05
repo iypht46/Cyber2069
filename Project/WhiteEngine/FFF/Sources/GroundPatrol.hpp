@@ -10,6 +10,7 @@ class GroundPatrol : public BehaviourScript
 private:
 	float m_stoppingDistance;
 	float m_speed;
+	float delay_timer;
 	Transform* thisTransform;
 	Rigidbody* rb;
 	Physic::PhysicScene* ps;
@@ -19,7 +20,7 @@ public:
 	void Init();
 	void SetStopDis(float val);
 	void SetSpeed(float val);
-	void Patrol();
+	void Patrol(float dt);
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
