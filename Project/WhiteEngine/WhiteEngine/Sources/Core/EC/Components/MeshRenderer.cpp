@@ -26,6 +26,11 @@ MeshRenderer::MeshRenderer(std::string texture_path,float NumframeX,float NumFra
 
 void MeshRenderer::SetTexture(std::string path)
 {
+	if (!mesh)
+	{
+		mesh = new SquareMeshVbo();
+		mesh->LoadData(1.0f, 1.0f);
+	}
 	texture = GLRenderer::GetInstance()->LoadTexture(path);
 	m_texLoaded = true;
 }
@@ -61,12 +66,13 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 	vector<glm::mat4> matrixStack;
 
 	glm::mat4 modelMatrix = GetGameObject()->m_transform.GetModelMatrix();
-	glm::mat4 projectionMatrix = Graphic::getCamera()->GetProjectionMatrix();
-	glm::mat4 viewMatrix = Graphic::getCamera()->GetViewMatrix();
+	//glm::mat4 projectionMatrix = Graphic::getCamera()->GetProjectionMatrix();
+	//glm::mat4 viewMatrix = Graphic::getCamera()->GetViewMatrix();
 
 	if (squareMesh != nullptr)
 	{
-		glm::mat4 currentMatrix = projectionMatrix * viewMatrix * modelMatrix;
+		//glm::mat4 currentMatrix = projectionMatrix * viewMatrix * modelMatrix;
+		glm::mat4 currentMatrix = globalModelTransform * modelMatrix;
 		glUniformMatrix4fv(modelMatixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
 		glUniform1i(modeId, 1);
 
@@ -87,6 +93,7 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 		/*glUniform1f(offsetXId, 0);
 		glUniform1f(offsetYId, 0);*/
 		//glActiveTexture(GL_TEXTURE0);
+		//std::cout << "Render\n";
 		glBindTexture(GL_TEXTURE_2D, this->texture);
 		squareMesh->Render();
 	}

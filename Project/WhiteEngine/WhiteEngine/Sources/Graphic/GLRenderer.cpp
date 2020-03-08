@@ -37,6 +37,7 @@ bool GLRenderer::InitGL(string vertexShaderFile, string fragmentShaderFile)
 		cout << "Unable to initialize OpenGL! " << endl;
 		return false;
 	}
+	
 	return true;
 }
 
@@ -140,18 +141,18 @@ bool GLRenderer::Initialize(string vertexShaderFile, string fragmentShaderFile)
 
 }
 
-void GLRenderer::Render()
+void GLRenderer::Render(glm::mat4 globalModelTransform)
 {
-	////Bind FBO
-	//if (framebuffer)
-	//{
-	//	framebuffer->BindFrameBuffer();
-	//	//ENGINE_INFO("Bind Frame Buffer");
-	//}
-	
-	// Clear color buffer
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//SetViewPort(0, 0, Graphic::Window::GetWidth(), Graphic::Window::GetHeight());
+	//Bind FBO
+	if (framebuffer)
+	{
+		framebuffer->BindFrameBuffer();
+		//ENGINE_INFO("Bind Frame Buffer");
+	}
 
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
 	// Update window with OpenGL rendering
 	glUseProgram(gProgramId); //Use gameobject shader program
 	
@@ -166,31 +167,40 @@ void GLRenderer::Render()
 		
 		if (obj->GetGameObject()->Active()) 
 		{
-			glActiveTexture(GL_TEXTURE0);
-			obj->Render(camera);
+			
+			obj->Render(globalModelTransform);
 		}
 	}
 
 	//FBO Render
-	//if (framebuffer)
-	//{
-	//	framebuffer->UnBindFrameBuffer();
-	//	if (fboState == FBO_STATE::MAIN)
-	//	{
-	//		framebuffer->Render();
-	//		//ENGINE_INFO("Render form framebuffer");
-	//	}
-	//}
-
-	//Unbind program
-	glUseProgram(NULL);
+	if (framebuffer)
+	{
+		framebuffer->UnBindFrameBuffer();
+		if (fboState == FBO_STATE::MAIN)
+		{
+			//SetClearColor(1.0f, 0.0f, 0.0f);
+			framebuffer->Render();
+			//ENGINE_INFO("Render form framebuffer");
+		}
+	}
 }
 
 void GLRenderer::EnableFBO(FBO_STATE state, int w, int h)
 {
 	fboState = state;
 	framebuffer = new Graphic::Framebuffer();
-	framebuffer->Init(w, h);
+
+	if (!framebuffer->Init(w, h))
+	{
+		ENGINE_ERROR("ERROR::FRAMEBUFFER:: Failed generating Framebuffer!");
+		delete framebuffer;
+	}
+	else
+	{
+		ENGINE_INFO("Generate Framebuffer Complete");
+	}
+		
+
 }
 
 void GLRenderer::SetMeshAttribId(MeshVbo * mesh)

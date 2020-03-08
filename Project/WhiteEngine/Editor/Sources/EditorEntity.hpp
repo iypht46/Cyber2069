@@ -13,7 +13,7 @@ namespace Tools
 	using GameObjectHandle = UNIQUE_HANDLE(GameObject);
 	using ComponentHandle = UNIQUE_HANDLE(EditorComponent);
 	using TransformHandle = UNIQUE_HANDLE(TransformEC);
-	using ComponentsMap = std::map<std::string, bool>;
+	using ComponentsMap = std::map<std::string, EditorComponent*>;
 	//using MeshRendererHandle = UNIQUE_HANDLE(MeshRendererEC);
 	//using ComponentList = std::vector<std::unique_ptr<EditorComponent>>;
 
@@ -35,6 +35,7 @@ namespace Tools
 		
 		//Interface
 		void AddComponent(std::string);
+		EditorComponent* GetComponent(std::string);
 		bool RemoveComponent(std::string);
 		std::vector<EditorComponent*>& GetComponentList();
 		std::string GetName();

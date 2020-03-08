@@ -2,11 +2,14 @@
 #include "EditorEntity.hpp"
 #include "FileBrowser.hpp"
 
+#include <iostream>
+
 namespace Tools
 {
-	PrefabEditor::PrefabEditor() : Editor(EDITOR_TYPE::PREFAB_EDITOR)
+	PrefabEditor::PrefabEditor(bool* isOpen) : Editor(EDITOR_TYPE::PREFAB_EDITOR, isOpen)
 	{
 		m_editorEntitiy = make_unique<EditorEntity>();
+		m_previewWindow = make_unique<PreviewWindow>(&m_previewBool);
 		m_selectedEntity = m_editorEntitiy.get();
 	}
 
@@ -22,7 +25,24 @@ namespace Tools
 
 	void PrefabEditor::Update(void)
 	{
-		//m_previewWindow->
+		if (!m_open)
+			return;
+
+		if (!m_previewBool)
+		{
+			if (m_hasSaved)
+			{
+
+			}
+			else
+			{
+				m_previewBool = true;
+				//Toggle Modals
+			}
+		}
+
+		m_previewWindow->SetMesh(m_editorEntitiy->GetComponent("MeshRendererEC"));
+		m_previewWindow->Render();
 	}
 
 	void PrefabEditor::Terminate(void)
@@ -81,6 +101,15 @@ namespace Tools
 
 		//Pop up: File not found
 		returnMessage = "File not found!\n";
+		return false;
+	}
+	bool PrefabEditor::isFocused()
+	{
+		if (m_previewWindow->isFocused())
+		{
+			return true;
+		}
+		
 		return false;
 	}
 }

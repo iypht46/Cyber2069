@@ -9,6 +9,13 @@ namespace Tools
 	
 
 	//*****          END            *****//
+	int EditorComponent::m_totalNum = 0;
+
+	EditorComponent::EditorComponent(std::string name) : m_componentName(name)
+	{
+		m_totalNum++;
+		m_id = m_totalNum;
+	}
 
 	bool EditorComponent::Render()
 	{
@@ -25,6 +32,11 @@ namespace Tools
 	std::string EditorComponent::GetName()
 	{
 		return m_componentName;
+	}
+
+	int EditorComponent::GetID()
+	{
+		return m_id;
 	}
 
 	EditorComponent* EditorComponent::makeComponent(std::string type)

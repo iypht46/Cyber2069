@@ -5,11 +5,16 @@ namespace Tools
 	void UIWindow::Render()
 	{
 		//Window size and position can be set in init method of inheriting class.
-		ImGui::SetNextWindowPos(m_position);
-		ImGui::SetNextWindowSize(ImVec2(m_width, m_height));
+		//ImGui::SetNextWindowPos(m_position);
+		PreRender();
+		ImGui::SetNextWindowSize(ImVec2(m_width, m_height), ImGuiCond_FirstUseEver);
 		//Window flag should also be set in init method
 		ImGui::Begin(m_windowName.c_str(), m_show, m_windowFlags);
+		/*ImVec2 newSize = ImGui::GetWindowSize();
+		m_width = newSize.x;
+		m_height = newSize.y;*/
 		OnRender();
+		m_isFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows);
 		ImGui::End();
 	}
 	
@@ -30,11 +35,6 @@ namespace Tools
 	void UIWindow::ToggleBool() 
 	{ 
 		*m_show = !m_show;
-	}
-
-	bool UIWindow::IsFocused()
-	{
-		return ImGui::IsWindowFocused();
 	}
 
 	UIWindow::~UIWindow() 

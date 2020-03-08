@@ -1,5 +1,4 @@
 #include "CoreComponentEC.hpp"
-#include "imgui.h"
 #include "Core/Logger.hpp"
 
 namespace Tools
@@ -10,6 +9,7 @@ namespace Tools
 	MAKE_COMPONENT(TransformEC);
 	MAKE_COMPONENT(MeshRendererEC);
 	MAKE_COMPONENT(BoxColliderEC);
+	MAKE_COMPONENT(RigidbodyEC);
 	//*****          END            *****//
 
 	void TransformEC::Init(Component* engineComponent)
@@ -67,31 +67,62 @@ namespace Tools
 	{
 		m_component = engineComponent;
 		MeshRenderer* meshRenderer = dynamic_cast<MeshRenderer*>(m_component);
-
+		
 		if (meshRenderer)
 		{
 			m_enable = &meshRenderer->enabled;
-			if (meshRenderer->m_texLoaded)
-				m_tex = &meshRenderer->texture;
+			m_isLoaded = meshRenderer->m_texLoaded;
+
+			m_textureFileDialog.SetTitle("Choose texture");
+			m_textureFileDialog.SetTypeFilters({ ".png", ".jpg" });
 			return;
 		}
 		ENGINE_ERROR("ERROR::Component is not transfrom");
+	}
+
+	void MeshRendererEC::RenderTexture(glm::mat4 matrix)
+	{
+		MeshRenderer* meshRenderer = dynamic_cast<MeshRenderer*>(m_component);
+		meshRenderer->Render(matrix);
+	}
+
+	bool MeshRendererEC::IsTextureLoaded()
+	{
+		MeshRenderer* meshRenderer = dynamic_cast<MeshRenderer*>(m_component);
+
+		if (meshRenderer)
+		{
+			return meshRenderer->m_texLoaded;
+		}
+
+		return false;
 	}
 
 	void MeshRendererEC::OnRender()
 	{
 		ImGui::PushItemWidth(-1);
 		ImGui::AlignTextToFramePadding(); ImGui::Text("Sprite"); ImGui::SameLine();
-		if (!m_tex)
+		if (!m_isLoaded)
 			ImGui::TextDisabled("None");
 		else
-			ImGui::Text(m_textureName.c_str());
+			ImGui::TextDisabled(m_textureName.c_str());
 		ImGui::SameLine();
 		if (ImGui::Button("..##AddTextureButton"))
 		{
-
+			m_textureFileDialog.Open();
 		}
 		ImGui::PopItemWidth();
+
+		m_textureFileDialog.Display();
+
+		if (m_textureFileDialog.HasSelected())
+		{
+			m_textureName = m_textureFileDialog.GetSelected().filename().string();
+			m_isLoaded = true;
+			MeshRenderer* meshRenderer = dynamic_cast<MeshRenderer*>(m_component);
+			meshRenderer->SetTexture(m_textureFileDialog.GetSelected().string());
+			m_textureFileDialog.ClearSelected();
+		}
 	}
 
 	bool MeshRendererEC::AddTexture(std::string path)
@@ -108,6 +139,7 @@ namespace Tools
 
 		if (boxCol)
 		{
+			m_enable = &boxCol->enabled;
 			m_width = &boxCol->m_halfWidth;
 			m_height = &boxCol->m_halfHeight;
 			m_colliderScale = &boxCol->m_colliderScale;
@@ -127,5 +159,38 @@ namespace Tools
 		ImGui::AlignTextToFramePadding(); ImGui::Text("Scale"); 
 		ImGui::SameLine(); ImGui::DragFloat2("##Scale", &m_colliderScale->x, 0.1f, 0.0f, 10.0f, "%.1f", 1.0f);
 		ImGui::PopItemWidth();
+	}
+	
+	void RigidbodyEC::OnRender()
+	{
+		//ImGui::PushItemWidth(-1);
+
+		ImGui::AlignTextToFramePadding(); ImGui::Text("Velocity");
+		ImGui::SameLine(); ImGui::DragFloat3("##Velocity", &m_velocity->x, 0.0f, -500.0f, 500.0f, "%.1f", 1.0f);
+		ImGui::AlignTextToFramePadding(); ImGui::Text("Acceleration");
+		ImGui::SameLine(); ImGui::DragFloat3("##Acceleration", &m_acceleration->x, 0.0f, -500.0f, 500.0f, "%.1f", 1.0f);
+		ImGui::AlignTextToFramePadding(); ImGui::Text("Mass");
+		ImGui::SameLine(); ImGui::DragFloat("##Mass", m_mass, 0.1f, 0.0f, 500.0f, ".1f", 1.0f);
+		ImGui::AlignTextToFramePadding(); ImGui::Text("Gravity Scale");
+		ImGui::SameLine(); ImGui::DragFloat("##GravityScale", m_gravityScale, 0.1, 0.0f, 500.0f, ".1f", 1.0f);
+		ImGui::AlignTextToFramePadding(); ImGui::Text("Drag");
+		ImGui::SameLine(); ImGui::DragFloat("##Drag", m_drag, 0.1f, 0.0f, 500.0f, ".1f", 1.0f);
+		//ImGui::PopItemWidth();
+	}
+	
+	void RigidbodyEC::Init(Component * engineComponent)
+	{
+		m_component = engineComponent;
+		Rigidbody* rigid = dynamic_cast<Rigidbody*>(m_component);
+
+		if (rigid)
+		{
+			m_enable = &rigid->enabled;
+			m_velocity = &rigid->m_velocity;
+			m_acceleration = &rigid->m_acceleration;
+			m_mass = &rigid->m_mass;
+			m_gravityScale = &rigid->m_gravityScale;
+			m_drag = &rigid->m_drag;
+		}
 	}
 }

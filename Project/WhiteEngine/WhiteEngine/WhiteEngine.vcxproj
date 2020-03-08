@@ -130,6 +130,7 @@
     <ClInclude Include="Sources\Core\EC\Components\BehaviourScript.h" />
     <ClInclude Include="Sources\Core\EC\Components\SoundPlayer.hpp" />
     <ClInclude Include="Sources\Core\Handle.hpp" />
+    <ClInclude Include="Sources\Graphic\Camera.hpp" />
     <ClInclude Include="Sources\Graphic\Framebuffer.hpp" />
     <ClInclude Include="Sources\Graphic\Shader.hpp" />
     <ClInclude Include="Sources\Utility\Reflection.hpp" />
@@ -152,7 +153,7 @@
     <ClInclude Include="Sources\Core\Message\Message.hpp" />
     <ClInclude Include="Sources\Core\Message\MessageObjects.hpp" />
     <ClInclude Include="Sources\Core\Message\MessageType.hpp" />
-    <ClInclude Include="Sources\Graphic\Camera.hpp" />
+    <ClInclude Include="Sources\Graphic\CameraObject.hpp" />
     <ClInclude Include="Sources\Graphic\GLRenderer.h" />
     <ClInclude Include="Sources\Graphic\GraphicCore.hpp" />
     <ClInclude Include="Sources\Graphic\MeshVbo.h" />
@@ -165,6 +166,7 @@
   <ItemGroup>
     <ClCompile Include="Sources\Core\EC\Components\BehaviourScript.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\SoundPlayer.cpp" />
+    <ClCompile Include="Sources\Graphic\Camera.cpp" />
     <ClCompile Include="Sources\Graphic\Framebuffer.cpp" />
     <ClCompile Include="Sources\Physic\Collision.cpp" />
     <ClCompile Include="Sources\Physic\PhysicScene.cpp" />
@@ -181,7 +183,7 @@
     <ClCompile Include="Sources\Core\GameInfo.cpp" />
     <ClCompile Include="Sources\Core\Message\IMessageHandler.cpp" />
     <ClCompile Include="Sources\Core\Message\MessageObjects.cpp" />
-    <ClCompile Include="Sources\Graphic\Camera.cpp" />
+    <ClCompile Include="Sources\Graphic\CameraObject.cpp" />
     <ClCompile Include="Sources\Graphic\GLRenderer.cpp" />
     <ClCompile Include="Sources\Graphic\GraphicCore.cpp" />
     <ClCompile Include="Sources\Graphic\MeshVbo.cpp" />

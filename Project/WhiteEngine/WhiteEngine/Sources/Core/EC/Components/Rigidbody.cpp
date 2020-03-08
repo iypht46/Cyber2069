@@ -8,7 +8,6 @@ using namespace glm;
 Rigidbody::Rigidbody()
 {
 	m_gravityScale = 1.0f;
-	m_position = glm::vec3(0.0f, 0.0f, 0.0f);
 	//m_orientation = 0.0f;
 	m_transform = &m_gameObject->m_transform;
 	m_velocity = vec3(0.0f);
@@ -16,14 +15,14 @@ Rigidbody::Rigidbody()
 	m_drag = 0.0f;
 }
 
-//Create BoxCollider
+////Create BoxCollider
 void Rigidbody::Init(void)
 {
-	////Create new box collider
-	//BoxCollider* col = m_gameObject->AddComponent<BoxCollider>();
-	////Init Box
+	//Create new box collider
+	BoxCollider* col = m_gameObject->AddComponent<BoxCollider>();
+	//Init Box
 	//col->Init(hW, hH, this);
-	////Set Collider
+	//Set Collider
 	//m_collider = col;
 	m_transform = &(m_gameObject->m_transform);
 }
@@ -35,19 +34,7 @@ void Rigidbody::Init(float hW, float hH)
 	BoxCollider* col = m_gameObject->AddComponent<BoxCollider>();
 	//Init Box
 	col->Init(hW, hH, this);
-	//Set Collider
-	m_collider = col;
 	m_transform = &(m_gameObject->m_transform);
-}
-
-Collider* Rigidbody::GetCollider()
-{
-	if (m_collider)
-	{
-		return m_collider;
-	}
-
-	return nullptr;
 }
 
 Rigidbody::~Rigidbody()

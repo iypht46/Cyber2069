@@ -48,7 +48,7 @@ protected:
 	Graphic::Framebuffer* framebuffer;
 	FBO_STATE fboState;
 public:
-	void Render();
+	void Render(glm::mat4 globalModelTransform);
 	static GLRenderer* GetInstance();
 	bool InitGL(string vertexShaderFile, string fragmentShaderFile);
 

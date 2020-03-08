@@ -21,18 +21,36 @@ namespace Tools
 
 
 		m_inspector = std::make_unique<Inspector>();
+		m_prefabEditor = std::make_unique<PrefabEditor>(&m_prefabBool);
+		m_sceneEditor = std::make_unique<SceneEditor>(&m_sceneBool);
+
 	}
 	void MainEditor::Update()
 	{
 		MainMenuBar();
 		//TODO: Set up docking space?
+		if (m_prefabEditor->isFocused())
+			m_currentEditor = m_prefabEditor.get();
+
+		if (m_sceneEditor->isFocused())
+			m_currentEditor = m_sceneEditor.get();
 
 		if (m_currentEditor)
 		{
 			//TODO: Use observer pattern for optimization?
-			m_inspector->SetEntity(m_currentEditor->GetSelectedEntity());
-			m_currentEditor->Update();
+			//if (m_currentEditor->GetSelectedEntity())
+			if (m_currentEditor->isFocused() || m_inspector->isFocused())
+				m_inspector->SetEntity(m_currentEditor->GetSelectedEntity());
+			//else
+				//m_inspector->ResetEntity();
+			//m_currentEditor->Update();
 		}
+
+		if (m_prefabBool)
+			m_prefabEditor->Update();
+
+		if (m_sceneBool)
+			m_sceneEditor->Update();
 
 		m_inspector->Render();
 	}
@@ -47,10 +65,10 @@ namespace Tools
 		
 	}
 
-	void MainEditor::Load(const char * path)
+	void MainEditor::Load(Editor* editor, const char * path)
 	{
 		std::string returnMsg;
-		if (!m_currentEditor->Load(path, returnMsg.c_str()))
+		if (!editor->Load(path, returnMsg.c_str()))
 		{
 			//Toggle error popup
 		}
@@ -90,11 +108,12 @@ namespace Tools
 							std::string path = openfilename("Engine Files (*.prefab)|*.prefab", NULL);
 							//Handle the file
 
-							this->Load(path.c_str());
+							this->Load(m_prefabEditor.get(),path.c_str());
 							
 						}
 
 					}
+
 					if (ImGui::MenuItem("Scene"))
 					{
 						if (AccessEditor(EDITOR_TYPE::SCENE_EDITOR))
@@ -102,7 +121,7 @@ namespace Tools
 							std::string path = openfilename("Scene Files(*.scene)|*.scene", NULL);
 							//Handle the file
 
-							this->Load(path.c_str());
+							this->Load(m_sceneEditor.get(), path.c_str());
 						}
 					}
 
@@ -120,6 +139,16 @@ namespace Tools
 				ImGui::EndMenu();
 			}
 
+			if (ImGui::BeginMenu("Windows"))
+			{
+				ImGui::MenuItem("Prefab Editor", NULL, &m_prefabBool);
+				ImGui::MenuItem("Scene Editor", NULL, &m_sceneBool);
+				ImGui::EndMenu();
+			}
+
+			if (m_currentEditor)
+				m_currentEditor->RenderMenu();
+
 			ImGui::EndMainMenuBar();
 		}
 	}
@@ -127,45 +156,20 @@ namespace Tools
 	bool MainEditor::AccessEditor(EDITOR_TYPE type)
 	{
 		//Case: There aren't any editor opened
-		
-		if (!m_currentEditor)
+		switch (type)
 		{
-			m_currentEditor.reset();
-			switch (type)
-			{
-			case Tools::EDITOR_TYPE::PREFAB_EDITOR:
-				m_currentEditor = std::make_unique<PrefabEditor>();
-				break;
-			case Tools::EDITOR_TYPE::SCENE_EDITOR:
-				m_currentEditor = std::make_unique<SceneEditor>();
-				break;
-			default:
-				break;
-			}
-			return true;
+		case Tools::EDITOR_TYPE::PREFAB_EDITOR:
+			m_prefabBool = true;
+			break;
+		case Tools::EDITOR_TYPE::SCENE_EDITOR:
+			m_sceneBool = true;
+			break;
+		default:
+			return false;
+			break;
 		}
 
-		//An editor is opened
-		//Check if editor has been saved
-		if (m_currentEditor->HasSaved())
-		{
-			m_currentEditor.reset();
-			switch (type)
-			{
-			case Tools::EDITOR_TYPE::PREFAB_EDITOR:
-				m_currentEditor = std::make_unique<PrefabEditor>();
-				break;
-			case Tools::EDITOR_TYPE::SCENE_EDITOR:
-				m_currentEditor = std::make_unique<SceneEditor>();
-				break;
-			default:
-				break;
-			}
-			return true;
-		}
-		//TODO: Toggle popup to save current
-
-		return false;
+		return true;
 	}
 
 	std::string MainEditor::openfilename(const char *filter = "All Files (*.*)\0*.*\0", HWND owner = NULL)

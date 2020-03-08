@@ -11,10 +11,11 @@ namespace Tools
 	{
 	protected:
 		bool m_hasSaved;
+		bool* m_open;
 		EDITOR_TYPE m_editorType;
 		EditorEntity* m_selectedEntity;
 	public:
-		Editor(EDITOR_TYPE);
+		Editor(EDITOR_TYPE, bool*);
 
 		EDITOR_TYPE GetType();
 		bool HasSaved();
@@ -25,9 +26,11 @@ namespace Tools
 		virtual bool Save(const char* path, const char* returnMessage) = 0;
 		virtual bool Load(const char* path, const char* returnMessage) = 0;
 		virtual EditorEntity* GetSelectedEntity();
+		virtual bool isFocused() { return false; }
+		virtual void RenderMenu() {}
 	};
 
-	inline Editor::Editor(EDITOR_TYPE type) : m_editorType(type) {}
+	inline Editor::Editor(EDITOR_TYPE type, bool* isOpen) : m_editorType(type), m_open(isOpen) {}
 	inline EDITOR_TYPE Editor::GetType() { return m_editorType; }
 	inline bool Editor::HasSaved() { return m_hasSaved; }
 	inline EditorEntity* Editor::GetSelectedEntity() { return m_selectedEntity; }

@@ -2,15 +2,22 @@
 
 #include "Editor.hpp"
 #include "Inspector.hpp"
-#include "Core/EC/GameObject.hpp"
+#include "EditorEntity.hpp"
+
+
+#include <map>
+#include <memory>
 
 namespace Tools
 {
+	using EntityHandle = UNIQUE_HANDLE(EditorEntity);
+	using EntityMap = std::map<int, EntityHandle>;
+
 	class SceneEditor : public Editor
 	{
 	private:
 		//static GameObject* m_selectedGameObject;
-
+		static EntityMap m_entitiesMap;
 		//TODO: Add UI Window
 		//GameObjectHierarchy
 		//Inspector
@@ -20,7 +27,7 @@ namespace Tools
 		bool LoadScene(const char*);
 		bool SaveScene(const char*);
 	public:
-		SceneEditor() : Editor(EDITOR_TYPE::SCENE_EDITOR) {}
+		SceneEditor(bool* isOpen) : Editor(EDITOR_TYPE::SCENE_EDITOR, isOpen) {}
 		//Interface
 		virtual void Update(void) override;
 		virtual bool Save(const char* path, const char* returnMessage) override;

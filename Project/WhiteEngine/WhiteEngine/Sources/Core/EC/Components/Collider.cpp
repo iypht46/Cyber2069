@@ -68,14 +68,40 @@
 
 
 	//////////////Box Collider//////////////
+	BoxCollider::BoxCollider() : Collider(COLLIDER_TYPE::BOX) 
+	{
+		//Set Transform
+		m_transform = &m_gameObject->m_transform;
+		m_halfWidth = 1;
+		m_halfHeight = 1;
+	}
+	void BoxCollider::Init()
+	{
+		//Set Rigidbody
+		m_rigidbody = m_gameObject->GetComponent<Rigidbody>();
+
+		//Set Box Size
+		/*m_colliderScale.x = m_halfWidth / m_transform->GetScale().x;
+		m_colliderScale.y = m_halfHeight / m_transform->GetScale().y;*/
+
+		if (m_rigidbody)
+		{
+			m_rigidbody = m_rigidbody;
+			m_isStatic = false;
+			ComputeMass(m_rigidbody);
+		}
+		else
+		{
+			m_isStatic = true;
+		}
+	}
+
 	void BoxCollider::Init(float hW, float hH)
 	{
 		//Set Transform
-		//m_transform = m_gameObject->GetTransform();
+		m_transform = &m_gameObject->m_transform;
 		//Set Rigidbody
 		m_rigidbody = m_gameObject->GetComponent<Rigidbody>();
-		//Set Transform
-		m_transform = &m_gameObject->m_transform;
 
 		//Set Box Size
 		m_halfWidth = hW;
@@ -87,7 +113,7 @@
 		{
 			m_rigidbody = m_rigidbody;
 			m_isStatic = false;
-			ComputeMass();
+			ComputeMass(m_rigidbody);
 		}
 		else
 		{
@@ -107,7 +133,7 @@
 		m_colliderScale.x = hW / m_transform->GetScale().x;
 		m_colliderScale.y = hH / m_transform->GetScale().y;
 
-		ComputeMass();
+		ComputeMass(m_rigidbody);
 		//Set Static
 		m_isStatic = false;
 		
@@ -122,10 +148,10 @@
 
 	}
 
-	void BoxCollider::ComputeMass()
+	void BoxCollider::ComputeMass(Rigidbody* rigid)
 	{
-		m_rigidbody->m_mass = ((m_halfWidth*2) * (m_halfHeight*2)) * m_density;
-		m_rigidbody->m_invMass = 1.0 / m_rigidbody->m_mass;
+		rigid->m_mass = ((m_halfWidth*2) * (m_halfHeight*2)) * m_density;
+		rigid->m_invMass = 1.0 / m_rigidbody->m_mass;
 	}
 
 	glm::vec3 BoxCollider::GetColliderScale()

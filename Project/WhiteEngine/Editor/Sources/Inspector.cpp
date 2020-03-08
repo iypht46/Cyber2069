@@ -10,14 +10,13 @@ namespace Tools
 	{
 		ImVec2 main_window_size = ImVec2(Graphic::Window::GetWidth(), Graphic::Window::GetHeight());
 		ImVec2 main_window_pos = ImGui::GetMainViewport()->Pos;
-		std::cout << "Viewport Pos " << main_window_pos.x << " ," << main_window_pos.y << std::endl;
+		//std::cout << "Viewport Pos " << main_window_pos.x << " ," << main_window_pos.y << std::endl;
 		m_width = main_window_size.x / 4;
 		m_height = main_window_size.y - 20;
 		m_position.x = (main_window_size.x - m_width);
 		m_position.y = main_window_pos.y + 20;
 		
 		m_windowFlags |= ImGuiWindowFlags_NoCollapse;
-		m_windowFlags |= ImGuiWindowFlags_NoMove;
 		m_windowFlags |= ImGuiWindowFlags_NoResize;
 		m_editorComponentList = EditorComponent::GetTableList();
 	}
@@ -26,12 +25,11 @@ namespace Tools
 	{
 
 		//TODO: Render some header or some shit first
-			
-		
 		if (!m_entityToRender)
 		{
 			return;
 		}
+
 		ImVec2 window_size = ImGui::GetWindowSize();
 
 		ImGui::PushItemWidth(-1);
@@ -47,7 +45,7 @@ namespace Tools
 		//Render Component
 		for (auto component : m_entityToRender->GetComponentList())
 		{
-			if (component->Render())
+			if (!component->Render())
 			{
 				//TODO: Remove Component
 				m_entityToRender->RemoveComponent(component->GetName());
@@ -86,11 +84,14 @@ namespace Tools
 			}
 			ImGui::EndPopup();
 		}
-
 	}
 
 	void Inspector::SetEntity(EditorEntity * ent)
 	{
 		m_entityToRender = ent;
+	}
+	void Inspector::ResetEntity()
+	{
+		m_entityToRender = nullptr;
 	}
 }

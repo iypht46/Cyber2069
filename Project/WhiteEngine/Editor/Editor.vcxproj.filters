@@ -110,6 +110,9 @@
     <ClCompile Include="Sources\CoreComponentEC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\GameObjectHierarchy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Sources\Shader\fbo_frag.shd" />

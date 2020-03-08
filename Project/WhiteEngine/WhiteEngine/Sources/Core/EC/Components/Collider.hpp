@@ -61,13 +61,14 @@
 		glm::vec3 m_colliderScale; //Scale multiplier in halfwidth and halfheight
 	public:
 		//Constructor
-		BoxCollider() : Collider(COLLIDER_TYPE::BOX) {}
+		BoxCollider();
+		void Init();
 		void Init(float, float);
 		void Init(float, float, Rigidbody*);
 		void ComputeAABB(Physic::AABB&);
 		
 		//Box Collider Interface
-		virtual void ComputeMass();
+		virtual void ComputeMass(Rigidbody* rigid);
 		virtual glm::vec3 GetColliderScale();
 
 		

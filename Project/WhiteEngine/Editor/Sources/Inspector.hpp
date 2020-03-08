@@ -26,5 +26,6 @@ namespace Tools
 		//Constructor
 		Inspector() : UIWindow("Inspector") { this->Init(); }
 		void SetEntity(EditorEntity*);
+		void ResetEntity();
 	};
 }

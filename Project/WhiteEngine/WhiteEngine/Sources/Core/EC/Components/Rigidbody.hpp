@@ -8,13 +8,15 @@
 	//Forward Declaration
 	class Collider;
 	class Transform;
+	namespace Tools { class RigidbodyEC; }
 
 	class Rigidbody : public Component
 	{
 		friend class BoxCollider;
+		friend class Tools::RigidbodyEC;
 	private:
 		//Body Settings
-		glm::vec3 m_position;
+		//glm::vec3 m_position;
 		glm::vec3 m_velocity;
 		glm::vec3 m_acceleration;
 		//float m_orientation;
@@ -24,12 +26,10 @@
 		float m_drag;
 
 		//Pointers to other components
-		Collider* m_collider;
 		Transform* m_transform;
 	public:
-		//Rigidbody Interface
+		////Rigidbody Interface
 		void Init(float, float);
-		Collider* GetCollider();
 		void Init(/*float, float*/);
 		void SetVelocity(glm::vec3);
 		glm::vec3 GetVelocity();

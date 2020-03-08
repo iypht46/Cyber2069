@@ -16,6 +16,8 @@ namespace Tools
 	protected:
 		static std::map<std::string, EditorComponent*> m_componentTable;
 		static AvailableComponent m_availableComponent;
+		static int m_totalNum;
+		int m_id;
 		bool m_open = true;
 		Component* m_component;
 		std::string m_componentName;
@@ -24,10 +26,11 @@ namespace Tools
 		
 		virtual void SetChild(bool isChild) {}
 	public:
-		EditorComponent(std::string name) : m_componentName(name) {}
+		EditorComponent(std::string name);
 		virtual void Init(Component* engineComponent) {}
 		bool Render();
 		std::string GetName();
+		int GetID();
 		virtual EditorComponent* clone() const = 0;
 		static EditorComponent* makeComponent(std::string name);
 		static EditorComponent* addComponent(std::string type, EditorComponent* comp);

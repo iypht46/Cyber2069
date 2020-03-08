@@ -19,6 +19,7 @@ namespace Tools
 		EntityHandle m_editorEntitiy;
 		//TODO: Preview Window
 		PreviewHandle m_previewWindow;
+		bool m_previewBool = true;
 	protected:
 		virtual void Init(void) override;
 		virtual void Terminate(void) override;
@@ -27,11 +28,11 @@ namespace Tools
 		//TODO: Save Prefab file
 		bool SavePrefab(const char* filename);
 	public:
-		PrefabEditor();
+		PrefabEditor(bool* isOpen);
 		//Interface
 		virtual void Update(void) override;
 		virtual bool Save(const char* path, const char* returnMessage) override;
 		virtual bool Load(const char* path, const char* returnMessage) override;
-
+		virtual bool isFocused() override;
 	};
 }

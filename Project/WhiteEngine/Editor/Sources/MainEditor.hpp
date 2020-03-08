@@ -10,14 +10,20 @@ class GameObject;
 
 namespace Tools
 {
-	using EditorHandle = UNIQUE_HANDLE(Editor);
+	using PrefabEditorHandle = UNIQUE_HANDLE(PrefabEditor);
+	using SceneEditorHandle = UNIQUE_HANDLE(SceneEditor);
 	using InspectorHandle = UNIQUE_HANDLE(Inspector);
 
 	class MainEditor
 	{
 	private:
-		EditorHandle m_currentEditor;
+		Editor* m_currentEditor;
+		PrefabEditorHandle m_prefabEditor;
+		bool m_prefabBool = false;
+		SceneEditorHandle m_sceneEditor;
+		bool m_sceneBool = false;
 		InspectorHandle m_inspector;
+		bool m_inspectorBool = true;
 		//Private functions
 		void MainMenuBar();
 		bool AccessEditor(EDITOR_TYPE);
@@ -29,7 +35,7 @@ namespace Tools
 		void Update();
 		void Terminate();
 		void Save();
-		void Load(const char*);
+		void Load(Editor*, const char*);
 	};
 }
 

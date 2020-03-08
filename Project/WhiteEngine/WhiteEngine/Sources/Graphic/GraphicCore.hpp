@@ -18,5 +18,4 @@ namespace Graphic
 	void Terminate(void);
 
 	void EnableFrameBuffer(FBO_STATE);
-
 }
