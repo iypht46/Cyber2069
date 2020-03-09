@@ -19,14 +19,20 @@ namespace Physic { struct Collision; }
 #include <cereal/types/string.hpp>
 #include <cereal/types/vector.hpp>
 #include <cereal/types/memory.hpp>
+#include <cereal/access.hpp>
 #include "Serialization/SomeClass.h"
 //cereal test
+
+template<class Archive>
+void serialize(Archive& archive, GameObject& g);
 
 class GameObject
 {
 protected:
 	friend class BehaviourScript;
 	friend class Collider;
+	template<class Archive>
+	friend void serialize(Archive& archive, GameObject& g);
 
 	bool isActive;
 
@@ -69,14 +75,14 @@ public:
 	LogCustomType_DC(GameObject);
 
 	//===========================
-	//test serialzation
-	template<class Archive>
-	void serialize(Archive &archive);
+	////test serialzation
+	//template<class Archive>
+	//void serialize(Archive &archive);
 
-	void Save();
-	void Load();
-	shared_ptr<SomeClass> outside;
-	std::vector<shared_ptr<SomeClass>> scv;
+	//void Save();
+	//void Load();
+	shared_ptr<SomeBase> outside;
+	std::vector<shared_ptr<SomeBase>> scv;
 
 	//===========================
 
@@ -117,15 +123,4 @@ T* GameObject::GetComponent() {
 LogCustomType_DF(GameObject)
 {
 	return os << "GameObject: " << obj.Name << "\n";
-}
-
-//==============
-//serialazation test
-//==============
-
-template<class Archive>
-void GameObject::serialize(Archive &archive) {
-	archive(Name, isActive, outside, scv);
-
-	archive.serializeDeferment();
 }

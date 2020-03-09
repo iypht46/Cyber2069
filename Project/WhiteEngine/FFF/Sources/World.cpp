@@ -34,6 +34,7 @@
 
 //serialization test
 #include <fstream>
+#include <Serialization/EngineSeTest.h>
 
 namespace World
 {
@@ -633,24 +634,25 @@ namespace World
 		serialtarget->Name = "Pomeranian";
 		serialtarget->SetActive(true);
 		std::shared_ptr<SomeClass> os = std::make_shared<SomeClass>();
-		os->farr = 69;
+		dynamic_pointer_cast<SomeBase>(os)->great = 6969;
+		os->farr = 777;
 		os->v3 = glm::vec3(69, 69, 69);
 		serialtarget->outside = os;
 
-		serialtarget->scv.push_back(os);
-		//serialtarget->scv.push_back(std::make_shared<SomeClass>());
-		serialtarget->scv[0]->farr = 7;
-		serialtarget->scv[0]->v3 = glm::vec3(0, 0, 0);
-		//serialtarget->scv[0]->inside = os;
-		serialtarget->scv[0]->farr = 15973;
+		//serialtarget->scv.push_back(os);
+		////serialtarget->scv.push_back(std::make_shared<SomeClass>());
+		//serialtarget->scv[0]->farr = 7;
+		//serialtarget->scv[0]->v3 = glm::vec3(0, 0, 0);
+		////serialtarget->scv[0]->inside = os;
+		//serialtarget->scv[0]->farr = 15973;
 		//serialtarget->scv[1]->v3 = glm::vec3(7, 7, 7);
-		serialtarget->Load();
-		serialtarget->outside->farr = 987;
+		Save(*serialtarget);
+		//serialtarget->outside->great = 987;
 		ENGINE_INFO("serial result: {},{}", serialtarget->Name, serialtarget->Active());
 		ENGINE_INFO("outside");
 		serialtarget->outside->out();
-		ENGINE_INFO("inside");
-		serialtarget->scv[0]->out();
+		//ENGINE_INFO("inside");
+		//serialtarget->scv[0]->out();
 		//serialtarget->scv[1]->out();
 	}
 
