@@ -8,6 +8,7 @@ void Flyer::Init(Transform* player) {
 	//airFollow->SetPlayer(target);
 	groundPatrol->Init();
 	targetDetectionRange = 1000.0f;
+	groundPatrol->SetMaxDelay(0.5f);
 
 	rigidbody = m_gameObject->GetComponent<Rigidbody>();
 	rigidbody->SetGravityScale(0);
