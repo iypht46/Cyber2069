@@ -44,19 +44,45 @@ void GameController::OnStart() {
 	Spawner.push_back(FlyerSpawner->GetComponent<EnemySpawner>());
 	Spawner.push_back(BomberSpawner->GetComponent<EnemySpawner>());
 
-	EnemyAmplifier* a1 = new EnemyAmplifier;
-	a1->EnemySpawnRate = 5.0f;
-	Amplifier.push_back(a1);
+	EnemyAmplifier* a = new EnemyAmplifier;
+	a->EnemySpawnRate = 5.0f;
+	a->FlyerHP = 1.0f;
+	a->FlyerSpeed = 300.0f;
+	a->FlyerDmg = 10.0f;
 
-	EnemyAmplifier* a2 = new EnemyAmplifier;
-	a2->EnemySpawnRate = 0.5f;
-	Amplifier.push_back(a2);
+	a->BomberHP = 1.0f;
+	a->BomberSpeed = 300.0f;
+	a->BomberDmg = 10.0f;
+	a->BomberAimTime = 1.0f;
+	a->BomberDashSpeed = 700.0f;
+	a->BomberExplodeDMG = 30.0f;
+	a->BomberExplodeRadius = 200.0f;
+
+	Amplifier.push_back(a);
+
+	a = new EnemyAmplifier;
+	a->EnemySpawnRate = 0.5f;
+	a->FlyerHP = 1.0f;
+	a->FlyerSpeed = 300.0f;
+	a->FlyerDmg = 10.0f;
+
+	a->BomberHP = 1.0f;
+	a->BomberSpeed = 300.0f;
+	a->BomberDmg = 10.0f;
+	a->BomberAimTime = 1.0f;
+	a->BomberDashSpeed = 700.0f;
+	a->BomberExplodeDMG = 30.0f;
+	a->BomberExplodeRadius = 200.0f;
+
+	Amplifier.push_back(a);
 
 	EnemyPreset* p1 = new EnemyPreset;
 	p1->BomberRatio = 0.5f;
 	p1->FlyerRatio = 1.0f;
 	Preset.push_back(p1);
 
+	CurrAmplifier = new EnemyAmplifier;
+	CurrPreset = new EnemyPreset;
 }
 
 void GameController::OnUpdate(float dt) 
@@ -174,32 +200,19 @@ ObjectPool* GameController::GetPool(int type) {
 
 void GameController::updateSpawner() 
 {
+	changeDifficulty = false;
+
 	if ((currScoreCheckpoint) < (Amplifier.size())) {
 
 		if (ScoreValue >= scoreCheckpoint[currScoreCheckpoint])
 		{
 			int randPreset = rand() % Preset.size();
 
-			for (EnemySpawner* es : Spawner) {
-				switch (es->GetType())
-				{
-				case POOL_TYPE::ENEMY_FLYER:
-					es->SetSpawnRate((Amplifier[currScoreCheckpoint]->EnemySpawnRate) / Preset[randPreset]->FlyerRatio);
-					//es->SetSpawnEnemyBasicStats(Amplifier[currScoreCheckpoint]->FlyerSpeed, Amplifier[currScoreCheckpoint]->FlyerHP, Amplifier[currScoreCheckpoint]->FlyerDmg);
-					
-					break;
-				case POOL_TYPE::ENEMY_BOMBER:
-					es->SetSpawnRate((Amplifier[currScoreCheckpoint]->EnemySpawnRate) / Preset[randPreset]->BomberRatio);
-					//es->SetSpawnEnemyBasicStats(Amplifier[currScoreCheckpoint]->BomberSpeed, Amplifier[currScoreCheckpoint]->BomberHP, Amplifier[currScoreCheckpoint]->BomberDmg);
-					//es->SetSpawnEnemyDashStats(Amplifier[currScoreCheckpoint]->BomberAimTime, Amplifier[currScoreCheckpoint]->BomberDashSpeed);
-					//es->SetSpawnEnemyExplodeStats(Amplifier[currScoreCheckpoint]->BomberExplodeDMG, Amplifier[currScoreCheckpoint]->BomberExplodeRadius);
-					break;
-				default:
-					break;
-				}
-			}
+			CurrAmplifier = Amplifier[currScoreCheckpoint];
+			CurrPreset = Preset[randPreset];
 
 			currScoreCheckpoint += 1;
+			changeDifficulty = true;
 		}
 	}
 }

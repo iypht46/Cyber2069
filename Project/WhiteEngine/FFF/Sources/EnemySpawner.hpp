@@ -13,28 +13,22 @@
 
 #include "EnemyBehaviours.h"
 
+struct EnemyPreset;
+struct EnemyAmplifier;
+
 class EnemySpawner : public BehaviourScript 
 {
 protected:
-	float SpawnRateCount;
+	float SpawnRateCount = -1;
 	float SpawnRate;
-
-	float SpawnEnemySpeed;
-	float SpawnEnemyHP;
-	float SpawnEnemyDamage;
-	
-	float SpawnEnemyAimTime;
-	float SpawnEnemyDashSpeed;
-
-	float SpawnEnemyExplodeDMG;
-	float SpawnEnemyExplodeRadius;
-
 
 	int SpawnType;
 
 	int x1, x2, y1, y2;
 	ObjectPool* EnemyPool;
-
+	
+	EnemyPreset* SpawnPreset;
+	EnemyAmplifier* SpawnAmplifier;
 
 public:
 	GameObject* SpawnEnemy(float rangeX, float rangeY);
@@ -42,16 +36,9 @@ public:
 	void SetSpawnRate(float value);
 	void SetSpawnRange(float x1, float y1, float x2, float y2);
 	void SetSpawnType(int type);
-
-	void SetSpawnEnemySpeed(float value);
-	void SetSpawnEnemyHP(float value);
-	void SetSpawnEnemyDamage(float value);
-
-	void SetSpawnEnemyBasicStats(float Speed, float HP, float Dmg);
-	void SetSpawnEnemyDashStats(float AimTime, float DashSpeed);
-	void SetSpawnEnemyExplodeStats(float ExplodeDmg, float ExplodeRadius);
-
 	int GetType() { return this->SpawnType; }
+
+	void updateSpawner();
 
 	virtual void OnAwake();
 	virtual void OnEnable();

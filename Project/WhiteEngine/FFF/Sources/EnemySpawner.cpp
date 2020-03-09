@@ -3,12 +3,15 @@
 
 void EnemySpawner::OnStart()
 {
-	SpawnRate = 1.0f;
-	SpawnRateCount = SpawnRate;
 }
 
 void EnemySpawner::OnUpdate(float dt)
 {
+	if (GameController::GetInstance()->isChangeDifficulty()) 
+	{
+		updateSpawner();
+	}
+
 	SpawnRateCount -= dt;
 
 	if (SpawnRateCount <= 0)
@@ -60,16 +63,18 @@ GameObject* EnemySpawner::SpawnEnemy(float posX,float posY)
 
 		enemy->m_transform.SetPosition(glm::vec3(posX, posY, 1.0f));
 
-		/*switch (SpawnType) {
+		switch (SpawnType) {
 		case POOL_TYPE::ENEMY_FLYER:
-			enemy->GetComponent<Flyer>()->SetStats(SpawnEnemySpeed, SpawnEnemyHP, SpawnEnemyDamage);
+			enemy->GetComponent<Flyer>()->SetStats(SpawnAmplifier->FlyerSpeed, SpawnAmplifier->FlyerHP, SpawnAmplifier->FlyerDmg);
 			break;
 		case POOL_TYPE::ENEMY_BOMBER:
-			enemy->GetComponent<Bomber>()->SetStats(SpawnEnemySpeed, SpawnEnemyHP, SpawnEnemyDamage,SpawnEnemyAimTime,SpawnEnemyDashSpeed,SpawnEnemyExplodeDMG,SpawnEnemyExplodeRadius);
+			enemy->GetComponent<Bomber>()->SetStats(SpawnAmplifier->BomberSpeed, SpawnAmplifier->BomberHP, SpawnAmplifier->BomberDmg
+													, SpawnAmplifier->BomberAimTime, SpawnAmplifier->BomberDashSpeed
+													, SpawnAmplifier->BomberExplodeDMG, SpawnAmplifier->BomberExplodeRadius);
 			break;
 		default:
 			break;
-		}*/
+		}
 
 		return enemy;
 	}
@@ -91,30 +96,22 @@ void EnemySpawner::SetSpawnType(int type) {
 	EnemyPool = GameController::GetInstance()->GetPool(type);
 }
 
-void EnemySpawner::SetSpawnEnemySpeed(float value) {
-	this->SpawnEnemySpeed = value;
-}
+void EnemySpawner::updateSpawner() {
 
-void EnemySpawner::SetSpawnEnemyHP(float value) {
-	this->SpawnEnemyHP = value;
-}
+	SpawnAmplifier = GameController::GetInstance()->GetCurrAmplifier();
+	SpawnPreset = GameController::GetInstance()->GetCurrPreset();
 
-void EnemySpawner::SetSpawnEnemyDamage(float value) {
-	this->SpawnEnemyDamage = value;
-}
-
-void EnemySpawner::SetSpawnEnemyBasicStats(float Speed, float HP, float Dmg) {
-	this->SpawnEnemySpeed = Speed;
-	this->SpawnEnemyHP = HP;
-	this->SpawnEnemyDamage = Dmg;
-}
-
-void EnemySpawner::SetSpawnEnemyDashStats(float AimTime, float DashSpeed) {
-	this->SpawnEnemyAimTime = AimTime;
-	this->SpawnEnemyDashSpeed = DashSpeed;
-}
-
-void EnemySpawner::SetSpawnEnemyExplodeStats(float ExplodeDmg, float ExplodeRadius) {
-	this->SpawnEnemyExplodeDMG = ExplodeDmg;
-	this->SpawnEnemyExplodeRadius = ExplodeRadius;
+	switch (SpawnType)
+	{
+	case POOL_TYPE::ENEMY_FLYER:
+		SpawnRate = SpawnAmplifier->EnemySpawnRate / SpawnPreset->FlyerRatio;
+		break;
+	case POOL_TYPE::ENEMY_BOMBER:
+		SpawnRate = SpawnAmplifier->EnemySpawnRate / SpawnPreset->BomberRatio;
+		break;
+	default:
+		break;
+	}
+	
+	SpawnRateCount = SpawnRate;
 }

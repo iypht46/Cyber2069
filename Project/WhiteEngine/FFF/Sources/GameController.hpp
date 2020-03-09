@@ -70,10 +70,14 @@ private:
 	vector<EnemyPreset*> Preset;
 	vector<EnemyAmplifier*> Amplifier;
 
+	EnemyPreset* CurrPreset;
+	EnemyAmplifier* CurrAmplifier;
+
 	int currScoreCheckpoint = 0;
 
 	float scoreCheckpoint[4] = { 0.0f, 10.0f,200.0f,300.0f };
 	
+	bool changeDifficulty = false;
 
 public:
 	GameController();
@@ -100,6 +104,10 @@ public:
 
 	void AddPool(ObjectPool* pool, int type);
 	ObjectPool* GetPool(int type);
+
+	EnemyPreset* GetCurrPreset() { return CurrPreset; }
+	EnemyAmplifier* GetCurrAmplifier() { return CurrAmplifier; }
+	bool isChangeDifficulty() { return changeDifficulty; };
 
 	virtual void OnAwake();
 	virtual void OnEnable();
