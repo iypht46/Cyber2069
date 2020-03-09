@@ -34,7 +34,12 @@ void PlayerController::OnCollisionExit(const Physic::Collision col)
 
 void PlayerController::OnTriggerEnter(const Physic::Collision col)
 {
-	hpSystem->TakeDamage(1.0f);
+	GameObject* obj = col.m_otherCollider->GetGameObject();
+	Enemy* enem = obj->GetComponent<Enemy>();
+	
+	if (enem != nullptr) {
+		hpSystem->TakeDamage(enem->GetCollideDamage());
+	}
 }
 
 void PlayerController::OnTriggerStay(const Physic::Collision col)
@@ -51,8 +56,7 @@ void PlayerController::OnStart() {
 	rb = m_gameObject->GetComponent<Rigidbody>();
 	hpSystem = m_gameObject->GetComponent<HPsystem>();
 
-	hpSystem->SetMaxHP(200.0f);
-	hpSystem->ResetHP();
+	hpSystem->SetMaxHP(100.0f);
 
 	inverseGun = false;
 
@@ -68,15 +72,18 @@ void PlayerController::OnStart() {
 	max_stamina = 50.0f;
 	dashStamina = 5.0f;
 	jumpStamina = 5.0f;
+	staminaRegenRate = 1.0f;
 
 	stamina = max_stamina;
 
-	camZoomSpeed = 0.005f;
-	camDelay = 0.5f;
+	camZoomOutSpeed = 0.005f;
+	camZoomInSpeed = 0.01f;
+
+	camZoomInDelay = 0.0f;
 	//camMaxZoom = 0.75f;
-	camMaxZoom = 0.65f;
+	camLarge = 0.65f;
 	//camMinZoom = 1.00f;
-	camMinZoom = 1.50f;
+	camSmall = 1.50f;
 
 	bullet_speed = 300.0f;
 	bullet_delay = 0.1f;
@@ -113,11 +120,16 @@ void PlayerController::OnUpdate(float dt)
 		{
 			jumping = false;
 			falling = false;
-
-			stamina = max_stamina;
+			onGround = true;
 		}
 	}
 
+	if (onGround && (stamina < max_stamina)) 
+	{
+		stamina += staminaRegenRate;
+	}
+
+	DebugInput();
 	move();
 
 	if (Dash) {
@@ -142,10 +154,47 @@ void PlayerController::updateDirection() {
 
 }
 
+void PlayerController::DebugInput() {
+	
+	if (Input::GetKeyDown(Input::KeyCode::KEY_R))
+	{
+		m_gameObject->m_transform.SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
+		hpSystem->ResetHP();
+		m_gameObject->SetActive(true);
+	}
+
+	if (Input::GetKeyUp(Input::KeyCode::KEY_N))
+	{
+		if (GLRenderer::GetInstance()->drawDebug) {
+
+			GLRenderer::GetInstance()->drawDebug = false;
+		}
+		else {
+			GLRenderer::GetInstance()->drawDebug = true;
+		}
+	}
+
+	if (Input::GetKeyUp(Input::KeyCode::KEY_M))
+	{
+		if (!hpSystem->isInvicible()) {
+
+			hpSystem->SetInvincible(true);
+		}
+		else {
+			hpSystem->SetInvincible(false);
+		}
+	}
+}
+
 void PlayerController::move()
 {
 	glm::vec3 velocity(0, 0, 0);
 	//direction = glm::vec2(0);
+
+	if (stamina < 0)
+	{
+		stamina = 0;
+	}
 
 	if (Input::GetKeyHold(Input::KeyCode::KEY_W))
 	{
@@ -185,26 +234,9 @@ void PlayerController::move()
 		jumping = true;
 		running = false;
 		falling = false;
+		onGround = false;
 
 		m_gameObject->GetComponent<Animator>()->setCurrentState(3);
-	}
-
-	if (Input::GetKeyDown(Input::KeyCode::KEY_R)) 
-	{
-		m_gameObject->m_transform.SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
-		hpSystem->ResetHP();
-		m_gameObject->SetActive(true);
-	}
-
-	if (Input::GetKeyUp(Input::KeyCode::KEY_N))
-	{
-		if (GLRenderer::GetInstance()->drawDebug) {
-
-			GLRenderer::GetInstance()->drawDebug = false;
-		}
-		else {
-			GLRenderer::GetInstance()->drawDebug = true;
-		}
 	}
 
 	if ((!Input::GetKeyHold(Input::KeyCode::KEY_A) && !Input::GetKeyHold(Input::KeyCode::KEY_D)) && !jumping && !falling)
@@ -344,7 +376,6 @@ bool PlayerController::checkGround()
 	raycastRange = 25.0f;
 
 	hits = PhySc->RaycastAll(Physic::Ray(pos_x, pos_y, pos_x, pos_y - raycastRange), PhySc->GetLayerFromString("Platform")).size();
-	ENGINE_INFO("{} Platform hit with ray", hits);
 	GLRenderer::GetInstance()->DrawDebug_Line(pos_x, pos_y, pos_x, pos_y - raycastRange, 1.0f, 0.0f, 0.0f);
 
 	if (hits > 0) 
@@ -356,36 +387,32 @@ bool PlayerController::checkGround()
 	}
 }
 
-float PlayerController::GetStamina() {
-	return this->stamina;
-}
-
 void PlayerController::cameraZoom(float dt) {
 
-	if (!falling && jumping)
+	if (!onGround && jumping && !falling)
 	{
 		camDelay_count = 0.0f;
-		if (Graphic::getCamera()->GetZoom() < camMinZoom)
+		if (Graphic::getCamera()->GetZoom() < camSmall)
 		{
-			Graphic::getCamera()->Zoom(camZoomSpeed);
+			Graphic::getCamera()->Zoom(camZoomOutSpeed);
 		}
 		else
 		{
-			Graphic::getCamera()->SetZoom(camMinZoom);
+			Graphic::getCamera()->SetZoom(camSmall);
 		}
 	}
-	else {
+	else if(onGround) {
 		camDelay_count += dt;
 
-		if (camDelay_count > camDelay) {
+		if (camDelay_count > camZoomInDelay) {
 
-			if (Graphic::getCamera()->GetZoom() > camMaxZoom)
+			if (Graphic::getCamera()->GetZoom() > camLarge)
 			{
-				Graphic::getCamera()->Zoom(-camZoomSpeed);
+				Graphic::getCamera()->Zoom(-camZoomInSpeed);
 			}
 			else
 			{
-				Graphic::getCamera()->SetZoom(camMaxZoom);
+				Graphic::getCamera()->SetZoom(camLarge);
 			}
 		}
 	}

@@ -4,6 +4,8 @@
 #include "AirFollowing.hpp"
 #include "AirDash.hpp"
 #include "AirPatrol.hpp"
+#include "Explosion.hpp"
+#include "GroundPatrol.hpp"
 
 enum EnemyState
 {
@@ -21,6 +23,8 @@ protected:
 public:
 	EnemyState state = EnemyState::Idle;
 
+	void SetStats(float Speed, float HP, float Dmg);
+
 	void Init(Transform* player);
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
@@ -32,14 +36,17 @@ public:
 class Bomber :public Enemy {
 private:
 	float DashTriggerRadius;
+	float ExplodeTriggerRadius;
 	Rigidbody* rigidbody;
 protected:
 	AirFollowing* airFollow;
 	AirDash* airDash;
-	//Explosion expl
+	Explosion* explosion;
 
 public:
 	EnemyState state = EnemyState::Idle;
+
+	void SetStats(float Speed, float HP, float Dmg, float AimTime, float DashSpeed, float ExplodeDmg, float ExplodeRadius);
 
 	void Init(Transform* player);
 	virtual void OnStart();
@@ -64,6 +71,7 @@ public:
 	void Init();
 	void assignFlyPool(ObjectPool* pool);
 	void assignBombPool(ObjectPool* pool);
+	void SetSpawnDelay(int time);
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);

@@ -16,6 +16,8 @@ protected:
 	//events on take damage (funct*)
 	//events on dead (funct*)
 
+	float CollideDamage = 1.0f;
+
 	void OnTakeDamage();
 	void OnDead();
 public:
@@ -28,4 +30,6 @@ public:
 
 	void SetTarget(Transform*);
 	void TakeDamage(float);
+
+	float GetCollideDamage() { return CollideDamage; }
 };

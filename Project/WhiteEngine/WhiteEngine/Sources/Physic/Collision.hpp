@@ -32,6 +32,16 @@ namespace Physic
 		float distance();
 	};
 
+	struct RayHit
+	{
+		bool hit;
+		glm::vec2 position;
+		Collider* collider;
+
+		RayHit(bool hit = false);
+		RayHit(glm::vec2, Collider*);
+	};
+
 	struct Collision
 	{
 	protected:
@@ -67,9 +77,8 @@ namespace Physic
 
 	//For Box to Box
 	bool AABBtoAABB(AABB, AABB);
-	bool RaytoRay(Ray, Ray);
-	bool RaytoAABB(Ray, AABB);
+	RayHit RaytoRay(Ray, Ray);
+	RayHit RaytoAABB(Ray, AABB);
 
 	//typedef void(*CollisionFunc)(Collider*, Collider*);
-
 }

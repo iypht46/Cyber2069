@@ -127,6 +127,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\GroundPatrol.cpp" />
+    <ClCompile Include="Sources\Explosion.cpp" />
     <ClCompile Include="Sources\AirDash.cpp" />
     <ClCompile Include="Sources\AirFollowing.cpp" />
     <ClCompile Include="Sources\AirPatrol.cpp" />
@@ -145,6 +147,8 @@
     <ClCompile Include="Sources\World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\GroundPatrol.hpp" />
+    <ClInclude Include="Sources\Explosion.hpp" />
     <ClInclude Include="Sources\AirDash.hpp" />
     <ClInclude Include="Sources\AirFollowing.hpp" />
     <ClInclude Include="Sources\AirPatrol.hpp" />
@@ -161,6 +165,10 @@
     <ClInclude Include="Sources\PlayerController.hpp" />
     <ClInclude Include="Sources\Weapon.hpp" />
     <ClInclude Include="Sources\World.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sources\Shader\fragment.shd" />
+    <None Include="Sources\Shader\vertext.shd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

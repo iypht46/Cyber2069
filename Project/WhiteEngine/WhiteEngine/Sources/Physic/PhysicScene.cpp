@@ -464,6 +464,10 @@ namespace Physic
 		return layerName;
 	}
 
+	Colliders PhysicScene::GetColliderLayer(Layer layer) {
+		return m_colliders[layer];
+	}
+
 	void PhysicScene::SetGravity(glm::vec3 value)
 	{
 		m_gravity = value;

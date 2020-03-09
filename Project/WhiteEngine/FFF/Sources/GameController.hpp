@@ -4,14 +4,41 @@
 #include "Core/EC/Components/TextRenderer.hpp"
 #include "Utility/ObjectPool.h"
 #include "HPsystem.hpp"
+#include "EnemySpawner.hpp"
+#include "PlayerController.hpp"
 
 #include <map>
+#include <vector>
+
+class EnemySpawner;
 
 enum POOL_TYPE {
 	BULLET_MG = 0,
 	ENEMY_FLYER,
 	ENEMY_BOMBER
 };
+
+struct EnemyPreset {
+	float FlyerRatio;
+	float BomberRatio;
+};
+
+struct EnemyAmplifier {
+	float FlyerHP;
+	float FlyerSpeed;
+	float FlyerDmg;
+
+	float BomberHP;
+	float BomberSpeed;
+	float BomberDmg;
+	float BomberAimTime;
+	float BomberDashSpeed;
+	float BomberExplodeDMG;
+	float BomberExplodeRadius;
+
+	float EnemySpawnRate;
+};
+
 
 class GameController : public BehaviourScript {
 private:
@@ -22,14 +49,36 @@ private:
 	float startHPscaleX;
 	float startHPscaleY;
 
+	float startStaminascaleX;
+	float startStaminascaleY;
+
 	float startHPposX;
+	float startStaminaposX;
 	
+	PlayerController* player;
 	HPsystem* PlayerHP;
 	GameObject* HPbar;
+	GameObject* Staminabar;
 	GameObject* ScoreText;
 
 	map<int, ObjectPool*> Pools;
-	ObjectPool* bl;
+	GameObject* FlyerSpawner;
+	GameObject* BomberSpawner;
+
+	vector<EnemySpawner*> Spawner;
+
+	vector<EnemyPreset*> Preset;
+	vector<EnemyAmplifier*> Amplifier;
+
+	EnemyPreset* CurrPreset;
+	EnemyAmplifier* CurrAmplifier;
+
+	int currScoreCheckpoint = 0;
+
+	float scoreCheckpoint[4] = { 0.0f, 10.0f,200.0f,300.0f };
+	
+	bool changeDifficulty = false;
+
 public:
 	GameController();
 	static GameController* GetInstance();
@@ -44,15 +93,22 @@ public:
 	void ResetScore();
 
 	void updateHPui();
+	void updateStaminaUI();
+
+	void updateSpawner();
 
 	void AssignScoreText(GameObject* ScoreText);
 	void AssignHPbar(GameObject* hpbar);
+	void AssignStaminabar(GameObject* staminabar);
 	void AssignPlayer(GameObject* player);
 
 	void AddPool(ObjectPool* pool, int type);
 	ObjectPool* GetPool(int type);
 
-	
+	EnemyPreset* GetCurrPreset() { return CurrPreset; }
+	EnemyAmplifier* GetCurrAmplifier() { return CurrAmplifier; }
+	bool isChangeDifficulty() { return changeDifficulty; };
+
 	virtual void OnAwake();
 	virtual void OnEnable();
 	virtual void OnStart();

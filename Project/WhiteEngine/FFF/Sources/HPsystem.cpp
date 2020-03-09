@@ -2,6 +2,7 @@
 
 void HPsystem::SetMaxHP(float hp) {
 	this->Maxhp = hp;
+	this->hp = Maxhp;
 }
 
 void HPsystem::SetHp(float hp) {
@@ -37,6 +38,10 @@ bool HPsystem::isDead() {
 	return this->dead;
 }
 
+bool HPsystem::isInvicible() {
+	return this->invincible;
+}
+
 void HPsystem::Dead() 
 {
 	this->dead = true;
@@ -58,6 +63,7 @@ void HPsystem::OnStart() {
 void HPsystem::OnUpdate(float dt) {
 	if (!dead && hp <= 0)
 	{
+		hp = 0;
 		Dead();
 	}
 }

@@ -16,6 +16,7 @@ public:
 	~AirPatrol();
 	void Patrol();
 	void SetPoint(float aX, float bX);
+	void SetSpeed(float speed);
 	virtual void OnAwake();
 	virtual void OnEnable();
 	virtual void OnStart();

@@ -63,6 +63,7 @@ namespace World
 	GameObject* gamecontroller;
 	GameObject* ui_ScoreText;
 	GameObject* ui_HPbar;
+	GameObject* ui_StaminaBar;
 
 	GameObject* Enemy;
 	GameObject* Spawner;
@@ -198,6 +199,7 @@ namespace World
 		gamecontroller = new GameObject();
 		ui_ScoreText = new GameObject();
 		ui_HPbar = new GameObject();
+		ui_StaminaBar = new GameObject();
 
 		Spawner = new GameObject();
 
@@ -239,9 +241,16 @@ namespace World
 		ui_HPbar->m_transform.SetScale(glm::vec3(500.0f, 40.0f, 1.0f));
 		ui_HPbar->m_transform.SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 280.0f, (Graphic::Window::GetHeight() / 2) - 40.0f, 1.0f));
 
+		ui_StaminaBar->AddComponent<MeshRenderer>();
+		ui_StaminaBar->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+		ui_StaminaBar->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Blue.jpg");
+		ui_StaminaBar->GetComponent<MeshRenderer>()->SetUI(true);
+		ui_StaminaBar->GetComponent<MeshRenderer>()->SetLayer(10);
+		ui_StaminaBar->m_transform.SetScale(glm::vec3(500.0f, 20.0f, 1.0f));
+		ui_StaminaBar->m_transform.SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 280.0f, (Graphic::Window::GetHeight() / 2) - 80.0f, 1.0f));
+
+
 		gamecontroller->AddComponent<GameController>();
-		gamecontroller->GetComponent<GameController>()->AssignScoreText(ui_ScoreText);
-		gamecontroller->GetComponent<GameController>()->AssignHPbar(ui_HPbar);
 
 		Bg2->AddComponent<MeshRenderer>();
 		Bg2->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
@@ -262,7 +271,6 @@ namespace World
 		Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_PlayerBody_Vversion03.png");
 
 		Rabbit->AddComponent<HPsystem>();
-		gamecontroller->GetComponent<GameController>()->AssignPlayer(Rabbit);
 
 		//Flyer->AddComponent<MeshRenderer>();
 		//Flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
@@ -451,6 +459,8 @@ namespace World
 			FlyerPool->AddObject(flyer);
 		}
 
+		gamecontroller->GetComponent<GameController>()->AddPool(FlyerPool, POOL_TYPE::ENEMY_FLYER);
+
 		Animation* BomberIdle = new Animation();
 		BomberIdle->setStartPosition(0, 0);
 		BomberIdle->setEndPosition(4, 0);
@@ -520,11 +530,7 @@ namespace World
 			BomberPool->AddObject(bomber);
 		}
 
-	
-		Spawner->AddComponent<EnemySpawner>();
-		Spawner->GetComponent<EnemySpawner>()->OnStart();
-		Spawner->GetComponent<EnemySpawner>()->assignFlyPool(FlyerPool);
-		Spawner->GetComponent<EnemySpawner>()->assignBombPool(BomberPool);
+		gamecontroller->GetComponent<GameController>()->AddPool(BomberPool, POOL_TYPE::ENEMY_BOMBER);
 
 		Animation* queenIdle = new Animation();
 
@@ -546,7 +552,7 @@ namespace World
 		queenAnimControl->AddState(queenSpawning);
 
 
-		GameObject* queen = new GameObject();
+		/*GameObject* queen = new GameObject();
 		queen->m_transform.SetPosition(glm::vec3(-(Graphic::Window::GetWidth()), (Graphic::Window::GetHeight()*2/3) + 700.0f, 1.0f));
 		queen->AddComponent<MeshRenderer>();
 		queen->GetComponent<MeshRenderer>()->CreateMesh(4, 2);
@@ -576,7 +582,7 @@ namespace World
 		queen->GetComponent<DeQueen>()->assignFlyPool(FlyerPool);
 		queen->GetComponent<DeQueen>()->assignBombPool(BomberPool);
 
-		queen->m_transform.SetScale(glm::vec3(CHAR_SIZE * 10, CHAR_SIZE * 10, 1.0f));
+		queen->m_transform.SetScale(glm::vec3(CHAR_SIZE * 10, CHAR_SIZE * 10, 1.0f));*/
 
 
 		//Add Sound
@@ -587,6 +593,15 @@ namespace World
 		Bg2->GetComponent<SoundPlayer>()->SetVolume(0.5);
 		//Bg2->GetComponent<SoundPlayer>()->PlaySound();
 		//Bg->GetComponent<SoundPlayer>()->DeleteSoundPlayer();
+
+
+		gamecontroller->GetComponent<GameController>()->AssignPlayer(Rabbit);
+
+		gamecontroller->GetComponent<GameController>()->AssignScoreText(ui_ScoreText);
+		gamecontroller->GetComponent<GameController>()->AssignHPbar(ui_HPbar);
+		gamecontroller->GetComponent<GameController>()->AssignStaminabar(ui_StaminaBar);
+
+		gamecontroller->GetComponent<GameController>()->OnStart();
 
 		GAME_INFO(*Rabbit);
 
