@@ -444,6 +444,7 @@ namespace World
 			flyer->AddComponent<HPsystem>();
 			//flyer->AddComponent<AirFollowing>();
 			flyer->AddComponent<GroundPatrol>();
+			flyer->AddComponent<GroundDash>();
 			flyer->AddComponent<Flyer>();
 			flyer->GetComponent<Flyer>()->Init(&(Rabbit->m_transform));
 

@@ -6,6 +6,7 @@
 #include "AirPatrol.hpp"
 #include "Explosion.hpp"
 #include "GroundPatrol.hpp"
+#include "GroundDash.hpp"
 
 enum EnemyState
 {
@@ -21,6 +22,7 @@ private:
 protected:
 	//AirFollowing* airFollow;
 	GroundPatrol* groundPatrol;
+	GroundDash* groundDash;
 public:
 	EnemyState state = EnemyState::Idle;
 
