@@ -1,4 +1,4 @@
-#include "MachineGun.hpp"
+#include "Weapon.hpp"
 #include "Input/Input.hpp"
 #include "GameController.hpp"
 
@@ -71,4 +71,9 @@ void MachineGun::GameTimeBehaviour(float dt) {
 			}
 		}
 	}
+}
+
+void MachineGun::onDisable() 
+{
+	weaponObj->SetActive(false);
 }

@@ -27,6 +27,8 @@ protected:
 	ObjectPool* MGbulletPool;
 
 	vector<Equipment*> Equipments;
+	vector<Weapon*> Weapons;
+
 	Weapon* weapon;
 	Transform* weaponTranform;
 	
@@ -91,6 +93,8 @@ public:
 
 	void assignPool(ObjectPool* pool);
 	void assignWeapon(Weapon* wp);
+
+	void AddEquipment(Equipment* e);
 
 	virtual void OnAwake();
 	virtual void OnEnable();

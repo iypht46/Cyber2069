@@ -69,7 +69,7 @@ void PlayerController::OnStart() {
 	direction.x = 1;
 	direction.y = 1;
 
-	max_stamina = 50.0f;
+	max_stamina = 500000000.0f;
 	dashStamina = 5.0f;
 	jumpStamina = 5.0f;
 	staminaRegenRate = 1.0f;
@@ -85,12 +85,14 @@ void PlayerController::OnStart() {
 	//camMinZoom = 1.00f;
 	camSmall = 1.50f;
 
-	bullet_speed = 300.0f;
-	bullet_delay = 0.1f;
-
 	dashTime = 0.35f;
 
 	GunDistance = 0.45f;
+
+	AddEquipment(new MachineGun());
+	AddEquipment(new LaserGun());
+
+	assignWeapon(Weapons[0]);
 
 	for (Equipment* e : Equipments) 
 	{
@@ -140,10 +142,17 @@ void PlayerController::OnUpdate(float dt)
 
 	for (Equipment* e : Equipments)
 	{
-		e->GameTimeBehaviour(dt);
+		if (Weapon* w = dynamic_cast<Weapon*>(e)) 
+		{
+			if (w->GetWeapon()->Active()) 
+			{
+				w->GameTimeBehaviour(dt);
+			}
+		}
+		else {
+			w->GameTimeBehaviour(dt);
+		}
 	}
-
-	weapon->GameTimeBehaviour(dt);
 }
 
 void PlayerController::OnFixedUpdate(float dt)
@@ -163,7 +172,7 @@ void PlayerController::DebugInput() {
 		m_gameObject->SetActive(true);
 	}
 
-	if (Input::GetKeyUp(Input::KeyCode::KEY_N))
+	if (Input::GetKeyDown(Input::KeyCode::KEY_N))
 	{
 		if (GLRenderer::GetInstance()->drawDebug) {
 
@@ -174,7 +183,7 @@ void PlayerController::DebugInput() {
 		}
 	}
 
-	if (Input::GetKeyUp(Input::KeyCode::KEY_M))
+	if (Input::GetKeyDown(Input::KeyCode::KEY_M))
 	{
 		if (!hpSystem->isInvicible()) {
 
@@ -184,6 +193,17 @@ void PlayerController::DebugInput() {
 			hpSystem->SetInvincible(false);
 		}
 	}
+
+	if (Input::GetKeyDown(Input::KeyCode::KEY_1))
+	{
+		assignWeapon(Weapons[0]);
+	}
+	
+	if (Input::GetKeyDown(Input::KeyCode::KEY_2))
+	{
+		assignWeapon(Weapons[1]);
+	}
+
 }
 
 void PlayerController::move()
@@ -342,7 +362,7 @@ void PlayerController::mouseAim()
 			}
 		}
 
-		weaponTranform->SetLocalPosition(glm::vec3(GunDistance * cos(angle_rad), GunDistance * sin(angle_rad) + 0.05f, 1));
+		weaponTranform->SetLocalPosition(glm::vec3(GunDistance * cos(angle_rad), GunDistance * sin(angle_rad), 1));
 	}
 	else {
 		weaponTranform->SetRotation(-1.0f * (angle_deg + 180));
@@ -361,7 +381,7 @@ void PlayerController::mouseAim()
 			}
 		}
 
-		weaponTranform->SetLocalPosition(glm::vec3( -1.0f * GunDistance * cos(angle_rad), GunDistance * sin(angle_rad) + 0.05f, 1));
+		weaponTranform->SetLocalPosition(glm::vec3( -1.0f * GunDistance * cos(angle_rad), GunDistance * sin(angle_rad), 1));
 	}
 }
 
@@ -425,9 +445,14 @@ void PlayerController::assignPool(ObjectPool* pool)
 
 void PlayerController::assignWeapon(Weapon* wp) 
 {
+
+
+	weaponTranform = &(wp->GetWeapon()->m_transform);
+	float currDirY = weaponTranform->GetScale().y / glm::abs(weaponTranform->GetScale().y);
+
 	if (this->weapon != nullptr) 
 	{
-		this->weapon->GetWeapon()->SetActive(false);
+		this->weapon->onDisable();
 	}
 
 	weapon = wp;
@@ -437,8 +462,17 @@ void PlayerController::assignWeapon(Weapon* wp)
 	wp->SetGameObject(m_gameObject);
 	wp->GetWeapon()->m_transform.SetParent(&m_gameObject->m_transform);
 
-	wp->GetWeapon()->m_transform.SetScale(glm::vec3(70, 70, 1));
+	wp->GetWeapon()->m_transform.SetScale(glm::vec3(70, 70 * currDirY, 1));
 	wp->GetWeapon()->m_transform.SetLocalPosition(glm::vec3(1, 0, 0));
+}
 
-	weaponTranform = &(wp->GetWeapon()->m_transform);
+void PlayerController::AddEquipment(Equipment* e) 
+{
+	e->SetGameObject(m_gameObject);
+	Equipments.push_back(e);
+
+	if (Weapon* w = dynamic_cast<Weapon*>(e))
+	{
+		Weapons.push_back(w);
+	}
 }

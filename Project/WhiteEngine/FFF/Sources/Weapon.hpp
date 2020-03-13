@@ -21,6 +21,7 @@ protected:
 public:
 	virtual void Modify(GameObject* obj) = 0;
 	virtual void GameTimeBehaviour(float dt) = 0;
+	virtual void onDisable() = 0;
 
 	GameObject* GetWeapon() { return this->weaponObj; }
 	
@@ -30,4 +31,23 @@ public:
 
 	void AssignAngle(float* angle) { this->angle = angle; }
 	void AssignPool(ObjectPool* ObjPool) { this->BulletPool = ObjPool; }
+};
+
+class MachineGun : public Weapon {
+public:
+	MachineGun();
+	void Modify(GameObject* obj);
+	void GameTimeBehaviour(float dt);
+	void onDisable();
+};
+
+class LaserGun : public Weapon {
+private:
+	GameObject* laser;
+	float laser_length;
+public:
+	LaserGun();
+	void Modify(GameObject* obj);
+	void GameTimeBehaviour(float dt);
+	void onDisable();
 };

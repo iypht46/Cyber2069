@@ -140,6 +140,7 @@
     <ClCompile Include="Sources\Flyer.cpp" />
     <ClCompile Include="Sources\GameController.cpp" />
     <ClCompile Include="Sources\HPsystem.cpp" />
+    <ClCompile Include="Sources\LaserGun.cpp" />
     <ClCompile Include="Sources\MachineGun.cpp" />
     <ClCompile Include="Sources\MachineGunBullet.cpp" />
     <ClCompile Include="Sources\main.cpp" />
@@ -160,7 +161,6 @@
     <ClInclude Include="Sources\FactoryCollection.h" />
     <ClInclude Include="Sources\GameController.hpp" />
     <ClInclude Include="Sources\HPsystem.hpp" />
-    <ClInclude Include="Sources\MachineGun.hpp" />
     <ClInclude Include="Sources\MachineGunBullet.hpp" />
     <ClInclude Include="Sources\PlayerController.hpp" />
     <ClInclude Include="Sources\Weapon.hpp" />

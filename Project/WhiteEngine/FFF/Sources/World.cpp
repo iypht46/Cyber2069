@@ -16,7 +16,7 @@
 #include "MachineGunBullet.hpp"
 #include "EnemySpawner.hpp"
 #include "GameController.hpp"
-#include "MachineGun.hpp"
+#include "Weapon.hpp"
 
 #include "Core/EC/Components/Collider.hpp"
 #include "Core/EC/Components/Rigidbody.hpp"
@@ -397,7 +397,6 @@ namespace World
 		Rabbit->AddComponent<PlayerController>();
 		Rabbit->GetComponent<PlayerController>()->OnStart();
 		Rabbit->GetComponent<PlayerController>()->PSSet(g_physicScene);
-		Rabbit->GetComponent<PlayerController>()->assignWeapon(new MachineGun());
 
 		//Flyer->AddComponent<FlyerBehaviour>();
 		//Flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));

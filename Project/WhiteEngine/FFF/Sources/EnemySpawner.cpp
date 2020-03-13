@@ -60,6 +60,7 @@ GameObject* EnemySpawner::SpawnEnemy(float posX,float posY)
 	if (enemy != nullptr)
 	{
 		enemy->SetActive(true);
+		enemy->GetComponent<HPsystem>()->ResetHP();
 
 		enemy->m_transform.SetPosition(glm::vec3(posX, posY, 1.0f));
 
