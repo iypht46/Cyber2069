@@ -8,6 +8,7 @@
 
 #include "Graphic/Camera.hpp"
 #include "Graphic/Window.hpp"
+#include "Enemy.hpp"
 
 class Weapon : public Equipment 
 {
@@ -108,6 +109,47 @@ public:
 	void SerRadius(float radius) { this->radius = radius; }
 
 	void Explode();
+
+	virtual void OnAwake();
+	virtual void OnEnable();
+	virtual void OnStart();
+	virtual void OnUpdate(float dt);
+	virtual void OnFixedUpdate(float dt);
+	virtual void OnDisable();
+	virtual void OnTriggerEnter(const Physic::Collision col) override;
+	virtual void OnCollisionEnter(const Physic::Collision col) override;
+};
+
+class ZapperGun : public Weapon {
+private:
+	int chainNumber;
+	float zapDistance;
+public:
+	ZapperGun();
+	void Modify(GameObject* obj);
+	void GameTimeBehaviour(float dt);
+	void onDisable();
+};
+
+class ZapperGunBullet : public BehaviourScript {
+protected:
+	Graphic::CameraObject* cam;
+
+	Rigidbody* rb;
+	float bulletDmg;
+	int chainNumber;
+	float zapDistance;
+
+	bool isTrigger;
+
+	Enemy* target;
+
+public:
+	void SetDamage(float dmg) { this->bulletDmg = dmg; }
+	void SetChainNumber(float n) { this->chainNumber = n; }
+	void SetZapDistance(float d) { this->zapDistance = d; }
+
+	void Zap(Enemy* e);
 
 	virtual void OnAwake();
 	virtual void OnEnable();

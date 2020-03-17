@@ -402,7 +402,7 @@ namespace World
 		//Flyer->GetComponent<FlyerBehaviour>()->SetGameObject(Flyer);
 
 		ENGINE_INFO("Creating Bullet");
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 20; i++)
 		{
 			GameObject* Bullet = new GameObject();
 			Bullet->AddComponent<MeshRenderer>();
@@ -429,7 +429,7 @@ namespace World
 
 		ObjectPool* GLbulletpool = new ObjectPool();
 
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 20; i++)
 		{
 			GameObject* Bullet = new GameObject();
 			Bullet->AddComponent<MeshRenderer>();
@@ -453,6 +453,33 @@ namespace World
 		}
 
 		gamecontroller->GetComponent<GameController>()->AddPool(GLbulletpool, POOL_TYPE::BULLET_GL);
+
+		ObjectPool* Zapbulletpool = new ObjectPool();
+
+		for (int i = 0; i < 20; i++)
+		{
+			GameObject* Bullet = new GameObject();
+			Bullet->AddComponent<MeshRenderer>();
+			Bullet->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/blue.jpg");
+
+			Bullet->AddComponent<Rigidbody>();
+			Bullet->GetComponent<Rigidbody>()->Init(7, 7);
+			Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0f);
+
+			g_physicScene->Add(Bullet->GetComponent<Rigidbody>());
+			g_physicScene->Add(Bullet->GetComponent<BoxCollider>(), "Bullet");
+
+			Bullet->m_transform.SetScale(glm::vec3(10, 10, 1));
+
+			Bullet->AddComponent<ZapperGunBullet>();
+			Bullet->GetComponent<ZapperGunBullet>()->OnStart();
+
+			Bullet->SetActive(false);
+			Zapbulletpool->AddObject(Bullet);
+		}
+
+		gamecontroller->GetComponent<GameController>()->AddPool(Zapbulletpool, POOL_TYPE::BULLET_ZP);
 
 		for (int i = 0; i < 200; i++)
 		{

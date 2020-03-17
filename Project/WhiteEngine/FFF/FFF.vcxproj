@@ -148,6 +148,8 @@
     <ClCompile Include="Sources\main.cpp" />
     <ClCompile Include="Sources\PlayerController.cpp" />
     <ClCompile Include="Sources\World.cpp" />
+    <ClCompile Include="Sources\ZapperGun.cpp" />
+    <ClCompile Include="Sources\ZapperGunBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\GroundPatrol.hpp" />

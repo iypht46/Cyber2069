@@ -92,6 +92,7 @@ void PlayerController::OnStart() {
 	AddEquipment(new MachineGun());
 	AddEquipment(new LaserGun());
 	AddEquipment(new GrenadeLauncher());
+	AddEquipment(new ZapperGun());
 
 	assignWeapon(Weapons[0]);
 
@@ -208,6 +209,11 @@ void PlayerController::DebugInput() {
 	if (Input::GetKeyDown(Input::KeyCode::KEY_3))
 	{
 		assignWeapon(Weapons[2]);
+	}
+
+	if (Input::GetKeyDown(Input::KeyCode::KEY_4))
+	{
+		assignWeapon(Weapons[3]);
 	}
 
 }
