@@ -13,7 +13,6 @@
 
 #include "EnemyBehaviours.h"
 #include "PlayerController.hpp"
-#include "MachineGunBullet.hpp"
 #include "EnemySpawner.hpp"
 #include "GameController.hpp"
 #include "Weapon.hpp"
@@ -427,6 +426,33 @@ namespace World
 		}
 
 		gamecontroller->GetComponent<GameController>()->AddPool(BulletPool, POOL_TYPE::BULLET_MG);
+
+		ObjectPool* GLbulletpool = new ObjectPool();
+
+		for (int i = 0; i < 10; i++)
+		{
+			GameObject* Bullet = new GameObject();
+			Bullet->AddComponent<MeshRenderer>();
+			Bullet->GetComponent<MeshRenderer>()->CreateMesh(2, 1);
+			Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/grenadeL_bullet.png");
+
+			Bullet->AddComponent<Rigidbody>();
+			Bullet->GetComponent<Rigidbody>()->Init(7, 7);
+			Bullet->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
+
+			g_physicScene->Add(Bullet->GetComponent<Rigidbody>());
+			g_physicScene->Add(Bullet->GetComponent<BoxCollider>(), "Bullet");
+
+			Bullet->m_transform.SetScale(glm::vec3(30, 30, 1));
+
+			Bullet->AddComponent<GrenadeLauncherBullet>();
+			Bullet->GetComponent<GrenadeLauncherBullet>()->OnStart();
+
+			Bullet->SetActive(false);
+			GLbulletpool->AddObject(Bullet);
+		}
+
+		gamecontroller->GetComponent<GameController>()->AddPool(GLbulletpool, POOL_TYPE::BULLET_GL);
 
 		for (int i = 0; i < 200; i++)
 		{

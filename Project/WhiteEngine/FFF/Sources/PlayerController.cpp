@@ -91,6 +91,7 @@ void PlayerController::OnStart() {
 
 	AddEquipment(new MachineGun());
 	AddEquipment(new LaserGun());
+	AddEquipment(new GrenadeLauncher());
 
 	assignWeapon(Weapons[0]);
 
@@ -202,6 +203,11 @@ void PlayerController::DebugInput() {
 	if (Input::GetKeyDown(Input::KeyCode::KEY_2))
 	{
 		assignWeapon(Weapons[1]);
+	}
+
+	if (Input::GetKeyDown(Input::KeyCode::KEY_3))
+	{
+		assignWeapon(Weapons[2]);
 	}
 
 }
@@ -445,15 +451,17 @@ void PlayerController::assignPool(ObjectPool* pool)
 
 void PlayerController::assignWeapon(Weapon* wp) 
 {
-
-
-	weaponTranform = &(wp->GetWeapon()->m_transform);
-	float currDirY = weaponTranform->GetScale().y / glm::abs(weaponTranform->GetScale().y);
-
-	if (this->weapon != nullptr) 
+	if (this->weapon != nullptr)
 	{
 		this->weapon->onDisable();
 	}
+	else 
+	{
+		weapon = wp;
+	}
+
+	weaponTranform = &(wp->GetWeapon()->m_transform);
+	float currDirY = weapon->GetWeapon()->m_transform.GetScale().y / glm::abs(weapon->GetWeapon()->m_transform.GetScale().y);
 
 	weapon = wp;
 
@@ -462,8 +470,16 @@ void PlayerController::assignWeapon(Weapon* wp)
 	wp->SetGameObject(m_gameObject);
 	wp->GetWeapon()->m_transform.SetParent(&m_gameObject->m_transform);
 
-	wp->GetWeapon()->m_transform.SetScale(glm::vec3(70, 70 * currDirY, 1));
-	wp->GetWeapon()->m_transform.SetLocalPosition(glm::vec3(1, 0, 0));
+
+	if (direction.x == -1.0f) 
+	{
+		wp->GetWeapon()->m_transform.SetScale(glm::vec3(wp->GetWeaponScale().x * -1.0f, wp->GetWeaponScale().y * currDirY, 1));
+	}
+	else {
+		wp->GetWeapon()->m_transform.SetScale(glm::vec3(wp->GetWeaponScale().x, wp->GetWeaponScale().y * currDirY, 1));
+	}
+
+	wp->GetWeapon()->m_transform.SetLocalPosition(glm::vec3(1.0f, 0.0f, 0.0f));
 }
 
 void PlayerController::AddEquipment(Equipment* e) 

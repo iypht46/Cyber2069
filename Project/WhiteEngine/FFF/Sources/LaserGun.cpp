@@ -22,6 +22,9 @@ LaserGun::LaserGun()
 	laser->SetActive(false);
 
 	weapon_damage = 10.0f;
+
+	weapon_scale.x = 70.0f;
+	weapon_scale.y = 70.0f;
 }
 
 void LaserGun::Modify(GameObject* obj) 

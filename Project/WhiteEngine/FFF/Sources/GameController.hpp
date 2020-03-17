@@ -14,6 +14,7 @@ class EnemySpawner;
 
 enum POOL_TYPE {
 	BULLET_MG = 0,
+	BULLET_GL,
 	ENEMY_FLYER,
 	ENEMY_BOMBER
 };

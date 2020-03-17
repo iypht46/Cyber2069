@@ -1,4 +1,4 @@
-#include "MachineGunBullet.hpp"
+#include "Weapon.hpp"
 #include "Graphic/Camera.hpp"
 #include "Core/Logger.hpp"
 
@@ -6,8 +6,10 @@
 
 void MachineGunBullet::OnUpdate(float dt)
 {
-	glm::vec3 camPos = cam->GetCampos();
+	int winWidth;
+	int winHeight;
 
+	glm::vec3 camPos = cam->GetCampos();
 
 	winWidth = Graphic::Window::GetWidth() * cam->GetZoom();
 	winHeight = Graphic::Window::GetHeight() * cam->GetZoom();
@@ -51,7 +53,7 @@ void MachineGunBullet::OnTriggerEnter(const Physic::Collision col) {
 	m_gameObject->SetActive(false);
 	Enemy* enemy = col.m_otherCollider->GetGameObject()->GetComponent<Enemy>();
 	if (enemy != nullptr) {
-		enemy->TakeDamage(1.0f);
+		enemy->TakeDamage(bulletDmg);
 	}
 }
 

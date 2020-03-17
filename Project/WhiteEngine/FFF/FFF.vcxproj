@@ -127,6 +127,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\GrenadeLauncher.cpp" />
+    <ClCompile Include="Sources\GrenadeLauncherBullet.cpp" />
     <ClCompile Include="Sources\GroundPatrol.cpp" />
     <ClCompile Include="Sources\Explosion.cpp" />
     <ClCompile Include="Sources\AirDash.cpp" />
@@ -161,7 +163,6 @@
     <ClInclude Include="Sources\FactoryCollection.h" />
     <ClInclude Include="Sources\GameController.hpp" />
     <ClInclude Include="Sources\HPsystem.hpp" />
-    <ClInclude Include="Sources\MachineGunBullet.hpp" />
     <ClInclude Include="Sources\PlayerController.hpp" />
     <ClInclude Include="Sources\Weapon.hpp" />
     <ClInclude Include="Sources\World.hpp" />
