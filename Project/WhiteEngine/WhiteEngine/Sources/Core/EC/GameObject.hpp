@@ -19,20 +19,14 @@ namespace Physic { struct Collision; }
 #include <cereal/types/string.hpp>
 #include <cereal/types/vector.hpp>
 #include <cereal/types/memory.hpp>
-#include <cereal/access.hpp>
 #include "Serialization/SomeClass.h"
 //cereal test
-
-template<class Archive>
-void serialize(Archive& archive, GameObject& g);
 
 class GameObject
 {
 protected:
 	friend class BehaviourScript;
 	friend class Collider;
-	template<class Archive>
-	friend void serialize(Archive& archive, GameObject& g);
 
 	bool isActive;
 
@@ -51,7 +45,8 @@ protected:
 public:
 	GameObject();
 	std::string Name;
-	Transform m_transform;
+	//change this to smart ptr
+	shared_ptr<Transform> m_transform;
 
 	void SetActive(bool activestate);
 	bool Active();
@@ -66,21 +61,16 @@ public:
 	virtual void OnDisable() {};
 
 	template <class T>
-	T* AddComponent();
+	std::shared_ptr<T> AddComponent();
 
 	template <class T>
-	T* GetComponent();
+	std::shared_ptr<T> GetComponent();
 
 	//Log to logger
 	LogCustomType_DC(GameObject);
 
 	//===========================
 	////test serialzation
-	//template<class Archive>
-	//void serialize(Archive &archive);
-
-	//void Save();
-	//void Load();
 	shared_ptr<SomeBase> outside;
 	std::vector<shared_ptr<SomeBase>> scv;
 
@@ -88,10 +78,17 @@ public:
 
 	//GameObject* GetGameObject();
 	//void SetGameObject(GameObject* obj);
+
+//serialization
+private:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(isActive, Name, m_transform, m_components);
+	}
 };
 
 template<class T>
-T* GameObject::AddComponent() {
+std::shared_ptr<T> GameObject::AddComponent() {
 	shared_ptr<T> component = Factory<T>::Create();
 
 	m_components.push_back(component);
@@ -103,17 +100,17 @@ T* GameObject::AddComponent() {
 		m_scripts.push_back(behaviour);
 	}
 
-	return component.get();
+	return component;
 }
 
 template<class T>
-T* GameObject::GetComponent() {
+std::shared_ptr<T> GameObject::GetComponent() {
 
 	for (shared_ptr<Component> component : m_components) 
 	{
 		if (dynamic_pointer_cast<T>(component))
 		{
-			return dynamic_pointer_cast<T>(component).get();
+			return dynamic_pointer_cast<T>(component);
 		}
 	}
 	

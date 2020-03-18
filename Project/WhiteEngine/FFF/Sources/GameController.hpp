@@ -1,4 +1,6 @@
 #pragma once
+#include <memory>
+
 #include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/GameObject.hpp"
 #include "Core/EC/Components/TextRenderer.hpp"
@@ -15,9 +17,9 @@ private:
 
 	float startHPposX;
 	
-	HPsystem* PlayerHP;
-	GameObject* HPbar;
-	GameObject* ScoreText;
+	std::shared_ptr<HPsystem>  PlayerHP;
+	std::shared_ptr<GameObject> HPbar;
+	std::shared_ptr<GameObject> ScoreText;
 public:
 	GameController();
 	static GameController* GetInstance();
@@ -33,9 +35,9 @@ public:
 
 	void updateHPui();
 
-	void AssignScoreText(GameObject* ScoreText);
-	void AssignHPbar(GameObject* hpbar);
-	void AssignPlayer(GameObject* player);
+	void AssignScoreText(std::shared_ptr<GameObject> ScoreText);
+	void AssignHPbar(std::shared_ptr<GameObject> hpbar);
+	void AssignPlayer(std::shared_ptr<GameObject> player);
 	
 	virtual void OnAwake();
 	virtual void OnEnable();

@@ -6,6 +6,10 @@
 #include "AirDash.hpp"
 #include "AirPatrol.hpp"
 
+#include <memory>
+
+#include <cereal/types/polymorphic.hpp>
+
 enum EnemyState
 {
 	Idle = 0,
@@ -16,46 +20,68 @@ enum EnemyState
 
 class Flyer :public Enemy {
 private:
-	Rigidbody* rigidbody;
+	std::shared_ptr<Rigidbody> rigidbody;
 protected:
-	AirFollowing* airFollow;
+	std::shared_ptr<AirFollowing> airFollow;
 public:
 	EnemyState state = EnemyState::Idle;
 
-	void Init(Transform* player);
+	void Init(std::shared_ptr<Transform> player);
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
 
+	//serialization
+private:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Enemy>(this)
+		);
+	}
 };
 
+CEREAL_REGISTER_TYPE(Flyer);
 
 class Bomber :public Enemy {
 private:
 	float DashTriggerRadius;
-	Rigidbody* rigidbody;
+	std::shared_ptr<Rigidbody> rigidbody;
 protected:
-	AirFollowing* airFollow;
-	AirDash* airDash;
+	std::shared_ptr<AirFollowing> airFollow;
+	std::shared_ptr<AirDash> airDash;
 	EventSystem OnExplode;
 
 public:
 	EnemyState state = EnemyState::Idle;
 
-	void Init(Transform* player);
+	void Init(std::shared_ptr<Transform> player);
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
+
+	//serialization
+private:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Enemy>(this),
+			DashTriggerRadius
+		);
+	}
 };
+
+CEREAL_REGISTER_TYPE(Bomber);
 
 class DeQueen :public Enemy {
 private:
 	float PosX;
 	float PosY;
 	float SpawnDelay;
+
 	float SpawnDelayCount;
 protected:
-	AirPatrol* airPatrol;
+	std::shared_ptr<AirPatrol> airPatrol;
 	ObjectPool* FlyerPool;
 	ObjectPool* BomberPool;
 public:
@@ -68,4 +94,18 @@ public:
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
+
+	//serialization
+private:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Enemy>(this),
+			PosX,
+			PosY,
+			SpawnDelay
+		);
+	}
 };
+
+CEREAL_REGISTER_TYPE(DeQueen);

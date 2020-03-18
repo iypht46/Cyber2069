@@ -14,9 +14,9 @@ AirDash::AirDash()
 	dashState = false;
 }
 
-void AirDash::SetPlayer(Transform* player) {
+void AirDash::SetPlayer(std::shared_ptr<Transform> player) {
 	this->m_target = player;
-	bomber = &m_gameObject->m_transform;
+	bomber = m_gameObject->m_transform;
 	rb = m_gameObject->GetComponent<Rigidbody>();
 }
 

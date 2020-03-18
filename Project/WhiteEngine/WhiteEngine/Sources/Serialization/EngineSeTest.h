@@ -1,6 +1,7 @@
 #pragma once
+#include <string>
+
 #include <cereal/types/base_class.hpp>
-#include <Serialization/glmCereal.h>
 
 #include <Core/EC/GameObject.hpp>
 #include "SomeClass.h"
@@ -9,10 +10,10 @@
 //==============
 //serialazation test
 //==============
-	template<class Archive>
-	void serialize(Archive& archive, GameObject& g) {
-		archive(g.Name, g.isActive, g.outside, g.scv);
-	}
+	//template<class Archive>
+	//void serialize(Archive& archive, GameObject& g) {
+	//	archive(g.Name, g.isActive, g.outside, g.scv);
+	//}
 
 	template<class Archive>
 	void serialize(Archive& ar, SomeBase& b) {
@@ -38,6 +39,8 @@
 
 		iarchive(g);
 	}
+
+
 
 CEREAL_REGISTER_TYPE(SomeBase);
 CEREAL_REGISTER_TYPE(SomeClass);

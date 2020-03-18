@@ -12,10 +12,10 @@ void MachineGunBullet::OnUpdate(float dt)
 	winWidth = Graphic::Window::GetWidth() * cam->GetZoom();
 	winHeight = Graphic::Window::GetHeight() * cam->GetZoom();
 
-	if ((m_gameObject->m_transform.GetPosition().x > (camPos.x + (winWidth/2)))
-		|| (m_gameObject->m_transform.GetPosition().x < (camPos.x - (winWidth / 2)))
-		|| (m_gameObject->m_transform.GetPosition().y > (camPos.y + (winHeight / 2)))
-		|| (m_gameObject->m_transform.GetPosition().y < (camPos.y - (winHeight / 2))))
+	if ((m_gameObject->m_transform->GetPosition().x > (camPos.x + (winWidth/2)))
+		|| (m_gameObject->m_transform->GetPosition().x < (camPos.x - (winWidth / 2)))
+		|| (m_gameObject->m_transform->GetPosition().y > (camPos.y + (winHeight / 2)))
+		|| (m_gameObject->m_transform->GetPosition().y < (camPos.y - (winHeight / 2))))
 	{
 		rb->SetVelocity(glm::vec3(0));
 		m_gameObject->SetActive(false);
@@ -49,7 +49,7 @@ void MachineGunBullet::OnTriggerEnter(const Physic::Collision col) {
 	ENGINE_INFO("Bullet Hit " + col.m_otherCollider->GetGameObject()->Name);
 
 	m_gameObject->SetActive(false);
-	Enemy* enemy = col.m_otherCollider->GetGameObject()->GetComponent<Enemy>();
+	std::shared_ptr<Enemy> enemy = col.m_otherCollider->GetGameObject()->GetComponent<Enemy>();
 	if (enemy != nullptr) {
 		enemy->TakeDamage(1.0f);
 	}

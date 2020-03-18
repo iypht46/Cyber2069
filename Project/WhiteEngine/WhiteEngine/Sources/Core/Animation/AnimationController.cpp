@@ -8,7 +8,7 @@ AnimationController::AnimationController()
 
 }
 
-void AnimationController::AddState(Animation* anim) {
+void AnimationController::AddState(std::shared_ptr<Animation> anim) {
 	m_states.push_back(anim);
 }
 
@@ -20,7 +20,7 @@ glm::vec2 AnimationController::getSheetSize() {
 	return m_spriteSheetFrameSize;
 }
 
-Animation* AnimationController::GetState(int state) 
+std::shared_ptr<Animation> AnimationController::GetState(int state)
 {
 	return m_states.at(state);
 }

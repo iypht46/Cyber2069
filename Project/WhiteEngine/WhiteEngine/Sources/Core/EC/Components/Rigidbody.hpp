@@ -1,9 +1,12 @@
 #pragma once
 
+#include <memory>
 #include <glm/glm.hpp>
 #include "Core/EC/Components/Component.hpp"
 #include "Core/EC/Components/Collider.hpp"
 
+#include <cereal/types/polymorphic.hpp>
+#include <cereal/types/base_class.hpp>
 
 //Forward Declaration
 class Collider;
@@ -26,12 +29,12 @@ private:
 	float m_drag;
 
 	//Pointers to other components
-	Collider* m_collider;
-	Transform* m_transform;
+	std::shared_ptr<Collider> m_collider;
+	std::shared_ptr<Transform> m_transform;
 public:
 	//Rigidbody Interface
 	void Init(float, float);
-	Collider* GetCollider();
+	std::shared_ptr<Collider> GetCollider();
 	void Init(/*float, float*/);
 	void SetVelocity(glm::vec3);
 	void SetVelocity0Masked(glm::vec3);
@@ -48,4 +51,20 @@ public:
 	float GetDrag();
 	Rigidbody();
 	~Rigidbody();
+
+//serialization
+private:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Component>(this),
+			automass,
+			m_mass,
+			m_invMass,
+			m_gravityScale,
+			m_drag
+		);
+	}
 };
+
+CEREAL_REGISTER_TYPE(Rigidbody);

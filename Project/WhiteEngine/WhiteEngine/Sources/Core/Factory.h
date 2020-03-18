@@ -1,8 +1,13 @@
 #pragma once
 
+#include <string>
 #include <set>
 #include <memory>
+
+#include "Serialization/Serialization.h"
 #include "EC/Components/BehaviourScript.h"
+
+//normal factory =========================================
 
 template <class T>
 class Factory {
@@ -40,4 +45,30 @@ void Factory<T>::Add(std::shared_ptr<T> pointer) {
 template <class T>
 std::set<T*>& Factory<T>::getCollection() {
 	return m_RawCollection;
+}
+
+//gameObject factory =========================================
+
+template <>
+class Factory<GameObject> {
+private:
+	static std::set<std::shared_ptr<GameObject>> m_Collection;
+	static std::set<GameObject*> m_RawCollection;
+
+public:
+	static std::shared_ptr<GameObject> Instantiate(std::string);
+	static std::shared_ptr<GameObject> Create();
+	static void Add(std::shared_ptr<GameObject>);
+	static std::set<GameObject*>& getCollection();
+};
+
+std::shared_ptr<GameObject> Factory<GameObject>::Instantiate(std::string prefabPath) {
+	std::shared_ptr<GameObject> newT = std::make_shared<GameObject>();
+
+	Serialization::LoadObject<GameObject>(*newT, prefabPath);
+
+	m_Collection.insert(newT);
+	m_RawCollection.insert(newT.get());
+
+	return newT;
 }

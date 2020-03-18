@@ -1,6 +1,6 @@
 #include "EnemyBehaviours.h"
 
-void Flyer::Init(Transform* player) {
+void Flyer::Init(std::shared_ptr<Transform>  player) {
 	SetTarget(player);
 	airFollow = m_gameObject->GetComponent<AirFollowing>();
 

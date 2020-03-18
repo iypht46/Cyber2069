@@ -64,8 +64,8 @@ namespace World
 	GameObject* queen;
 
 	GameObject* gamecontroller;
-	GameObject* ui_ScoreText;
-	GameObject* ui_HPbar;
+	std::shared_ptr<GameObject> ui_ScoreText;
+	std::shared_ptr<GameObject> ui_HPbar;
 
 	GameObject* Enemy;
 	GameObject* Spawner;
@@ -118,39 +118,39 @@ namespace World
 		//child
 		if (Input::GetKeyHold(Input::KeyCode::KEY_H))
 		{
-			Child->m_transform.SetLocalPosition(Child->m_transform.GetLocalPosition() + glm::vec3(MOVE_SPEED * dt, 0.0f, 0.0f));
+			Child->m_transform->SetLocalPosition(Child->m_transform->GetLocalPosition() + glm::vec3(MOVE_SPEED * dt, 0.0f, 0.0f));
 		}
 		if (Input::GetKeyHold(Input::KeyCode::KEY_F))
 		{
-			Child->m_transform.SetLocalPosition(Child->m_transform.GetLocalPosition() + glm::vec3(-MOVE_SPEED * dt, 0.0f, 0.0f));
+			Child->m_transform->SetLocalPosition(Child->m_transform->GetLocalPosition() + glm::vec3(-MOVE_SPEED * dt, 0.0f, 0.0f));
 		}
 		if (Input::GetKeyHold(Input::KeyCode::KEY_T))
 		{
-			Child->m_transform.SetLocalPosition(Child->m_transform.GetLocalPosition() + glm::vec3(0.0f, MOVE_SPEED * dt, 0.0f));
+			Child->m_transform->SetLocalPosition(Child->m_transform->GetLocalPosition() + glm::vec3(0.0f, MOVE_SPEED * dt, 0.0f));
 		}
 		if (Input::GetKeyHold(Input::KeyCode::KEY_G))
 		{
-			Child->m_transform.SetLocalPosition(Child->m_transform.GetLocalPosition() + glm::vec3(0.0f, -MOVE_SPEED * dt, 0.0f));
+			Child->m_transform->SetLocalPosition(Child->m_transform->GetLocalPosition() + glm::vec3(0.0f, -MOVE_SPEED * dt, 0.0f));
 		}
 
 		if (Input::GetKeyHold(Input::KeyCode::KEY_Q))
 		{
-			Rabbit->m_transform.Rotate(1.0f);
+			Rabbit->m_transform->Rotate(1.0f);
 		}
 
 		if (Input::GetKeyHold(Input::KeyCode::KEY_E))
 		{
-			Rabbit->m_transform.Rotate(-1.0f);
+			Rabbit->m_transform->Rotate(-1.0f);
 		}
 
 		if (Input::GetKeyHold(Input::KeyCode::KEY_Z))
 		{
-			Rabbit->m_transform.SetScale(Rabbit->m_transform.GetScale() + glm::vec3(1, 0, 0));
+			Rabbit->m_transform->SetScale(Rabbit->m_transform->GetScale() + glm::vec3(1, 0, 0));
 		}
 
 		if (Input::GetKeyHold(Input::KeyCode::KEY_C))
 		{
-			Rabbit->m_transform.SetScale(Rabbit->m_transform.GetScale() + glm::vec3(-1, 0, 0));
+			Rabbit->m_transform->SetScale(Rabbit->m_transform->GetScale() + glm::vec3(-1, 0, 0));
 
 		}
 
@@ -199,8 +199,8 @@ namespace World
 		queen = new GameObject();
 
 		gamecontroller = new GameObject();
-		ui_ScoreText = new GameObject();
-		ui_HPbar = new GameObject();
+		ui_ScoreText = std::make_shared<GameObject>();
+		ui_HPbar = std::make_shared<GameObject>();
 
 		Spawner = new GameObject();
 
@@ -214,7 +214,7 @@ namespace World
 		title->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 		title->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/mockup_title.jpg");
 
-		title->m_transform.SetScale(glm::vec3(Graphic::Window::GetWidth(), Graphic::Window::GetHeight(), 1.0f));
+		title->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth(), Graphic::Window::GetHeight(), 1.0f));
 
 		while (!Input::GetKeyDown(Input::KeyCode::KEY_SPACE))
 		{
@@ -231,16 +231,16 @@ namespace World
 		ui_ScoreText->AddComponent<TextRenderer>();
 		ui_ScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 50);
 		ui_ScoreText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		ui_ScoreText->m_transform.SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
-		ui_ScoreText->m_transform.SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 50.0f, (Graphic::Window::GetHeight() / -2) + 50.0f, 1.0f));
+		ui_ScoreText->m_transform->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
+		ui_ScoreText->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 50.0f, (Graphic::Window::GetHeight() / -2) + 50.0f, 1.0f));
 
 		ui_HPbar->AddComponent<MeshRenderer>();
 		ui_HPbar->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 		ui_HPbar->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Red.jpg");
 		ui_HPbar->GetComponent<MeshRenderer>()->SetUI(true);
 		ui_HPbar->GetComponent<MeshRenderer>()->SetLayer(10);
-		ui_HPbar->m_transform.SetScale(glm::vec3(500.0f, 40.0f, 1.0f));
-		ui_HPbar->m_transform.SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 280.0f, (Graphic::Window::GetHeight() / 2) - 40.0f, 1.0f));
+		ui_HPbar->m_transform->SetScale(glm::vec3(500.0f, 40.0f, 1.0f));
+		ui_HPbar->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 280.0f, (Graphic::Window::GetHeight() / 2) - 40.0f, 1.0f));
 
 		gamecontroller->AddComponent<GameController>();
 		gamecontroller->GetComponent<GameController>()->AssignScoreText(ui_ScoreText);
@@ -254,11 +254,11 @@ namespace World
 		Bg1->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 		Bg1->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer1.png");
 
-		Bg2->m_transform.SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
-		Bg1->m_transform.SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
+		Bg2->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
+		Bg1->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
 
-		Bg1->m_transform.SetPosition(glm::vec3(0, -300, 0));
-		Bg2->m_transform.SetPosition(glm::vec3(0, -300, 0));
+		Bg1->m_transform->SetPosition(glm::vec3(0, -300, 0));
+		Bg2->m_transform->SetPosition(glm::vec3(0, -300, 0));
 
 		Rabbit->AddComponent<MeshRenderer>();
 		Rabbit->GetComponent<MeshRenderer>()->CreateMesh(7, 5);
@@ -267,7 +267,7 @@ namespace World
 		Rabbit->AddComponent<HPsystem>();
 		gamecontroller->GetComponent<GameController>()->AssignPlayer(Rabbit);
 
-		Child->m_transform.SetParent(&Rabbit->m_transform);
+		Child->m_transform->SetParent(Rabbit->m_transform);
 
 		//Flyer->AddComponent<MeshRenderer>();
 		//Flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
@@ -315,11 +315,11 @@ namespace World
 		RabbitController = new AnimationController();
 		RabbitController->setSheetSize(glm::vec2(7, 5));
 
-		RabbitController->AddState(Idle);
-		RabbitController->AddState(Running);
-		RabbitController->AddState(Dashing);
-		RabbitController->AddState(Jumping);
-		RabbitController->AddState(falling);
+		RabbitController->AddState(std::shared_ptr<Animation>(Idle));
+		RabbitController->AddState(std::shared_ptr<Animation>(Running));
+		RabbitController->AddState(std::shared_ptr<Animation>(Dashing));
+		RabbitController->AddState(std::shared_ptr<Animation>(Jumping));
+		RabbitController->AddState(std::shared_ptr<Animation>(falling));
 
 		Rabbit->AddComponent<Animator>();
 		Rabbit->GetComponent<Animator>()->AssignController(RabbitController);
@@ -335,7 +335,7 @@ namespace World
 		EnemCon = new AnimationController();
 
 		EnemCon->setSheetSize(glm::vec2(6, 1));
-		EnemCon->AddState(Fly);
+		EnemCon->AddState(std::shared_ptr<Animation>(Fly));
 
 		/*Flyer->AddComponent<Animator>();
 		Flyer->GetComponent<Animator>()->AssignController(EnemCon);
@@ -349,17 +349,17 @@ namespace World
 
 
 		//Set Transform
-		Rabbit->m_transform.SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
-		Rabbit->m_transform.SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
+		Rabbit->m_transform->SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
+		Rabbit->m_transform->SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
 
-		Child->m_transform.SetScale(glm::vec3(70, 70, 1));
-		//Child->m_transform.SetLocalScale(glm::vec3(1, 1, 1));
-		//Child->m_transform.SetPosition(glm::vec3(0, 0, 0));
-		Child->m_transform.SetLocalPosition(glm::vec3(1, 0, 0));
-		//Bg->m_transform.SetScale(glm::vec3(500, 500, 1));
+		Child->m_transform->SetScale(glm::vec3(70, 70, 1));
+		//Child->m_transform->SetLocalScale(glm::vec3(1, 1, 1));
+		//Child->m_transform->SetPosition(glm::vec3(0, 0, 0));
+		Child->m_transform->SetLocalPosition(glm::vec3(1, 0, 0));
+		//Bg->m_transform->SetScale(glm::vec3(500, 500, 1));
 
-		//Flyer->m_transform.SetPosition(glm::vec3(100, 100, 0));
-		//Flyer->m_transform.SetScale(glm::vec3(50, 50, 1));
+		//Flyer->m_transform->SetPosition(glm::vec3(100, 100, 0));
+		//Flyer->m_transform->SetScale(glm::vec3(50, 50, 1));
 
 		//Add Physic
 		//Set name to layer
@@ -387,15 +387,15 @@ namespace World
 			platform[i]->AddComponent<MeshRenderer>();
 			platform[i]->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 			platform[i]->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
-			platform[i]->m_transform.SetScale(glm::vec3(400, 20, 1));
+			platform[i]->m_transform->SetScale(glm::vec3(400, 20, 1));
 			platform[i]->AddComponent<BoxCollider>()->Init(200, 5);
 			g_physicScene->Add(platform[i]->GetComponent<BoxCollider>(), "Platform");
 		}
 
-		platform[1]->m_transform.SetPosition(glm::vec3(300, 300, 0));
-		platform[2]->m_transform.SetPosition(glm::vec3(-300, 300, 0));
-		platform[3]->m_transform.SetPosition(glm::vec3(-300, -300, 0));
-		platform[4]->m_transform.SetPosition(glm::vec3(300, -300, 0));
+		platform[1]->m_transform->SetPosition(glm::vec3(300, 300, 0));
+		platform[2]->m_transform->SetPosition(glm::vec3(-300, 300, 0));
+		platform[3]->m_transform->SetPosition(glm::vec3(-300, -300, 0));
+		platform[4]->m_transform->SetPosition(glm::vec3(300, -300, 0));
 
 		//Behavior Script
 		Rabbit->AddComponent<HPsystem>();
@@ -426,7 +426,7 @@ namespace World
 			Bullet->AddComponent<MachineGunBullet>();
 			Bullet->GetComponent<MachineGunBullet>()->OnStart();
 
-			Bullet->m_transform.SetScale(glm::vec3(10, 10, 1));
+			Bullet->m_transform->SetScale(glm::vec3(10, 10, 1));
 
 			Bullet->SetActive(false);
 			BulletPool->AddObject(Bullet);
@@ -449,14 +449,14 @@ namespace World
 			flyer->AddComponent<HPsystem>();
 			flyer->AddComponent<AirFollowing>();
 			flyer->AddComponent<Flyer>();
-			flyer->GetComponent<Flyer>()->Init(&(Rabbit->m_transform));
+			flyer->GetComponent<Flyer>()->Init(Rabbit->m_transform);
 
 			flyer->AddComponent<Animator>();
 			flyer->GetComponent<Animator>()->AssignController(EnemCon);
 			flyer->GetComponent<Animator>()->setCurrentState(0);
 			flyer->GetComponent<Animator>()->setFramePerSec(12);
 
-			flyer->m_transform.SetScale(glm::vec3(50, 50, 1));
+			flyer->m_transform->SetScale(glm::vec3(50, 50, 1));
 
 			flyer->SetActive(false);
 
@@ -523,11 +523,11 @@ namespace World
 
 		BomberAnimController = new AnimationController();
 		BomberAnimController->setSheetSize(glm::vec2(12, 4));
-		BomberAnimController->AddState(BomberIdle);
-		BomberAnimController->AddState(BomberCharging);
-		BomberAnimController->AddState(BomberDashing);
-		BomberAnimController->AddState(BomberExplode);
-		BomberAnimController->AddState(BomberDie);
+		BomberAnimController->AddState(std::shared_ptr<Animation>(BomberIdle));
+		BomberAnimController->AddState(std::shared_ptr<Animation>(BomberCharging));
+		BomberAnimController->AddState(std::shared_ptr<Animation>(BomberDashing));
+		BomberAnimController->AddState(std::shared_ptr<Animation>(BomberExplode));
+		BomberAnimController->AddState(std::shared_ptr<Animation>(BomberDie));
 
 		for (int i = 0; i < 1; i++)
 		{
@@ -554,7 +554,7 @@ namespace World
 			bomber->AddComponent<Bomber>();
 			bomber->GetComponent<Bomber>()->Init(&(Rabbit->m_transform));
 
-			bomber->m_transform.SetScale(glm::vec3(50, 50, 1));
+			bomber->m_transform->SetScale(glm::vec3(50, 50, 1));
 
 			bomber->SetActive(false);
 			BomberPool->AddObject(bomber);
@@ -582,12 +582,12 @@ namespace World
 
 		queenAnimControl = new AnimationController();
 		queenAnimControl->setSheetSize(glm::vec2(4, 2));
-		queenAnimControl->AddState(queenIdle);
-		queenAnimControl->AddState(queenSpawning);
+		queenAnimControl->AddState(std::shared_ptr<Animation>(queenIdle));
+		queenAnimControl->AddState(std::shared_ptr<Animation>(queenSpawning));
 
 
 		GameObject* queen = new GameObject();
-		queen->m_transform.SetPosition(glm::vec3(-(Graphic::Window::GetWidth()), (Graphic::Window::GetHeight()*2/3) + 700.0f, 1.0f));
+		queen->m_transform->SetPosition(glm::vec3(-(Graphic::Window::GetWidth()), (Graphic::Window::GetHeight()*2/3) + 700.0f, 1.0f));
 		queen->AddComponent<MeshRenderer>();
 		queen->GetComponent<MeshRenderer>()->CreateMesh(4, 2);
 		queen->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Queen_V[version01].png");
@@ -616,7 +616,7 @@ namespace World
 		queen->GetComponent<DeQueen>()->assignFlyPool(FlyerPool);
 		queen->GetComponent<DeQueen>()->assignBombPool(BomberPool);
 
-		queen->m_transform.SetScale(glm::vec3(CHAR_SIZE * 10, CHAR_SIZE * 10, 1.0f));
+		queen->m_transform->SetScale(glm::vec3(CHAR_SIZE * 10, CHAR_SIZE * 10, 1.0f));
 
 
 		//Add Sound
@@ -634,10 +634,10 @@ namespace World
 		serialtarget->Name = "Pomeranian";
 		serialtarget->SetActive(true);
 		std::shared_ptr<SomeClass> os = std::make_shared<SomeClass>();
-		dynamic_pointer_cast<SomeBase>(os)->great = 6969;
-		os->farr = 777;
+		dynamic_pointer_cast<SomeBase>(os)->great = 1212;
+		os->farr = 11;
 		os->v3 = glm::vec3(69, 69, 69);
-		serialtarget->outside = os;
+		//serialtarget->outside = os;
 
 		//serialtarget->scv.push_back(os);
 		////serialtarget->scv.push_back(std::make_shared<SomeClass>());
@@ -646,8 +646,8 @@ namespace World
 		////serialtarget->scv[0]->inside = os;
 		//serialtarget->scv[0]->farr = 15973;
 		//serialtarget->scv[1]->v3 = glm::vec3(7, 7, 7);
-		Save(*serialtarget);
-		//serialtarget->outside->great = 987;
+		Load(*serialtarget);
+		serialtarget->outside->great = 555;
 		ENGINE_INFO("serial result: {},{}", serialtarget->Name, serialtarget->Active());
 		ENGINE_INFO("outside");
 		serialtarget->outside->out();
@@ -659,8 +659,8 @@ namespace World
 	void FixedUpdate(float dt)
 	{
 
-		Bg1->m_transform.SetPosition(Graphic::getCamera()->m_position * parlx1);
-		Bg2->m_transform.SetPosition(Graphic::getCamera()->m_position * parlx2);
+		Bg1->m_transform->SetPosition(Graphic::getCamera()->m_position * parlx1);
+		Bg2->m_transform->SetPosition(Graphic::getCamera()->m_position * parlx2);
 
 		//Update Physics Scene
 		static float accumulator = 0.0f;

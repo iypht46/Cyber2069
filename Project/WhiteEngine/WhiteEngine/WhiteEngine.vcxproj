@@ -137,9 +137,9 @@
     <ClInclude Include="Sources\Core\EC\Components\Collider.hpp" />
     <ClInclude Include="Sources\Core\Factory.h" />
     <ClInclude Include="Sources\Core\Logger.hpp" />
-    <ClInclude Include="Sources\Core\Animator\AnimationController.hpp" />
+    <ClInclude Include="Sources\Core\Animation\AnimationController.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\Animator.hpp" />
-    <ClInclude Include="Sources\Core\EC\Components\Animation.hpp" />
+    <ClInclude Include="Sources\Core\Animation\Animation.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\Component.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\MeshRenderer.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\Rigidbody.hpp" />
@@ -158,7 +158,10 @@
     <ClInclude Include="Sources\Graphic\SquareMeshVbo.h" />
     <ClInclude Include="Sources\Graphic\Window.hpp" />
     <ClInclude Include="Sources\Input\Input.hpp" />
+    <ClInclude Include="Sources\SceneManagement\Scene.h" />
+    <ClInclude Include="Sources\Serialization\EngineSeTest.h" />
     <ClInclude Include="Sources\Serialization\glmCereal.h" />
+    <ClInclude Include="Sources\Serialization\Serialization.h" />
     <ClInclude Include="Sources\Serialization\SomeClass.h" />
     <ClInclude Include="Sources\Utility\Event.h" />
     <ClInclude Include="Sources\Utility\ObjectPool.h" />
@@ -172,9 +175,9 @@
     <ClCompile Include="Sources\Core\EC\Components\Collider.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Rigidbody.cpp" />
     <ClCompile Include="Sources\Core\Logger.cpp" />
-    <ClCompile Include="Sources\Core\Animator\AnimationController.cpp" />
+    <ClCompile Include="Sources\Core\Animation\AnimationController.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Animator.cpp" />
-    <ClCompile Include="Sources\Core\EC\Components\Animation.cpp" />
+    <ClCompile Include="Sources\Core\Animation\Animation.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Component.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\MeshRenderer.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Transform.cpp" />

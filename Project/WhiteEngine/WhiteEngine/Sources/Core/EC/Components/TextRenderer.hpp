@@ -10,6 +10,9 @@
 #include "ft2build.h"
 #include FT_FREETYPE_H
 
+#include <cereal/types/polymorphic.hpp>
+#include <cereal/types/base_class.hpp>
+
 class GameObject;
 class Component;
 
@@ -26,10 +29,13 @@ struct GLCharacter {
 class TextRenderer : public Component 
 {
 protected:
+	string text;
+	glm::vec3 color;
+	float fontSize;
+	string fontPath;
+
 	GLuint VAO;
 	GLuint VBO;
-	glm::vec3 color;
-	string text;
 
 	std::map<GLchar, GLCharacter> Characters;
 public:
@@ -40,4 +46,19 @@ public:
 	void LoadFont(string path,float DefautFontSize);
 
 	TextRenderer();
+
+//serialization
+private:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Component>(this),
+			text,
+			color,
+			fontSize,
+			fontPath
+		);
+	}
 };
+
+CEREAL_REGISTER_TYPE(TextRenderer);

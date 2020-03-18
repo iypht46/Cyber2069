@@ -106,7 +106,7 @@ void TextRenderer::Render()
 
 	glm::mat4 currentMatrix;
 
-	//glm::mat4 modelMatrix = GetGameObject()->m_transform.GetModelMatrix();
+	//glm::mat4 modelMatrix = GetGameObject()->m_transform->GetModelMatrix();
 	glm::mat4 projectionMatrix = GLRenderer::GetInstance()->GetprojectionMatrix();
 
 	currentMatrix = projectionMatrix;
@@ -122,10 +122,10 @@ void TextRenderer::Render()
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(this->VAO);
 
-	float x = GetGameObject()->m_transform.GetPosition().x;
-	float y = GetGameObject()->m_transform.GetPosition().y;
+	float x = GetGameObject()->m_transform->GetPosition().x;
+	float y = GetGameObject()->m_transform->GetPosition().y;
 
-	glm::vec2 scale(GetGameObject()->m_transform.GetScale().x, GetGameObject()->m_transform.GetScale().y);
+	glm::vec2 scale(GetGameObject()->m_transform->GetScale().x, GetGameObject()->m_transform->GetScale().y);
 
 	// Iterate through all characters
 	std::string::const_iterator c;

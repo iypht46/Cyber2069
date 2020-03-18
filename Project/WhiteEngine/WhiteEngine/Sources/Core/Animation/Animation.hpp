@@ -4,16 +4,19 @@
 #include <glm/glm.hpp>
 
 //Headers
-#include "Component.hpp"
+#include "../EC/Components/Component.hpp"
+
+#include <cereal/types/string.hpp>
 
 class Animation
 {
 protected:
+	std::string stateName;
 	glm::vec2 m_StartPosition;
 	glm::vec2 m_EndPosition;
-	bool m_looping;
-	std::string stateName;
 	int speedMultiplier;
+	bool m_looping;
+
 public:
 	Animation();
 	glm::vec2 getStartPosition();
@@ -26,5 +29,17 @@ public:
 	void setLooping(bool loop);
 	bool isLooping();
 	~Animation();
-};
 
+//serialization
+private:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive( 
+			stateName,
+			m_StartPosition,
+			m_EndPosition,
+			speedMultiplier,
+			m_looping
+		);
+	}
+};

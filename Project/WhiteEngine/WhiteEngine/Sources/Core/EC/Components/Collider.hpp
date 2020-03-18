@@ -1,8 +1,12 @@
 #pragma once
+
+#include <memory>
 #include <glm/glm.hpp>
 #include "Core/EC/Components/Component.hpp"
 #include "Core/Message/IMessageHandler.hpp"
 
+#include <cereal/types/polymorphic.hpp>
+#include <cereal/types/base_class.hpp>
 
 #define BOX_VERTICES 4
 
@@ -21,14 +25,15 @@
 		friend class Physic::PhysicScene;
 
 		COLLIDER_TYPE m_colliderType;
-		COL_STATE m_collisionState = COL_STATE::NONE;
 		bool m_isStatic = true;
-		bool m_hasCollided = false;
 		float m_density;
 		float m_friction = 0.1f;
+
+		COL_STATE m_collisionState = COL_STATE::NONE;
+		bool m_hasCollided = false;
 	public:
-		Transform* m_transform;
-		Rigidbody* m_rigidbody;
+		std::shared_ptr<Transform> m_transform;
+		std::shared_ptr<Rigidbody> m_rigidbody;
 
 		//Constructor
 		Collider(COLLIDER_TYPE col) 
@@ -52,7 +57,23 @@
 		virtual void HandleMessage(const Core::Collision&);
 		virtual void HandleMessage(const Core::Trigger&);
 
+	//serialization
+	private:
+		int m_colliderTypeAsInt;
+
+		template<class Archive>
+		void serialize(Archive& archive) {
+			archive(cereal::base_class<Component>(this),
+				m_colliderTypeAsInt,
+				m_isStatic,
+				m_density,
+				m_friction
+			);
+		}
 	};
+
+	CEREAL_REGISTER_TYPE(Collider);
+	CEREAL_REGISTER_POLYMORPHIC_RELATION(Core::IMessageHandler, Collider);
 
 	class BoxCollider : public Collider
 	{
@@ -60,12 +81,12 @@
 	private:
 		float m_halfWidth;
 		float m_halfHeight;
-		glm::vec3 m_colliderScale; //Scale multiplier in halfwidth and halfheight
+		/*unused var*/glm::vec3 m_colliderScale; //Scale multiplier in halfwidth and halfheight
 	public:
 		//Constructor
 		BoxCollider() : Collider(COLLIDER_TYPE::BOX) {}
 		void Init(float, float);
-		void Init(float, float, Rigidbody*);
+		void Init(float, float, std::shared_ptr<Rigidbody>);
 		void ReSize(float, float);
 		void ComputeAABB(Physic::AABB&);
 		
@@ -76,6 +97,20 @@
 		float GetHw() { return m_halfWidth; }
 		float GetHh() { return m_halfHeight; }
 		//virtual void Update(float) const;
+
+	//serialization
+	private:
+		int sr_colliderTypeAsInt;
+
+		template<class Archive>
+		void serialize(Archive& archive) {
+			archive(cereal::base_class<Collider>(this),
+				sr_colliderTypeAsInt,
+				m_halfWidth,
+				m_halfHeight
+			);
+		}
 	};
 
+	CEREAL_REGISTER_TYPE(BoxCollider);
 
