@@ -1,7 +1,7 @@
 #include "Transform.hpp"
 #include "../../Logger.hpp"
 #include <iostream>
-
+#include <memory>
 using namespace glm;
 
 Transform::Transform() {
@@ -53,12 +53,12 @@ glm::mat4 Transform::GetModelMatrix() {
 	return transformMat;
 }
 
-void Transform::SetParent(Transform* newParent) {
+void Transform::SetParent(std::shared_ptr<Transform> newParent) {
 	parent = newParent;
-	parent->children.push_back(this);
+	parent->children.push_back(std::shared_ptr<Transform>(this));
 }
 
-Transform* Transform::GetChild(int index) {
+std::shared_ptr<Transform> Transform::GetChild(int index) {
 	return children.at(index);
 }
 
@@ -81,7 +81,7 @@ void Transform::UpdateWorldPosition() {
 	}
 
 	//update children position
-	for (Transform* child : children) {
+	for (std::shared_ptr<Transform> child : children) {
 		child->UpdateWorldPosition();
 	}
 }
@@ -99,7 +99,7 @@ void Transform::UpdateScale() {
 	}
 
 	//update child scale
-	for (Transform* child : children) {
+	for (std::shared_ptr<Transform> child : children) {
 		child->UpdateScale();
 	}
 }
@@ -117,7 +117,7 @@ void Transform::UpdateRotation() {
 	}
 
 	//update children rotation and position
-	for (Transform* child : children) {
+	for (std::shared_ptr<Transform> child : children) {
 		child->UpdateRotation();
 		child->UpdateWorldPosition();
 	}
@@ -138,7 +138,7 @@ void Transform::SetPosition(glm::vec3 position) {
 	}
 
 	//update children position
-	for (Transform* child : children) {
+	for (std::shared_ptr<Transform> child : children) {
 		child->UpdateWorldPosition();
 	}
 }
@@ -167,7 +167,7 @@ void Transform::SetScale(glm::vec3 scale) {
 	}
 
 	//update child scale
-	for (Transform* child : children) {
+	for (std::shared_ptr<Transform> child : children) {
 		child->UpdateScale();
 	}
 }
@@ -192,7 +192,7 @@ void Transform::SetRotation(float rotation) {
 	}
 
 	//update children roataion and position
-	for (Transform* child : children) {
+	for (std::shared_ptr<Transform> child : children) {
 		child->UpdateRotation();
 		child->UpdateWorldPosition();
 	}

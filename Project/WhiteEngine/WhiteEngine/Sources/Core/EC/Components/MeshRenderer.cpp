@@ -97,14 +97,14 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 	glm::mat4 currentMatrix;
 
 	if (!isUI){
-		glm::mat4 modelMatrix = GetGameObject()->m_transform.GetModelMatrix();
+		glm::mat4 modelMatrix = GetGameObject()->m_transform->GetModelMatrix();
 		glm::mat4 projectionMatrix = Graphic::getCamera()->GetProjectionMatrix();
 		glm::mat4 viewMatrix = Graphic::getCamera()->GetViewMatrix();
 
 		currentMatrix = projectionMatrix * viewMatrix * modelMatrix;
 	}
 	else {
-		glm::mat4 modelMatrix = GetGameObject()->m_transform.GetModelMatrix();
+		glm::mat4 modelMatrix = GetGameObject()->m_transform->GetModelMatrix();
 		glm::mat4 projectionMatrix = GLRenderer::GetInstance()->GetprojectionMatrix();
 
 		currentMatrix = projectionMatrix * modelMatrix;

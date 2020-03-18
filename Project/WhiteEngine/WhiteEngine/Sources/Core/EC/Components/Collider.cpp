@@ -75,7 +75,7 @@
 		//Set Rigidbody
 		m_rigidbody = m_gameObject->GetComponent<Rigidbody>();
 		//Set Transform
-		m_transform = &m_gameObject->m_transform;
+		m_transform = m_gameObject->m_transform;
 
 		//Set Box Size
 		m_halfWidth = hW;
@@ -119,10 +119,10 @@
 		}
 	}
 
-	void BoxCollider::Init(float hW, float hH, Rigidbody* rigid)
+	void BoxCollider::Init(float hW, float hH, std::shared_ptr<Rigidbody> rigid)
 	{
 		//Set Transform
-		m_transform = &m_gameObject->m_transform;
+		m_transform = m_gameObject->m_transform;
 		//Set Rigidbody
 		m_rigidbody = rigid;
 		//Set Box Size

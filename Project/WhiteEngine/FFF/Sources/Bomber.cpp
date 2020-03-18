@@ -1,7 +1,7 @@
 #include "EnemyBehaviours.h"
 #include "Core/Logger.hpp"
 
-void Bomber::Init(Transform* player) {
+void Bomber::Init(std::shared_ptr<Transform> player) {
 	SetTarget(player);
 	airFollow = m_gameObject->GetComponent<AirFollowing>();
 	airDash = m_gameObject->GetComponent<AirDash>();
@@ -25,7 +25,7 @@ void Bomber::OnUpdate(float dt) {
 	if (m_gameObject->Active()) {
 		Enemy::OnUpdate(dt);
 
-		if (glm::length(target->GetPosition() - m_gameObject->m_transform.GetPosition()) < DashTriggerRadius) {
+		if (glm::length(target->GetPosition() - m_gameObject->m_transform->GetPosition()) < DashTriggerRadius) {
 			state = EnemyState::Active;
 		}
 		else if (foundTarget) {

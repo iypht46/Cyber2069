@@ -34,21 +34,21 @@ void DeQueen::OnUpdate(float dt) {
 		int spawnPosX = airPatrol->queen->GetPosition().x;
 		int spawnPosY = airPatrol->queen->GetPosition().y - 100;
 		if (randSpawn == 0) {
-			GameObject* flyer = FlyerPool->GetInactiveObject();
+			std::shared_ptr<GameObject> flyer = FlyerPool->GetInactiveObject();
 			if (flyer != nullptr)
 			{
 				flyer->SetActive(true);
 
-				flyer->m_transform.SetPosition(glm::vec3(spawnPosX, spawnPosY, 1.0f));
+				flyer->m_transform->SetPosition(glm::vec3(spawnPosX, spawnPosY, 1.0f));
 			}
 		}
 		else {
-			GameObject* bomber = BomberPool->GetInactiveObject();
+			std::shared_ptr<GameObject>bomber = BomberPool->GetInactiveObject();
 			if (bomber != nullptr)
 			{
 				bomber->SetActive(true);
 
-				bomber->m_transform.SetPosition(glm::vec3(spawnPosX, spawnPosY, 1.0f));
+				bomber->m_transform->SetPosition(glm::vec3(spawnPosX, spawnPosY, 1.0f));
 			}
 		}
 		

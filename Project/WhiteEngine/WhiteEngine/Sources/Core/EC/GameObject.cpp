@@ -77,6 +77,26 @@ void GameObject::TriggerExit(const Physic::Collision col)
 GameObject::GameObject() 
 {
 	m_objectID = GameObject::s_IDCounter++;
-	ENGINE_INFO("{}", m_objectID);
+	m_transform = make_shared<Transform>();
+
 	isActive = true;
 }
+
+////==============
+////serialazation test
+////==============
+//
+//void GameObject::Save() {
+//	std::ofstream file("srlztest.bin", std::ios::binary);
+//	cereal::BinaryOutputArchive oarchive(file);
+//
+//	oarchive(*this);
+//}
+//
+//void GameObject::Load() {
+//	std::ifstream file("srlztest.bin", std::ios::binary);
+//
+//	cereal::BinaryInputArchive iarchive(file);
+//
+//	iarchive(*this);
+//}

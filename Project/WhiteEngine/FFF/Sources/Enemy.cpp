@@ -19,11 +19,11 @@ void Enemy::OnDead() {
 //check if target in range
 void Enemy::OnUpdate(float dt) {
 	if (target != nullptr) {
-		foundTarget = glm::length(target->GetPosition() - m_gameObject->m_transform.GetPosition()) < targetDetectionRange;
+		foundTarget = glm::length(target->GetPosition() - m_gameObject->m_transform->GetPosition()) < targetDetectionRange;
 	}
 }
 
-void Enemy::SetTarget(Transform* target) {
+void Enemy::SetTarget(std::shared_ptr<Transform> target) {
 	this->target = target;
 }
 

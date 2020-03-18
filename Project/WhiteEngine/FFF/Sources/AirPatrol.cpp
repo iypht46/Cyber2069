@@ -27,7 +27,7 @@ void AirPatrol::Patrol() {
 }
 
 void AirPatrol::SetPoint(float aX, float bX) {
-	queen = &(m_gameObject->m_transform);
+	queen = m_gameObject->m_transform;
 	rb = m_gameObject->GetComponent<Rigidbody>();
 	m_pointAX = aX;
 	m_pointBX = bX;

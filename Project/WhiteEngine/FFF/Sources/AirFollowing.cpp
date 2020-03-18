@@ -9,9 +9,9 @@ AirFollowing::AirFollowing()
 	rotRate = 2.0f;
 }
 
-void AirFollowing::SetPlayer(Transform* player) {
+void AirFollowing::SetPlayer(std::shared_ptr<Transform> player) {
 	m_target = player;
-	t = &(m_gameObject->m_transform);
+	t = m_gameObject->m_transform;
 	rb = m_gameObject->GetComponent<Rigidbody>();
 }
 

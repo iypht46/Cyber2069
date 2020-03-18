@@ -45,18 +45,18 @@ void GameController::ResetScore() {
 	this->ComboValue = 1;
 }
 
-void GameController::AssignScoreText(GameObject* ScoreText) {
+void GameController::AssignScoreText(std::shared_ptr<GameObject> ScoreText) {
 	this->ScoreText = ScoreText;
 }
 
-void GameController::AssignHPbar(GameObject* hpbar) {
+void GameController::AssignHPbar(std::shared_ptr<GameObject> hpbar) {
 	this->HPbar = hpbar;
-	startHPscaleX = hpbar->m_transform.GetScale().x;
-	startHPscaleY = hpbar->m_transform.GetScale().y;
-	startHPposX = hpbar->m_transform.GetPosition().x;
+	startHPscaleX = hpbar->m_transform->GetScale().x;
+	startHPscaleY = hpbar->m_transform->GetScale().y;
+	startHPposX = hpbar->m_transform->GetPosition().x;
 }
 
-void GameController::AssignPlayer(GameObject* player) {
+void GameController::AssignPlayer(std::shared_ptr<GameObject> player) {
 	this->PlayerHP = player->GetComponent<HPsystem>();
 }
 
@@ -66,8 +66,8 @@ void GameController::updateHPui() {
 
 	float movePos = ((hpDiff / 2) * startHPscaleX) / PlayerHP->GetMaxHP();
 
-	HPbar->m_transform.SetScale(glm::vec3(currentX, startHPscaleY, 1.0f));
-	HPbar->m_transform.SetPosition(glm::vec3(startHPposX - movePos , HPbar->m_transform.GetPosition().y, 1.0f));
+	HPbar->m_transform->SetScale(glm::vec3(currentX, startHPscaleY, 1.0f));
+	HPbar->m_transform->SetPosition(glm::vec3(startHPposX - movePos , HPbar->m_transform->GetPosition().y, 1.0f));
 
 
 }

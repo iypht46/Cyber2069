@@ -18,21 +18,21 @@ void EnemySpawner::OnUpdate(float dt)
 		int randPosX = (rand() % (Graphic::Window::GetWidth() * 2)) - Graphic::Window::GetWidth();
 		int randPosY = (rand() % (Graphic::Window::GetHeight() * 2)) - Graphic::Window::GetHeight();
 		if (randSpawn == 0) {
-			GameObject* flyer = FlyerPool->GetInactiveObject();
+			std::shared_ptr<GameObject> flyer = FlyerPool->GetInactiveObject();
 			if (flyer != nullptr)
 			{
 				flyer->SetActive(true);
 
-				flyer->m_transform.SetPosition(glm::vec3(randPosX, randPosY, 1.0f));
+				flyer->m_transform->SetPosition(glm::vec3(randPosX, randPosY, 1.0f));
 			}
 		}
 		else {
-			GameObject* bomber = BomberPool->GetInactiveObject();
+			std::shared_ptr<GameObject> bomber = BomberPool->GetInactiveObject();
 			if (bomber != nullptr)
 			{
 				bomber->SetActive(true);
 
-				bomber->m_transform.SetPosition(glm::vec3(randPosX, randPosY, 1.0f));
+				bomber->m_transform->SetPosition(glm::vec3(randPosX, randPosY, 1.0f));
 			}
 		}
 

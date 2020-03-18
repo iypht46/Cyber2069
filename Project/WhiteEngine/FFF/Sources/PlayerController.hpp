@@ -11,20 +11,22 @@
 
 #include "Utility/ObjectPool.h"
 
+#include <cereal/types/polymorphic.hpp>
+
 #define PI 3.14159265358979323846
 
 class PlayerController : public BehaviourScript {
 private://change later
 	Physic::PhysicScene* ps;
 protected:
-	HPsystem* hpSystem;
-	Transform* Gun;
-	Rigidbody* rb;
+	std::shared_ptr<HPsystem> hpSystem;
+	std::shared_ptr<Transform> Gun;
+	std::shared_ptr<Rigidbody> rb;
 
 	ObjectPool* MGbulletPool;
 	
+	//stats===============
 	float max_stamina;
-	float stamina;
 
 	float dashStamina;
 	float jumpStamina;
@@ -34,20 +36,26 @@ protected:
 	float dash_speed;
 	float jump_speed;
 	float dashTime;
-	float dashRemainingTime;
 	float delay;
 
 	float camZoomSpeed;
 	float camDelay;
-	float camDelay_count;
+	
 	float camMaxZoom;
 	float camMinZoom;
 
 	float bullet_speed;
 	float bullet_delay;
-	float bullet_delay_count;
 
 	float GunDistance;
+	//======================
+
+	//runtime var===========
+	float stamina;
+	float bullet_delay_count;
+	float dashRemainingTime;
+	float camDelay_count;
+
 	bool inverseGun;
 	bool running;
 	bool jumping;
@@ -91,4 +99,28 @@ public:
 	virtual void OnTriggerEnter(const Physic::Collision) override;
 	virtual void OnTriggerStay(const Physic::Collision) override;
 	virtual void OnTriggerExit(const Physic::Collision) override;
+
+	//serialization
+private:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			max_stamina,
+			dashStamina,
+			jumpStamina,
+			max_move_speed,
+			dash_speed,
+			jump_speed,
+			dashTime,
+			delay,
+			camZoomSpeed,
+			camDelay,
+			camMaxZoom,
+			camMinZoom,
+			GunDistance
+		);
+	}
 };
+
+CEREAL_REGISTER_TYPE(PlayerController);
+CEREAL_REGISTER_POLYMORPHIC_RELATION(BehaviourScript, PlayerController);

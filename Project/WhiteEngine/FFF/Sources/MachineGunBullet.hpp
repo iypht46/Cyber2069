@@ -1,4 +1,6 @@
 #pragma once
+#include <memory>
+
 #include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/Components/Transform.hpp"
 #include "Core/EC/Components/Rigidbody.hpp"
@@ -9,7 +11,7 @@
 
 class MachineGunBullet : public BehaviourScript {
 protected:
-	Rigidbody* rb;
+	std::shared_ptr<Rigidbody> rb;
 
 	Graphic::CameraObject* cam;
 

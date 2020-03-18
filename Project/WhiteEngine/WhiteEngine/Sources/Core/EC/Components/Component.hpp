@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cereal/archives/binary.hpp>
+
 class GameObject;
 
 class Component
@@ -19,4 +21,11 @@ public:
 	virtual void SetGameObject(GameObject* obj);
 
 	virtual ~Component() = 0;
+
+private:
+	//serialization
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(enabled);
+	}
 };
