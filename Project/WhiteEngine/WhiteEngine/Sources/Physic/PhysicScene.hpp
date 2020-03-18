@@ -43,6 +43,7 @@ namespace Physic
 	using Manifolds = std::vector<Manifold>;
 	using LayerStringMap = std::unordered_map<std::string, Layer>;
 	using CollisionMsgLists = std::vector<Collision>;
+	using RayHits = std::vector<RayHit>;
 
 	class PhysicScene
 	{
@@ -110,9 +111,11 @@ namespace Physic
 		std::string GetStringFromLayer(Layer);
 		//Convert Layer Enum to number
 		static uint32_t LayerToNum(Layer);
+		//Get Colliders of specified Layer
+		Colliders GetColliderLayer(Layer);
 
-		Colliders RaycastAll (Ray,Layer);
-		Collider* Raycast (Ray,Layer);
+		RayHits RaycastAll(Ray, Layer);
+		RayHit Raycast(Ray, Layer);
 
 		//@Physic Settings
 		//Set Scene Gravity
