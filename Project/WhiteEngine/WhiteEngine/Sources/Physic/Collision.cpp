@@ -32,7 +32,7 @@ namespace Physic
 		collider = nullptr;
 	}
 
-	RayHit::RayHit(glm::vec2 pos, Collider* col) {
+	RayHit::RayHit(glm::vec2 pos, std::shared_ptr<Collider> col) {
 		hit = true;
 		position = pos;
 		collider = col;
@@ -41,8 +41,8 @@ namespace Physic
 	bool AABBtoAABB(Manifold* m)
 	{
 		//Cast Collider to BoxCollider
-		BoxCollider* A = dynamic_cast<BoxCollider*>(m->m_objectA);
-		BoxCollider* B = dynamic_cast<BoxCollider*>(m->m_objectB);
+		std::shared_ptr<BoxCollider> A = dynamic_pointer_cast<BoxCollider>(m->m_objectA);
+		std::shared_ptr<BoxCollider> B = dynamic_pointer_cast<BoxCollider>(m->m_objectB);
 
 		// Vector from A to B
 		glm::vec3 n = B->m_transform->GetPosition() - A->m_transform->GetPosition();
@@ -174,10 +174,10 @@ namespace Physic
 	//Default Constructor
 	Collision::Collision() {}
 	//Constructor
-	Collision::Collision(Collider* col, Collider* otherCol, RESOLVE_TYPE type)
+	Collision::Collision(std::shared_ptr<Collider> col, std::shared_ptr<Collider> otherCol, RESOLVE_TYPE type)
 		: m_collider(col), m_otherCollider(otherCol), m_type(type) {}
 	
-	Manifold::Manifold(Collider* a, Collider* b, RESOLVE_TYPE type) : m_objectA(a), m_objectB(b), m_type(type)
+	Manifold::Manifold(std::shared_ptr<Collider> a, std::shared_ptr<Collider> b, RESOLVE_TYPE type) : m_objectA(a), m_objectB(b), m_type(type)
 	{
 		m_objAResFlag = !a->IsStatic();
 		m_objBResFlag = !b->IsStatic();

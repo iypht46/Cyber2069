@@ -34,7 +34,7 @@
 
 //serialization test
 #include <fstream>
-#include <Serialization/EngineSeTest.h>
+//#include <Serialization/EngineSeTest.h>
 
 namespace World
 {
@@ -646,7 +646,7 @@ namespace World
 		////serialtarget->scv[0]->inside = os;
 		//serialtarget->scv[0]->farr = 15973;
 		//serialtarget->scv[1]->v3 = glm::vec3(7, 7, 7);
-		Load(*serialtarget);
+		//Load(*serialtarget);
 		serialtarget->outside->great = 555;
 		ENGINE_INFO("serial result: {},{}", serialtarget->Name, serialtarget->Active());
 		ENGINE_INFO("outside");

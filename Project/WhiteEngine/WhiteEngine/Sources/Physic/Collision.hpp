@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 //#include "Core/EC/Components/Collider.hpp"
 #include <iostream>
+#include <memory>
 
 //Forward Declaration
 class Collider;
@@ -36,10 +37,10 @@ namespace Physic
 	{
 		bool hit;
 		glm::vec2 position;
-		Collider* collider;
+		std::shared_ptr<Collider> collider;
 
 		RayHit(bool hit = false);
-		RayHit(glm::vec2, Collider*);
+		RayHit(glm::vec2, std::shared_ptr<Collider>);
 	};
 
 	struct Collision
@@ -48,11 +49,11 @@ namespace Physic
 		friend class PhysicScene;
 		RESOLVE_TYPE m_type;
 	public:
-		Collider* m_collider;
-		Collider* m_otherCollider;
+		std::shared_ptr<Collider> m_collider;
+		std::shared_ptr<Collider> m_otherCollider;
 
 		Collision();
-		Collision(Collider* col, Collider* otherCol, RESOLVE_TYPE type);
+		Collision(std::shared_ptr<Collider> col, std::shared_ptr<Collider> otherCol, RESOLVE_TYPE type);
 	};
 
 	static const float RESOLVE_MUL = 10.0f;
@@ -61,14 +62,14 @@ namespace Physic
 	{
 		
 		RESOLVE_TYPE m_type;
-		Collider* m_objectA;
-		Collider* m_objectB;
+		std::shared_ptr<Collider> m_objectA;
+		std::shared_ptr<Collider> m_objectB;
 		bool m_objAResFlag;
 		bool m_objBResFlag;
 		float m_penetration;
 		glm::vec3 m_normal;
 
-		Manifold(Collider* a, Collider* b, RESOLVE_TYPE type);
+		Manifold(std::shared_ptr<Collider> a, std::shared_ptr<Collider> b, RESOLVE_TYPE type);
 		bool CheckCollision();
 		void Resolve(float dt);
 	};

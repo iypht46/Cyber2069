@@ -8,7 +8,7 @@ namespace Physic
 	RayHits PhysicScene::RaycastAll(Ray ray, Layer targetLayer) {
 		RayHits hits;
 		//Check collision with layer to check
-		for (auto* collider : m_colliders[targetLayer])
+		for (auto collider : m_colliders[targetLayer])
 		{
 			//check collision
 			if (collider != nullptr)
@@ -17,7 +17,7 @@ namespace Physic
 					//check shape
 					if (collider->GetType() == COLLIDER_TYPE::BOX)
 					{
-						BoxCollider* box = dynamic_cast<BoxCollider*>(collider);
+						std::shared_ptr<BoxCollider> box = dynamic_pointer_cast<BoxCollider>(collider);
 						AABB aabb;
 						box->ComputeAABB(aabb);
 
