@@ -265,7 +265,7 @@ namespace World
 		Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_PlayerBody_Vversion03.png");
 
 		Rabbit->AddComponent<HPsystem>();
-		gamecontroller->GetComponent<GameController>()->AssignPlayer(Rabbit);
+		gamecontroller->GetComponent<GameController>()->AssignPlayer(std::shared_ptr<GameObject>(Rabbit));
 
 		Child->m_transform->SetParent(Rabbit->m_transform);
 
@@ -429,7 +429,7 @@ namespace World
 			Bullet->m_transform->SetScale(glm::vec3(10, 10, 1));
 
 			Bullet->SetActive(false);
-			BulletPool->AddObject(Bullet);
+			BulletPool->AddObject(std::shared_ptr<GameObject>(Bullet));
 		}
 
 		for (int i = 0; i < 0; i++)
@@ -488,7 +488,7 @@ namespace World
 			//	ENGINE_ERROR("Read Failed");
 			//}
 
-			FlyerPool->AddObject(flyer);
+			FlyerPool->AddObject(std::shared_ptr<GameObject>(flyer));
 		}
 
 		Animation* BomberIdle = new Animation();
@@ -552,12 +552,12 @@ namespace World
 			bomber->AddComponent<AirFollowing>();
 			bomber->AddComponent<AirDash>();
 			bomber->AddComponent<Bomber>();
-			bomber->GetComponent<Bomber>()->Init(&(Rabbit->m_transform));
+			bomber->GetComponent<Bomber>()->Init(Rabbit->m_transform);
 
 			bomber->m_transform->SetScale(glm::vec3(50, 50, 1));
 
 			bomber->SetActive(false);
-			BomberPool->AddObject(bomber);
+			BomberPool->AddObject(std::shared_ptr<GameObject>(bomber));
 		}
 
 	
