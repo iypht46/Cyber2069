@@ -1,5 +1,5 @@
 #include "GroundDash.hpp"
-
+#include "Core/Logger.hpp"
 
 
 GroundDash::GroundDash()
@@ -16,7 +16,7 @@ GroundDash::~GroundDash()
 void GroundDash::Init() {
 	m_dashSpeed = 700.0f;
 	m_pauseTime = 1.0f;
-	m_dashDistance = 25.0f;
+	m_dashDistance = 0.0f;
 	timer = m_pauseTime;
 	dashState = false;
 	dashEnd = false;
@@ -66,22 +66,18 @@ void GroundDash::Dash(float dt) {
 		if (dir < 0) {
 			thisTransform->SetScale(glm::vec3(glm::abs(thisTransform->GetScale().x), thisTransform->GetScale().y, 1.0f));
 			rb->SetVelocity(glm::vec3(m_dashSpeed, 0, 0));
-			if (thisTransform->GetPosition().x == targetPosX + m_dashDistance) {
-				timer = m_pauseTime;
-				dashState = false;
-				dashEnd = true;
-			}
 		}
-		else {
+		else{
 			thisTransform->SetScale(glm::vec3(glm::abs(thisTransform->GetScale().x) * -1, thisTransform->GetScale().y, 1.0f));
 			rb->SetVelocity(glm::vec3(-m_dashSpeed, 0, 0));
-			if (thisTransform->GetPosition().x == targetPosX - m_dashDistance) {
-				timer = m_pauseTime;
-				dashState = false;
-				dashEnd = true;
-			}
+
 		}
 
+		if (glm::abs(thisTransform->GetPosition().x) >= glm::abs(m_target->GetPosition().x) + m_dashDistance) {
+			timer = m_pauseTime;
+			dashState = false;
+			dashEnd = true;
+		}
 	}
 
 
