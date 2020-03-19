@@ -9,7 +9,7 @@ AirDash::AirDash()
 	m_aimSpeed = 50.0f;
 	m_angle = 0.0f;
 	timer = m_aimTime;
-	dashState = false;
+	dashing = false;
 	dashEnd = false;
 	targetLocked = false;
 }
@@ -39,26 +39,26 @@ void AirDash::Dash(float dt) {
 	float distance = glm::length(dir);
 	m_angle = glm::atan(dir.y, dir.x);
 
-	if (distance <= detectRange && !dashState) {
+	if (distance <= detectRange && !dashing) {
 		timer -= dt;
 		if (timer > 0) {
 			rb->SetVelocity(glm::vec3(0, 0, 0));
 			bomber->SetRotation(m_angle);
 		}
 		else {
-			dashState = true;
+			dashing = true;
 			
 		}
 	}
 
-	if (dashState) {
+	if (dashing) {
 		if (distance > 50.0f) {
 			rb->SetVelocity(glm::vec3(m_dashSpeed*glm::cos(bomber->GetRotation()), m_dashSpeed*glm::sin(bomber->GetRotation()), 0));
 		}
 		else 
 		{
 			timer = m_aimTime;
-			dashState = false;
+			dashing = false;
 			dashEnd = true;
 		}
 

@@ -127,6 +127,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Charger.cpp" />
     <ClCompile Include="Sources\GroundDash.cpp" />
     <ClCompile Include="Sources\GroundPatrol.cpp" />
     <ClCompile Include="Sources\Explosion.cpp" />

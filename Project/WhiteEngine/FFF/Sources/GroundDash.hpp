@@ -7,8 +7,8 @@ class GroundDash : public BehaviourScript
 {
 private:
 	float timer;
-	bool dashState;
-	bool dashEnd;
+	float dir;
+	bool dashing;
 	bool targetLocked;
 protected:
 	Transform* m_target;
@@ -27,6 +27,7 @@ public:
 	void LockTarget(Transform* target);
 	bool DashEnd();
 	void Dash(float dt);
+	bool dashEnd;
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);

@@ -16,9 +16,9 @@ GroundDash::~GroundDash()
 void GroundDash::Init() {
 	m_dashSpeed = 700.0f;
 	m_pauseTime = 1.0f;
-	m_dashDistance = 0.0f;
+	m_dashDistance = 25.0f;
 	timer = m_pauseTime;
-	dashState = false;
+	dashing = false;
 	dashEnd = false;
 	targetLocked = false;
 	m_target = nullptr;
@@ -41,6 +41,7 @@ void GroundDash::SetPauseTime(float val) {
 void GroundDash::LockTarget(Transform* target) {
 	if (!targetLocked) {
 		this->m_target = target;
+		dir = thisTransform->GetPosition().x - m_target->GetPosition().x;
 		targetLocked = true;
 	}
 }
@@ -50,19 +51,18 @@ bool GroundDash::DashEnd() {
 }
 
 void GroundDash::Dash(float dt) {
-	float dir = thisTransform->GetPosition().x - m_target->GetPosition().x;
 	float targetPosX = m_target->GetPosition().x;
-	if (!dashState) {
+	if (!dashing) {
 		timer -= dt;
 		if (timer > 0) {
 			rb->SetVelocity(glm::vec3(0, 0, 0));
 		}
 		else {
-			dashState = true;
+			dashing = true;
 		}
 	}
 
-	if (dashState) {
+	if (dashing) {
 		if (dir < 0) {
 			thisTransform->SetScale(glm::vec3(glm::abs(thisTransform->GetScale().x), thisTransform->GetScale().y, 1.0f));
 			rb->SetVelocity(glm::vec3(m_dashSpeed, 0, 0));
@@ -72,11 +72,18 @@ void GroundDash::Dash(float dt) {
 			rb->SetVelocity(glm::vec3(-m_dashSpeed, 0, 0));
 
 		}
-
-		if (glm::abs(thisTransform->GetPosition().x) >= glm::abs(m_target->GetPosition().x) + m_dashDistance) {
+		
+		if (dir <= 0 && (thisTransform->GetPosition().x >= targetPosX + m_dashDistance)) {
 			timer = m_pauseTime;
-			dashState = false;
+			dashing = false;
 			dashEnd = true;
+			targetLocked = false;
+		}
+		else if (dir >= 0 && (thisTransform->GetPosition().x <= targetPosX - m_dashDistance)) {
+			timer = m_pauseTime;
+			dashing = false;
+			dashEnd = true;
+			targetLocked = false;
 		}
 	}
 

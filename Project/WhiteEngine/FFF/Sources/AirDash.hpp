@@ -7,7 +7,7 @@ class AirDash : public BehaviourScript
 {
 private: 
 	float timer;
-	bool dashState;
+	bool dashing;
 	bool dashEnd;
 	bool targetLocked;
 protected:

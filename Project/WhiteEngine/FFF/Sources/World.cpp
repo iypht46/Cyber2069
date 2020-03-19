@@ -445,8 +445,8 @@ namespace World
 			//flyer->AddComponent<AirFollowing>();
 			flyer->AddComponent<GroundPatrol>();
 			flyer->AddComponent<GroundDash>();
-			flyer->AddComponent<Flyer>();
-			flyer->GetComponent<Flyer>()->Init(&(Rabbit->m_transform));
+			flyer->AddComponent<Charger>();
+			flyer->GetComponent<Charger>()->Init(&(Rabbit->m_transform));
 
 			flyer->AddComponent<Animator>();
 			flyer->GetComponent<Animator>()->AssignController(EnemCon);

@@ -13,6 +13,8 @@ enum EnemyState
 	Idle = 0,
 	Chase,
 	Active,
+	Dash,
+	Reset,
 };
 
 
@@ -20,9 +22,8 @@ class Flyer :public Enemy {
 private:
 	Rigidbody* rigidbody;
 protected:
-	//AirFollowing* airFollow;
-	GroundPatrol* groundPatrol;
-	GroundDash* groundDash;
+	AirFollowing* airFollow;
+	
 public:
 	EnemyState state = EnemyState::Idle;
 
@@ -71,6 +72,21 @@ public:
 	void assignFlyPool(ObjectPool* pool);
 	void assignBombPool(ObjectPool* pool);
 	void SetSpawnDelay(int time);
+	virtual void OnStart();
+	virtual void OnUpdate(float dt);
+	virtual void OnFixedUpdate(float dt);
+};
+
+class Charger : public Enemy {
+private:
+	Rigidbody* rigidbody;
+protected:
+	GroundPatrol* groundPatrol;
+	GroundDash* groundDash;
+public:
+	EnemyState state = EnemyState::Idle;
+
+	void Init(Transform* player);
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
