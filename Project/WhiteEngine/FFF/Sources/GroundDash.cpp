@@ -15,9 +15,11 @@ GroundDash::~GroundDash()
 
 void GroundDash::Init() {
 	m_dashSpeed = 700.0f;
-	m_pauseTime = 1.0f;
+	m_pauseTime = 0.25f;
+	m_dashEndTime = 0.5f;
 	m_dashDistance = 25.0f;
-	timer = m_pauseTime;
+	dashTimer = m_pauseTime;
+	endTimer = m_dashEndTime;
 	dashing = false;
 	dashEnd = false;
 	targetLocked = false;
@@ -52,9 +54,9 @@ bool GroundDash::DashEnd() {
 
 void GroundDash::Dash(float dt) {
 	float targetPosX = m_target->GetPosition().x;
-	if (!dashing) {
-		timer -= dt;
-		if (timer > 0) {
+	if (!dashing && !dashEnd) {
+		dashTimer -= dt;
+		if (dashTimer > 0) {
 			rb->SetVelocity(glm::vec3(0, 0, 0));
 		}
 		else {
@@ -74,19 +76,25 @@ void GroundDash::Dash(float dt) {
 		}
 		
 		if (dir <= 0 && (thisTransform->GetPosition().x >= targetPosX + m_dashDistance)) {
-			timer = m_pauseTime;
+			dashTimer = m_pauseTime;
 			dashing = false;
 			dashEnd = true;
 			targetLocked = false;
 		}
 		else if (dir >= 0 && (thisTransform->GetPosition().x <= targetPosX - m_dashDistance)) {
-			timer = m_pauseTime;
+			dashTimer = m_pauseTime;
 			dashing = false;
 			dashEnd = true;
 			targetLocked = false;
 		}
 	}
-
+	if (dashEnd) {
+		endTimer -= dt;
+		if (endTimer <= 0) {
+			dashEnd = false;
+			endTimer = m_dashEndTime;
+		}
+	}
 
 
 }

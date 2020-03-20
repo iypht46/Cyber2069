@@ -8,7 +8,7 @@ void Charger::Init(Transform* player) {
 
 	groundPatrol->Init();
 	groundDash->Init();
-	targetDetectionRange = 300.0f;
+	targetDetectionRange = 200.0f;
 	groundPatrol->SetMaxDelay(0.5f);
 
 	rigidbody = m_gameObject->GetComponent<Rigidbody>();
@@ -51,12 +51,9 @@ void Charger::OnFixedUpdate(float dt) {
 			break;
 		case Active:
 		case Dash:
-			if (!groundDash->DashEnd()) {
-				groundDash->Dash(dt);
-			}
-			else {
+			groundDash->Dash(dt);
+			if (groundDash->DashEnd()) {
 				state = EnemyState::Chase;
-				groundDash->dashEnd = false;
 			}
 			break;
 		case Reset:
