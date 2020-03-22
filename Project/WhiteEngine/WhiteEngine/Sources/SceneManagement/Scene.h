@@ -1,19 +1,35 @@
 #pragma once
 
-class Scene
-{
-public:
-	Scene();
-	~Scene();
+#include <set>
+#include <memory>
 
-private:
+#include <cereal/cereal.hpp>
+#include <cereal/types/memory.hpp>
+#include <cereal/types/set.hpp>
 
-};
+class GameObject;
 
-Scene::Scene()
-{
-}
+namespace SceneManagement {
+	class Scene
+	{
+	private:
+		int a;
+		std::set<std::shared_ptr<GameObject>> GameObjects;
+	public:
 
-Scene::~Scene()
-{
+		//call init/awake/start on component assign collider/rigid body to physics scene
+		void Init(void) {}
+
+		//serialization
+	public:
+		template<class Archive>
+		void serialize(Archive& archive) {
+			archive(
+				a
+				//GameObjects
+				);
+
+			//archive.serializeDeferments();
+		}
+	};
 }

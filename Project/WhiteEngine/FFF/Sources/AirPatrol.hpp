@@ -13,10 +13,10 @@ private:
 	float m_pointBX;
 	float m_speed;
 public:
-	std::shared_ptr<Transform> queen;
-	std::shared_ptr<Rigidbody> rb;
+	Transform* queen;
+	Rigidbody* rb;
 	AirPatrol();
-	~AirPatrol();
+	~AirPatrol() {}
 	void Patrol();
 	void SetPoint(float aX, float bX);
 	virtual void OnAwake();
@@ -27,7 +27,7 @@ public:
 	virtual void OnDisable();
 
 	//serialization
-private:
+public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(

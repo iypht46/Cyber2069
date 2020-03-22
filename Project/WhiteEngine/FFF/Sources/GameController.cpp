@@ -45,18 +45,18 @@ void GameController::ResetScore() {
 	this->ComboValue = 1;
 }
 
-void GameController::AssignScoreText(std::shared_ptr<GameObject> ScoreText) {
+void GameController::AssignScoreText(GameObject* ScoreText) {
 	this->ScoreText = ScoreText;
 }
 
-void GameController::AssignHPbar(std::shared_ptr<GameObject> hpbar) {
+void GameController::AssignHPbar(GameObject* hpbar) {
 	this->HPbar = hpbar;
 	startHPscaleX = hpbar->m_transform->GetScale().x;
 	startHPscaleY = hpbar->m_transform->GetScale().y;
 	startHPposX = hpbar->m_transform->GetPosition().x;
 }
 
-void GameController::AssignPlayer(std::shared_ptr<GameObject> player) {
+void GameController::AssignPlayer(GameObject* player) {
 	this->PlayerHP = player->GetComponent<HPsystem>();
 }
 

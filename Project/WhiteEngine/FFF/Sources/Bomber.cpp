@@ -1,10 +1,10 @@
 #include "EnemyBehaviours.h"
 #include "Core/Logger.hpp"
 
-void Bomber::Init(std::shared_ptr<Transform> player) {
+void Bomber::Init(Transform* player) {
 	SetTarget(player);
-	airFollow = m_gameObject->GetComponent<AirFollowing>();
-	airDash = m_gameObject->GetComponent<AirDash>();
+	airFollow = GetGameObject()->GetComponent<AirFollowing>();
+	airDash = GetGameObject()->GetComponent<AirDash>();
 
 	airFollow->SetPlayer(target);
 	airDash->SetPlayer(target);
@@ -12,7 +12,7 @@ void Bomber::Init(std::shared_ptr<Transform> player) {
 	targetDetectionRange = 1000.0f;
 	DashTriggerRadius = 300.0f;
 
-	rigidbody = m_gameObject->GetComponent<Rigidbody>();
+	rigidbody = GetGameObject()->GetComponent<Rigidbody>();
 
 	Enemy::Init();
 }
@@ -22,10 +22,10 @@ void Bomber::OnStart() {
 }
 
 void Bomber::OnUpdate(float dt) {
-	if (m_gameObject->Active()) {
+	if (GetGameObject()->Active()) {
 		Enemy::OnUpdate(dt);
 
-		if (glm::length(target->GetPosition() - m_gameObject->m_transform->GetPosition()) < DashTriggerRadius) {
+		if (glm::length(target->GetPosition() - GetGameObject()->m_transform->GetPosition()) < DashTriggerRadius) {
 			state = EnemyState::Active;
 		}
 		else if (foundTarget) {
@@ -38,7 +38,7 @@ void Bomber::OnUpdate(float dt) {
 }
 
 void Bomber::OnFixedUpdate(float dt) {
-	if (m_gameObject->Active()) {
+	if (GetGameObject()->Active()) {
 		switch (state)
 		{
 		case EnemyState::Idle:

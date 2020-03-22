@@ -17,7 +17,7 @@ namespace Physic
 					//check shape
 					if (collider->GetType() == COLLIDER_TYPE::BOX)
 					{
-						std::shared_ptr<BoxCollider> box = dynamic_pointer_cast<BoxCollider>(collider);
+						BoxCollider* box = dynamic_cast<BoxCollider*>(collider);
 						AABB aabb;
 						box->ComputeAABB(aabb);
 

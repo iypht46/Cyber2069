@@ -1,12 +1,18 @@
 #include "SoundPlayer.hpp"
 
 SoundPlayer::SoundPlayer() {
-	isLooping = false;
-	volumeValue = 1.0f;
+	//isLooping = false;
+	//volumeValue = 1.0f;
+	Factory<SoundPlayer>::Add(this);
 }
 
 SoundPlayer::~SoundPlayer() {
 
+}
+
+void SoundPlayer::Init() {
+	CreateSoundPlayer();
+	//SetSound(&(sr_soundpath[0]));
 }
 
 void SoundPlayer::CreateSoundPlayer() {

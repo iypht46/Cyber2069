@@ -1,15 +1,23 @@
 #include "Animator.hpp"
 
-
+#include <Serialization/Serialization.h>
 
 Animator::Animator()
 {
 	timeElapse = 0;
-	framePerSec = 12;
 	m_currentUVFrames = glm::vec2(0);
+	Factory<Animator>::Add(this);
 }
 
-void Animator::AssignController(AnimationController* animControl) {
+void Animator::Init() {
+	m_controller = std::make_shared<AnimationController>();
+
+	//Serialization::LoadObject<AnimationController>(*m_controller, sr_controllerPath);
+
+	m_currentState = m_controller->m_defaultState;
+}
+
+void Animator::AssignController(std::shared_ptr <AnimationController> animControl) {
 	m_controller = animControl;
 }
 
@@ -46,33 +54,5 @@ void Animator::setFramePerSec(float frame) {
 }
 
 Animator::~Animator()
-{
-}
-
-void Animator::OnAwake()
-{
-}
-
-void Animator::OnEnable()
-{
-}
-
-void Animator::OnStart()
-{
-}
-
-void Animator::OnDisable()
-{
-}
-
-void Animator::OnUpdate(float dt)
-{
-}
-
-void Animator::OnFixedUpdate(float dt)
-{
-}
-
-void Animator::OnDestroy()
 {
 }

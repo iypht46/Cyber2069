@@ -17,11 +17,13 @@ private:
 
 	float startHPposX;
 	
-	std::shared_ptr<HPsystem>  PlayerHP;
-	std::shared_ptr<GameObject> HPbar;
-	std::shared_ptr<GameObject> ScoreText;
+	HPsystem*  PlayerHP;
+	GameObject* HPbar;
+	GameObject* ScoreText;
 public:
 	GameController();
+	~GameController() {}
+
 	static GameController* GetInstance();
 	float GetScore();
 	float GetCombo();
@@ -35,9 +37,9 @@ public:
 
 	void updateHPui();
 
-	void AssignScoreText(std::shared_ptr<GameObject> ScoreText);
-	void AssignHPbar(std::shared_ptr<GameObject> hpbar);
-	void AssignPlayer(std::shared_ptr<GameObject> player);
+	void AssignScoreText(GameObject* ScoreText);
+	void AssignHPbar(GameObject* hpbar);
+	void AssignPlayer(GameObject* player);
 	
 	virtual void OnAwake();
 	virtual void OnEnable();

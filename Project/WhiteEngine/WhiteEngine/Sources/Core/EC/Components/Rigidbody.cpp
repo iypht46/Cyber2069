@@ -9,38 +9,38 @@ Rigidbody::Rigidbody()
 {
 	m_gravityScale = 1.0f;
 	m_position = glm::vec3(0.0f, 0.0f, 0.0f);
-	//m_orientation = 0.0f;
-	m_transform = m_gameObject->m_transform;
 	m_velocity = vec3(0.0f);
 	m_mass = 1;
 	m_drag = 0.0f;
+
+	//Factory<Rigidbody>::Add(this);
 }
 
 //Create BoxCollider
 void Rigidbody::Init(void)
 {
 	////Create new box collider
-	//BoxCollider* col = m_gameObject->AddComponent<BoxCollider>();
+	//BoxCollider* col = GetGameObject()->AddComponent<BoxCollider>();
 	////Init Box
 	//col->Init(hW, hH, this);
 	////Set Collider
 	//m_collider = col;
-	m_transform = m_gameObject->m_transform;
+	m_transform = GetGameObject()->m_transform.get();
 }
 
 //Create BoxCollider
 void Rigidbody::Init(float hW, float hH)
 {
 	//Create new box collider
-	std::shared_ptr<BoxCollider> col = m_gameObject->AddComponent<BoxCollider>();
+	BoxCollider* col = GetGameObject()->AddComponent<BoxCollider>();
 	//Init Box
-	col->Init(hW, hH, std::shared_ptr<Rigidbody>(this));
+	col->Init(hW, hH, this);
 	//Set Collider
 	m_collider = col;
-	m_transform = m_gameObject->m_transform;
+	m_transform = GetGameObject()->m_transform.get();
 }
 
-std::shared_ptr<Collider> Rigidbody::GetCollider()
+Collider* Rigidbody::GetCollider()
 {
 	if (m_collider)
 	{

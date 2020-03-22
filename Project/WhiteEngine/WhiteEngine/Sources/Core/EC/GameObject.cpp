@@ -7,6 +7,12 @@
 
 int GameObject::s_IDCounter = 0;
 
+GameObject::GameObject()
+{
+	m_objectID = GameObject::s_IDCounter++;
+	m_transform = make_shared<Transform>();
+}
+
 void GameObject::SetActive(bool activestate) {
 	isActive = activestate;
 }
@@ -72,14 +78,6 @@ void GameObject::TriggerExit(const Physic::Collision col)
 		//scripts
 		scripts->OnTriggerExit(col);
 	}
-}
-
-GameObject::GameObject() 
-{
-	m_objectID = GameObject::s_IDCounter++;
-	m_transform = make_shared<Transform>();
-
-	isActive = true;
 }
 
 ////==============

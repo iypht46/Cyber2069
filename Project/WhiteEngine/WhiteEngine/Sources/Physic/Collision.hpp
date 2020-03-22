@@ -37,10 +37,10 @@ namespace Physic
 	{
 		bool hit;
 		glm::vec2 position;
-		std::shared_ptr<Collider> collider;
+		Collider* collider;
 
 		RayHit(bool hit = false);
-		RayHit(glm::vec2, std::shared_ptr<Collider>);
+		RayHit(glm::vec2, Collider*);
 	};
 
 	struct Collision
@@ -49,11 +49,11 @@ namespace Physic
 		friend class PhysicScene;
 		RESOLVE_TYPE m_type;
 	public:
-		std::shared_ptr<Collider> m_collider;
-		std::shared_ptr<Collider> m_otherCollider;
+		Collider* m_collider;
+		Collider* m_otherCollider;
 
 		Collision();
-		Collision(std::shared_ptr<Collider> col, std::shared_ptr<Collider> otherCol, RESOLVE_TYPE type);
+		Collision(Collider* col, Collider* otherCol, RESOLVE_TYPE type);
 	};
 
 	static const float RESOLVE_MUL = 10.0f;
@@ -62,14 +62,14 @@ namespace Physic
 	{
 		
 		RESOLVE_TYPE m_type;
-		std::shared_ptr<Collider> m_objectA;
-		std::shared_ptr<Collider> m_objectB;
+		Collider* m_objectA;
+		Collider* m_objectB;
 		bool m_objAResFlag;
 		bool m_objBResFlag;
 		float m_penetration;
 		glm::vec3 m_normal;
 
-		Manifold(std::shared_ptr<Collider> a, std::shared_ptr<Collider> b, RESOLVE_TYPE type);
+		Manifold(Collider* a, Collider* b, RESOLVE_TYPE type);
 		bool CheckCollision();
 		void Resolve(float dt);
 	};

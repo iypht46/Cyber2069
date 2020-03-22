@@ -3,14 +3,18 @@
 #include "Animation.hpp"
 #include <memory>
 
+#include <cereal/cereal.hpp>
+#include <cereal/types/memory.hpp>
 #include <cereal/types/vector.hpp>
 
 class AnimationController
 {
 protected:
-	std::vector<std::shared_ptr<Animation>> m_states;
 	glm::vec2 m_spriteSheetFrameSize;
+	std::vector<std::shared_ptr<Animation>> m_states;
 public:
+	std::shared_ptr<Animation> m_defaultState;
+
 	AnimationController();
 	void AddState(std::shared_ptr<Animation> anim);
 	std::shared_ptr<Animation> GetState(int state);
@@ -20,13 +24,17 @@ public:
 	~AnimationController();
 
 //serialization
-private:
+public:
 	template<class Archive>
 	void serialize(Archive& archive) {
-		archive( 
+		archive(
+			m_spriteSheetFrameSize,
 			m_states,
-			m_spriteSheetFrameSize
+			cereal::defer(m_defaultState)
 		);
+
+		//for default state
+		archive.serializeDeferments();
 	}
 };
 

@@ -2,6 +2,8 @@
 #include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/GameObject.hpp"
 
+#include <cereal/archives/binary.hpp>
+#include <cereal/types/base_class.hpp>
 #include <cereal/types/polymorphic.hpp>
 
 class HPsystem : public BehaviourScript {
@@ -12,6 +14,9 @@ protected:
 	float hp = 1;
 	bool dead = false;
 public:
+	HPsystem() {}
+	~HPsystem() {}
+
 	void SetMaxHP(float hp);
 	void SetHp(float hp);
 	void SetInvincible(bool inv);
@@ -34,7 +39,7 @@ public:
 	virtual void OnDisable();
 
 	//serialization
-private:
+public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(

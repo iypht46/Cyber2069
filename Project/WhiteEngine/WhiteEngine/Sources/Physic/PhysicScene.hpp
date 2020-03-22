@@ -35,8 +35,8 @@ namespace Physic
 	//Collider
 	using LayerBit = std::bitset<LAYER_BIT>;
 	using LayerBitPair = std::pair<LayerBit, LayerBit>;
-	using Colliders = std::vector<std::shared_ptr<Collider>>;
-	using Bodies = std::vector<std::shared_ptr<Rigidbody>>;
+	using Colliders = std::vector<Collider*>;
+	using Bodies = std::vector<Rigidbody*>;
 	using CollidersMap = std::unordered_map<Layer, Colliders>;
 
 	//Collision
@@ -91,12 +91,12 @@ namespace Physic
 		//Interface//
 		//@Adding and Removing Collider
 		//Add collider to layer
-		void Add(std::shared_ptr<Collider>, Layer);
-		void Add(std::shared_ptr<Collider>, std::string);
-		void Add(std::shared_ptr<Rigidbody>);
+		void Add(Collider*, Layer);
+		void Add(Collider*, std::string);
+		void Add(Rigidbody*);
 		//Remove collider from layer
-		void Remove(std::shared_ptr<Collider>, Layer);
-		void Remove(std::shared_ptr<Collider>, std::string);
+		void Remove(Collider*, Layer);
+		void Remove(Collider*, std::string);
 		//Send Collision Message to Collider in list
 		void SendCollisionMsg(void);
 

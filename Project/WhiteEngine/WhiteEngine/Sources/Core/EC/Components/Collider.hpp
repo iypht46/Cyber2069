@@ -1,10 +1,12 @@
 #pragma once
 
+#include <string>
 #include <memory>
 #include <glm/glm.hpp>
 #include "Core/EC/Components/Component.hpp"
 #include "Core/Message/IMessageHandler.hpp"
 
+#include <cereal/types/string.hpp>
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/base_class.hpp>
 
@@ -24,22 +26,29 @@
 	protected:
 		friend class Physic::PhysicScene;
 
-		COLLIDER_TYPE m_colliderType;
+		std::string m_layer;
 		bool m_isStatic = true;
 		float m_density;
 		float m_friction = 0.1f;
 
+		int sr_colliderTypeAsInt;
+		COLLIDER_TYPE m_colliderType;
+
 		COL_STATE m_collisionState = COL_STATE::NONE;
 		bool m_hasCollided = false;
 	public:
-		std::shared_ptr<Transform> m_transform;
-		std::shared_ptr<Rigidbody> m_rigidbody;
+		Transform* m_transform;
+		Rigidbody* m_rigidbody;
 
 		//Constructor
+		Collider();
 		Collider(COLLIDER_TYPE col) 
 			: m_colliderType(col), m_density(1.0f) {}
 		//Destructor
 		~Collider() {};
+
+		virtual void Init();
+
 		//Collider Interface
 		COLLIDER_TYPE GetType();
 		bool IsStatic();
@@ -58,16 +67,15 @@
 		virtual void HandleMessage(const Core::Trigger&);
 
 	//serialization
-	private:
-		int m_colliderTypeAsInt;
-
+	public:
 		template<class Archive>
 		void serialize(Archive& archive) {
 			archive(cereal::base_class<Component>(this),
-				m_colliderTypeAsInt,
+				m_layer,
 				m_isStatic,
 				m_density,
-				m_friction
+				m_friction,
+				sr_colliderTypeAsInt
 			);
 		}
 	};
@@ -84,9 +92,10 @@
 		/*unused var*/glm::vec3 m_colliderScale; //Scale multiplier in halfwidth and halfheight
 	public:
 		//Constructor
-		BoxCollider() : Collider(COLLIDER_TYPE::BOX) {}
+		BoxCollider();
+		virtual void Init();
 		void Init(float, float);
-		void Init(float, float, std::shared_ptr<Rigidbody>);
+		void Init(float, float, Rigidbody*);
 		void ReSize(float, float);
 		void ComputeAABB(Physic::AABB&);
 		
@@ -99,13 +108,10 @@
 		//virtual void Update(float) const;
 
 	//serialization
-	private:
-		int sr_colliderTypeAsInt;
-
+	public:
 		template<class Archive>
 		void serialize(Archive& archive) {
 			archive(cereal::base_class<Collider>(this),
-				sr_colliderTypeAsInt,
 				m_halfWidth,
 				m_halfHeight
 			);

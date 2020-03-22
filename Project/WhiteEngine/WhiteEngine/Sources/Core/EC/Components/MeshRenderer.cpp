@@ -12,13 +12,14 @@
 
 MeshRenderer::MeshRenderer() 
 {
-	isUI = false;
+	//isUI = false;
 	
 	/*mesh = new SquareMeshVbo();
 	mesh->LoadData(1, 1);*/
 
 	//this->layer = 0;
 	//GLRenderer::GetInstance()->AddMeshToSet(this);
+	//Factory<MeshRenderer>::Add(this);
 }
 
 MeshRenderer::~MeshRenderer()
@@ -35,6 +36,14 @@ MeshRenderer::MeshRenderer(std::string texture_path,float NumframeX,float NumFra
 	mesh->LoadData(NumframeX, NumFrameY);
 	GLRenderer::GetInstance()->SetMeshAttribId(mesh);
 
+}
+
+void MeshRenderer::Init() {
+	SetTexture(sr_texturePath);
+
+	mesh = new SquareMeshVbo();
+	mesh->LoadData(sr_NumFrameX, sr_NumFrameY);
+	GLRenderer::GetInstance()->SetMeshAttribId(mesh);
 }
 
 void MeshRenderer::SetTexture(std::string path)

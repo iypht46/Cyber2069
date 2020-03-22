@@ -8,9 +8,9 @@
 
 #include "Core/EC/Components/Animator.hpp"
 
+#include <cereal/types/string.hpp>
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/base_class.hpp>
-#include <cereal/types/string.hpp>
 
 class GameObject;
 class Component;
@@ -20,7 +20,7 @@ class MeshRenderer : public Component
 private:
 	bool isUI;
 	
-	string sr_texturePath;
+	std::string sr_texturePath;
 	float sr_NumFrameX;
 	float sr_NumFrameY;
 
@@ -35,6 +35,9 @@ public:
 	MeshRenderer();
 	MeshRenderer(std::string texture_path, float NumframeX, float NumFrameY);
 	~MeshRenderer();
+
+	virtual void Init();
+
 	void CreateMesh(float NumframeX, float NumFrameY);
 	void SetTexture(std::string path);
 	void SetTexture(unsigned int tex);
@@ -46,7 +49,7 @@ public:
 	void Render(glm::mat4 globalModelTransform);
 
 //serialization
-private:
+public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(

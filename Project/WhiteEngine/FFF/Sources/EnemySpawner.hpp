@@ -21,6 +21,9 @@ public:
 	void assignFlyPool(ObjectPool* pool);
 	void assignBombPool(ObjectPool* pool);
 
+	EnemySpawner() {}
+	~EnemySpawner() {}
+
 	virtual void OnAwake();
 	virtual void OnEnable();
 	virtual void OnStart();

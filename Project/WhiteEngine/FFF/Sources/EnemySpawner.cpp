@@ -18,7 +18,7 @@ void EnemySpawner::OnUpdate(float dt)
 		int randPosX = (rand() % (Graphic::Window::GetWidth() * 2)) - Graphic::Window::GetWidth();
 		int randPosY = (rand() % (Graphic::Window::GetHeight() * 2)) - Graphic::Window::GetHeight();
 		if (randSpawn == 0) {
-			std::shared_ptr<GameObject> flyer = FlyerPool->GetInactiveObject();
+			GameObject* flyer = FlyerPool->GetInactiveObject();
 			if (flyer != nullptr)
 			{
 				flyer->SetActive(true);
@@ -27,7 +27,7 @@ void EnemySpawner::OnUpdate(float dt)
 			}
 		}
 		else {
-			std::shared_ptr<GameObject> bomber = BomberPool->GetInactiveObject();
+			GameObject* bomber = BomberPool->GetInactiveObject();
 			if (bomber != nullptr)
 			{
 				bomber->SetActive(true);

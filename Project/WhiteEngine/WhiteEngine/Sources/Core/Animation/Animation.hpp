@@ -31,7 +31,7 @@ public:
 	~Animation();
 
 //serialization
-private:
+public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive( 

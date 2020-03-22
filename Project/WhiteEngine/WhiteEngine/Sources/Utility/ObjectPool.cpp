@@ -8,21 +8,21 @@ int ObjectPool::GetPoolSize() {
 	return m_objects.size();
 }
 
-shared_ptr<GameObject> ObjectPool::GetGameObject() {
+GameObject* ObjectPool::GetGameObject() {
 	for (shared_ptr<GameObject> obj : m_objects) {
 		if (obj->Active()) {
-			return obj;
+			return obj.get();
 		}
 	}
 	//not found
 	return nullptr;
 }
 
-shared_ptr<GameObject> ObjectPool::GetInactiveObject()
+GameObject* ObjectPool::GetInactiveObject()
 {
 	for (shared_ptr<GameObject> obj : m_objects) {
 		if (!obj->Active()) {
-			return obj;
+			return obj.get();
 		}
 	}
 	//not found

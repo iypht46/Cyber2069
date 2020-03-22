@@ -9,9 +9,9 @@
 
 class Enemy :public BehaviourScript {
 protected:
-	std::shared_ptr<HPsystem> hpSystem;
-	std::shared_ptr<Animator> animator;
-	std::shared_ptr<Transform> target;
+	HPsystem* hpSystem;
+	Animator* animator;
+	Transform* target;
 	bool foundTarget;
 
 	bool isDead = false;
@@ -29,11 +29,11 @@ public:
 	virtual void OnUpdate(float dt) override;
 	virtual void OnFixedUpdate(float dt) = 0;
 
-	void SetTarget(std::shared_ptr<Transform>);
+	void SetTarget(Transform*);
 	void TakeDamage(float);
 
 //serialization
-private:
+public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(

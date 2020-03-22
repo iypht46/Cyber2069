@@ -20,19 +20,22 @@ enum EnemyState
 
 class Flyer :public Enemy {
 private:
-	std::shared_ptr<Rigidbody> rigidbody;
+	Rigidbody* rigidbody;
 protected:
-	std::shared_ptr<AirFollowing> airFollow;
+	AirFollowing* airFollow;
 public:
 	EnemyState state = EnemyState::Idle;
 
-	void Init(std::shared_ptr<Transform> player);
+	Flyer() {}
+	~Flyer() {}
+
+	void Init(Transform* player);
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
 
 	//serialization
-private:
+public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
@@ -46,22 +49,25 @@ CEREAL_REGISTER_TYPE(Flyer);
 class Bomber :public Enemy {
 private:
 	float DashTriggerRadius;
-	std::shared_ptr<Rigidbody> rigidbody;
+	Rigidbody* rigidbody;
 protected:
-	std::shared_ptr<AirFollowing> airFollow;
-	std::shared_ptr<AirDash> airDash;
+	AirFollowing* airFollow;
+	AirDash* airDash;
 	EventSystem OnExplode;
 
 public:
 	EnemyState state = EnemyState::Idle;
 
-	void Init(std::shared_ptr<Transform> player);
+	Bomber() {}
+	~Bomber() {}
+
+	void Init(Transform* player);
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
 
 	//serialization
-private:
+public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
@@ -81,13 +87,16 @@ private:
 
 	float SpawnDelayCount;
 protected:
-	std::shared_ptr<AirPatrol> airPatrol;
+	AirPatrol* airPatrol;
 	ObjectPool* FlyerPool;
 	ObjectPool* BomberPool;
 public:
 
 	//EnemyState state = EnemyState::Idle;
 	
+	DeQueen() {}
+	~DeQueen() {}
+
 	void Init();
 	void assignFlyPool(ObjectPool* pool);
 	void assignBombPool(ObjectPool* pool);
@@ -96,7 +105,7 @@ public:
 	virtual void OnFixedUpdate(float dt);
 
 	//serialization
-private:
+public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(

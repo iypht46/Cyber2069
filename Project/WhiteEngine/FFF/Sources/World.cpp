@@ -64,13 +64,13 @@ namespace World
 	GameObject* queen;
 
 	GameObject* gamecontroller;
-	std::shared_ptr<GameObject> ui_ScoreText;
-	std::shared_ptr<GameObject> ui_HPbar;
+	GameObject* ui_ScoreText;
+	GameObject* ui_HPbar;
 
 	GameObject* Enemy;
 	GameObject* Spawner;
 
-	Animation* Fly;
+	std::shared_ptr<Animation> Fly;
 	AnimationController* EnemCon;
 
 	AnimationController* RabbitController;
@@ -199,8 +199,8 @@ namespace World
 		queen = new GameObject();
 
 		gamecontroller = new GameObject();
-		ui_ScoreText = std::make_shared<GameObject>();
-		ui_HPbar = std::make_shared<GameObject>();
+		ui_ScoreText = new GameObject();
+		ui_HPbar = new GameObject();
 
 		Spawner = new GameObject();
 
@@ -213,6 +213,7 @@ namespace World
 		title->AddComponent<MeshRenderer>();
 		title->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 		title->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/mockup_title.jpg");
+		title->GetComponent<MeshRenderer>()->SetLayer(-1);
 
 		title->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth(), Graphic::Window::GetHeight(), 1.0f));
 
@@ -263,9 +264,10 @@ namespace World
 		Rabbit->AddComponent<MeshRenderer>();
 		Rabbit->GetComponent<MeshRenderer>()->CreateMesh(7, 5);
 		Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_PlayerBody_Vversion03.png");
+		Rabbit->GetComponent<MeshRenderer>()->SetLayer(2);
 
 		Rabbit->AddComponent<HPsystem>();
-		gamecontroller->GetComponent<GameController>()->AssignPlayer(std::shared_ptr<GameObject>(Rabbit));
+		gamecontroller->GetComponent<GameController>()->AssignPlayer(Rabbit);
 
 		Child->m_transform->SetParent(Rabbit->m_transform);
 
@@ -276,31 +278,31 @@ namespace World
 
 
 		//Add Animator
-		Animation* Idle = new Animation();
+		std::shared_ptr<Animation> Idle = std::make_shared<Animation>();
 
 		Idle->setStartPosition(0, 0);
 		Idle->setEndPosition(6, 0);
 		Idle->setSpeedMultiplier(1);
 
-		Animation* Running = new Animation();
+		std::shared_ptr<Animation> Running = std::make_shared<Animation>();
 
 		Running->setStartPosition(0, 1);
 		Running->setEndPosition(4, 1);
 		Running->setSpeedMultiplier(2);
 
-		Animation* Dashing = new Animation();
+		std::shared_ptr<Animation> Dashing = std::make_shared<Animation>();
 
 		Dashing->setStartPosition(0, 4);
 		Dashing->setEndPosition(2, 4);
 		Dashing->setSpeedMultiplier(1);
 
-		Animation* Jumping = new Animation();
+		std::shared_ptr<Animation> Jumping = std::make_shared<Animation>();
 
 		Jumping->setStartPosition(0, 3);
 		Jumping->setEndPosition(3, 3);
 		Jumping->setSpeedMultiplier(1);
 
-		Animation* falling = new Animation();
+		std::shared_ptr<Animation> falling = std::make_shared<Animation>();
 		falling->setStartPosition(3, 3);
 		falling->setEndPosition(3, 3);
 		falling->setSpeedMultiplier(1);
@@ -315,18 +317,18 @@ namespace World
 		RabbitController = new AnimationController();
 		RabbitController->setSheetSize(glm::vec2(7, 5));
 
-		RabbitController->AddState(std::shared_ptr<Animation>(Idle));
-		RabbitController->AddState(std::shared_ptr<Animation>(Running));
-		RabbitController->AddState(std::shared_ptr<Animation>(Dashing));
-		RabbitController->AddState(std::shared_ptr<Animation>(Jumping));
-		RabbitController->AddState(std::shared_ptr<Animation>(falling));
+		RabbitController->AddState(Idle);
+		RabbitController->AddState(Running);
+		RabbitController->AddState(Dashing);
+		RabbitController->AddState(Jumping);
+		RabbitController->AddState(falling);
 
 		Rabbit->AddComponent<Animator>();
-		Rabbit->GetComponent<Animator>()->AssignController(RabbitController);
+		Rabbit->GetComponent<Animator>()->AssignController(std::shared_ptr<AnimationController>(RabbitController));
 		Rabbit->GetComponent<Animator>()->setCurrentState(0);
 		Rabbit->GetComponent<Animator>()->setFramePerSec(12);
 
-		Fly = new Animation();
+		Fly = std::make_shared<Animation>();
 		Fly->setStartPosition(0, 0);
 		Fly->setEndPosition(5, 0);
 		Fly->setSpeedMultiplier(3);
@@ -387,6 +389,7 @@ namespace World
 			platform[i]->AddComponent<MeshRenderer>();
 			platform[i]->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 			platform[i]->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
+			platform[i]->GetComponent<MeshRenderer>()->SetLayer(3);
 			platform[i]->m_transform->SetScale(glm::vec3(400, 20, 1));
 			platform[i]->AddComponent<BoxCollider>()->Init(200, 5);
 			g_physicScene->Add(platform[i]->GetComponent<BoxCollider>(), "Platform");
@@ -449,10 +452,10 @@ namespace World
 			flyer->AddComponent<HPsystem>();
 			flyer->AddComponent<AirFollowing>();
 			flyer->AddComponent<Flyer>();
-			flyer->GetComponent<Flyer>()->Init(Rabbit->m_transform);
+			flyer->GetComponent<Flyer>()->Init(Rabbit->m_transform.get());
 
 			flyer->AddComponent<Animator>();
-			flyer->GetComponent<Animator>()->AssignController(EnemCon);
+			flyer->GetComponent<Animator>()->AssignController(std::shared_ptr<AnimationController>(EnemCon));
 			flyer->GetComponent<Animator>()->setCurrentState(0);
 			flyer->GetComponent<Animator>()->setFramePerSec(12);
 
@@ -491,31 +494,31 @@ namespace World
 			FlyerPool->AddObject(std::shared_ptr<GameObject>(flyer));
 		}
 
-		Animation* BomberIdle = new Animation();
+		std::shared_ptr<Animation> BomberIdle = std::make_shared<Animation>();
 		BomberIdle->setStartPosition(0, 0);
 		BomberIdle->setEndPosition(4, 0);
 		BomberIdle->setSpeedMultiplier(1);
 		BomberIdle->setLooping(true);
 
-		Animation* BomberCharging = new Animation();
+		std::shared_ptr<Animation> BomberCharging = std::make_shared<Animation>();
 		BomberCharging->setStartPosition(0, 1);
 		BomberCharging->setEndPosition(2, 1);
 		BomberCharging->setSpeedMultiplier(1);
 		BomberCharging->setLooping(false);
 
-		Animation* BomberDashing = new Animation();
+		std::shared_ptr<Animation> BomberDashing = std::make_shared<Animation>();
 		BomberDashing->setStartPosition(3, 1);
 		BomberDashing->setEndPosition(4, 1);
 		BomberDashing->setSpeedMultiplier(1);
 		BomberDashing->setLooping(true);
 
-		Animation* BomberExplode = new Animation();
+		std::shared_ptr<Animation> BomberExplode = std::make_shared<Animation>();
 		BomberExplode->setStartPosition(0, 2);
 		BomberExplode->setEndPosition(11, 2);
 		BomberExplode->setSpeedMultiplier(1);
 		BomberExplode->setLooping(false);
 
-		Animation* BomberDie = new Animation();
+		std::shared_ptr<Animation> BomberDie = std::make_shared<Animation>();
 		BomberDie->setStartPosition(0, 3);
 		BomberDie->setEndPosition(4, 3);
 		BomberDie->setSpeedMultiplier(1);
@@ -523,11 +526,11 @@ namespace World
 
 		BomberAnimController = new AnimationController();
 		BomberAnimController->setSheetSize(glm::vec2(12, 4));
-		BomberAnimController->AddState(std::shared_ptr<Animation>(BomberIdle));
-		BomberAnimController->AddState(std::shared_ptr<Animation>(BomberCharging));
-		BomberAnimController->AddState(std::shared_ptr<Animation>(BomberDashing));
-		BomberAnimController->AddState(std::shared_ptr<Animation>(BomberExplode));
-		BomberAnimController->AddState(std::shared_ptr<Animation>(BomberDie));
+		BomberAnimController->AddState(BomberIdle);
+		BomberAnimController->AddState(BomberCharging);
+		BomberAnimController->AddState(BomberDashing);
+		BomberAnimController->AddState(BomberExplode);
+		BomberAnimController->AddState(BomberDie);
 
 		for (int i = 0; i < 1; i++)
 		{
@@ -538,7 +541,7 @@ namespace World
 			bomber->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Bomber_V[version01].png");
 
 			bomber->AddComponent<Animator>();
-			bomber->GetComponent<Animator>()->AssignController(BomberAnimController);
+			bomber->GetComponent<Animator>()->AssignController(std::shared_ptr<AnimationController>(BomberAnimController));
 			bomber->GetComponent<Animator>()->setCurrentState(0);
 			bomber->GetComponent<Animator>()->setFramePerSec(12);
 
@@ -552,7 +555,7 @@ namespace World
 			bomber->AddComponent<AirFollowing>();
 			bomber->AddComponent<AirDash>();
 			bomber->AddComponent<Bomber>();
-			bomber->GetComponent<Bomber>()->Init(Rabbit->m_transform);
+			bomber->GetComponent<Bomber>()->Init(Rabbit->m_transform.get());
 
 			bomber->m_transform->SetScale(glm::vec3(50, 50, 1));
 
@@ -566,14 +569,14 @@ namespace World
 		Spawner->GetComponent<EnemySpawner>()->assignFlyPool(FlyerPool);
 		Spawner->GetComponent<EnemySpawner>()->assignBombPool(BomberPool);
 
-		Animation* queenIdle = new Animation();
+		std::shared_ptr<Animation> queenIdle = std::make_shared<Animation>();
 
 		queenIdle->setStartPosition(0, 0);
 		queenIdle->setEndPosition(3, 0);
 		queenIdle->setSpeedMultiplier(1);
 		queenIdle->setLooping(true);
 
-		Animation* queenSpawning = new Animation();
+		std::shared_ptr<Animation> queenSpawning = std::make_shared<Animation>();
 
 		queenSpawning->setStartPosition(0, 1);
 		queenSpawning->setEndPosition(3, 1);
@@ -582,8 +585,8 @@ namespace World
 
 		queenAnimControl = new AnimationController();
 		queenAnimControl->setSheetSize(glm::vec2(4, 2));
-		queenAnimControl->AddState(std::shared_ptr<Animation>(queenIdle));
-		queenAnimControl->AddState(std::shared_ptr<Animation>(queenSpawning));
+		queenAnimControl->AddState(queenIdle);
+		queenAnimControl->AddState(queenSpawning);
 
 
 		GameObject* queen = new GameObject();
@@ -593,7 +596,7 @@ namespace World
 		queen->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Queen_V[version01].png");
 
 		queen->AddComponent<Animator>();
-		queen->GetComponent<Animator>()->AssignController(queenAnimControl);
+		queen->GetComponent<Animator>()->AssignController(std::shared_ptr<AnimationController>(queenAnimControl));
 		queen->GetComponent<Animator>()->setCurrentState(0);
 		queen->GetComponent<Animator>()->setFramePerSec(3);
 
@@ -647,10 +650,10 @@ namespace World
 		//serialtarget->scv[0]->farr = 15973;
 		//serialtarget->scv[1]->v3 = glm::vec3(7, 7, 7);
 		//Load(*serialtarget);
-		serialtarget->outside->great = 555;
+		//serialtarget->outside->great = 555;
 		ENGINE_INFO("serial result: {},{}", serialtarget->Name, serialtarget->Active());
 		ENGINE_INFO("outside");
-		serialtarget->outside->out();
+		//serialtarget->outside->out();
 		//ENGINE_INFO("inside");
 		//serialtarget->scv[0]->out();
 		//serialtarget->scv[1]->out();

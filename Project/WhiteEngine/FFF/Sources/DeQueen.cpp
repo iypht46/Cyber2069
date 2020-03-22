@@ -4,7 +4,7 @@
 #include "Core/Logger.hpp"
 
 void DeQueen::Init() {
-	airPatrol = m_gameObject->GetComponent<AirPatrol>();
+	airPatrol = GetGameObject()->GetComponent<AirPatrol>();
 	PosX = -(Graphic::Window::GetWidth() / 2);
 	PosY = Graphic::Window::GetHeight() / 2;
 	
@@ -22,7 +22,8 @@ void DeQueen::OnStart() {
 
 void DeQueen::OnUpdate(float dt) {
 	
-	Enemy::OnUpdate(dt);
+	//no need to detect target
+	//Enemy::OnUpdate(dt);
 
 	airPatrol->Patrol();
 
@@ -34,7 +35,8 @@ void DeQueen::OnUpdate(float dt) {
 		int spawnPosX = airPatrol->queen->GetPosition().x;
 		int spawnPosY = airPatrol->queen->GetPosition().y - 100;
 		if (randSpawn == 0) {
-			std::shared_ptr<GameObject> flyer = FlyerPool->GetInactiveObject();
+			//std::shared_ptr<GameObject> flyer = FlyerPool->GetInactiveObject();
+			GameObject* flyer = FlyerPool->GetInactiveObject();
 			if (flyer != nullptr)
 			{
 				flyer->SetActive(true);
@@ -43,7 +45,7 @@ void DeQueen::OnUpdate(float dt) {
 			}
 		}
 		else {
-			std::shared_ptr<GameObject>bomber = BomberPool->GetInactiveObject();
+			GameObject* bomber = BomberPool->GetInactiveObject();
 			if (bomber != nullptr)
 			{
 				bomber->SetActive(true);

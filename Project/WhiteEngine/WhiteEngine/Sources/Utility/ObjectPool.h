@@ -1,19 +1,22 @@
 #pragma once
 #include <vector>
+#include <memory>
 #include "../Core/EC/GameObject.hpp"
+
+#include <cereal/types/string.hpp>
 
 //template <class OBJ>
 class ObjectPool {
 private:
 	string objectPath;
-	std::vector<shared_ptr<GameObject>> m_objects;
+	std::vector<std::shared_ptr<GameObject>> m_objects;
 public:
 	//void setPrefab();
 	//void init(int amount);
 	void AddObject(shared_ptr<GameObject>);
 	int GetPoolSize();
-	shared_ptr<GameObject> GetGameObject();
-	shared_ptr<GameObject> GetInactiveObject();
+	GameObject* GetGameObject();
+	GameObject* GetInactiveObject();
 
 	//serialization
 private:

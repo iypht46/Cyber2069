@@ -29,12 +29,12 @@ private:
 	float m_drag;
 
 	//Pointers to other components
-	std::shared_ptr<Collider> m_collider;
-	std::shared_ptr<Transform> m_transform;
+	Collider* m_collider;
+	Transform* m_transform;
 public:
 	//Rigidbody Interface
 	void Init(float, float);
-	std::shared_ptr<Collider> GetCollider();
+	Collider* GetCollider();
 	void Init(/*float, float*/);
 	void SetVelocity(glm::vec3);
 	void SetVelocity0Masked(glm::vec3);
@@ -53,7 +53,7 @@ public:
 	~Rigidbody();
 
 //serialization
-private:
+public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(

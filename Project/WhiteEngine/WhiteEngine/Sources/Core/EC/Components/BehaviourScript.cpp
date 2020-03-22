@@ -4,13 +4,20 @@
 #include "Physic/Collision.hpp"
 
 BehaviourScript::BehaviourScript() {
-	shared_ptr<BehaviourScript> thisShared(this);
-	Factory<BehaviourScript>::Add(thisShared);
+	Factory<BehaviourScript>::Add(this);
 }
+
+BehaviourScript::~BehaviourScript() { }
+
+void BehaviourScript::Init() { }
 
 void BehaviourScript::OnAwake() { }
 void BehaviourScript::OnEnable() { }
 void BehaviourScript::OnDisable() { }
+
+void BehaviourScript::OnStart() { }
+void BehaviourScript::OnUpdate(float dt) { }
+void BehaviourScript::OnFixedUpdate(float dt) { }
 
 void BehaviourScript::OnTriggerEnter(const Physic::Collision col) { }
 void BehaviourScript::OnTriggerStay(const Physic::Collision col) { }

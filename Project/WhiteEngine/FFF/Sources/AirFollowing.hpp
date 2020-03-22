@@ -9,16 +9,17 @@
 class AirFollowing : public BehaviourScript
 {
 private:
-	std::shared_ptr<Rigidbody> rb;
-	std::shared_ptr<Transform> t;
-	std::shared_ptr<Transform> m_target;
+	Rigidbody* rb;
+	Transform* t;
+	Transform* m_target;
 protected:
 	float m_speed;
 	float rotAngle;
 	float rotRate;
 public:
 	AirFollowing();
-	void SetPlayer(std::shared_ptr<Transform>);
+	~AirFollowing() {}
+	void SetPlayer(Transform*);
 	void SetFlySpeed(float value);
 	void SetRotAngle(float value);
 	void SetRotRate(float value);
@@ -31,7 +32,7 @@ public:
 	virtual void OnDisable();
 
 	//serialization
-private:
+public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(

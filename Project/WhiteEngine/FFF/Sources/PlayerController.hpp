@@ -19,9 +19,9 @@ class PlayerController : public BehaviourScript {
 private://change later
 	Physic::PhysicScene* ps;
 protected:
-	std::shared_ptr<HPsystem> hpSystem;
-	std::shared_ptr<Transform> Gun;
-	std::shared_ptr<Rigidbody> rb;
+	HPsystem* hpSystem;
+	Transform* Gun;
+	Rigidbody* rb;
 
 	ObjectPool* MGbulletPool;
 	
@@ -72,6 +72,7 @@ protected:
 public:
 	void PSSet(Physic::PhysicScene* ps) { this->ps = ps; }
 	PlayerController();
+	~PlayerController() {}
 	
 	void mouseAim();
 
@@ -101,7 +102,7 @@ public:
 	virtual void OnTriggerExit(const Physic::Collision) override;
 
 	//serialization
-private:
+public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(

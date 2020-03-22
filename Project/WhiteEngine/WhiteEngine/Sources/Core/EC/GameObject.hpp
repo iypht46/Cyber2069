@@ -1,21 +1,19 @@
 #pragma once
 
-#include <iostream>
+#include <memory>
 #include <vector>
 #include <string>
 #include "Components/Transform.hpp"
+#include "Components/BehaviourScript.h"
 #include "Core/Factory.h"
 #include "Core/LogCustomType.hpp"
 
 //Forward Declaration
-class Component;
-class BehaviourScript;
 namespace Physic { struct Collision; }
 
 //cereal test
 #include <fstream>
 #include <cereal/cereal.hpp>
-#include <cereal/archives/binary.hpp>
 #include <cereal/types/string.hpp>
 #include <cereal/types/vector.hpp>
 #include <cereal/types/memory.hpp>
@@ -32,9 +30,9 @@ protected:
 
 	static int s_IDCounter;
 	int m_objectID;
-	
-	std::vector<shared_ptr<Component>> m_components;
-	std::vector<shared_ptr<BehaviourScript>> m_scripts;
+
+	std::vector<std::shared_ptr<Component>> m_components;
+	std::vector<std::shared_ptr<BehaviourScript>> m_scripts;
 
 	void CollisionEnter(const Physic::Collision);
 	void CollisionStay(const Physic::Collision);
@@ -46,7 +44,7 @@ public:
 	GameObject();
 	std::string Name;
 	//change this to smart ptr
-	shared_ptr<Transform> m_transform;
+	std::shared_ptr<Transform> m_transform;
 
 	void SetActive(bool activestate);
 	bool Active();
@@ -61,18 +59,18 @@ public:
 	virtual void OnDisable() {};
 
 	template <class T>
-	std::shared_ptr<T> AddComponent();
+	T* AddComponent();
 
 	template <class T>
-	std::shared_ptr<T> GetComponent();
+	T* GetComponent();
 
 	//Log to logger
 	LogCustomType_DC(GameObject);
 
 	//===========================
 	////test serialzation
-	shared_ptr<SomeBase> outside;
-	std::vector<shared_ptr<SomeBase>> scv;
+	//shared_ptr<SomeBase> outside;
+	//std::vector<shared_ptr<SomeBase>> scv;
 
 	//===========================
 
@@ -80,40 +78,46 @@ public:
 	//void SetGameObject(GameObject* obj);
 
 //serialization
-private:
+public:
 	template<class Archive>
 	void serialize(Archive& archive) {
-		archive(isActive, Name, m_transform, m_components);
+		archive(
+			isActive,
+			Name,
+			m_transform,
+			m_components,
+			cereal::defer(m_scripts)
+			);
 	}
 };
 
 template<class T>
-std::shared_ptr<T> GameObject::AddComponent() {
-	shared_ptr<T> component = Factory<T>::Create();
+T* GameObject::AddComponent() {
+	std::shared_ptr<T> component = Factory<T>::Create();
 
 	m_components.push_back(component);
 	m_components.back()->SetGameObject(this);
 
 	//if is behaviou script, also assign to script collection
-	shared_ptr<BehaviourScript> behaviour = dynamic_pointer_cast<BehaviourScript>(component);
+	std::shared_ptr<BehaviourScript> behaviour = dynamic_pointer_cast<BehaviourScript>(component);
 	if (behaviour) {
 		m_scripts.push_back(behaviour);
 	}
 
-	return component;
+	return component.get();
 }
 
 template<class T>
-std::shared_ptr<T> GameObject::GetComponent() {
+T* GameObject::GetComponent() {
 
-	for (shared_ptr<Component> component : m_components) 
+	for (std::shared_ptr<Component> component : m_components)
 	{
 		if (dynamic_pointer_cast<T>(component))
 		{
-			return dynamic_pointer_cast<T>(component);
+			return dynamic_pointer_cast<T>(component).get();
 		}
 	}
-	
+
 	return nullptr;
 }
 

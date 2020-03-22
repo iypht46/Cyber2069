@@ -13,9 +13,9 @@ private:
 	float maxExplodeTime;
 	bool dashState;
 protected:
-	std::shared_ptr<Transform> m_target;
-	std::shared_ptr<Transform> bomber;
-	std::shared_ptr<Rigidbody> rb;
+	Transform* m_target;
+	Transform* bomber;
+	Rigidbody* rb;
 
 	float m_dashSpeed;
 	float m_aimTime;
@@ -25,7 +25,8 @@ protected:
 	float m_explodeCountDown;
 public:
 	AirDash();
-	void SetPlayer(std::shared_ptr<Transform> player);
+	~AirDash() {}
+	void SetPlayer(Transform* player);
 	void SetDashSpeed(float value);
 	void SetAimTime(float value);
 	void SetAimSpeed(float value);
@@ -38,7 +39,7 @@ public:
 	virtual void OnDisable();
 
 	//serialization
-private:
+public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(

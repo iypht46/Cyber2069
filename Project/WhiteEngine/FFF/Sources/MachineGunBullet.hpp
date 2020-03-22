@@ -11,7 +11,7 @@
 
 class MachineGunBullet : public BehaviourScript {
 protected:
-	std::shared_ptr<Rigidbody> rb;
+	Rigidbody* rb;
 
 	Graphic::CameraObject* cam;
 
@@ -19,6 +19,9 @@ protected:
 	int winHeight;
 	
 public:
+
+	MachineGunBullet() {}
+	~MachineGunBullet() {}
 
 	virtual void OnAwake();
 	virtual void OnEnable();

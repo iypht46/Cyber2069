@@ -134,7 +134,7 @@ namespace Physic
 	{
 		for (auto it = m_bodies.begin(); it != m_bodies.end(); ++it)
 		{
-			std::shared_ptr<Rigidbody> body = (*it);
+			Rigidbody* body = (*it);
 
 			body->AddForce(m_gravity * body->GetGravityScale() * body->GetMass() * GRAVITY_MUL);
 		}
@@ -219,7 +219,7 @@ namespace Physic
 
 	void PhysicScene::SetCollisionState(Collision col)
 	{
-		std::shared_ptr<Collider> collider = col.m_collider;
+		Collider* collider = col.m_collider;
 
 		switch (collider->m_collisionState)
 		{
@@ -323,12 +323,12 @@ namespace Physic
 		m_collisionMsg.clear();
 	}
 
-	void PhysicScene::Add(std::shared_ptr<Collider> col, Layer layer)
+	void PhysicScene::Add(Collider* col, Layer layer)
 	{
 		m_colliders[layer].push_back(col);
 	}
 
-	void PhysicScene::Add(std::shared_ptr<Collider> col, std::string layerName)
+	void PhysicScene::Add(Collider* col, std::string layerName)
 	{
 		Layer layer = GetLayerFromString(layerName);
 		if (layer == Layer::LAYER_INVALID)
@@ -339,12 +339,12 @@ namespace Physic
 		Add(col, layer);
 	}
 
-	void PhysicScene::Add(std::shared_ptr<Rigidbody> rigid)
+	void PhysicScene::Add(Rigidbody* rigid)
 	{
 		m_bodies.push_back(rigid);
 	}
 
-	void PhysicScene::Remove(std::shared_ptr<Collider> col, Layer layer)
+	void PhysicScene::Remove(Collider* col, Layer layer)
 	{
 		Colliders::iterator it = std::find(m_colliders[layer].begin(), m_colliders[layer].end(), col);
 		if (it == m_colliders[layer].end())
@@ -356,7 +356,7 @@ namespace Physic
 		m_colliders[layer].erase(it);
 	}
 
-	void PhysicScene::Remove(std::shared_ptr<Collider> col, std::string layerName)
+	void PhysicScene::Remove(Collider* col, std::string layerName)
 	{
 		Layer layer = GetLayerFromString(layerName);
 		if (layer == Layer::LAYER_INVALID)

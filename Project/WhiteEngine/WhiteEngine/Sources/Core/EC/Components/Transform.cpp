@@ -6,10 +6,14 @@ using namespace glm;
 
 Transform::Transform() {
 	m_position = vec3(0, 0, 0);
+	ENGINE_INFO("{}", m_position.x);
 	m_scale = vec3(1, 1, 1);
 	m_rotation = 0;
+	m_localRotation = 0;
 
 	parent = nullptr;
+
+	//Factory<Transform>::Add(this);
 }
 
 glm::vec3 Transform::GetPosition() {
@@ -58,8 +62,8 @@ void Transform::SetParent(std::shared_ptr<Transform> newParent) {
 	parent->children.push_back(std::shared_ptr<Transform>(this));
 }
 
-std::shared_ptr<Transform> Transform::GetChild(int index) {
-	return children.at(index);
+Transform* Transform::GetChild(int index) {
+	return (children.at(index)).get();
 }
 
 /*
@@ -208,17 +212,4 @@ void Transform::SetLocalRotation(float localrotation) {
 
 void Transform::Rotate(float rotation) {
 	SetRotation(m_rotation + rotation);
-}
-
-void Transform::OnAwake() {
-}
-void Transform::OnEnable() {
-}
-void Transform::OnStart() {
-}
-void Transform::OnUpdate(float dt) {
-}
-void Transform::OnFixedUpdate(float dt) {
-}
-void Transform::OnDisable() {
 }

@@ -6,10 +6,12 @@
 #include "Graphic/MeshVbo.h"
 #include <iostream>
 #include <map>
+#include <string>
 
 #include "ft2build.h"
 #include FT_FREETYPE_H
 
+#include <cereal/types/string.hpp>
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/base_class.hpp>
 
@@ -29,18 +31,20 @@ struct GLCharacter {
 class TextRenderer : public Component 
 {
 protected:
-	string text;
+	std::string text;
 	glm::vec3 color;
 	float fontSize;
-	string fontPath;
+	std::string fontPath;
 
 	GLuint VAO;
 	GLuint VBO;
 
 	std::map<GLchar, GLCharacter> Characters;
 public:
+	virtual void Init();
+
 	void Render();
-	
+
 	void SetText(string text);
 	void SetColor(glm::vec3 color);
 	void LoadFont(string path,float DefautFontSize);
@@ -48,7 +52,7 @@ public:
 	TextRenderer();
 
 //serialization
-private:
+public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(

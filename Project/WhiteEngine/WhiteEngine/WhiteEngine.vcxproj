@@ -28,7 +28,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -159,6 +159,7 @@
     <ClInclude Include="Sources\Graphic\Window.hpp" />
     <ClInclude Include="Sources\Input\Input.hpp" />
     <ClInclude Include="Sources\SceneManagement\Scene.h" />
+    <ClInclude Include="Sources\SceneManagement\SceneManager.h" />
     <ClInclude Include="Sources\Serialization\EngineSeTest.h" />
     <ClInclude Include="Sources\Serialization\glmCereal.h" />
     <ClInclude Include="Sources\Serialization\Serialization.h" />
@@ -194,6 +195,7 @@
     <ClCompile Include="Sources\Graphic\Window.cpp" />
     <ClCompile Include="Sources\Input\Input.cpp" />
     <ClCompile Include="Sources\Physic\Raycast.cpp" />
+    <ClCompile Include="Sources\SceneManagement\SceneManager.cpp" />
     <ClCompile Include="Sources\Utility\Event.cpp" />
     <ClCompile Include="Sources\Utility\ObjectPool.cpp" />
   </ItemGroup>
