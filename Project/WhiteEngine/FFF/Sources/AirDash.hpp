@@ -3,7 +3,9 @@
 #include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/GameObject.hpp"
 #include "Core/EC/Components/Rigidbody.hpp"
-class AirDash : public BehaviourScript
+#include "Character.hpp"
+
+class AirDash : public Character
 {
 private: 
 	float timer;
@@ -27,6 +29,8 @@ public:
 	void Dash(float dt);
 	void TargetLock(glm::vec3 pos);
 	bool DashEnd();
+	void Reset();
+
 	virtual void OnAwake();
 	virtual void OnEnable();
 	virtual void OnStart();

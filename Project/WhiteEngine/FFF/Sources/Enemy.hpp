@@ -4,7 +4,16 @@
 #include "HPsystem.hpp"
 #include "Core/EC/Components/Animator.hpp"
 
-class Enemy :public BehaviourScript {
+#include "Character.hpp"
+
+enum EnemyState
+{
+	Idle = 0,
+	Chase,
+	Active,
+};
+
+class Enemy :public Character {
 protected:
 	HPsystem* hpSystem;
 	Animator* animator;
@@ -12,6 +21,11 @@ protected:
 	bool foundTarget;
 
 	bool isDead = false;
+
+	bool gotBlackHole = false;
+
+
+	EnemyState state = EnemyState::Idle;
 
 	//events on take damage (funct*)
 	//events on dead (funct*)
@@ -32,4 +46,6 @@ public:
 	void TakeDamage(float);
 
 	float GetCollideDamage() { return CollideDamage; }
+	void SetGotBlackHole(bool bh) { this->gotBlackHole = bh; }
+	void SetState(EnemyState state) { this->state = state; }
 };

@@ -14,6 +14,8 @@ void Enemy::OnDead() {
 	//call all funct from events vector
 	m_gameObject->SetActive(false);
 	GameController::GetInstance()->AddScoreValue(1.0);
+	state = EnemyState::Idle;
+	gotBlackHole = false;
 }
 
 //check if target in range

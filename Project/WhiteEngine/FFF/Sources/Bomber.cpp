@@ -48,26 +48,29 @@ void Bomber::OnUpdate(float dt) {
 
 void Bomber::OnFixedUpdate(float dt) {
 	if (m_gameObject->Active()) {
-		switch (state)
-		{
-		case EnemyState::Idle:
-			rigidbody->SetVelocity(glm::vec3(0));
-			break;
-		case EnemyState::Chase:
-			airFollow->FollowPlayer(dt);
-			break;
-		case EnemyState::Active:
-			airDash->Dash(dt);
-			if (airDash->DashEnd()) {
-				explosion->Explode();
-				hpSystem->Dead();
+		if (!gotBlackHole) {
+			switch (state)
+			{
+			case EnemyState::Idle:
+				rigidbody->SetVelocity(glm::vec3(0));
+				airDash->Reset();
+				break;
+			case EnemyState::Chase:
+				airFollow->FollowPlayer(dt);
+				break;
+			case EnemyState::Active:
+				airDash->Dash(dt);
+				if (airDash->DashEnd()) {
+					explosion->Explode();
+					hpSystem->Dead();
 
 
-				state = EnemyState::Idle;
+					state = EnemyState::Idle;
+				}
+				break;
+			default:
+				break;
 			}
-			break;
-		default:
-			break;
 		}
 	}
 }

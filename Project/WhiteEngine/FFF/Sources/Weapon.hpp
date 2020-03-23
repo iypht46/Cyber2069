@@ -6,6 +6,8 @@
 #include "Core/EC/GameObject.hpp"
 #include "Utility/ObjectPool.h"
 
+#include "Physic/PhysicScene.hpp"
+
 #include "Graphic/Camera.hpp"
 #include "Graphic/Window.hpp"
 #include "Enemy.hpp"
@@ -150,6 +152,50 @@ public:
 	void SetZapDistance(float d) { this->zapDistance = d; }
 
 	void Zap(Enemy* e);
+
+	virtual void OnAwake();
+	virtual void OnEnable();
+	virtual void OnStart();
+	virtual void OnUpdate(float dt);
+	virtual void OnFixedUpdate(float dt);
+	virtual void OnDisable();
+	virtual void OnTriggerEnter(const Physic::Collision col) override;
+	virtual void OnCollisionEnter(const Physic::Collision col) override;
+};
+
+class BlackholeGun : public Weapon {
+private:
+	float bullet_Duration;
+	float bullet_Radius;
+	float bullet_ToCenterSpeed;
+public:
+	BlackholeGun();
+	void Modify(GameObject* obj);
+	void GameTimeBehaviour(float dt);
+	void onDisable();
+};
+
+class BlackholeGunBullet : public BehaviourScript {
+protected:
+	Graphic::CameraObject* cam;
+
+	Rigidbody* rb;
+	float bulletDmg;
+	float Duration;
+	float DurationCount = 0;
+	float Radius;
+	float ToCenterSpeed;
+
+	bool isTriggerEnemy = false;
+
+public:
+	void SetDamage(float dmg) { this->bulletDmg = dmg; }
+	void SetDuration(float duration) { this->Duration = duration; }
+	void SetRadius(float radius) { this->Radius = radius; }
+	void SetToCenterSpeed(float spd) { this->ToCenterSpeed = spd; }
+
+	void DragEnemy();
+	void ReleaseEnemy();
 
 	virtual void OnAwake();
 	virtual void OnEnable();

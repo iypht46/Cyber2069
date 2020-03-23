@@ -36,11 +36,18 @@ void AirFollowing::FollowPlayer(float dt) {
 	rb->SetVelocity(glm::vec3(glm::cos(t->GetRotation() + this->rotAngle), glm::sin(t->GetRotation() + this->rotAngle), 0) * m_speed);
 
 	if (direction.x > 0) {
-		t->SetScale(glm::vec3(glm::abs(t->GetScale().x) * -1, t->GetScale().y, 1.0f));
+		if (facingRight) 
+		{
+			flip();
+		}
 	}
 	else {
-		t->SetScale(glm::vec3(glm::abs(t->GetScale().x), t->GetScale().y, 1.0f));;
+		if (!facingRight)
+		{
+			flip();
+		}
 	}
+
 }
 
 void AirFollowing::OnAwake() {

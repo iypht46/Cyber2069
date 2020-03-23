@@ -58,10 +58,7 @@ void AirDash::Dash(float dt) {
 		}
 		else 
 		{
-			timer = m_aimTime;
-			dashState = false;
-			dashEnd = true;
-			targetLocked = false;
+			Reset();
 		}
 
 	}
@@ -76,6 +73,13 @@ void AirDash::TargetLock(glm::vec3 pos) {
 		this->m_target = pos;
 		targetLocked = true;
 	}
+}
+
+void AirDash::Reset() {
+	timer = m_aimTime;
+	dashState = false;
+	dashEnd = true;
+	targetLocked = false;
 }
 
 

@@ -7,21 +7,12 @@
 #include "Explosion.hpp"
 #include "GroundPatrol.hpp"
 
-enum EnemyState
-{
-	Idle = 0,
-	Chase,
-	Active,
-};
-
-
 class Flyer :public Enemy {
 private:
 	Rigidbody* rigidbody;
 protected:
 	AirFollowing* airFollow;
 public:
-	EnemyState state = EnemyState::Idle;
 
 	void SetStats(float Speed, float HP, float Dmg);
 
@@ -44,7 +35,6 @@ protected:
 	Explosion* explosion;
 
 public:
-	EnemyState state = EnemyState::Idle;
 
 	void SetStats(float Speed, float HP, float Dmg, float AimTime, float DashSpeed, float ExplodeDmg, float ExplodeRadius);
 
@@ -65,8 +55,6 @@ protected:
 	ObjectPool* FlyerPool;
 	ObjectPool* BomberPool;
 public:
-
-	//EnemyState state = EnemyState::Idle;
 	
 	void Init();
 	void assignFlyPool(ObjectPool* pool);

@@ -11,13 +11,14 @@
 #include "Weapon.hpp"
 
 #include "Enemy.hpp"
+#include "Character.hpp"
 
 
 #include "Utility/ObjectPool.h"
 
 #define PI 3.14159265358979323846
 
-class PlayerController : public BehaviourScript {
+class PlayerController : public Character {
 private://change later
 	Physic::PhysicScene* ps;
 protected:

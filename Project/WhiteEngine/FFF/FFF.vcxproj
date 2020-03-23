@@ -127,6 +127,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\BlackholeGun.cpp" />
+    <ClCompile Include="Sources\BlackholeGunBullet.cpp" />
+    <ClCompile Include="Sources\Character.cpp" />
     <ClCompile Include="Sources\GrenadeLauncher.cpp" />
     <ClCompile Include="Sources\GrenadeLauncherBullet.cpp" />
     <ClCompile Include="Sources\GroundPatrol.cpp" />
@@ -152,6 +155,7 @@
     <ClCompile Include="Sources\ZapperGunBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Character.hpp" />
     <ClInclude Include="Sources\GroundPatrol.hpp" />
     <ClInclude Include="Sources\Explosion.hpp" />
     <ClInclude Include="Sources\AirDash.hpp" />

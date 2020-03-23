@@ -3,8 +3,9 @@
 #include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/GameObject.hpp"
 #include "Core/EC/Components/Rigidbody.hpp"
+#include "Character.hpp"
 
-class AirFollowing : public BehaviourScript
+class AirFollowing : public Character
 {
 private:
 	Rigidbody* rb;

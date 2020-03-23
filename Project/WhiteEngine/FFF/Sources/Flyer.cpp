@@ -31,18 +31,20 @@ void Flyer::OnUpdate(float dt) {
 
 void Flyer::OnFixedUpdate(float dt) {
 	if (m_gameObject->Active()) {
-		switch (state)
-		{
-		case Idle:
-			//rigidbody->SetVelocity(glm::vec3(0));
-			airFollow->FollowPlayer(dt);
-			break;
-		case Chase:
-			airFollow->FollowPlayer(dt);
-			break;
-		case Active:
-		default:
-			break;
+
+		if (!gotBlackHole) {
+			switch (state)
+			{
+			case Idle:
+				rigidbody->SetVelocity(glm::vec3(0));
+				break;
+			case Chase:
+				airFollow->FollowPlayer(dt);
+				break;
+			case Active:
+			default:
+				break;
+			}
 		}
 	}
 }

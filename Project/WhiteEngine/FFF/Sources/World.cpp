@@ -401,86 +401,6 @@ namespace World
 		//Flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
 		//Flyer->GetComponent<FlyerBehaviour>()->SetGameObject(Flyer);
 
-		ENGINE_INFO("Creating Bullet");
-		for (int i = 0; i < 20; i++)
-		{
-			GameObject* Bullet = new GameObject();
-			Bullet->AddComponent<MeshRenderer>();
-			Bullet->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
-			Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_bullet.png");
-
-			Bullet->AddComponent<Rigidbody>();
-			Bullet->GetComponent<Rigidbody>()->Init(7, 7);
-			Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0f);
-
-			g_physicScene->Add(Bullet->GetComponent<Rigidbody>());
-			g_physicScene->Add(Bullet->GetComponent<BoxCollider>(), "Bullet");
-
-			Bullet->AddComponent<MachineGunBullet>();
-			Bullet->GetComponent<MachineGunBullet>()->OnStart();
-
-			Bullet->m_transform.SetScale(glm::vec3(10, 10, 1));
-
-			Bullet->SetActive(false);
-			BulletPool->AddObject(Bullet);
-		}
-
-		gamecontroller->GetComponent<GameController>()->AddPool(BulletPool, POOL_TYPE::BULLET_MG);
-
-		ObjectPool* GLbulletpool = new ObjectPool();
-
-		for (int i = 0; i < 20; i++)
-		{
-			GameObject* Bullet = new GameObject();
-			Bullet->AddComponent<MeshRenderer>();
-			Bullet->GetComponent<MeshRenderer>()->CreateMesh(2, 1);
-			Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/grenadeL_bullet.png");
-
-			Bullet->AddComponent<Rigidbody>();
-			Bullet->GetComponent<Rigidbody>()->Init(7, 7);
-			Bullet->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
-
-			g_physicScene->Add(Bullet->GetComponent<Rigidbody>());
-			g_physicScene->Add(Bullet->GetComponent<BoxCollider>(), "Bullet");
-
-			Bullet->m_transform.SetScale(glm::vec3(30, 30, 1));
-
-			Bullet->AddComponent<GrenadeLauncherBullet>();
-			Bullet->GetComponent<GrenadeLauncherBullet>()->OnStart();
-
-			Bullet->SetActive(false);
-			GLbulletpool->AddObject(Bullet);
-		}
-
-		gamecontroller->GetComponent<GameController>()->AddPool(GLbulletpool, POOL_TYPE::BULLET_GL);
-
-		ObjectPool* Zapbulletpool = new ObjectPool();
-
-		for (int i = 0; i < 20; i++)
-		{
-			GameObject* Bullet = new GameObject();
-			Bullet->AddComponent<MeshRenderer>();
-			Bullet->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/blue.jpg");
-
-			Bullet->AddComponent<Rigidbody>();
-			Bullet->GetComponent<Rigidbody>()->Init(7, 7);
-			Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0f);
-
-			g_physicScene->Add(Bullet->GetComponent<Rigidbody>());
-			g_physicScene->Add(Bullet->GetComponent<BoxCollider>(), "Bullet");
-
-			Bullet->m_transform.SetScale(glm::vec3(10, 10, 1));
-
-			Bullet->AddComponent<ZapperGunBullet>();
-			Bullet->GetComponent<ZapperGunBullet>()->OnStart();
-
-			Bullet->SetActive(false);
-			Zapbulletpool->AddObject(Bullet);
-		}
-
-		gamecontroller->GetComponent<GameController>()->AddPool(Zapbulletpool, POOL_TYPE::BULLET_ZP);
-
 		for (int i = 0; i < 200; i++)
 		{
 			GameObject* flyer = new GameObject();
@@ -491,6 +411,7 @@ namespace World
 
 			flyer->AddComponent<Rigidbody>();
 			flyer->GetComponent<Rigidbody>()->Init(15, 15);
+			//flyer->GetComponent<Rigidbody>()->SetGravityScale(0.0f);
 
 			g_physicScene->Add(flyer->GetComponent<Rigidbody>());
 			g_physicScene->Add(flyer->GetComponent<BoxCollider>(), "Enemy");
@@ -583,6 +504,115 @@ namespace World
 		}
 
 		gamecontroller->GetComponent<GameController>()->AddPool(BomberPool, POOL_TYPE::ENEMY_BOMBER);
+
+
+
+		ENGINE_INFO("Creating Bullet");
+		for (int i = 0; i < 20; i++)
+		{
+			GameObject* Bullet = new GameObject();
+			Bullet->AddComponent<MeshRenderer>();
+			Bullet->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
+			Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_bullet.png");
+
+			Bullet->AddComponent<Rigidbody>();
+			Bullet->GetComponent<Rigidbody>()->Init(7, 7);
+			Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0f);
+
+			g_physicScene->Add(Bullet->GetComponent<Rigidbody>());
+			g_physicScene->Add(Bullet->GetComponent<BoxCollider>(), "Bullet");
+
+			Bullet->AddComponent<MachineGunBullet>();
+			Bullet->GetComponent<MachineGunBullet>()->OnStart();
+
+			Bullet->m_transform.SetScale(glm::vec3(10, 10, 1));
+
+			Bullet->SetActive(false);
+			BulletPool->AddObject(Bullet);
+		}
+
+		gamecontroller->GetComponent<GameController>()->AddPool(BulletPool, POOL_TYPE::BULLET_MG);
+
+		ObjectPool* GLbulletpool = new ObjectPool();
+
+		for (int i = 0; i < 20; i++)
+		{
+			GameObject* Bullet = new GameObject();
+			Bullet->AddComponent<MeshRenderer>();
+			Bullet->GetComponent<MeshRenderer>()->CreateMesh(2, 1);
+			Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/grenadeL_bullet.png");
+
+			Bullet->AddComponent<Rigidbody>();
+			Bullet->GetComponent<Rigidbody>()->Init(7, 7);
+			Bullet->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
+
+			g_physicScene->Add(Bullet->GetComponent<Rigidbody>());
+			g_physicScene->Add(Bullet->GetComponent<BoxCollider>(), "Bullet");
+
+			Bullet->m_transform.SetScale(glm::vec3(30, 30, 1));
+
+			Bullet->AddComponent<GrenadeLauncherBullet>();
+			Bullet->GetComponent<GrenadeLauncherBullet>()->OnStart();
+
+			Bullet->SetActive(false);
+			GLbulletpool->AddObject(Bullet);
+		}
+
+		gamecontroller->GetComponent<GameController>()->AddPool(GLbulletpool, POOL_TYPE::BULLET_GL);
+
+		ObjectPool* Zapbulletpool = new ObjectPool();
+
+		for (int i = 0; i < 20; i++)
+		{
+			GameObject* Bullet = new GameObject();
+			Bullet->AddComponent<MeshRenderer>();
+			Bullet->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/blue.jpg");
+
+			Bullet->AddComponent<Rigidbody>();
+			Bullet->GetComponent<Rigidbody>()->Init(7, 7);
+			Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0f);
+
+			g_physicScene->Add(Bullet->GetComponent<Rigidbody>());
+			g_physicScene->Add(Bullet->GetComponent<BoxCollider>(), "Bullet");
+
+			Bullet->m_transform.SetScale(glm::vec3(10, 10, 1));
+
+			Bullet->AddComponent<ZapperGunBullet>();
+			Bullet->GetComponent<ZapperGunBullet>()->OnStart();
+
+			Bullet->SetActive(false);
+			Zapbulletpool->AddObject(Bullet);
+		}
+
+		gamecontroller->GetComponent<GameController>()->AddPool(Zapbulletpool, POOL_TYPE::BULLET_ZP);
+
+		ObjectPool* BHbulletpool = new ObjectPool();
+
+		for (int i = 0; i < 20; i++)
+		{
+			GameObject* Bullet = new GameObject();
+			Bullet->AddComponent<MeshRenderer>();
+			Bullet->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
+			Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/blackhole_bullet.png");
+
+			Bullet->AddComponent<Rigidbody>();
+			Bullet->GetComponent<Rigidbody>()->Init(7, 7);
+			Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0f);
+
+			g_physicScene->Add(Bullet->GetComponent<Rigidbody>());
+			g_physicScene->Add(Bullet->GetComponent<BoxCollider>(), "Bullet");
+
+			Bullet->m_transform.SetScale(glm::vec3(30, 30, 1));
+
+			Bullet->AddComponent<BlackholeGunBullet>();
+			Bullet->GetComponent<BlackholeGunBullet>()->OnStart();
+
+			Bullet->SetActive(false);
+			BHbulletpool->AddObject(Bullet);
+		}
+
+		gamecontroller->GetComponent<GameController>()->AddPool(BHbulletpool, POOL_TYPE::BULLET_BH);
 
 		Animation* queenIdle = new Animation();
 

@@ -3,7 +3,9 @@
 #include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/GameObject.hpp"
 #include "Core/EC/Components/Rigidbody.hpp"
-class AirPatrol : public BehaviourScript
+#include "Character.hpp"
+
+class AirPatrol : public Character
 {
 private:
 	float m_pointAX;

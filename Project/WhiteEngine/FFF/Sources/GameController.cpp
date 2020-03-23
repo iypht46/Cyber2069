@@ -45,7 +45,7 @@ void GameController::OnStart() {
 	Spawner.push_back(BomberSpawner->GetComponent<EnemySpawner>());
 
 	EnemyAmplifier* a = new EnemyAmplifier;
-	a->EnemySpawnRate = 5.0f;
+	a->EnemySpawnRate = 1.0f;
 	a->FlyerHP = 1.0f;
 	a->FlyerSpeed = 300.0f;
 	a->FlyerDmg = 10.0f;

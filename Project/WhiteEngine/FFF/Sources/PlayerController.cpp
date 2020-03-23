@@ -93,6 +93,7 @@ void PlayerController::OnStart() {
 	AddEquipment(new LaserGun());
 	AddEquipment(new GrenadeLauncher());
 	AddEquipment(new ZapperGun());
+	AddEquipment(new BlackholeGun());
 
 	assignWeapon(Weapons[0]);
 
@@ -216,6 +217,11 @@ void PlayerController::DebugInput() {
 		assignWeapon(Weapons[3]);
 	}
 
+	if (Input::GetKeyDown(Input::KeyCode::KEY_5))
+	{
+		assignWeapon(Weapons[4]);
+	}
+
 }
 
 void PlayerController::move()
@@ -248,7 +254,9 @@ void PlayerController::move()
 		//rb->SetVelocity(glm::vec3(move_speed * direction.x, rb->GetVelocity().y, rb->GetVelocity().z));
 
 
-		m_gameObject->m_transform.SetScale(glm::vec3(glm::abs(m_gameObject->m_transform.GetScale().x) * -1.0f, m_gameObject->m_transform.GetScale().y, m_gameObject->m_transform.GetScale().z));
+		if (facingRight) {
+			flip();
+		}
 
 	}
 	else if (Input::GetKeyHold(Input::KeyCode::KEY_D))
@@ -256,7 +264,9 @@ void PlayerController::move()
 		direction.x = 1.0f;
 		velocity.x = move_speed * direction.x;
 		//rb->SetVelocity(glm::vec3(move_speed * direction.x, rb->GetVelocity().y, rb->GetVelocity().z));
-		m_gameObject->m_transform.SetScale(glm::vec3(glm::abs(m_gameObject->m_transform.GetScale().x), m_gameObject->m_transform.GetScale().y, m_gameObject->m_transform.GetScale().z));
+		if (!facingRight) {
+			flip();
+		}
 	}
 
 	if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE) && (stamina > 0))
