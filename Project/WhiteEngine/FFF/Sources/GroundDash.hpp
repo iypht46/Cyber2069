@@ -31,6 +31,7 @@ public:
 	bool DashEnd();
 	bool dashEnd;
 	void Dash(float dt);
+	void Reset();
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);

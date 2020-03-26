@@ -88,6 +88,7 @@ void GroundDash::Dash(float dt) {
 			targetLocked = false;
 		}
 	}
+	/*
 	if (dashEnd) {
 		endTimer -= dt;
 		if (endTimer <= 0) {
@@ -95,8 +96,12 @@ void GroundDash::Dash(float dt) {
 			endTimer = m_dashEndTime;
 		}
 	}
+	*/
 
+}
 
+void GroundDash::Reset() {
+	dashEnd = false;
 }
 
 void GroundDash::OnStart() {

@@ -53,10 +53,13 @@ void Charger::OnFixedUpdate(float dt) {
 		case Dash:
 			groundDash->Dash(dt);
 			if (groundDash->DashEnd()) {
-				state = EnemyState::Chase;
+				state = EnemyState::Reset;
 			}
 			break;
 		case Reset:
+			groundDash->Reset();
+			ENGINE_INFO("AAAAAAAA");
+			break;
 		default:
 			break;
 		}
