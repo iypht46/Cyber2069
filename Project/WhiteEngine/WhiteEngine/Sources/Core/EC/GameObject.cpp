@@ -3,7 +3,7 @@
 #include "Core/EC/Components/BehaviourScript.h"
 #include "Physic/Collision.hpp"
 
-#include "Core//Logger.hpp"
+#include "Core/Logger.hpp"
 
 int GameObject::s_IDCounter = 0;
 
@@ -11,6 +11,8 @@ GameObject::GameObject()
 {
 	m_objectID = GameObject::s_IDCounter++;
 	m_transform = make_shared<Transform>();
+
+	Factory<GameObject>::Add(this);
 }
 
 void GameObject::SetActive(bool activestate) {
@@ -24,6 +26,18 @@ bool GameObject::Active() {
 
 int GameObject::GetID() {
 	return m_objectID;
+}
+
+void GameObject::InitComponents() {
+	for (std::shared_ptr<Component> component : m_components) {
+		ENGINE_INFO("Init");
+		component->SetGameObject(this);
+		component->Init();
+	}
+
+	for (std::shared_ptr<BehaviourScript> behaviour : m_scripts) {
+		behaviour->OnAwake();
+	}
 }
 
 void GameObject::CollisionEnter(const Physic::Collision col)
@@ -79,22 +93,3 @@ void GameObject::TriggerExit(const Physic::Collision col)
 		scripts->OnTriggerExit(col);
 	}
 }
-
-////==============
-////serialazation test
-////==============
-//
-//void GameObject::Save() {
-//	std::ofstream file("srlztest.bin", std::ios::binary);
-//	cereal::BinaryOutputArchive oarchive(file);
-//
-//	oarchive(*this);
-//}
-//
-//void GameObject::Load() {
-//	std::ifstream file("srlztest.bin", std::ios::binary);
-//
-//	cereal::BinaryInputArchive iarchive(file);
-//
-//	iarchive(*this);
-//}

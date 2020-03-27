@@ -95,7 +95,6 @@ void PlayerController::OnEnable() {
 
 void PlayerController::OnUpdate(float dt)
 {
-	ENGINE_INFO("{},{}", m_gameObject->m_transform->GetPosition().x, m_gameObject->m_transform->GetPosition().y);
 	Graphic::getCamera()->SetPos(glm::vec3(GetGameObject()->m_transform->GetPosition().x, GetGameObject()->m_transform->GetPosition().y, GetGameObject()->m_transform->GetPosition().z));
 
 	cameraZoom(dt);

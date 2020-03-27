@@ -19,7 +19,12 @@ TextRenderer::TextRenderer()
 }
 
 void TextRenderer::Init() {
-	LoadFont(fontPath, fontSize);
+	if (fontPath != "") {
+		LoadFont(fontPath, fontSize);
+	}
+	else {
+		ENGINE_ERROR("No font path assigned");
+	}
 }
 
 void TextRenderer::LoadFont(string path, float DefautFontSize) {
@@ -36,7 +41,14 @@ void TextRenderer::LoadFont(string path, float DefautFontSize) {
 		std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
 
 	// Set size to load glyphs as
-	FT_Set_Pixel_Sizes(face, 0, DefautFontSize);
+	try
+	{
+		FT_Set_Pixel_Sizes(face, 0, DefautFontSize);
+	}
+	catch (const std::exception&)
+	{
+		ENGINE_ERROR("No font path assigned");
+	}
 
 	// Disable byte-alignment restriction
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);

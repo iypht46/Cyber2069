@@ -31,7 +31,6 @@
 		float m_density;
 		float m_friction = 0.1f;
 
-		int sr_colliderTypeAsInt;
 		COLLIDER_TYPE m_colliderType;
 
 		COL_STATE m_collisionState = COL_STATE::NONE;
@@ -45,7 +44,7 @@
 		Collider(COLLIDER_TYPE col) 
 			: m_colliderType(col), m_density(1.0f) {}
 		//Destructor
-		~Collider() {};
+		~Collider() = 0;
 
 		virtual void Init();
 
@@ -70,12 +69,12 @@
 	public:
 		template<class Archive>
 		void serialize(Archive& archive) {
-			archive(cereal::base_class<Component>(this),
+			archive(
+				cereal::base_class<Component>(this),
 				m_layer,
 				m_isStatic,
 				m_density,
-				m_friction,
-				sr_colliderTypeAsInt
+				m_friction
 			);
 		}
 	};

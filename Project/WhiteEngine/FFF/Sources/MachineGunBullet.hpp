@@ -9,6 +9,9 @@
 #include "Graphic/Camera.hpp"
 #include "Graphic/Window.hpp"
 
+#include <cereal/types/polymorphic.hpp>
+#include <cereal/types/base_class.hpp>
+
 class MachineGunBullet : public BehaviourScript {
 protected:
 	Rigidbody* rb;
@@ -31,4 +34,15 @@ public:
 	virtual void OnDisable();
 	virtual void OnTriggerEnter(const Physic::Collision col) override;
 	virtual void OnCollisionEnter(const Physic::Collision col) override;
+
+	//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(cereal::base_class<BehaviourScript>(this)
+
+			);
+	}
 };
+
+CEREAL_REGISTER_TYPE(MachineGunBullet);

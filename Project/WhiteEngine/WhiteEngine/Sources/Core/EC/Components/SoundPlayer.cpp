@@ -12,7 +12,7 @@ SoundPlayer::~SoundPlayer() {
 
 void SoundPlayer::Init() {
 	CreateSoundPlayer();
-	//SetSound(&(sr_soundpath[0]));
+	SetSound(&(sr_soundpath[0]));
 }
 
 void SoundPlayer::CreateSoundPlayer() {
@@ -20,6 +20,7 @@ void SoundPlayer::CreateSoundPlayer() {
 }
 
 void SoundPlayer::SetSound(const ik_c8* path) {
+	sr_soundpath = path;
 	soundSource = soundPlayer->addSoundSourceFromFile(path); 
 }
 

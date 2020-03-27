@@ -2,17 +2,47 @@
 
 #include <memory>
 #include <map>
+#include <set>
 #include <string>
 
-#include "Scene.h"
+#include "Core/EC/GameObject.hpp"
 #include "Serialization/Serialization.h"
 
+#include <cereal/cereal.hpp>
+#include <cereal/types/memory.hpp>
+#include <cereal/types/set.hpp>
+
+class GameObject;
+
 namespace SceneManagement {
+	class Scene
+	{
+	public:
+		std::set<std::shared_ptr<GameObject>> GameObjectsInScene;
+
+		//call init/awake/start on component assign gameobject assing collider/rigid body to physics scene
+		void Init();
+
+		//serialization
+	public:
+		template<class Archive>
+		void serialize(Archive& archive) {
+			archive(
+				GameObjectsInScene
+				);
+
+			archive.serializeDeferments();
+		}
+	};
+
 
 	using Scenes = std::map<int, std::string>;
 
-	Scenes ScenePaths;
-	std::unique_ptr<Scene> ActiveScene;
+	extern Scenes ScenePaths;
+	extern std::unique_ptr<Scene> ActiveScene;
+
+	extern GameObject* Instantiate();
+	extern GameObject* Instantiate(std::string prefabPath);
 
 	void LoadScene(std::string scenePath);
 	void LoadScene(int sceneIndex);

@@ -1,21 +1,28 @@
 #pragma once
 #include <vector>
 #include <memory>
-#include "../Core/EC/GameObject.hpp"
+#include "SceneManagement/SceneManager.h"
 
 #include <cereal/types/string.hpp>
 
 //template <class OBJ>
-class ObjectPool {
+class ObjectPool :Component {
 private:
-	string objectPath;
-	std::vector<std::shared_ptr<GameObject>> m_objects;
+	std::vector<GameObject*> m_objects;
 public:
-	//void setPrefab();
-	//void init(int amount);
-	void AddObject(shared_ptr<GameObject>);
+	std::string prefabObjectPath;
+	int objectCount;
+
+	virtual void Init();
+
+	//manually add object to pool
+	void AddObject(GameObject*);
 	int GetPoolSize();
+
+	//get active gameobject from pool
 	GameObject* GetGameObject();
+
+	//get inactive gameobject from pool
 	GameObject* GetInactiveObject();
 
 	//serialization
@@ -23,7 +30,11 @@ private:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
-			objectPath
-		);
+			cereal::base_class<Component>(this),
+			prefabObjectPath,
+			objectCount
+			);
 	}
 };
+
+CEREAL_REGISTER_TYPE(ObjectPool);

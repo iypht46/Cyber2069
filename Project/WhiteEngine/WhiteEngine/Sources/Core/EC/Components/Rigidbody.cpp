@@ -17,15 +17,15 @@ Rigidbody::Rigidbody()
 }
 
 //Create BoxCollider
-void Rigidbody::Init(void)
+void Rigidbody::Init()
 {
-	////Create new box collider
-	//BoxCollider* col = GetGameObject()->AddComponent<BoxCollider>();
-	////Init Box
-	//col->Init(hW, hH, this);
-	////Set Collider
-	//m_collider = col;
+	//assign Collider
+	m_collider = GetGameObject()->GetComponent<Collider>();
+	//assign transform
 	m_transform = GetGameObject()->m_transform.get();
+
+	//assign self to physicsscene
+	Physic::PhysicScene::GetInstance()->Add(this);
 }
 
 //Create BoxCollider

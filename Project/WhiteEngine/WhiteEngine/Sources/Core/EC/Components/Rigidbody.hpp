@@ -33,9 +33,9 @@ private:
 	Transform* m_transform;
 public:
 	//Rigidbody Interface
+	virtual void Init();
 	void Init(float, float);
 	Collider* GetCollider();
-	void Init(/*float, float*/);
 	void SetVelocity(glm::vec3);
 	void SetVelocity0Masked(glm::vec3);
 	glm::vec3 GetVelocity();

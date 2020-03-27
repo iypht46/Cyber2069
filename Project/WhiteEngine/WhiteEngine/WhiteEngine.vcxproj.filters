@@ -111,12 +111,6 @@
     <ClInclude Include="Sources\Serialization\glmCereal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Serialization\SomeClass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Serialization\EngineSeTest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Core\Animation\AnimationController.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -124,9 +118,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Serialization\Serialization.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\SceneManagement\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sources\SceneManagement\SceneManager.h">

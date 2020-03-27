@@ -10,8 +10,11 @@
 		Factory<Collider>::Add(this);
 	}
 
+	Collider::~Collider() { }
+
 	void Collider::Init() {
-		m_colliderType = (COLLIDER_TYPE)sr_colliderTypeAsInt;
+		Physic::PhysicScene::GetInstance()->Add(this, GetGameObject()->Layer);
+		ENGINE_INFO("Add col to {}", GetGameObject()->Layer);
 	}
 
 	COLLIDER_TYPE Collider::GetType()
@@ -76,7 +79,7 @@
 
 	//////////////Box Collider//////////////
 	BoxCollider::BoxCollider() : Collider(COLLIDER_TYPE::BOX) {
-		//Factory<BoxCollider>::Add(this);
+		Factory<BoxCollider>::Add(this);
 	}
 
 	void BoxCollider::Init() {
@@ -108,8 +111,6 @@
 
 	void BoxCollider::Init(float hW, float hH)
 	{
-		//Set Transform
-		//m_transform = GetGameObject()->GetTransform();
 		//Set Rigidbody
 		m_rigidbody = GetGameObject()->GetComponent<Rigidbody>();
 		//Set Transform
@@ -172,7 +173,6 @@
 		ComputeMass();
 		//Set Static
 		m_isStatic = false;
-		
 	}
 
 	void BoxCollider::ComputeAABB(Physic::AABB& a)

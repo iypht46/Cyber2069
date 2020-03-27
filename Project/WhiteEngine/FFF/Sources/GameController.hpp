@@ -6,6 +6,9 @@
 #include "Core/EC/Components/TextRenderer.hpp"
 #include "HPsystem.hpp"
 
+#include <cereal/types/base_class.hpp>
+#include <cereal/types/polymorphic.hpp>
+
 class GameController : public BehaviourScript {
 private:
 	static GameController* instance;
@@ -47,4 +50,20 @@ public:
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
 	virtual void OnDisable();
+
+//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<BehaviourScript>(this),
+			ScoreValue,
+			ComboValue,
+			startHPscaleX,
+			startHPscaleY,
+			startHPposX
+			);
+	}
 };
+
+CEREAL_REGISTER_TYPE(GameController);

@@ -18,7 +18,7 @@ class Component;
 class MeshRenderer : public Component
 {
 private:
-	bool isUI;
+	bool isUI = false;
 	
 	std::string sr_texturePath;
 	float sr_NumFrameX;

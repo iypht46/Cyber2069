@@ -18,10 +18,10 @@
 
 using namespace std;
 
-class Transform : public Component {
+class Transform : public Component, public std::enable_shared_from_this<Transform> {
 private:
-	std::shared_ptr<Transform> parent;
-	std::vector<shared_ptr<Transform>> children;
+	std::weak_ptr<Transform> parent;
+	std::vector<weak_ptr<Transform>> children;
 
 	glm::vec3 m_position;
 	glm::vec3 m_scale;
@@ -55,7 +55,7 @@ public:
 
 	glm::mat4 GetModelMatrix();
 
-	void SetParent(std::shared_ptr<Transform> newParent);
+	void SetParent(std::weak_ptr<Transform> newParent);
 
 	Transform* GetChild(int index);
 
@@ -68,7 +68,7 @@ public:
 	void SetLocalRotation(float localrotation);
 	void Rotate(float rotation);
 
-//serialization
+	//serialization
 public:
 	template<class Archive>
 	void serialize(Archive& archive) {
@@ -77,12 +77,12 @@ public:
 			m_position,
 			m_scale,
 			m_rotation,
-			m_localPosition, 
-			m_localScale, 
-			m_localRotation, 
-			cereal::defer(parent), 
+			m_localPosition,
+			m_localScale,
+			m_localRotation,
+			cereal::defer(parent),
 			cereal::defer(children)
-		);
+			);
 	}
 };
 

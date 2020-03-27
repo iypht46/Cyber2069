@@ -158,12 +158,9 @@
     <ClInclude Include="Sources\Graphic\SquareMeshVbo.h" />
     <ClInclude Include="Sources\Graphic\Window.hpp" />
     <ClInclude Include="Sources\Input\Input.hpp" />
-    <ClInclude Include="Sources\SceneManagement\Scene.h" />
     <ClInclude Include="Sources\SceneManagement\SceneManager.h" />
-    <ClInclude Include="Sources\Serialization\EngineSeTest.h" />
     <ClInclude Include="Sources\Serialization\glmCereal.h" />
     <ClInclude Include="Sources\Serialization\Serialization.h" />
-    <ClInclude Include="Sources\Serialization\SomeClass.h" />
     <ClInclude Include="Sources\Utility\Event.h" />
     <ClInclude Include="Sources\Utility\ObjectPool.h" />
   </ItemGroup>

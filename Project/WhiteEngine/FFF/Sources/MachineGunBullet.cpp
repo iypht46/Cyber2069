@@ -27,7 +27,8 @@ void MachineGunBullet::OnFixedUpdate(float dt) {
 }
 
 void MachineGunBullet::OnAwake() {
-
+	rb = GetGameObject()->GetComponent<Rigidbody>();
+	cam = Graphic::getCamera();
 }
 
 void MachineGunBullet::OnEnable() {

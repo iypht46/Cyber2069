@@ -185,7 +185,6 @@ void GLRenderer::Render()
 	glm::mat4 camera = glm::mat4(1.0);
 
 	//--------Render Object Here--------
-
 	for (MeshRenderer *obj : MeshSet) {
 
 		if (obj->GetGameObject()->Active())

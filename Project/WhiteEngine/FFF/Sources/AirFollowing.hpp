@@ -36,6 +36,7 @@ public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
+			cereal::base_class<BehaviourScript>(this),
 			m_speed,
 			rotAngle,
 			rotRate
@@ -44,4 +45,3 @@ public:
 };
 
 CEREAL_REGISTER_TYPE(AirFollowing);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(BehaviourScript, AirFollowing);

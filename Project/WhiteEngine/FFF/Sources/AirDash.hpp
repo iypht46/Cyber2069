@@ -43,6 +43,7 @@ public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
+			cereal::base_class<BehaviourScript>(this),
 			maxExplodeTime,
 			m_dashSpeed,
 			m_aimTime,
@@ -52,4 +53,3 @@ public:
 };
 
 CEREAL_REGISTER_TYPE(AirDash);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(BehaviourScript, AirDash);

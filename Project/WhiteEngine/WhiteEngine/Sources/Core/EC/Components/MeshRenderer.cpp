@@ -12,14 +12,7 @@
 
 MeshRenderer::MeshRenderer() 
 {
-	//isUI = false;
-	
-	/*mesh = new SquareMeshVbo();
-	mesh->LoadData(1, 1);*/
-
-	//this->layer = 0;
-	//GLRenderer::GetInstance()->AddMeshToSet(this);
-	//Factory<MeshRenderer>::Add(this);
+	Factory<MeshRenderer>::Add(this);
 }
 
 MeshRenderer::~MeshRenderer()
@@ -29,7 +22,11 @@ MeshRenderer::~MeshRenderer()
 
 MeshRenderer::MeshRenderer(std::string texture_path,float NumframeX,float NumFrameY)
 {
-	//SetGameObject(m_gameObject);
+	//save data
+	sr_texturePath = texture_path;
+	sr_NumFrameX = NumframeX;
+	sr_NumFrameY = NumFrameY;
+
 	SetTexture(texture_path);
 
 	mesh = new SquareMeshVbo();
@@ -39,15 +36,23 @@ MeshRenderer::MeshRenderer(std::string texture_path,float NumframeX,float NumFra
 }
 
 void MeshRenderer::Init() {
+	//ENGINE_INFO("{}", sr_texturePath);
 	SetTexture(sr_texturePath);
 
 	mesh = new SquareMeshVbo();
+	//ENGINE_INFO("numframe {},{}", sr_NumFrameX, sr_NumFrameY);
+	//ENGINE_INFO("scale {}, pos {}", GetGameObject()->m_transform->GetScale().x, GetGameObject()->m_transform->GetLocalPosition().x);
 	mesh->LoadData(sr_NumFrameX, sr_NumFrameY);
 	GLRenderer::GetInstance()->SetMeshAttribId(mesh);
+
+	anim = GetGameObject()->GetComponent<Animator>();
 }
 
 void MeshRenderer::SetTexture(std::string path)
 {
+	//save data
+	sr_texturePath = path;
+
 	texture = GLRenderer::GetInstance()->LoadTexture(path);
 }
 
@@ -73,6 +78,10 @@ int MeshRenderer::GetLayer()
 
 void  MeshRenderer::CreateMesh(float NumframeX, float NumFrameY)
 {
+	//save data
+	sr_NumFrameX = NumframeX;
+	sr_NumFrameY = NumFrameY;
+
 	this->mesh = new SquareMeshVbo();
 	this->mesh->LoadData(NumframeX, NumFrameY);
 	GLRenderer::GetInstance()->SetMeshAttribId(mesh);

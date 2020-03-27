@@ -11,17 +11,17 @@ namespace Serialization {
 	void SaveObject(T& object, std::string path) {
 		std::ofstream file(path, std::ios::binary);
 
-		//cereal::BinaryOutputArchive oarchive(file);
+		cereal::BinaryOutputArchive oarchive(file);
 
-		//oarchive(object);
+		oarchive(object);
 	}
 
 	template <class T>
 	void LoadObject(T& object, std::string path) {
 		std::ifstream file(path, std::ios::binary);
 
-		//cereal::BinaryInputArchive iarchive(file);
+		cereal::BinaryInputArchive iarchive(file);
 
-		//iarchive(object);
+		iarchive(object);
 	}
 }

@@ -12,7 +12,7 @@ private:
 	static std::set<T*> m_Collection;
 
 public:
-	T* Instantiate(std::string);
+	static std::shared_ptr<T> Create(std::string);
 	static std::shared_ptr<T> Create();
 
 	static void Add(T*);
@@ -23,15 +23,16 @@ public:
 template <class T>
 std::set<T*> Factory<T>::m_Collection;
 
+//create and load data from file (must be the path of same object type)
 template <class T>
-T* Factory<T>::Instantiate(std::string prefabPath) {
+std::shared_ptr<T> Factory<T>::Create(std::string prefabPath) {
 	std::shared_ptr<T> newT = std::make_shared<T>();
 
 	Serialization::LoadObject<T>(*(newT.get()), prefabPath);
 
 	m_Collection.insert(newT.get());
 
-	return newT.get();
+	return newT;
 }
 
 template <class T>

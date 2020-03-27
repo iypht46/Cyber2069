@@ -3,22 +3,20 @@
 #include <memory>
 #include <vector>
 #include <string>
+
 #include "Components/Transform.hpp"
 #include "Components/BehaviourScript.h"
 #include "Core/Factory.h"
 #include "Core/LogCustomType.hpp"
+#include "Physic/PhysicScene.hpp"
 
 //Forward Declaration
 namespace Physic { struct Collision; }
 
-//cereal test
-#include <fstream>
 #include <cereal/cereal.hpp>
 #include <cereal/types/string.hpp>
 #include <cereal/types/vector.hpp>
 #include <cereal/types/memory.hpp>
-#include "Serialization/SomeClass.h"
-//cereal test
 
 class GameObject
 {
@@ -26,7 +24,7 @@ protected:
 	friend class BehaviourScript;
 	friend class Collider;
 
-	bool isActive;
+	bool isActive = true;
 
 	static int s_IDCounter;
 	int m_objectID;
@@ -42,7 +40,11 @@ protected:
 	void TriggerExit(const Physic::Collision);
 public:
 	GameObject();
-	std::string Name;
+	~GameObject() {}
+
+	std::string Layer = "Default";
+
+	std::string Name = "GameObj";
 	//change this to smart ptr
 	std::shared_ptr<Transform> m_transform;
 
@@ -51,12 +53,8 @@ public:
 
 	int GetID();
 
-	virtual void OnAwake() {};
-	virtual void OnEnable() {};
-	virtual void OnStart() {};
-	virtual void OnUpdate(float dt) {};
-	virtual void OnFixedUpdate(float dt) {};
-	virtual void OnDisable() {};
+	//init all member component
+	void InitComponents();
 
 	template <class T>
 	T* AddComponent();
@@ -67,23 +65,14 @@ public:
 	//Log to logger
 	LogCustomType_DC(GameObject);
 
-	//===========================
-	////test serialzation
-	//shared_ptr<SomeBase> outside;
-	//std::vector<shared_ptr<SomeBase>> scv;
-
-	//===========================
-
-	//GameObject* GetGameObject();
-	//void SetGameObject(GameObject* obj);
-
-//serialization
+	//serialization
 public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
 			isActive,
 			Name,
+			Layer,
 			m_transform,
 			m_components,
 			cereal::defer(m_scripts)
@@ -97,6 +86,7 @@ T* GameObject::AddComponent() {
 
 	m_components.push_back(component);
 	m_components.back()->SetGameObject(this);
+	m_components.back()->Init();
 
 	//if is behaviou script, also assign to script collection
 	std::shared_ptr<BehaviourScript> behaviour = dynamic_pointer_cast<BehaviourScript>(component);

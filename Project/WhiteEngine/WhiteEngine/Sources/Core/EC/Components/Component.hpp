@@ -4,8 +4,8 @@
 
 #include "Core/Factory.h"
 
-#include <cereal/types/memory.hpp>
 #include <cereal/cereal.hpp>
+#include <cereal/types/memory.hpp>
 
 class GameObject;
 
@@ -15,16 +15,17 @@ protected:
 	static int s_IDcounter;
 	int m_componentID;
 
-	bool enabled = true;
 	GameObject* m_gameObject;
 
 public:
+	bool enabled = true;
+
 	Component();
 	int getComponentID();
 	GameObject* GetGameObject();
 
 	virtual void Init();
-	virtual void SetGameObject(GameObject* obj);
+	void SetGameObject(GameObject* obj);
 
 	virtual ~Component() = 0;
 

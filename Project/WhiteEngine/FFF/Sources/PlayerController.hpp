@@ -11,6 +11,7 @@
 
 #include "Utility/ObjectPool.h"
 
+#include <cereal/types/base_class.hpp>
 #include <cereal/types/polymorphic.hpp>
 
 #define PI 3.14159265358979323846
@@ -106,6 +107,7 @@ public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
+			cereal::base_class<BehaviourScript>(this),
 			max_stamina,
 			dashStamina,
 			jumpStamina,
@@ -124,4 +126,3 @@ public:
 };
 
 CEREAL_REGISTER_TYPE(PlayerController);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(BehaviourScript, PlayerController);

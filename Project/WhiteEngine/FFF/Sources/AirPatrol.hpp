@@ -31,6 +31,7 @@ public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
+			cereal::base_class<BehaviourScript>(this),
 			m_pointAX,
 			m_pointBX,
 			m_speed
@@ -39,4 +40,3 @@ public:
 };
 
 CEREAL_REGISTER_TYPE(AirPatrol);
-CEREAL_REGISTER_POLYMORPHIC_RELATION(BehaviourScript, AirPatrol);
