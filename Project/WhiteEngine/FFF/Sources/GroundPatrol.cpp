@@ -67,6 +67,17 @@ void GroundPatrol::Patrol(float dt) {
 
 }
 
+void GroundPatrol::OnAwake() {
+	m_stoppingDistance = 25.0f;
+	m_speed = 50.0f;
+	delay_timer = 2.0f;
+	MaxDelay = delay_timer;
+	thisTransform = &(m_gameObject->m_transform);
+	rb = m_gameObject->GetComponent<Rigidbody>();
+	ps = Physic::PhysicScene::GetInstance();
+	rb->SetVelocity(glm::vec3(m_speed, 0, 0));
+}
+
 void GroundPatrol::OnStart() {
 
 }

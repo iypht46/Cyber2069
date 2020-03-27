@@ -39,7 +39,9 @@ void AirPatrol::SetSpeed(float speed) {
 }
 
 void AirPatrol::OnAwake() {
-
+	m_speed = 30.0f;
+	m_pointAX = 0.0f;
+	m_pointBX = 0.0f;
 }
 
 void AirPatrol::OnEnable() {

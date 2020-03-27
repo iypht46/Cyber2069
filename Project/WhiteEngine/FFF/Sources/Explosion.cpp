@@ -47,6 +47,15 @@ void Explosion::SetRadius(float val) {
 	this->m_radius = val;
 }
 
+void Explosion::OnAwake() {
+	m_damage = 100.0f;
+	m_radius = 500.0f;
+
+	thisTransform = &(m_gameObject->m_transform);
+	ps = Physic::PhysicScene::GetInstance();
+	targetLayer = ps->GetLayerFromString("Player");
+}
+
 void Explosion::OnStart() {
 
 }

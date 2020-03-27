@@ -104,6 +104,21 @@ void GroundDash::Reset() {
 	dashEnd = false;
 }
 
+void GroundDash::OnAwake() {
+	m_dashSpeed = 700.0f;
+	m_pauseTime = 0.25f;
+	m_dashEndTime = 0.5f;
+	m_dashDistance = 25.0f;
+	dashTimer = m_pauseTime;
+	endTimer = m_dashEndTime;
+	dashing = false;
+	dashEnd = false;
+	targetLocked = false;
+	m_target = nullptr;
+	thisTransform = &(m_gameObject->m_transform);
+	rb = m_gameObject->GetComponent<Rigidbody>();
+}
+
 void GroundDash::OnStart() {
 
 }

@@ -78,7 +78,17 @@ void AirDash::TargetLock(glm::vec3 pos) {
 
 
 void AirDash::OnAwake() {
-
+	m_dashSpeed = 700.0f;
+	m_aimTime = 1.0f;
+	m_aimSpeed = 50.0f;
+	m_angle = 0.0f;
+	timer = m_aimTime;
+	dashing = false;
+	dashEnd = false;
+	targetLocked = false;
+	this->m_target = glm::vec3(0);
+	bomber = &(m_gameObject->m_transform);
+	rb = m_gameObject->GetComponent<Rigidbody>();
 }
 
 void AirDash::OnEnable() {

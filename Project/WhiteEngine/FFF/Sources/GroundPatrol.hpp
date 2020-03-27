@@ -23,6 +23,7 @@ public:
 	void SetSpeed(float val);
 	void SetMaxDelay(float val);
 	void Patrol(float dt);
+	virtual void OnAwake();
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
