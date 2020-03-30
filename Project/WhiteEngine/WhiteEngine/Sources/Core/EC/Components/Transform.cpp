@@ -1,4 +1,6 @@
 #include "Transform.hpp"
+#include "../../Logger.hpp"
+#include <iostream>
 
 using namespace glm;
 
@@ -39,48 +41,40 @@ glm::vec3 Transform::Right() {
 }
 
 glm::mat4 Transform::GetModelMatrix() {
-	//transformation
-	/*mat4 transformMatrices(1);
-	transformMatrices[0].x = m_position.x;
-	transformMatrices[0].y = m_position.y;
-	transformMatrices[0].z = m_position.z;
+	glm::mat4 rMat = glm::rotate(glm::mat4(1.0f), radians(m_localRotation), glm::vec3(0.0f, 0.0f, 1.0f));
+	glm::mat4 sMat = glm::scale(glm::mat4(1.0f), m_localScale);
+	glm::mat4 tMat = glm::translate(glm::mat4(1.0f), m_localPosition);
+	glm::mat4 transformMat = tMat * rMat * sMat;
 
-	//rotation
-	mat4 RotationMatrices(1);
-	RotationMatrices[0][0] = cos(radians(m_rotation));
-	RotationMatrices[0][1] = -sin(radians(m_rotation));
-	RotationMatrices[1][0] = sin(radians(m_rotation));
-	RotationMatrices[1][1] = cos(radians(m_rotation));
+	if (parent != nullptr) {
+		transformMat = parent->GetModelMatrix() * transformMat;
+	}
 
-	//scale
-	mat4 ScaleMatrices(1);
-	transformMatrices[0].x = m_scale.x;
-	transformMatrices[1].y = m_scale.y;
-	transformMatrices[2].z = m_scale.z;
-
-	return mat4(1.0f) * ScaleMatrices * RotationMatrices * transformMatrices;*/
-
-	glm::mat4 rMat = glm::rotate(glm::mat4(1.0f), m_rotation, glm::vec3(0.0f, 0.0f, 1.0f));
-	glm::mat4 sMat = glm::scale(glm::mat4(1.0f), m_scale);
-	glm::mat4 tMat = glm::translate(glm::mat4(1.0f), m_position);
-	glm::mat4 transform = tMat * sMat * rMat;
-
-	return transform;
+	return transformMat;
 }
 
-/**
+void Transform::SetParent(Transform* newParent) {
+	parent = newParent;
+	parent->children.push_back(this);
+}
+
+Transform* Transform::GetChild(int index) {
+	return children.at(index);
+}
+
+/*
  *update world position according to parent rotation and local position
  */
 void Transform::UpdateWorldPosition() {
 	//update world position
 	if (parent != nullptr) {
-		vec3 relativePosition = m_position - parent->m_position;
-		float angleBetweenParent = degrees(atan2(relativePosition.y, relativePosition.x));
-		float parentRotation = radians(parent->GetRotation());
+		float x = m_localPosition.x;
+		float y = m_localPosition.y;
+		float angle = radians(parent->GetRotation());
 
-		vec3 worldPosDirection(cos(radians(parentRotation + angleBetweenParent)), sin(radians(parentRotation + angleBetweenParent)), m_localPosition.z - parent->GetPosition().z);
-		worldPosDirection /= worldPosDirection.length();
-		m_position = parent->GetPosition() + (length(relativePosition) * worldPosDirection);
+		vec3 worldPosDirection((x*cos(angle)) - (y*sin(angle)), (x*sin(angle)) + (y*cos(angle)), 0);
+
+		m_position = parent->GetPosition() + worldPosDirection;
 	}
 	else {
 		m_position = m_localPosition;
@@ -92,21 +86,23 @@ void Transform::UpdateWorldPosition() {
 	}
 }
 
-///**
-// *update world scale according to parent, local scale and local rotation
-// */
-//void Transform::UpdateScale() {
-//	//update world scale
-//	if (parent != nullptr) {
-//
-//	}
-//	else {
-//		m_scale = m_localScale;
-//	}
-//
-//	//update child scale
-//
-//}
+/*
+ *update world scale according to parent, local scale and local rotation
+ */
+void Transform::UpdateScale() {
+	//update world scale
+	if (parent != nullptr) {
+		m_scale = parent->m_scale * m_localScale;
+	}
+	else {
+		m_scale = m_localScale;
+	}
+
+	//update child scale
+	for (Transform* child : children) {
+		child->UpdateScale();
+	}
+}
 
 /**
 *update world rotation according to parent and local rotation
@@ -162,15 +158,25 @@ void Transform::SetScale(glm::vec3 scale) {
 
 	m_scale = scale;
 
-	////update local scale
-	//if (parent != nullptr) {
-
-	//}
+	//update local scale
+	if (parent != nullptr) {
+		m_localScale = m_scale / parent->m_scale;
+	}
+	else {
+		m_localScale = scale;
+	}
 
 	//update child scale
-	//for (Transform* child : children) {
-	//	child->UpdateWorldPosition();
-	//}
+	for (Transform* child : children) {
+		child->UpdateScale();
+	}
+}
+
+void Transform::SetLocalScale(glm::vec3 localScale) {
+	m_localScale = localScale;
+
+	//update world scale and child scale
+	UpdateScale();
 }
 
 void Transform::SetRotation(float rotation) {

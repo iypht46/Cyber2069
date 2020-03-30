@@ -39,8 +39,11 @@ namespace Graphic
 		glm::mat4& GetProjectionMatrix(void);
 		glm::mat4& GetViewMatrix(void);
 
+		glm::vec3 GetCampos();
+		float GetZoom();
+
 		//Static Method
-		static glm::mat4 CalculateViewMatrix(glm::vec3 position, glm::vec3 dir);
+		//static glm::mat4 CalculateViewMatrix(glm::vec3 position, glm::vec3 dir);
 		//static glm::mat4 CalculateProjectionMatrix(float size, float aspect, )
 
 	};

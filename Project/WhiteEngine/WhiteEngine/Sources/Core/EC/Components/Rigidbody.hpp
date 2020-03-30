@@ -2,43 +2,50 @@
 
 #include <glm/glm.hpp>
 #include "Core/EC/Components/Component.hpp"
+#include "Core/EC/Components/Collider.hpp"
 
-namespace Core
+
+//Forward Declaration
+class Collider;
+class Transform;
+
+class Rigidbody : public Component
 {
-	//Forward Declaration
-	class Collider;
-	class Transform;
+	friend class BoxCollider;
+private:
+	//Body Settings
+	glm::vec3 m_position = glm::vec3(0);
+	glm::vec3 m_velocity = glm::vec3(0);
+	glm::vec3 m_acceleration = glm::vec3(0);
+	//float m_orientation;
 
-	class Rigidbody : public Component
-	{
-	private:
-		//Body Type
-		bool m_isKinematic;
+	bool automass = true;
+	float m_mass = 1.0f;
+	float m_invMass;
+	float m_gravityScale;
+	float m_drag;
 
-		//Body Settings
-		glm::vec2 m_position;
-		glm::vec2 m_velocity;
-		float m_orientation;
-		float m_mass;
-		float m_gravityScale;
-
-		//Pointers to other components
-		Collider* m_collider;
-		Transform* m_transform;
-	public:
-		//Rigidbody Interface
-		void Initialize(Collider&);
-		void SetKinematic(bool);
-		~Rigidbody();
-
-		//Inherit Interface
-		virtual void OnAwake();
-		virtual void OnEnable();
-		virtual void OnDisable();
-		virtual void OnStart();
-		virtual void OnUpdate(float dt);
-		virtual void OnFixedUpdate(float dt);
-		virtual void OnDestroy();
-
-	};
-}
+	//Pointers to other components
+	Collider* m_collider;
+	Transform* m_transform;
+public:
+	//Rigidbody Interface
+	void Init(float, float);
+	Collider* GetCollider();
+	void Init(/*float, float*/);
+	void SetVelocity(glm::vec3);
+	void SetVelocity0Masked(glm::vec3);
+	glm::vec3 GetVelocity();
+	float GetGravityScale();
+	void SetGravityScale(float);
+	void AddForce(glm::vec3);
+	void AddRelativeForce(glm::vec3);
+	void UpdateTransform(float dt);
+	void SetMass(float);
+	float GetInvMass(void);
+	float GetMass(void);
+	void SetDrag(float drag);
+	float GetDrag();
+	Rigidbody();
+	~Rigidbody();
+};
