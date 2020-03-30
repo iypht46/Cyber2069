@@ -401,7 +401,7 @@ namespace World
 		//Flyer->GetComponent<FlyerBehaviour>()->SetPlayer((Rabbit->m_transform));
 		//Flyer->GetComponent<FlyerBehaviour>()->SetGameObject(Flyer);
 
-		for (int i = 0; i < 200; i++)
+		for (int i = 0; i < 100; i++)
 		{
 			GameObject* flyer = new GameObject();
 
@@ -472,7 +472,7 @@ namespace World
 		BomberAnimController->AddState(BomberExplode);
 		BomberAnimController->AddState(BomberDie);
 
-		for (int i = 0; i < 200; i++)
+		for (int i = 0; i < 100; i++)
 		{
 			GameObject* bomber = new GameObject();
 

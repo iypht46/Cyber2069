@@ -16,6 +16,7 @@ ZapperGun::ZapperGun() {
 
 	chainNumber = 5;
 	zapDistance = 300.0f;
+	zapDuration = 0.5f;
 
 	weapon_scale.x = 70.0f;
 	weapon_scale.y = 70.0f;
@@ -40,6 +41,8 @@ void ZapperGun::GameTimeBehaviour(float dt) {
 				bullet->SetActive(true);
 				bullet->GetComponent<ZapperGunBullet>()->SetDamage(weapon_damage);
 				bullet->GetComponent<ZapperGunBullet>()->SetZapDistance(zapDistance);
+				bullet->GetComponent<ZapperGunBullet>()->SetZapDuration(zapDuration);
+				bullet->GetComponent<ZapperGunBullet>()->SetZapRate(zapRate);
 				bullet->GetComponent<ZapperGunBullet>()->SetChainNumber(chainNumber);
 
 				angle_deg = *angle;

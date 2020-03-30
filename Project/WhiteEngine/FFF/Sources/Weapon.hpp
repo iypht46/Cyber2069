@@ -126,6 +126,8 @@ class ZapperGun : public Weapon {
 private:
 	int chainNumber;
 	float zapDistance;
+	float zapDuration;
+	float zapRate;
 public:
 	ZapperGun();
 	void Modify(GameObject* obj);
@@ -141,17 +143,30 @@ protected:
 	float bulletDmg;
 	int chainNumber;
 	float zapDistance;
+	float zapDuration;
+	float zapRate;
 
-	bool isTrigger;
+	float zapDurationCount = 0.0f;
+	float zapRateCount = 0.0f;
+
+	bool isTriggerEnemy = false;
 
 	Enemy* target;
+
+	vector <Enemy*> Targets;
+	vector <Transform> TargetTranform;
+	Physic::Colliders colliders;
 
 public:
 	void SetDamage(float dmg) { this->bulletDmg = dmg; }
 	void SetChainNumber(float n) { this->chainNumber = n; }
 	void SetZapDistance(float d) { this->zapDistance = d; }
+	void SetZapDuration(float d) { this->zapDuration = d; }
+	void SetZapRate(float r) { this->zapRate = r; }
 
-	void Zap(Enemy* e);
+	Enemy* FindTarget(Enemy* e);
+	void Zap(float dt);
+	void enemRelease();
 
 	virtual void OnAwake();
 	virtual void OnEnable();

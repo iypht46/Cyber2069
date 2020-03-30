@@ -32,7 +32,7 @@ void Flyer::OnUpdate(float dt) {
 void Flyer::OnFixedUpdate(float dt) {
 	if (m_gameObject->Active()) {
 
-		if (!gotBlackHole) {
+		if (!affectedByWeapon) {
 			switch (state)
 			{
 			case Idle:

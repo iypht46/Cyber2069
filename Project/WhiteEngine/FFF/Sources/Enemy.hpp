@@ -22,7 +22,8 @@ protected:
 
 	bool isDead = false;
 
-	bool gotBlackHole = false;
+	bool affectedByWeapon = false;
+	bool GotZap = false;
 
 
 	EnemyState state = EnemyState::Idle;
@@ -46,6 +47,9 @@ public:
 	void TakeDamage(float);
 
 	float GetCollideDamage() { return CollideDamage; }
-	void SetGotBlackHole(bool bh) { this->gotBlackHole = bh; }
+	void SetAffectedByWeapon(bool b) { this->affectedByWeapon = b; }
 	void SetState(EnemyState state) { this->state = state; }
+
+	bool isZap() { return GotZap; }
+	void SetGotZap(bool z) { GotZap = z; }
 };

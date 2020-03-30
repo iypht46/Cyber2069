@@ -48,7 +48,7 @@ void Bomber::OnUpdate(float dt) {
 
 void Bomber::OnFixedUpdate(float dt) {
 	if (m_gameObject->Active()) {
-		if (!gotBlackHole) {
+		if (!affectedByWeapon) {
 			switch (state)
 			{
 			case EnemyState::Idle:

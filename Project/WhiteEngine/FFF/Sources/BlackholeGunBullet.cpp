@@ -107,7 +107,7 @@ void BlackholeGunBullet::DragEnemy()
 
 				enemRb = enemy->GetGameObject()->GetComponent<Rigidbody>();
 
-				enemy->SetGotBlackHole(true);
+				enemy->SetAffectedByWeapon(true);
 				float angle = atan2((m_gameObject->m_transform.GetPosition().y - c->GetGameObject()->m_transform.GetPosition().y), (m_gameObject->m_transform.GetPosition().x - c->GetGameObject()->m_transform.GetPosition().x));
 
 				enemRb->SetVelocity(glm::vec3(ToCenterSpeed * cos(angle), ToCenterSpeed * sin(angle), 0.0f));
@@ -138,7 +138,7 @@ void BlackholeGunBullet::ReleaseEnemy() {
 			Enemy* enemy = c->GetGameObject()->GetComponent<Enemy>();
 			if (enemy != nullptr && (enemy->GetGameObject()->Active())) {
 
-				enemy->SetGotBlackHole(false);
+				enemy->SetAffectedByWeapon(false);
 				enemy->SetState(EnemyState::Idle);
 			}
 		}

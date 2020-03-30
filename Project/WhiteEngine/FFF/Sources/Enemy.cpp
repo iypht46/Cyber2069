@@ -15,7 +15,8 @@ void Enemy::OnDead() {
 	m_gameObject->SetActive(false);
 	GameController::GetInstance()->AddScoreValue(1.0);
 	state = EnemyState::Idle;
-	gotBlackHole = false;
+	affectedByWeapon = false;
+	GotZap = false;
 }
 
 //check if target in range
