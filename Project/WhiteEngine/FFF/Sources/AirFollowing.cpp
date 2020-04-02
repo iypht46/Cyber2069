@@ -51,7 +51,9 @@ void AirFollowing::FollowPlayer(float dt) {
 }
 
 void AirFollowing::OnAwake() {
-
+	m_speed = 300.0f;
+	rotAngle = 15.0f;
+	rotRate = 2.0f;
 }
 
 void AirFollowing::OnEnable() {

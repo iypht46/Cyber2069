@@ -11,6 +11,8 @@ enum EnemyState
 	Idle = 0,
 	Chase,
 	Active,
+	Dash,
+	Reset
 };
 
 class Enemy :public Character {

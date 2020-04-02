@@ -6,20 +6,23 @@
 #include "AirPatrol.hpp"
 #include "Explosion.hpp"
 #include "GroundPatrol.hpp"
+#include "GroundDash.hpp"
+
 
 class Flyer :public Enemy {
 private:
 	Rigidbody* rigidbody;
 protected:
 	AirFollowing* airFollow;
+	
 public:
-
-	void SetStats(float Speed, float HP, float Dmg);
 
 	void Init(Transform* player);
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
+
+	void SetStats(float Speed, float HP, float Dmg);
 
 };
 
@@ -35,10 +38,9 @@ protected:
 	Explosion* explosion;
 
 public:
-
+	void Init(Transform* player);
 	void SetStats(float Speed, float HP, float Dmg, float AimTime, float DashSpeed, float ExplodeDmg, float ExplodeRadius);
 
-	void Init(Transform* player);
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
@@ -60,6 +62,20 @@ public:
 	void assignFlyPool(ObjectPool* pool);
 	void assignBombPool(ObjectPool* pool);
 	void SetSpawnDelay(int time);
+	virtual void OnStart();
+	virtual void OnUpdate(float dt);
+	virtual void OnFixedUpdate(float dt);
+};
+
+class Charger : public Enemy {
+private:
+	Rigidbody* rigidbody;
+protected:
+	GroundPatrol* groundPatrol;
+	GroundDash* groundDash;
+public:
+
+	void Init(Transform* player);
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);

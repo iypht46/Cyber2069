@@ -9,6 +9,7 @@ class AirDash : public Character
 {
 private: 
 	float timer;
+	bool dashing;
 	bool dashState;
 	bool dashEnd;
 	bool targetLocked;
