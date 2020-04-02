@@ -268,6 +268,7 @@ namespace World
 		Rabbit->AddComponent<MeshRenderer>();
 		Rabbit->GetComponent<MeshRenderer>()->CreateMesh(7, 5);
 		Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_PlayerBody_Vversion03.png");
+		Rabbit->GetComponent<MeshRenderer>()->SetReplaceColor(glm::vec3(1.0f, 0.0f, 0.0f));
 
 		Rabbit->AddComponent<HPsystem>();
 

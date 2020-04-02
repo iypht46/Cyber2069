@@ -17,9 +17,12 @@ private:
 	unsigned int texture;
 
 	bool isUI;
+	bool isReplaceColor;
 	MeshVbo* mesh;
 
 	Animator* anim;
+
+	glm::vec3 ReplaceColor;
 
 public:
 	int layer = -1;
@@ -33,6 +36,8 @@ public:
 	void SetTexture(unsigned int tex);
 	void SetLayer(unsigned int layer);
 	void SetUI(bool ui);
+	void SetReplaceColor(glm::vec3 color);
+	void RemoveReplaceColor();
 
 	int GetLayer();
 

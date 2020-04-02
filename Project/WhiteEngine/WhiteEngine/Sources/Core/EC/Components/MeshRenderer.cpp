@@ -69,6 +69,15 @@ void  MeshRenderer::CreateMesh(float NumframeX, float NumFrameY)
 	GLRenderer::GetInstance()->SetMeshAttribId(mesh);
 }
 
+void MeshRenderer::SetReplaceColor(glm::vec3 color) {
+	isReplaceColor = true;
+	this->ReplaceColor = color;
+}
+
+void MeshRenderer::RemoveReplaceColor() {
+	isReplaceColor = false;
+}
+
 void MeshRenderer::Render(glm::mat4 globalModelTransform)
 {
 	SquareMeshVbo *squareMesh = dynamic_cast<SquareMeshVbo *>(this->mesh);
@@ -76,6 +85,7 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 	GLuint modelMatixId = GLRenderer::GetInstance()->GetModelMatrixAttrId();
 	GLuint modeId = GLRenderer::GetInstance()->GetModeUniformId();
 	GLuint vmodeId = GLRenderer::GetInstance()->GetvModeUniformId();
+	GLuint colorId = GLRenderer::GetInstance()->GetColorUniformId();
 
 	GLuint offsetXId = GLRenderer::GetInstance()->GetOffsetXUniformId();
 	GLuint offsetYId = GLRenderer::GetInstance()->GetOffsetYUniformId();
@@ -112,7 +122,16 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 
 	if (squareMesh != nullptr)
 	{
-		glUniform1i(modeId, 1);
+		if (isReplaceColor) {
+
+			glUniform1i(modeId, 3);
+			glUniform3f(colorId,ReplaceColor.x, ReplaceColor.y, ReplaceColor.z);
+
+		}
+		else {
+			glUniform1i(modeId, 1);
+		}
+
 		glUniformMatrix4fv(modelMatixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
 
 		//-------Animation--------
