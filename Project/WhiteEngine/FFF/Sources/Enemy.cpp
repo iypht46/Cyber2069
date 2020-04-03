@@ -14,6 +14,9 @@ void Enemy::OnDead() {
 	//call all funct from events vector
 	GetGameObject()->SetActive(false);
 	GameController::GetInstance()->AddScoreValue(1.0);
+	state = EnemyState::Idle;
+	affectedByWeapon = false;
+	GotZap = false;
 }
 
 //check if target in range

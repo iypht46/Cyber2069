@@ -11,8 +11,6 @@ AirFollowing::AirFollowing()
 
 void AirFollowing::SetPlayer(Transform* player) {
 	m_target = player;
-	t = GetGameObject()->m_transform.get();
-	rb = GetGameObject()->GetComponent<Rigidbody>();
 }
 
 void AirFollowing::SetFlySpeed(float value) {
@@ -36,15 +34,28 @@ void AirFollowing::FollowPlayer(float dt) {
 	rb->SetVelocity(glm::vec3(glm::cos(t->GetRotation() + this->rotAngle), glm::sin(t->GetRotation() + this->rotAngle), 0) * m_speed);
 
 	if (direction.x > 0) {
-		t->SetScale(glm::vec3(glm::abs(t->GetScale().x) * -1, t->GetScale().y, 1.0f));
+		if (e->facingRight)
+		{
+			e->flip();
+		}
 	}
 	else {
-		t->SetScale(glm::vec3(glm::abs(t->GetScale().x), t->GetScale().y, 1.0f));;
+		if (!e->facingRight)
+		{
+			e->flip();
+		}
 	}
+
 }
 
 void AirFollowing::OnAwake() {
+	m_speed = 300.0f;
+	rotAngle = 15.0f;
+	rotRate = 2.0f;
 
+	t = GetGameObject()->m_transform.get();
+	rb = GetGameObject()->GetComponent<Rigidbody>();
+	e = GetGameObject()->GetComponent<Enemy>();
 }
 
 void AirFollowing::OnEnable() {

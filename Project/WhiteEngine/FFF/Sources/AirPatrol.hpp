@@ -3,6 +3,7 @@
 #include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/GameObject.hpp"
 #include "Core/EC/Components/Rigidbody.hpp"
+#include "Character.hpp"
 
 #include <cereal/types/polymorphic.hpp>
 
@@ -19,6 +20,7 @@ public:
 	~AirPatrol() {}
 	void Patrol();
 	void SetPoint(float aX, float bX);
+	void SetSpeed(float speed);
 	virtual void OnAwake();
 	virtual void OnEnable();
 	virtual void OnStart();

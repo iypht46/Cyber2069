@@ -10,7 +10,6 @@
 
 #include "Core/EC/Components/BehaviourScript.h"
 #include "PlayerController.hpp"
-#include "MachineGunBullet.hpp"
 #include "EnemySpawner.hpp"
 
 #include "Core/Logger.hpp"

@@ -20,7 +20,7 @@ void Animator::Init() {
 	}
 	catch (const std::exception&)
 	{
-		ENGINE_ERROR("No animation controller path assigned");
+		ENGINE_WARN("No animation controller path assigned");
 	}
 
 
@@ -49,27 +49,32 @@ void Animator::setCurrentState(std::weak_ptr<AnimationState> state) {
 
 void Animator::animUpdate(float dt)
 {
-	glm::vec2 start = m_currentState.lock()->animation->getStartPosition();
-	glm::vec2 end = m_currentState.lock()->animation->getEndPosition();
+	if (!m_currentState.expired()) {
+		glm::vec2 start = m_currentState.lock()->animation->getStartPosition();
+		glm::vec2 end = m_currentState.lock()->animation->getEndPosition();
 
-	if (m_currentUVFrames.y < end.y || (m_currentUVFrames.y == end.y && m_currentUVFrames.x < end.x))
-	{
-		timeElapse += dt;
-		if (timeElapse > 1.0f / (framePerSec * m_currentState.lock()->animation->getSpeedMultiplier()))
+		if (m_currentUVFrames.y < end.y || (m_currentUVFrames.y == end.y && m_currentUVFrames.x < end.x))
 		{
-			timeElapse = 0;
-			++m_currentUVFrames.x;
+			timeElapse += dt;
+			if (timeElapse > 1.0f / (framePerSec * m_currentState.lock()->animation->getSpeedMultiplier()))
+			{
+				timeElapse = 0;
+				++m_currentUVFrames.x;
 
-			if (m_currentUVFrames.x > m_controller->getSheetSize().x) {
-				++m_currentUVFrames.y;
+				if (m_currentUVFrames.x > m_controller->getSheetSize().x) {
+					++m_currentUVFrames.y;
+				}
 			}
 		}
+		else if (m_currentState.lock()->loop) {
+			m_currentUVFrames = start;
+		}
+		else if (!m_currentState.lock()->nextState.expired()) {
+			setCurrentState(m_currentState.lock()->nextState);
+		}
 	}
-	else if (m_currentState.lock()->loop) {
-		m_currentUVFrames = start;
-	}
-	else if (!m_currentState.lock()->nextState.expired()) {
-		setCurrentState(m_currentState.lock()->nextState);
+	else {
+		ENGINE_WARN("No current animation state running");
 	}
 }
 

@@ -51,8 +51,7 @@ namespace Physic
 		AABB abox, bbox;
 		A->ComputeAABB(abox);
 		B->ComputeAABB(bbox);
-		ENGINE_INFO("A {}|{},{}|{}", abox.m_max.x, abox.m_max.y, abox.m_min.x, abox.m_min.y);
-		ENGINE_INFO("B {}|{},{}|{}", abox.m_max.x, abox.m_max.y, abox.m_min.x, abox.m_min.y);
+
 		if (abox.m_max.x < bbox.m_min.x || abox.m_min.x > bbox.m_max.x) return false;
 		if (abox.m_max.y > bbox.m_min.y || abox.m_min.y < bbox.m_max.y) return false;
 

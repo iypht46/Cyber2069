@@ -69,3 +69,7 @@ void DeQueen::assignFlyPool(ObjectPool* pool) {
 void DeQueen::assignBombPool(ObjectPool* pool) {
 	this->BomberPool = pool;
 }
+
+void DeQueen::SetSpawnDelay(int time) {
+	this->SpawnDelay = time;
+}

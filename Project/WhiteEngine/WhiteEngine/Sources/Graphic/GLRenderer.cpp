@@ -166,6 +166,25 @@ bool GLRenderer::Initialize(string vertexShaderFile, string fragmentShaderFile)
 	glBindBuffer(GL_ARRAY_BUFFER, this->colVBO);
 	glBufferData(GL_ARRAY_BUFFER, 2 * 4 * sizeof(GLfloat), vertexData, GL_STATIC_DRAW);
 
+	vector<float> circleVertexData;
+	for (int i = 0; i < 360; i++) {
+		float rad;
+		rad = glm::radians((float)i);
+
+		float x = 0.5f * cos(rad);
+		float y = 0.5f * sin(rad);
+
+		circleVertexData.push_back(x);
+		circleVertexData.push_back(y);
+	}
+
+	glGenVertexArrays(1, &(this->cirVAO));
+	glGenBuffers(1, &(this->cirVBO));
+
+	//Create VBO
+	glBindBuffer(GL_ARRAY_BUFFER, this->cirVBO);
+	glBufferData(GL_ARRAY_BUFFER, circleVertexData.size() * 2 * sizeof(GLfloat), &circleVertexData.front(), GL_STATIC_DRAW);
+
 	return true;
 
 }
@@ -215,11 +234,22 @@ void GLRenderer::Render()
 			RenderLine(Lineq.front());
 			Lineq.pop();
 		}
+
+		while (!Circleq.empty()) 
+		{
+			RenderCircle(Circleq.front());
+			Circleq.pop();
+		}
 	}
 
 	while (!Lineq.empty())
 	{
 		Lineq.pop();
+	}
+
+	while (!Circleq.empty()) 
+	{
+		Circleq.pop();
 	}
 
 	//Unbind program
@@ -463,7 +493,35 @@ void GLRenderer::RenderLine(LineVertex* vertex)
 	glDrawArrays(GL_LINES, 0, 2);
 }
 
+void GLRenderer::RenderCircle(CircleVertex* vertex) {
+	glm::mat4 sMat = glm::scale(glm::mat4(1.0f), glm::vec3(vertex->radius * 2, vertex->radius * 2, 1.0f));
+	glm::mat4 tMat = glm::translate(glm::mat4(1.0f), glm::vec3(vertex->x, vertex->y, 1.0f));
+	glm::mat4 transformMat = tMat * sMat;
+
+	glm::mat4 projectionMatrix = Graphic::getCamera()->GetProjectionMatrix();
+	glm::mat4 viewMatrix = Graphic::getCamera()->GetViewMatrix();
+
+	glm::mat4 currentMatrix = projectionMatrix * viewMatrix * transformMat;
+
+	glUniform1i(modeUniformId, 0);
+	glUniformMatrix4fv(mMatrixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
+	glUniform3f(colorUniformId, vertex->r, vertex->g, vertex->b);
+
+	glBindVertexArray(this->cirVAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, this->cirVBO);
+	glVertexAttribPointer(this->gPos2DLocation, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), NULL);
+	glEnableVertexAttribArray(1);
+
+
+	glDrawArrays(GL_LINE_LOOP, 0, 360);
+}
+
 void GLRenderer::DrawDebug_Line(float x1, float y1, float x2, float y2,float r, float g, float b)
 {
 	Lineq.push(new LineVertex(x1, y1, x2, y2, r, g, b));
+}
+
+void GLRenderer::DrawDebug_Circle(float x, float y, float radius, float r, float g, float b) {
+	Circleq.push(new CircleVertex(x, y, radius, r, g, b));
 }

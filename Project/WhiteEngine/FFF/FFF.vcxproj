@@ -128,6 +128,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\BlackholeGun.cpp" />
+    <ClCompile Include="Sources\BlackholeGunBullet.cpp" />
+    <ClCompile Include="Sources\Character.cpp" />
+    <ClCompile Include="Sources\Charger.cpp" />
+    <ClCompile Include="Sources\GrenadeLauncher.cpp" />
+    <ClCompile Include="Sources\GrenadeLauncherBullet.cpp" />
+    <ClCompile Include="Sources\GroundDash.cpp" />
+    <ClCompile Include="Sources\GroundPatrol.cpp" />
+    <ClCompile Include="Sources\Explosion.cpp" />
     <ClCompile Include="Sources\AirDash.cpp" />
     <ClCompile Include="Sources\AirFollowing.cpp" />
     <ClCompile Include="Sources\AirPatrol.cpp" />
@@ -139,12 +148,20 @@
     <ClCompile Include="Sources\Flyer.cpp" />
     <ClCompile Include="Sources\GameController.cpp" />
     <ClCompile Include="Sources\HPsystem.cpp" />
+    <ClCompile Include="Sources\LaserGun.cpp" />
+    <ClCompile Include="Sources\MachineGun.cpp" />
     <ClCompile Include="Sources\MachineGunBullet.cpp" />
     <ClCompile Include="Sources\main.cpp" />
     <ClCompile Include="Sources\PlayerController.cpp" />
     <ClCompile Include="Sources\World.cpp" />
+    <ClCompile Include="Sources\ZapperGun.cpp" />
+    <ClCompile Include="Sources\ZapperGunBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Character.hpp" />
+    <ClInclude Include="Sources\GroundDash.hpp" />
+    <ClInclude Include="Sources\GroundPatrol.hpp" />
+    <ClInclude Include="Sources\Explosion.hpp" />
     <ClInclude Include="Sources\AirDash.hpp" />
     <ClInclude Include="Sources\AirFollowing.hpp" />
     <ClInclude Include="Sources\AirPatrol.hpp" />
@@ -152,12 +169,17 @@
     <ClInclude Include="Sources\EnemyBehaviour.hpp" />
     <ClInclude Include="Sources\EnemyBehaviours.h" />
     <ClInclude Include="Sources\EnemySpawner.hpp" />
+    <ClInclude Include="Sources\Equipment.hpp" />
     <ClInclude Include="Sources\FactoryCollection.h" />
     <ClInclude Include="Sources\GameController.hpp" />
     <ClInclude Include="Sources\HPsystem.hpp" />
-    <ClInclude Include="Sources\MachineGunBullet.hpp" />
     <ClInclude Include="Sources\PlayerController.hpp" />
+    <ClInclude Include="Sources\Weapon.hpp" />
     <ClInclude Include="Sources\World.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sources\Shader\fragment.shd" />
+    <None Include="Sources\Shader\vertext.shd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

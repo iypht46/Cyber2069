@@ -3,12 +3,15 @@
 #include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/GameObject.hpp"
 #include "Core/EC/Components/Rigidbody.hpp"
+#include "Character.hpp"
+#include "Enemy.hpp"
 
 #include <cereal/types/polymorphic.hpp>
 
 class AirFollowing : public BehaviourScript
 {
 private:
+	Enemy* e;
 	Rigidbody* rb;
 	Transform* t;
 	Transform* m_target;

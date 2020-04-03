@@ -8,6 +8,11 @@
 #include "Core/EC/GameObject.hpp"
 
 #include "HPsystem.hpp"
+#include "Weapon.hpp"
+
+#include "Enemy.hpp"
+#include "Character.hpp"
+
 
 #include "Utility/ObjectPool.h"
 
@@ -16,21 +21,27 @@
 
 #define PI 3.14159265358979323846
 
-class PlayerController : public BehaviourScript {
+class PlayerController : public Character {
 private://change later
 	Physic::PhysicScene* ps;
 protected:
-	HPsystem* hpSystem;
-	Transform* Gun;
-	Rigidbody* rb;
+	HPsystem* hpSystem = nullptr;
+	Rigidbody* rb = nullptr;
 
-	ObjectPool* MGbulletPool;
+	ObjectPool* MGbulletPool = nullptr;
+
+	vector<Equipment*> Equipments;
+	vector<Weapon*> Weapons;
+
+	Weapon* weapon = nullptr;
+	Transform* weaponTranform = nullptr;
 	
 	//stats===============
 	float max_stamina;
 
 	float dashStamina;
 	float jumpStamina;
+	float staminaRegenRate;
 
 	float max_move_speed;
 	float move_speed;
@@ -39,21 +50,17 @@ protected:
 	float dashTime;
 	float delay;
 
-	float camZoomSpeed;
-	float camDelay;
-	
-	float camMaxZoom;
-	float camMinZoom;
-
-	float bullet_speed;
-	float bullet_delay;
+	float camZoomInSpeed;
+	float camZoomOutSpeed;
+	float camZoomInDelay;
+	float camSmall;
+	float camLarge;
 
 	float GunDistance;
 	//======================
 
 	//runtime var===========
 	float stamina;
-	float bullet_delay_count;
 	float dashRemainingTime;
 	float camDelay_count;
 
@@ -61,6 +68,7 @@ protected:
 	bool running;
 	bool jumping;
 	bool falling;
+	bool onGround;
 	bool Dash;
 	bool setDashAnim;
 	
@@ -75,19 +83,24 @@ public:
 	PlayerController();
 	~PlayerController() {}
 	
+	void DebugInput();
+
 	void mouseAim();
 
 	void updateDirection();
 	void move();
 	void dash(float dt);
-	void shoot(float dt);
 	bool checkGround();
 
-	float GetStamina();
+	float GetStamina() { return this->stamina; }
+	float GetMaxStamina() { return this->max_stamina; }
 	
 	void cameraZoom(float dt);
 
 	void assignPool(ObjectPool* pool);
+	void assignWeapon(Weapon* wp);
+
+	void AddEquipment(Equipment* e);
 
 	virtual void OnAwake();
 	virtual void OnEnable();
@@ -116,12 +129,13 @@ public:
 			jump_speed,
 			dashTime,
 			delay,
-			camZoomSpeed,
-			camDelay,
-			camMaxZoom,
-			camMinZoom,
+			camZoomInSpeed,
+			camZoomOutSpeed,
+			camZoomInDelay,
+			camSmall,
+			camLarge,
 			GunDistance
-		);
+			);
 	}
 };
 

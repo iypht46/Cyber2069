@@ -24,9 +24,13 @@ private:
 	float sr_NumFrameX;
 	float sr_NumFrameY;
 
+	bool isReplaceColor = false;
+	MeshVbo* mesh;
+
 	Animator* anim;
 	unsigned int texture;
-	MeshVbo* mesh;
+
+	glm::vec3 ReplaceColor;
 
 public:
 	int layer = -1;
@@ -43,6 +47,8 @@ public:
 	void SetTexture(unsigned int tex);
 	void SetLayer(unsigned int layer);
 	void SetUI(bool ui);
+	void SetReplaceColor(glm::vec3 color);
+	void RemoveReplaceColor();
 
 	int GetLayer();
 

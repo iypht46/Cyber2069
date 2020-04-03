@@ -15,10 +15,10 @@ private:
 	std::string sr_controllerPath;
 	float framePerSec = 12;
 
-	std::shared_ptr<AnimationController> m_controller;
 
 	//runtime var
 	float timeElapse;
+	std::shared_ptr<AnimationController> m_controller;
 	std::weak_ptr<AnimationState> m_currentState;
 	glm::vec2 m_currentUVFrames;
 

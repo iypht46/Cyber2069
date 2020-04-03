@@ -3,6 +3,7 @@
 #include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/GameObject.hpp"
 #include "Core/EC/Components/Rigidbody.hpp"
+#include "Character.hpp"
 
 #include <cereal/types/polymorphic.hpp>
 
@@ -10,11 +11,13 @@ class AirDash : public BehaviourScript
 {
 private: 
 	float timer;
-	float maxExplodeTime;
+	bool dashing;
 	bool dashState;
+	bool dashEnd;
+	bool targetLocked;
 protected:
-	Transform* m_target;
-	Transform* bomber;
+	glm::vec3 m_target;
+	Transform* self;
 	Rigidbody* rb;
 
 	float m_dashSpeed;
@@ -22,15 +25,19 @@ protected:
 	float m_aimSpeed;
 
 	float m_angle;
-	float m_explodeCountDown;
 public:
 	AirDash();
+
 	~AirDash() {}
-	void SetPlayer(Transform* player);
+	void Init();
 	void SetDashSpeed(float value);
 	void SetAimTime(float value);
 	void SetAimSpeed(float value);
 	void Dash(float dt);
+	void TargetLock(glm::vec3 pos);
+	bool DashEnd();
+	void Reset();
+
 	virtual void OnAwake();
 	virtual void OnEnable();
 	virtual void OnStart();
@@ -44,7 +51,6 @@ public:
 	void serialize(Archive& archive) {
 		archive(
 			cereal::base_class<BehaviourScript>(this),
-			maxExplodeTime,
 			m_dashSpeed,
 			m_aimTime,
 			m_aimSpeed

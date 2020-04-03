@@ -14,7 +14,6 @@
 
 	void Collider::Init() {
 		Physic::PhysicScene::GetInstance()->Add(this, GetGameObject()->Layer);
-		ENGINE_INFO("Add col to {}", GetGameObject()->Layer);
 	}
 
 	COLLIDER_TYPE Collider::GetType()

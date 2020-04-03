@@ -27,6 +27,7 @@ public:
 
 	void TakeDamage(float damage);
 	bool isDead();
+	bool isInvicible();
 
 	void Dead();
 

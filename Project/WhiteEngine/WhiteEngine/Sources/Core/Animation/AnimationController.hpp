@@ -39,7 +39,7 @@ protected:
 	glm::vec2 m_spriteSheetFrameSize;
 	std::vector<std::shared_ptr<AnimationState>> m_states;
 public:
-	std::shared_ptr<AnimationState> m_defaultState;
+	std::weak_ptr<AnimationState> m_defaultState;
 
 	AnimationController();
 	void AddState(std::shared_ptr<AnimationState>);

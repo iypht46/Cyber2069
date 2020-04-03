@@ -195,8 +195,9 @@ namespace Physic
 	{
 		//ENGINE_INFO("Check Collision");
 		//ENGINE_INFO("Main: {}, LayerToCheck: {}", LayerToNum(mainLayer), LayerToNum(layerToCheck));
+		//ENGINE_INFO("main col {}:{} , Layertochacke {}:{}", GetStringFromLayer(mainLayer), m_colliders[mainLayer].size(), GetStringFromLayer(layerToCheck), m_colliders[layerToCheck].size());
+
 		//Check collision of main collider with layer to check
-		ENGINE_INFO("main col {}:{} , Layertochacke {}:{}", GetStringFromLayer(mainLayer), m_colliders[mainLayer].size(), GetStringFromLayer(layerToCheck), m_colliders[layerToCheck].size());
 		for (auto mainCol : m_colliders[mainLayer])
 		{
 			for (auto colToCheck : m_colliders[layerToCheck])
@@ -285,7 +286,6 @@ namespace Physic
 			m_stayState.end()
 		);
 
-		ENGINE_INFO("msges {}", m_collisionMsg.size());
 		for (auto col : m_collisionMsg)
 		{
 			//Send Message
@@ -463,6 +463,10 @@ namespace Physic
 		std::string layerName = "INV";
 		ENGINE_ERROR("{}, is not map to any named", layerName);
 		return layerName;
+	}
+
+	Colliders PhysicScene::GetColliderLayer(Layer layer) {
+		return m_colliders[layer];
 	}
 
 	void PhysicScene::SetGravity(glm::vec3 value)

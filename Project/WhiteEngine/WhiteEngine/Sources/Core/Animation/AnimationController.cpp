@@ -16,17 +16,21 @@ AnimationController::AnimationController()
 
 void AnimationController::AddState(std::shared_ptr<AnimationState> state) {
 	m_states.push_back(state);
+
+	if (m_defaultState.expired()) {
+		m_defaultState = state;
+	}
 }
 
 void AnimationController::AddState(std::shared_ptr<Animation> anim) {
 	std::shared_ptr<AnimationState> state = std::make_shared<AnimationState>(anim);
-	m_states.push_back(state);
+	AddState(state);
 }
 
 void AnimationController::AddState(std::shared_ptr<Animation> anim, bool isloop) {
 	std::shared_ptr<AnimationState> state = std::make_shared<AnimationState>(anim);
 	state->loop = isloop;
-	m_states.push_back(state);
+	AddState(state);
 }
 
 void AnimationController::setSheetSize(glm::vec2 frameSize) {
