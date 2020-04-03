@@ -16,14 +16,13 @@ namespace Tools
 		m_position.x = (main_window_size.x - m_width);
 		m_position.y = main_window_pos.y + 20;
 		
-		m_windowFlags |= ImGuiWindowFlags_NoCollapse;
+		//m_windowFlags |= ImGuiWindowFlags_NoCollapse;
 		m_windowFlags |= ImGuiWindowFlags_NoResize;
 		m_editorComponentList = EditorComponent::GetTableList();
 	}
 
 	void Inspector::OnRender(void)
 	{
-
 		//TODO: Render some header or some shit first
 		if (!m_entityToRender)
 		{
@@ -47,7 +46,7 @@ namespace Tools
 		{
 			if (!component->Render())
 			{
-				//TODO: Remove Component
+				//TODO: Test Remove Component
 				m_entityToRender->RemoveComponent(component->GetName());
 			}
 		}
@@ -67,6 +66,8 @@ namespace Tools
 			
 		}
 
+		//m_entityToRender->PrintInfo();
+
 		if (ImGui::BeginPopup("AddComponent"))
 		{
 			filter.Draw("Search", m_width/2);
@@ -84,13 +85,19 @@ namespace Tools
 			}
 			ImGui::EndPopup();
 		}
+
 	}
 
-	void Inspector::SetEntity(EditorEntity * ent)
+	void Inspector::SetEditorObject(EditorObject * obj)
 	{
-		m_entityToRender = ent;
+		EditorEntity* objEntity = dynamic_cast<EditorEntity*>(obj);
+
+		if (objEntity)
+			m_entityToRender = objEntity;
+
 	}
-	void Inspector::ResetEntity()
+
+	void Inspector::ResetEditorObject()
 	{
 		m_entityToRender = nullptr;
 	}

@@ -310,7 +310,15 @@ GLuint GLRenderer::GetOffsetYUniformId()
 
 Graphic::Framebuffer * GLRenderer::GetFrameBuffer()
 {
-	return framebuffer;
+	if (this->framebuffer)
+		return this->framebuffer;
+	else
+		return nullptr;
+}
+
+GLuint GLRenderer::GetProgramID()
+{
+	return gProgramId;
 }
 
 GLuint GLRenderer::LoadTexture(string path)

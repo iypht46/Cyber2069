@@ -38,6 +38,7 @@ namespace Graphic
 
 		glm::mat4& GetProjectionMatrix(void);
 		glm::mat4& GetViewMatrix(void);
+		glm::mat4 GetViewProjMatrix(void);
 
 		glm::vec3 GetCampos();
 		float GetZoom();

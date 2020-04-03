@@ -27,7 +27,7 @@ namespace Tools
 		
 		void DrawGrid(glm::vec3 color);
 	public:
-		PreviewWindow(bool* open) : UIWindow("Preview", 500, 500, open) { this->Init(); }
+		PreviewWindow(bool* open) : UIWindow("Prefab Preview", 500, 500, open, false) { this->Init(); }
 		~PreviewWindow() {}
 		bool SetMesh(EditorComponent* mesh);
 		virtual void PreRender() override;

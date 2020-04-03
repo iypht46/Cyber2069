@@ -22,7 +22,7 @@ namespace Tools
 	bool show_another_window = false;
 	
 	//BackGround Color
-	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+	ImVec4 clear_color = ImVec4(72.0f / 255.0f, 42.0f / 255.0f, 109.0f / 255.0f, 1.00f);
 	static std::unique_ptr<MainEditor> mainEditor;
 
 	//Forward Declarations

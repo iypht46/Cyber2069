@@ -15,6 +15,11 @@ GameObject* Component::GetGameObject() {
 	return m_gameObject;
 }
 
+void Component::SetEnable(bool enable)
+{
+	enabled = enable;
+}
+
 void Component::SetGameObject(GameObject* obj) {
 	m_gameObject = obj;
 }

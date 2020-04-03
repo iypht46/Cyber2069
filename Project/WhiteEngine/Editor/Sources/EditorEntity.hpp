@@ -1,11 +1,17 @@
 #pragma once
+//White Engine
+#include "Core/Factory.h"
+#include "Core/EC/GameObject.hpp"
+#include "Core/Handle.hpp"
+//From Editor Project
+#include "EditorComponent.hpp"
+#include "EditorObject.hpp"
+//Third Party Library
+#include "glm/ext.hpp"
+//Standard Library
 #include <memory>
 #include <vector>
 #include <map>
-
-#include "Core/Factory.h"
-#include "Core/EC/GameObject.hpp"
-#include "EditorComponent.hpp"
 
 namespace Tools
 {
@@ -17,7 +23,7 @@ namespace Tools
 	//using MeshRendererHandle = UNIQUE_HANDLE(MeshRendererEC);
 	//using ComponentList = std::vector<std::unique_ptr<EditorComponent>>;
 
-	class EditorEntity
+	class EditorEntity : public EditorObject
 	{
 		friend class PrefabEditor;
 		friend class Inspector;
@@ -33,11 +39,15 @@ namespace Tools
 		EditorEntity();
 		EditorEntity(GameObject* gameObject);
 		
+		//Override Methods
+		virtual void OnRender() override;
+
 		//Interface
 		void AddComponent(std::string);
 		EditorComponent* GetComponent(std::string);
 		bool RemoveComponent(std::string);
 		std::vector<EditorComponent*>& GetComponentList();
+		void PrintInfo();
 		std::string GetName();
 		int GetID();
 	};

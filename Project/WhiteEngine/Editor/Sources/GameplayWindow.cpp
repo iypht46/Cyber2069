@@ -7,13 +7,18 @@ namespace Tools
 {
 	void GameplayWindow::Init()
 	{
-		Graphic::EnableFrameBuffer(FBO_STATE::SUB);
+		m_windowFlags |= ImGuiWindowFlags_NoResize;
+	}
+
+	void GameplayWindow::PreRender()
+	{
+
 	}
 
 	void GameplayWindow::OnRender()
 	{
-		auto tex = Graphic::g_renderer->GetFrameBuffer();
-		ImGui::SetNextWindowSize(ImVec2(m_height + 10, m_height + 10), ImGuiCond_FirstUseEver);
+		
+		auto tex = GLRenderer::GetInstance()->GetFrameBuffer();
 
 		// Get the current cursor position (where your window is)
 		ImVec2 pos = ImGui::GetCursorScreenPos();
@@ -22,6 +27,8 @@ namespace Tools
 		if (m_state == GP_STATE::RUN) 
 		{
 			Graphic::g_renderer->SetViewPort(0, 0, m_width, m_height);
+			// Update scene
+
 			// Render the scene into an FBO
 			Graphic::Render();
 			Graphic::g_renderer->SetViewPort(0, 0, Graphic::Window::GetWidth(), Graphic::Window::GetHeight());
@@ -33,9 +40,8 @@ namespace Tools
 		// Under OpenGL the ImGUI image type is GLuint
 		// So make sure to use "(void *)tex" but not "&tex"
 		ImGui::GetWindowDrawList()->AddImage(
-		(void *)tex, ImVec2(ImGui::GetItemRectMin().x - pos.x,
-		ImGui::GetItemRectMin().y + pos.y),
-		ImVec2(pos.x + m_height / 2, pos.y + m_width / 2), ImVec2(0, 1), ImVec2(1, 0));
+		(void *)tex->m_texID, 
+			pos, ImVec2(pos.x + m_width - 10, pos.y + m_height - 30), ImVec2(0, 1), ImVec2(1, 0));
 	}
 
 	void GameplayWindow::Terminate()
@@ -45,6 +51,9 @@ namespace Tools
 
 	void GameplayWindow::RunGame()
 	{
+		//Reload Scene or Reset Scene?
+
+		//Set state
 		m_state = GP_STATE::RUN;
 	}
 

@@ -3,6 +3,7 @@
 #include "Graphic/GLRenderer.h"
 #include "Graphic/Camera.hpp"
 #include "Core/EC/GameObject.hpp"
+#include "glm/ext.hpp"
 
 MeshRenderer::MeshRenderer() 
 {
@@ -26,13 +27,12 @@ MeshRenderer::MeshRenderer(std::string texture_path,float NumframeX,float NumFra
 
 void MeshRenderer::SetTexture(std::string path)
 {
-	if (!mesh)
-	{
-		mesh = new SquareMeshVbo();
-		mesh->LoadData(1.0f, 1.0f);
-	}
 	texture = GLRenderer::GetInstance()->LoadTexture(path);
-	m_texLoaded = true;
+	
+	if (texture != -1)
+		m_texLoaded = true;
+	else
+		m_texLoaded = false;
 }
 
 void  MeshRenderer::CreateMesh(float NumframeX, float NumFrameY)
@@ -66,6 +66,7 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 	vector<glm::mat4> matrixStack;
 
 	glm::mat4 modelMatrix = GetGameObject()->m_transform.GetModelMatrix();
+	//std::cout << "Object Model Matrix:\n" << glm::to_string(modelMatrix) << std::endl;
 	//glm::mat4 projectionMatrix = Graphic::getCamera()->GetProjectionMatrix();
 	//glm::mat4 viewMatrix = Graphic::getCamera()->GetViewMatrix();
 
@@ -92,7 +93,6 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 
 		/*glUniform1f(offsetXId, 0);
 		glUniform1f(offsetYId, 0);*/
-		//glActiveTexture(GL_TEXTURE0);
 		//std::cout << "Render\n";
 		glBindTexture(GL_TEXTURE_2D, this->texture);
 		squareMesh->Render();

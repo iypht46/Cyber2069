@@ -1,6 +1,5 @@
 #include "Transform.hpp"
-#include "../../Logger.hpp"
-#include <iostream>
+#include "Core/Logger.hpp"
 
 using namespace glm;
 

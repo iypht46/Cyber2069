@@ -5,10 +5,10 @@
 
 class AnimationController
 {
-protected:
+public:
 	std::vector<Animation*> m_states;
 	glm::vec2 m_spriteSheetFrameSize;
-public:
+
 	AnimationController();
 	void AddState(Animation* anim);
 	Animation* GetState(int state);

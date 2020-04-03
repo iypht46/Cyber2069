@@ -9,8 +9,9 @@ namespace Tools
 	private:
 		GP_STATE m_state = GP_STATE::STOP;
 	public:
-		GameplayWindow() : UIWindow("Gameplay", 800, 800) { }
+		GameplayWindow() : UIWindow("Gameplay", 600, 600) { }
 		virtual void Init() override;
+		virtual void PreRender() override;
 		virtual void OnRender() override;
 		virtual void Terminate() override;
 		//Interface to use with buttons

@@ -76,6 +76,11 @@ namespace Graphic
 		return m_view;
 	}
 
+	glm::mat4 CameraObject::GetViewProjMatrix(void)
+	{
+		return m_projection * m_view;
+	}
+
 	glm::vec3 CameraObject::GetCampos() {
 		return m_position;
 	}

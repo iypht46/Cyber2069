@@ -140,6 +140,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\EditorObject.hpp" />
+    <ClInclude Include="Sources\EditorObjectRenderer.hpp" />
+    <ClInclude Include="Sources\EditorSceneObject.hpp" />
+    <ClInclude Include="Sources\ObjectHierarchy.hpp" />
     <ClInclude Include="Sources\CoreComponentEC.hpp" />
     <ClInclude Include="Sources\EngineCore.hpp" />
     <ClInclude Include="Sources\ImUtility.h" />
@@ -148,8 +152,6 @@
     <ClInclude Include="Sources\GameplayWindow.hpp" />
     <ClInclude Include="Sources\EditorComponent.hpp" />
     <ClInclude Include="Sources\EditorEntity.hpp" />
-    <ClInclude Include="Sources\FileBrowser.hpp" />
-    <ClInclude Include="Sources\GameObjectHierarchy.hpp" />
     <ClInclude Include="Sources\Inspector.hpp" />
     <ClInclude Include="Sources\Editor.hpp" />
     <ClInclude Include="Sources\PrefabEditor.hpp" />
@@ -159,15 +161,16 @@
     <ClInclude Include="Vendors\imgui\imconfig.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\EditorSceneObject.cpp" />
+    <ClCompile Include="Sources\ObjectHierarchy.cpp" />
     <ClCompile Include="Sources\CoreComponentEC.cpp" />
-    <ClCompile Include="Sources\GameObjectHierarchy.cpp" />
+    <ClCompile Include="Sources\Editor.cpp" />
     <ClCompile Include="Sources\MainEditor.cpp" />
     <ClCompile Include="Sources\Inspector.cpp" />
     <ClCompile Include="Sources\PreviewWindow.cpp" />
     <ClCompile Include="Sources\EditorComponent.cpp" />
     <ClCompile Include="Sources\GameplayWindow.cpp" />
     <ClCompile Include="Sources\EditorEntity.cpp" />
-    <ClCompile Include="Sources\FileBrowser.cpp" />
     <ClCompile Include="Sources\ImGuiBuild.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Sources\PrefabEditor.cpp" />

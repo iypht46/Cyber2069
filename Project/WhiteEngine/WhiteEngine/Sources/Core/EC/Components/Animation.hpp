@@ -8,13 +8,13 @@
 
 class Animation
 {
-protected:
+public:
 	glm::vec2 m_StartPosition;
 	glm::vec2 m_EndPosition;
 	bool m_looping;
 	std::string stateName;
 	int speedMultiplier;
-public:
+
 	Animation();
 	glm::vec2 getStartPosition();
 	glm::vec2 getEndPosition();

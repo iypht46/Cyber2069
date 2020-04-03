@@ -27,9 +27,6 @@
     <ClInclude Include="Sources\UIWindow.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\FileBrowser.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Inspector.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -37,9 +34,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sources\SceneEditor.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\GameObjectHierarchy.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sources\EditorEntity.hpp">
@@ -66,6 +60,18 @@
     <ClInclude Include="Sources\CoreComponentEC.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\ObjectHierarchy.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\EditorSceneObject.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\EditorObject.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\EditorObjectRenderer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -84,9 +90,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sources\EditorEntity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\FileBrowser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sources\GameplayWindow.cpp">
@@ -110,7 +113,13 @@
     <ClCompile Include="Sources\CoreComponentEC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\GameObjectHierarchy.cpp">
+    <ClCompile Include="Sources\Editor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\ObjectHierarchy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\EditorSceneObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

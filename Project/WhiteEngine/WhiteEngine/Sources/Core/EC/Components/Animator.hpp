@@ -1,10 +1,13 @@
 #pragma once
 
+#include "Core/Animator/AnimationController.hpp"
+//#include "../../Animator/AnimationController.hpp"
 
-#include "../../Animator/AnimationController.hpp"
+namespace Tools { class AnimatorEC; }
 
 class Animator : public Component
 {
+	friend class Tools::AnimatorEC;
 private:
 	AnimationController* m_controller;
 	Animation* m_currentState;

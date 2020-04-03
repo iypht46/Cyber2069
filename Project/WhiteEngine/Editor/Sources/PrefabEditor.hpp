@@ -29,10 +29,13 @@ namespace Tools
 		bool SavePrefab(const char* filename);
 	public:
 		PrefabEditor(bool* isOpen);
+		PrefabEditor();
 		//Interface
 		virtual void Update(void) override;
-		virtual bool Save(const char* path, const char* returnMessage) override;
-		virtual bool Load(const char* path, const char* returnMessage) override;
-		virtual bool isFocused() override;
+		virtual bool Save(const char* path, Container::wString& returnMessage) override;
+		virtual bool Load(const char* path, Container::wString& returnMessage) override;
+		virtual bool IsFocused() override;
+		virtual void RenderMenu() override;
+		virtual EditorObject* GetEditorObject() override;
 	};
 }

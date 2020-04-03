@@ -2,7 +2,9 @@
 #include "CoreComponentEC.hpp"
 #include "Core/EC/GameObject.hpp"
 #include "Core/EC/Components/MeshRenderer.hpp"
-
+//Third Party Library
+#include "imgui.h"
+//Standard Library
 #include <algorithm>
 #include <iostream>
 
@@ -36,6 +38,11 @@ namespace Tools
 		m_isActive = &m_gameObject->isActive;
 	}
 
+	void EditorEntity::OnRender()
+	{
+		//ImGui Tree?
+	}
+
 	void EditorEntity::AddComponent(std::string type)
 	{
 		//Check if component have been added
@@ -56,6 +63,14 @@ namespace Tools
 		else if (type.find("RigidbodyEC") != std::string::npos)
 		{
 			comp = m_gameObject->AddComponent<Rigidbody>();
+		}
+		else if (type.find("AnimatorEC") != std::string::npos)
+		{
+			comp = m_gameObject->AddComponent<Animator>();
+		}
+		else if (type.find("SoundPlayerEC") != std::string::npos)
+		{
+			comp = m_gameObject->AddComponent<SoundPlayer>();
 		}
 
 		if (comp)
@@ -90,6 +105,15 @@ namespace Tools
 	std::vector<EditorComponent*>& EditorEntity::GetComponentList()
 	{
 		return m_components;
+	}
+
+	void EditorEntity::PrintInfo()
+	{
+		Transform* transform = &m_gameObject->m_transform;
+		std::cout << "GameObject Transform: \n";
+		std::cout << "Position: " << glm::to_string(transform->GetPosition()) << std::endl;
+		std::cout << "Scale: " << glm::to_string(transform->GetScale()) << std::endl;
+		std::cout << "Model Matrix: \n" << glm::to_string(transform->GetModelMatrix()) << std::endl;
 	}
 
 	std::string EditorEntity::GetName()

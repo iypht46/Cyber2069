@@ -71,6 +71,7 @@ public:
 	GLuint GetOffsetXUniformId();
 	GLuint GetOffsetYUniformId();
 	Graphic::Framebuffer* GetFrameBuffer();
+	GLuint GetProgramID();
 
 	GLuint LoadTexture(string path);
 

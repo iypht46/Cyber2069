@@ -3,9 +3,12 @@
 #include <string>
 #include <irrKlang.h>
 
+namespace Tools { class SoundPlayerEC; }
+
 using namespace irrklang;
 
 class SoundPlayer : public Component {
+	friend class Tools::SoundPlayerEC;
 private:
 	ISoundEngine* soundPlayer;
 	ISoundSource* soundSource;

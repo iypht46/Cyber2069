@@ -6,6 +6,7 @@
 
 #define IMPLEMENT_CLONE(TYPE)	EditorComponent* clone() const { return new TYPE(*this); }
 #define MAKE_COMPONENT(TYPE)	EditorComponent* TYPE ## _myComponent = EditorComponent::addComponent(#TYPE, new TYPE());
+#define INIT_COMPONENT(TYPE)	TYPE* m_typeComponent;
 
 namespace Tools
 {
@@ -21,7 +22,8 @@ namespace Tools
 		bool m_open = true;
 		Component* m_component;
 		std::string m_componentName;
-		bool* m_enable;
+		bool m_enable;
+		//bool* m_enable;
 		virtual void OnRender() {}
 		
 		virtual void SetChild(bool isChild) {}

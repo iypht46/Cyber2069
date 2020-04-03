@@ -5,16 +5,13 @@
 
 namespace Tools
 {
-	//*****Prototype Design Variable*****//
-	
-
-	//*****          END            *****//
 	int EditorComponent::m_totalNum = 0;
 
 	EditorComponent::EditorComponent(std::string name) : m_componentName(name)
 	{
 		m_totalNum++;
 		m_id = m_totalNum;
+		m_enable = true;
 	}
 
 	bool EditorComponent::Render()
@@ -22,7 +19,10 @@ namespace Tools
 		if (ImGui::CollapsingHeader(m_componentName.c_str(), &m_open))
 		{
 			ImGui::Text("Enable"); ImGui::SameLine();
-			ImGui::Checkbox("##IsEnable", m_enable);
+			if (ImGui::Checkbox("##IsEnable", &m_enable))
+			{
+				m_component->SetEnable(m_enable);
+			}
 			OnRender();
 		}
 

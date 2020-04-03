@@ -87,6 +87,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -126,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Container\String.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\CoreComponents.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\BehaviourScript.h" />
     <ClInclude Include="Sources\Core\EC\Components\SoundPlayer.hpp" />
@@ -133,6 +135,7 @@
     <ClInclude Include="Sources\Graphic\Camera.hpp" />
     <ClInclude Include="Sources\Graphic\Framebuffer.hpp" />
     <ClInclude Include="Sources\Graphic\Shader.hpp" />
+    <ClInclude Include="Sources\Utility\Filesystem.hpp" />
     <ClInclude Include="Sources\Utility\Reflection.hpp" />
     <ClInclude Include="Sources\Utility\Serialization.hpp" />
     <ClInclude Include="Sources\Physic\Collision.hpp" />
