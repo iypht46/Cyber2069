@@ -1,6 +1,3 @@
 [submodule "Project/WhiteEngine/WhiteEngine/Vendors/imgui"]
 	path = Project/WhiteEngine/WhiteEngine/Vendors/imgui
 	url = https://github.com/ocornut/imgui.git
-[submodule "Project/WhiteEngine/Editor/Vendors/imgui"]
-	path = Project/WhiteEngine/Editor/Vendors/imgui
-	url = https://github.com/ocornut/imgui.git
