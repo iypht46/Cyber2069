@@ -30,11 +30,11 @@ protected:
 
 	float SpawnRateCount = -1;
 	ObjectPool* EnemyPool;
-	
+
+public:
 	EnemyPreset* SpawnPreset;
 	EnemyAmplifier* SpawnAmplifier;
 
-public:
 	GameObject* SpawnEnemy(float rangeX, float rangeY);
 
 	void SetSpawnRate(float value);

@@ -81,8 +81,8 @@ void GameController::OnStart() {
 	p1->FlyerRatio = 1.0f;
 	Preset.push_back(p1);
 
-	CurrAmplifier = new EnemyAmplifier;
-	CurrPreset = new EnemyPreset;
+	CurrAmplifier = Amplifier[0].get();
+	CurrPreset = Preset[0].get();
 }
 
 void GameController::OnUpdate(float dt) 
@@ -198,7 +198,6 @@ ObjectPool* GameController::GetPool(int type) {
 
 void GameController::updateSpawner() 
 {
-	changeDifficulty = false;
 
 	if ((currScoreCheckpoint) < (Amplifier.size())) {
 
@@ -209,8 +208,13 @@ void GameController::updateSpawner()
 			CurrAmplifier = Amplifier[currScoreCheckpoint].get();
 			CurrPreset = Preset[randPreset].get();
 
+			for (EnemySpawner* spawner : Spawner) {
+				spawner->SpawnAmplifier = CurrAmplifier;
+				spawner->SpawnPreset = CurrPreset;
+				spawner->updateSpawner();
+			}
+
 			currScoreCheckpoint += 1;
-			changeDifficulty = true;
 		}
 	}
 }

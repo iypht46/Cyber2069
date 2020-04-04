@@ -7,11 +7,6 @@ void EnemySpawner::OnStart()
 
 void EnemySpawner::OnUpdate(float dt)
 {
-	if (GameController::GetInstance()->isChangeDifficulty()) 
-	{
-		updateSpawner();
-	}
-
 	SpawnRateCount -= dt;
 
 	if (SpawnRateCount <= 0)
@@ -98,9 +93,6 @@ void EnemySpawner::SetSpawnType(int type) {
 }
 
 void EnemySpawner::updateSpawner() {
-
-	SpawnAmplifier = GameController::GetInstance()->GetCurrAmplifier();
-	SpawnPreset = GameController::GetInstance()->GetCurrPreset();
 
 	switch (SpawnType)
 	{
