@@ -9,9 +9,7 @@
 #include "Core/EC/Components/Transform.hpp"
 
 #include "Core/EC/Components/BehaviourScript.h"
-#include "FlyerBehaviour.hpp"
 #include "PlayerController.hpp"
-#include "MachineGunBullet.hpp"
 #include "EnemySpawner.hpp"
 
 #include "Core/Logger.hpp"
@@ -25,29 +23,15 @@ namespace FactoryCollection {
 		}
 
 		//update behaviour script
-		for (FlyerBehaviour* behaviour : Factory<FlyerBehaviour>::getCollection()) {
+		for (BehaviourScript* behaviour : Factory<BehaviourScript>::getCollection()) {
 			behaviour->OnFixedUpdate(dt);
 		}
 	}
 
 	void UpdateComponents(float dt) {
 		//update behaviour script
-		for (EnemySpawner* behaviour : Factory<EnemySpawner>::getCollection()) {
+		for (BehaviourScript* behaviour : Factory<BehaviourScript>::getCollection()) {
 			behaviour->OnUpdate(dt);
 		}
-
-		for (FlyerBehaviour* behaviour : Factory<FlyerBehaviour>::getCollection()) {
-			behaviour->OnUpdate(dt);
-		}
-
-		for (MachineGunBullet* behaviour : Factory<MachineGunBullet>::getCollection()) {
-			if (behaviour->GetGameObject()->Active()) 
-			{
-				behaviour->OnUpdate(dt);
-			}
-		}
-
-		Factory<PlayerController>::getCollection().at(0)->OnUpdate(dt);
-
 	}
 }

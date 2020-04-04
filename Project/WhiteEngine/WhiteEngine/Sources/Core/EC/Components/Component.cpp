@@ -5,7 +5,11 @@ int Component::s_IDcounter = 0;
 Component::Component() {
 	Component::s_IDcounter++;
 	m_componentID = s_IDcounter;
+
+	Factory<Component>::Add(this);
 }
+
+void Component::Init() { }
 
 int Component::getComponentID() {
 	return m_componentID;

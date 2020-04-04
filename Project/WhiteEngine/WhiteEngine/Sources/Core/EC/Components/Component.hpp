@@ -1,23 +1,40 @@
 #pragma once
 
+#include <memory>
+
+#include "Core/Factory.h"
+
+#include <cereal/cereal.hpp>
+#include <cereal/types/memory.hpp>
+
 class GameObject;
 
 class Component
 {
 protected:
-	bool enabled = true;
-
 	static int s_IDcounter;
 	int m_componentID;
+
 	GameObject* m_gameObject;
 
 public:
+	bool enabled = true;
+
 	Component();
 	int getComponentID();
-
 	GameObject* GetGameObject();
 	void SetEnable(bool enable);
-	virtual void SetGameObject(GameObject* obj);
+	virtual void Init();
+	void SetGameObject(GameObject* obj);
 
 	virtual ~Component() = 0;
+
+	//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			enabled
+			);
+	}
 };

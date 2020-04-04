@@ -69,12 +69,6 @@
     <ClInclude Include="Sources\Core\Message\MessageObjects.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Core\EC\Components\Animation.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Core\Animator\AnimationController.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Core\Factory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -129,6 +123,33 @@
     <ClInclude Include="Sources\Utility\Filesystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Core\Message\Observer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Core\EC\Components\TextRenderer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Core\LogCustomType.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utility\Event.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Serialization\glmCereal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Core\Animation\AnimationController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Core\Animation\Animation.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Serialization\Serialization.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\SceneManagement\SceneManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\Core\EC\GameObject.cpp">
@@ -173,12 +194,6 @@
     <ClCompile Include="Sources\Core\Message\IMessageHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Core\EC\Components\Animation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Sources\Core\Animator\AnimationController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Core\EC\Components\Transform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -213,6 +228,24 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Graphic\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Core\EC\Components\TextRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Physic\Raycast.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Utility\Event.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Core\Animation\AnimationController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Core\Animation\Animation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\SceneManagement\SceneManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

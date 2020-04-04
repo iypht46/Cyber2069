@@ -8,6 +8,8 @@ namespace Core
 	class IMessageHandler
 	{
 	public:
+		IMessageHandler() {}
+
 		//Generic Interface
 		inline virtual void HandleMessage(const Message&) {}
 		inline virtual IMessageHandler* GetParent() const { return nullptr; }
@@ -18,5 +20,7 @@ namespace Core
 		inline virtual void HandleMessage(const GameCloseMessage&) {}
 		inline virtual void HandleMessage(const Trigger&) {}
 		inline virtual void HandleMessage(const Collision&) {}
+		//inline virtual void HandleMessage(const PhysicObjectAdd&) {}
+		//inline virtual void HandleMessage(const PhysicObjectAddRemove&) {}
 	};
 }

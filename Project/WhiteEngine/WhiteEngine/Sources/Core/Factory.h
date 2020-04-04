@@ -1,35 +1,55 @@
 #pragma once
 
-#include <vector>
+#include <string>
+#include <set>
+#include <memory>
+
+#include "Serialization/Serialization.h"
 
 template <class T>
 class Factory {
 private:
-	static std::vector<T*> m_Collection;
+	static std::set<T*> m_Collection;
 
 public:
-	static T* Create();
+	static std::shared_ptr<T> Create(std::string);
+	static std::shared_ptr<T> Create();
+
 	static void Add(T*);
-	static std::vector<T*>& getCollection();
+	
+	static std::set<T*>& getCollection();
 };
 
 template <class T>
-std::vector<T*> Factory<T>::m_Collection;
+std::set<T*> Factory<T>::m_Collection;
 
+//create and load data from file (must be the path of same object type)
 template <class T>
-T* Factory<T>::Create() {
-	T* newT = new T();
-	m_Collection.push_back(newT);
+std::shared_ptr<T> Factory<T>::Create(std::string prefabPath) {
+	std::shared_ptr<T> newT = std::make_shared<T>();
+
+	Serialization::LoadObject<T>(*(newT.get()), prefabPath);
+
+	m_Collection.insert(newT.get());
 
 	return newT;
 }
 
 template <class T>
-void Factory<T>::Add(T* pointer) {
-	m_Collection.push_back(pointer);
+std::shared_ptr<T> Factory<T>::Create() {
+	std::shared_ptr<T> newT = std::make_shared<T>();
+
+	m_Collection.insert(newT.get());
+
+	return newT;
 }
 
 template <class T>
-std::vector<T*>& Factory<T>::getCollection() {
+void Factory<T>::Add(T* rawPointer) {
+	m_Collection.insert(rawPointer);
+}
+
+template <class T>
+std::set<T*>& Factory<T>::getCollection() {
 	return m_Collection;
 }

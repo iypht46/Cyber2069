@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 #include <unordered_map>
 #include <bitset>
 #include <utility>
@@ -43,11 +44,12 @@ namespace Physic
 	using Manifolds = std::vector<Manifold>;
 	using LayerStringMap = std::unordered_map<std::string, Layer>;
 	using CollisionMsgLists = std::vector<Collision>;
+	using RayHits = std::vector<RayHit>;
 
 	class PhysicScene
 	{
 	private:
-		
+		static PhysicScene* instance;
 		//Store layerbit as key and collider as value.
 		CollidersMap m_colliders;
 		Bodies m_bodies;
@@ -110,6 +112,11 @@ namespace Physic
 		std::string GetStringFromLayer(Layer);
 		//Convert Layer Enum to number
 		static uint32_t LayerToNum(Layer);
+		//Get Colliders of specified Layer
+		Colliders GetColliderLayer(Layer);
+
+		RayHits RaycastAll(Ray, Layer);
+		RayHit Raycast(Ray, Layer);
 
 		//@Physic Settings
 		//Set Scene Gravity
@@ -120,6 +127,8 @@ namespace Physic
 		//Reset Layer to Collide With
 		void ResetLayerCollisions(Layer, Layer);
 		void ResetLayerCollisions(std::string, std::string);
+
+		static PhysicScene* GetInstance();
 
 		PhysicScene();
 		~PhysicScene() {}

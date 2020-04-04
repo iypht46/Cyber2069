@@ -1,15 +1,33 @@
 #include "Animator.hpp"
 
-
+#include "Core/Logger.hpp"
+#include <Serialization/Serialization.h>
 
 Animator::Animator()
 {
 	timeElapse = 0;
-	framePerSec = 12;
 	m_currentUVFrames = glm::vec2(0);
+
+	Factory<Animator>::Add(this);
 }
 
-void Animator::AssignController(AnimationController* animControl) {
+void Animator::Init() {
+	m_controller = std::make_shared<AnimationController>();
+
+	try
+	{
+		Serialization::LoadObject<AnimationController>(*m_controller, sr_controllerPath);
+	}
+	catch (const std::exception&)
+	{
+		ENGINE_WARN("No animation controller path assigned");
+	}
+
+
+	m_currentState = m_controller->m_defaultState;
+}
+
+void Animator::AssignController(std::shared_ptr <AnimationController> animControl) {
 	m_controller = animControl;
 }
 
@@ -20,24 +38,43 @@ glm::vec2 Animator::GetCurrentUVFrame() {
 }
 
 void Animator::setCurrentState(int state) {
-	m_currentState = m_controller->GetState(state);
+	setCurrentState(m_controller->GetState(state));
+}
 
-	m_currentUVFrames = m_currentState->getStartPosition();
+void Animator::setCurrentState(std::weak_ptr<AnimationState> state) {
+	m_currentState = state;
+
+	m_currentUVFrames = m_currentState.lock()->animation->getStartPosition();
 }
 
 void Animator::animUpdate(float dt)
 {
-	if (m_currentUVFrames.x < m_currentState->getEndPosition().x)
-	{
-		timeElapse += dt;
-		if (timeElapse > 1.0f / (framePerSec * m_currentState->getSpeedMultiplier()))
+	if (!m_currentState.expired()) {
+		glm::vec2 start = m_currentState.lock()->animation->getStartPosition();
+		glm::vec2 end = m_currentState.lock()->animation->getEndPosition();
+
+		if (m_currentUVFrames.y < end.y || (m_currentUVFrames.y == end.y && m_currentUVFrames.x < end.x))
 		{
-			timeElapse = 0;
-			m_currentUVFrames.x++;
+			timeElapse += dt;
+			if (timeElapse > 1.0f / (framePerSec * m_currentState.lock()->animation->getSpeedMultiplier()))
+			{
+				timeElapse = 0;
+				++m_currentUVFrames.x;
+
+				if (m_currentUVFrames.x > m_controller->getSheetSize().x) {
+					++m_currentUVFrames.y;
+				}
+			}
+		}
+		else if (m_currentState.lock()->loop) {
+			m_currentUVFrames = start;
+		}
+		else if (!m_currentState.lock()->nextState.expired()) {
+			setCurrentState(m_currentState.lock()->nextState);
 		}
 	}
-	else if (m_currentState->isLooping()) {
-		m_currentUVFrames.x = m_currentState->getStartPosition().x;
+	else {
+		ENGINE_WARN("No current animation state running");
 	}
 }
 
@@ -46,33 +83,5 @@ void Animator::setFramePerSec(float frame) {
 }
 
 Animator::~Animator()
-{
-}
-
-void Animator::OnAwake()
-{
-}
-
-void Animator::OnEnable()
-{
-}
-
-void Animator::OnStart()
-{
-}
-
-void Animator::OnDisable()
-{
-}
-
-void Animator::OnUpdate(float dt)
-{
-}
-
-void Animator::OnFixedUpdate(float dt)
-{
-}
-
-void Animator::OnDestroy()
 {
 }

@@ -155,19 +155,18 @@ namespace Physic
 
 			Collision collisionA(col->m_objectA, col->m_objectB, col->m_type);
 			Collision collisionB(col->m_objectB, col->m_objectA, col->m_type);
+			m_collisionMsg.push_back(collisionA);
+			m_collisionMsg.push_back(collisionB);
 
 			//Create collision message for the pair
 			if (!col->m_objectA->m_hasCollided)
 			{
 				collisionA.m_collider->m_hasCollided = true;
-				m_collisionMsg.push_back(collisionA);
-
 			}
 			
 			if (!col->m_objectB->m_hasCollided)
 			{
 				collisionB.m_collider->m_hasCollided = true;
-				m_collisionMsg.push_back(collisionB);
 			}
 			
 
@@ -196,10 +195,11 @@ namespace Physic
 	{
 		//ENGINE_INFO("Check Collision");
 		//ENGINE_INFO("Main: {}, LayerToCheck: {}", LayerToNum(mainLayer), LayerToNum(layerToCheck));
+		//ENGINE_INFO("main col {}:{} , Layertochacke {}:{}", GetStringFromLayer(mainLayer), m_colliders[mainLayer].size(), GetStringFromLayer(layerToCheck), m_colliders[layerToCheck].size());
+
 		//Check collision of main collider with layer to check
 		for (auto mainCol : m_colliders[mainLayer])
 		{
-
 			for (auto colToCheck : m_colliders[layerToCheck])
 			{
 				//If same collider then skip
@@ -253,13 +253,13 @@ namespace Physic
 		//	}
 		//}
 		//Clear stay state collision from last frame if it has not collided in this frame
-		
+		//ENGINE_INFO("Collision Message Size: {}", m_collisionMsg.size());
 		m_stayState.erase(
 			std::remove_if(
 				m_stayState.begin(),
 				m_stayState.end(),
 				[](Collision col) {
-					if (!col.m_collider->m_hasCollided)
+					if (true/*!col.m_collider->m_hasCollided*/)
 					{
 						Core::Trigger trigMsg = Core::Trigger(col);
 						Core::Collision colMsg = Core::Collision(col);
@@ -465,13 +465,35 @@ namespace Physic
 		return layerName;
 	}
 
+	Colliders PhysicScene::GetColliderLayer(Layer layer) {
+		return m_colliders[layer];
+	}
+
 	void PhysicScene::SetGravity(glm::vec3 value)
 	{
 		m_gravity = value;
 	}
 
+	PhysicScene* PhysicScene::instance = nullptr;
+
+	PhysicScene* PhysicScene::GetInstance() 
+	{
+		if (instance != nullptr) 
+		{
+			return instance;
+		}
+		else {
+			return nullptr;
+		}
+	}
+
 	PhysicScene::PhysicScene()
 	{
+		if (instance == nullptr) 
+		{
+			instance = this;
+		}
+
 		m_gravity = glm::vec3(0.0f, -10.0f, 0.0f);
 		//To prevent wrong layer string
 		m_layerString["INV"] = Layer::LAYER_INVALID;

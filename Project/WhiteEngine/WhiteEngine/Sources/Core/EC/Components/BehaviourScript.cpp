@@ -7,11 +7,17 @@ BehaviourScript::BehaviourScript() {
 	Factory<BehaviourScript>::Add(this);
 }
 
-void BehaviourScript::SetGameObject(GameObject * obj)
-{
-	m_gameObject = obj;
-	m_gameObject->m_scripts.push_back(this);
-}
+BehaviourScript::~BehaviourScript() { }
+
+void BehaviourScript::Init() { }
+
+void BehaviourScript::OnAwake() { }
+void BehaviourScript::OnEnable() { }
+void BehaviourScript::OnDisable() { }
+
+void BehaviourScript::OnStart() { }
+void BehaviourScript::OnUpdate(float dt) { }
+void BehaviourScript::OnFixedUpdate(float dt) { }
 
 void BehaviourScript::OnTriggerEnter(const Physic::Collision col) { }
 void BehaviourScript::OnTriggerStay(const Physic::Collision col) { }
