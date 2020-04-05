@@ -93,7 +93,6 @@
 		//Constructor
 		BoxCollider();
 		virtual void Init();
-		void Init(float, float);
 		void Init(float, float, Rigidbody*);
 		void ReSize(float, float);
 		void ComputeAABB(Physic::AABB&);

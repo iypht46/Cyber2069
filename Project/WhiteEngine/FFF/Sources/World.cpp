@@ -134,15 +134,15 @@ namespace World
 
 		}
 
-		if (Input::GetKeyHold(Input::KeyCode::KEY_N))
-		{
-			Bg2->GetComponent<SoundPlayer>()->IncreaseVolume();
-		}
+		//if (Input::GetKeyHold(Input::KeyCode::KEY_N))
+		//{
+		//	Bg2->GetComponent<SoundPlayer>()->IncreaseVolume();
+		//}
 
-		if (Input::GetKeyHold(Input::KeyCode::KEY_M))
-		{
-			Bg2->GetComponent<SoundPlayer>()->DecreaseVolume();
-		}
+		//if (Input::GetKeyHold(Input::KeyCode::KEY_M))
+		//{
+		//	Bg2->GetComponent<SoundPlayer>()->DecreaseVolume();
+		//}
 	}
 
 	void Init(void)
@@ -201,8 +201,6 @@ namespace World
 		Bg1 = Instantiate();
 		platform = Instantiate();
 		platform->Layer = "Platform";
-		queen = Instantiate();
-		queen->Layer = "Enemy";
 
 		gamecontroller = Instantiate();
 		ui_ScoreText = Instantiate();
@@ -257,10 +255,12 @@ namespace World
 		Bg2->AddComponent<MeshRenderer>();
 		Bg2->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 		Bg2->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer2.png");
+		Bg2->GetComponent<MeshRenderer>()->SetLayer(0);
 
 		Bg1->AddComponent<MeshRenderer>();
 		Bg1->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 		Bg1->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer1.png");
+		Bg1->GetComponent<MeshRenderer>()->SetLayer(1);
 
 		Bg2->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
 		Bg1->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
@@ -268,17 +268,7 @@ namespace World
 		Bg1->m_transform->SetPosition(glm::vec3(0, -300, 0));
 		Bg2->m_transform->SetPosition(glm::vec3(0, -300, 0));
 
-		Rabbit->AddComponent<MeshRenderer>();
-		Rabbit->GetComponent<MeshRenderer>()->CreateMesh(7, 5);
-		Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_PlayerBody_Vversion03.png");
-		Rabbit->GetComponent<MeshRenderer>()->SetLayer(2);
-
-		Rabbit->AddComponent<HPsystem>();
 		gamecontroller->GetComponent<GameController>()->AssignPlayer(Rabbit);
-
-		Rabbit->GetComponent<MeshRenderer>()->SetReplaceColor(glm::vec3(1.0f, 1.0f, 1.0f));
-
-		Rabbit->AddComponent<HPsystem>();
 
 
 
@@ -316,6 +306,7 @@ namespace World
 		RabbitController = std::make_shared<AnimationController>();
 		RabbitController->setSheetSize(glm::vec2(7, 5));
 
+		ENGINE_INFO("making rabbbit animcon");
 		RabbitController->AddState(Idle, true);
 		RabbitController->AddState(Running, true);
 		RabbitController->AddState(Dashing, false);
@@ -328,22 +319,36 @@ namespace World
 		Rabbit->GetComponent<Animator>()->setFramePerSec(12);
 
 
+		Rabbit->AddComponent<MeshRenderer>();
+		Rabbit->GetComponent<MeshRenderer>()->CreateMesh(7, 5);
+		Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_PlayerBody_Vversion03.png");
+		Rabbit->GetComponent<MeshRenderer>()->SetLayer(2);
+		Rabbit->GetComponent<MeshRenderer>()->SetReplaceColor(glm::vec3(1.0f, 1.0f, 1.0f));
+
 		//Set Transform
 		Rabbit->m_transform->SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
 		Rabbit->m_transform->SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
 
-
+		Rabbit->AddComponent<BoxCollider>();
 
 		//Add Rigidbody
-		Rabbit->AddComponent<Rigidbody>()->Init(10, 20);
+		Rabbit->AddComponent<Rigidbody>();
 		Rabbit->GetComponent<Rigidbody>()->SetDrag(0.01f);
+
+		Rabbit->GetComponent<BoxCollider>()->m_rigidbody = Rabbit->GetComponent<Rigidbody>();
+		Rabbit->GetComponent<BoxCollider>()->ReSize(25, 25);
+
+		//Behavior Script
+		Rabbit->AddComponent<HPsystem>();
+		Rabbit->GetComponent<HPsystem>()->SetMaxHP(100);
+		Rabbit->AddComponent<PlayerController>();
 
 		platform->AddComponent<MeshRenderer>();
 		platform->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 		platform->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
 		platform->GetComponent<MeshRenderer>()->SetLayer(3);
 		platform->m_transform->SetScale(glm::vec3(400, 20, 1));
-		platform->AddComponent<BoxCollider>()->Init(200, 5);
+		platform->AddComponent<BoxCollider>()->ReSize(200, 5);
 
 		//for (int i = 0; i < platformNum; i++)
 		//{
@@ -362,12 +367,6 @@ namespace World
 		//platform[3]->m_transform->SetPosition(glm::vec3(-300, -300, 0));
 		//platform[4]->m_transform->SetPosition(glm::vec3(300, -300, 0));
 
-		//Behavior Script
-		Rabbit->AddComponent<HPsystem>();
-		Rabbit->AddComponent<PlayerController>();
-		Rabbit->GetComponent<PlayerController>()->OnStart();
-		Rabbit->GetComponent<PlayerController>()->PSSet(g_physicScene);
-
 
 		std::shared_ptr<Animation> Fly = std::make_shared<Animation>();
 		Fly->setStartPosition(0, 0);
@@ -380,7 +379,8 @@ namespace World
 
 		EnemCon->AddState(Fly, true);
 
-		for (int i = 0; i < 0; i++)
+		ENGINE_INFO("Flyer creation==========================================================");
+		for (int i = 0; i < 50; i++)
 		{
 			GameObject* flyer = Instantiate();
 			flyer->Layer = "Enemy";
@@ -390,12 +390,19 @@ namespace World
 
 			flyer->AddComponent<Rigidbody>();
 			flyer->GetComponent<Rigidbody>()->Init(15, 15);
-			flyer->GetComponent<Rigidbody>()->SetGravityScale(0.0f);
+			flyer->GetComponent<Rigidbody>()->SetGravityScale(0.00000001f);
 
 			flyer->AddComponent<HPsystem>();
 			flyer->AddComponent<AirFollowing>();
 			flyer->AddComponent<Flyer>();
+
+			//change to set target instead
 			flyer->GetComponent<Flyer>()->Init(Rabbit->m_transform.get());
+
+			ENGINE_INFO("character is {}", (int)flyer->GetComponent<Flyer>());
+
+			//no need in actual engine
+			flyer->GetComponent<AirFollowing>()->OnAwake();
 
 			flyer->AddComponent<Animator>();
 			flyer->GetComponent<Animator>()->AssignController(EnemCon);
@@ -444,7 +451,8 @@ namespace World
 		BomberAnimController->AddState(BomberExplode, false);
 		BomberAnimController->AddState(BomberDie, false);
 
-		for (int i = 0; i < 0; i++)
+		//bomber
+		for (int i = 0; i < 50; i++)
 		{
 			GameObject* bomber = Instantiate();
 			bomber->Layer = "Enemy";
@@ -465,6 +473,9 @@ namespace World
 			bomber->AddComponent<AirDash>();
 			bomber->AddComponent<Bomber>();
 			bomber->GetComponent<Bomber>()->Init(Rabbit->m_transform.get());
+
+			bomber->GetComponent<AirFollowing>()->OnAwake();
+			bomber->GetComponent<AirDash>()->OnAwake();
 
 			bomber->m_transform->SetScale(glm::vec3(50, 50, 1));
 
@@ -607,7 +618,11 @@ namespace World
 		queenAnimControl->AddState(queenSpawning, true);
 
 
-		queen->m_transform->SetPosition(glm::vec3(-(Graphic::Window::GetWidth()), (Graphic::Window::GetHeight()*2/3) + 700.0f, 1.0f));
+		queen = Instantiate();
+		queen->Layer = "Enemy";
+
+		queen->m_transform->SetScale(glm::vec3(CHAR_SIZE * 10, CHAR_SIZE * 10, 1.0f));
+		queen->m_transform->SetPosition(glm::vec3(-(Graphic::Window::GetWidth()), (Graphic::Window::GetHeight() * 2 / 3) + 700.0f, 1.0f));
 
 		queen->AddComponent<MeshRenderer>();
 		queen->GetComponent<MeshRenderer>()->CreateMesh(4, 2);
@@ -633,7 +648,6 @@ namespace World
 		queen->GetComponent<DeQueen>()->assignFlyPool(FlyerPool);
 		queen->GetComponent<DeQueen>()->assignBombPool(BomberPool);
 
-		queen->m_transform->SetScale(glm::vec3(CHAR_SIZE * 10, CHAR_SIZE * 10, 1.0f));
 
 
 		//Add Sound
@@ -643,7 +657,6 @@ namespace World
 		Bg2->GetComponent<SoundPlayer>()->SetLoop(true);
 		Bg2->GetComponent<SoundPlayer>()->SetVolume(0.5);
 		//Bg2->GetComponent<SoundPlayer>()->PlaySound();
-		//Bg->GetComponent<SoundPlayer>()->DeleteSoundPlayer();
 
 
 		gamecontroller->GetComponent<GameController>()->AssignPlayer(Rabbit);
@@ -667,13 +680,15 @@ namespace World
 		//for (MeshRenderer* mr : Factory<MeshRenderer>::getCollection()) {
 		//	ENGINE_INFO("MR active {}", mr->enabled);
 		//}
+
+		//SceneManagement::ActiveScene->Init();
 	}
 
 	void FixedUpdate(float dt)
 	{
 
-		//Bg1->m_transform->SetPosition(Graphic::getCamera()->m_position * parlx1);
-		//Bg2->m_transform->SetPosition(Graphic::getCamera()->m_position * parlx2);
+		Bg1->m_transform->SetPosition(Graphic::getCamera()->m_position * parlx1);
+		Bg2->m_transform->SetPosition(Graphic::getCamera()->m_position * parlx2);
 
 		//Update Physics Scene
 		static float accumulator = 0.0f;

@@ -10,7 +10,28 @@ PlayerController::PlayerController() {
 }
 
 void PlayerController::OnAwake() {
+	rb = m_gameObject->GetComponent<Rigidbody>();
+	hpSystem = m_gameObject->GetComponent<HPsystem>();
 
+	stamina = max_stamina;
+
+
+	direction.x = 1;
+	direction.y = 1;
+
+
+	AddEquipment(new MachineGun());
+	AddEquipment(new LaserGun());
+	AddEquipment(new GrenadeLauncher());
+	AddEquipment(new ZapperGun());
+	AddEquipment(new BlackholeGun());
+
+	assignWeapon(Weapons[0]);
+
+	for (Equipment* e : Equipments)
+	{
+		e->Modify(this->m_gameObject);
+	}
 }
 
 void PlayerController::OnDisable() {
@@ -53,54 +74,6 @@ void PlayerController::OnTriggerExit(const Physic::Collision col)
 }
 
 void PlayerController::OnStart() {
-	rb = m_gameObject->GetComponent<Rigidbody>();
-	hpSystem = m_gameObject->GetComponent<HPsystem>();
-
-	hpSystem->SetMaxHP(100.0f);
-
-	inverseGun = false;
-
-	jumping = false;
-	falling = false;
-	max_move_speed = 200.0f;
-	move_speed = 200.0f;
-	dash_speed = 750.0f;
-	jump_speed = 300.0f;
-	direction.x = 1;
-	direction.y = 1;
-
-	max_stamina = 500000000.0f;
-	dashStamina = 5.0f;
-	jumpStamina = 5.0f;
-	staminaRegenRate = 1.0f;
-
-	stamina = max_stamina;
-
-	camZoomOutSpeed = 0.005f;
-	camZoomInSpeed = 0.01f;
-
-	camZoomInDelay = 0.0f;
-	//camMaxZoom = 0.75f;
-	camLarge = 0.65f;
-	//camMinZoom = 1.00f;
-	camSmall = 1.50f;
-
-	dashTime = 0.35f;
-
-	GunDistance = 0.45f;
-
-	AddEquipment(new MachineGun());
-	AddEquipment(new LaserGun());
-	AddEquipment(new GrenadeLauncher());
-	AddEquipment(new ZapperGun());
-	AddEquipment(new BlackholeGun());
-
-	assignWeapon(Weapons[0]);
-
-	for (Equipment* e : Equipments) 
-	{
-		e->Modify(this->m_gameObject);
-	}
 
 }
 
@@ -160,6 +133,7 @@ void PlayerController::OnUpdate(float dt)
 
 void PlayerController::OnFixedUpdate(float dt)
 {
+
 }
 
 void PlayerController::updateDirection() {

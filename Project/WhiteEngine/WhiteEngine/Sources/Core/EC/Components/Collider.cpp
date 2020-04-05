@@ -108,34 +108,6 @@
 		Collider::Init();
 	}
 
-	void BoxCollider::Init(float hW, float hH)
-	{
-		//Set Rigidbody
-		m_rigidbody = GetGameObject()->GetComponent<Rigidbody>();
-		//Set Transform
-		m_transform = GetGameObject()->m_transform.get();
-
-		//Set Box Size
-		m_halfWidth = hW;
-		m_halfHeight = hH;
-		m_colliderScale.x = hW / m_transform->GetScale().x;
-		m_colliderScale.y = hH / m_transform->GetScale().y;
-
-		if (m_rigidbody)
-		{
-			m_rigidbody = m_rigidbody;
-			m_isStatic = false;
-
-			if (m_rigidbody->automass) {
-				ComputeMass();
-			}
-		}
-		else
-		{
-			m_isStatic = true;
-		}
-	}
-
 	void BoxCollider::ReSize(float hW, float hH) {
 		m_halfWidth = hW;
 		m_halfHeight = hH;
@@ -172,6 +144,8 @@
 		ComputeMass();
 		//Set Static
 		m_isStatic = false;
+
+		Collider::Init();
 	}
 
 	void BoxCollider::ComputeAABB(Physic::AABB& a)

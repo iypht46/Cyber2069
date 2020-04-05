@@ -11,14 +11,14 @@
 class AirFollowing : public BehaviourScript
 {
 private:
-	Enemy* e;
+	Character* e;
 	Rigidbody* rb;
 	Transform* t;
 	Transform* m_target;
 protected:
-	float m_speed;
-	float rotAngle;
-	float rotRate;
+	float m_speed = 300;
+	float rotAngle = 15;
+	float rotRate = 2;
 public:
 	AirFollowing();
 	~AirFollowing() {}

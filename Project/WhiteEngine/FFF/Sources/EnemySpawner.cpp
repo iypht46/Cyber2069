@@ -51,28 +51,33 @@ void EnemySpawner::OnDisable() {
 
 GameObject* EnemySpawner::SpawnEnemy(float posX,float posY)
 {
-	GameObject* enemy = EnemyPool->GetInactiveObject();
-	if (enemy != nullptr)
-	{
-		enemy->SetActive(true);
-		enemy->GetComponent<HPsystem>()->ResetHP();
+	if (SpawnAmplifier != nullptr) {
+		GameObject* enemy = EnemyPool->GetInactiveObject();
+		if (enemy != nullptr)
+		{
+			enemy->SetActive(true);
+			enemy->GetComponent<HPsystem>()->ResetHP();
 
-		enemy->m_transform->SetPosition(glm::vec3(posX, posY, 1.0f));
+			enemy->m_transform->SetPosition(glm::vec3(posX, posY, 1.0f));
 
-		switch (SpawnType) {
-		case POOL_TYPE::ENEMY_FLYER:
-			enemy->GetComponent<Flyer>()->SetStats(SpawnAmplifier->FlyerSpeed, SpawnAmplifier->FlyerHP, SpawnAmplifier->FlyerDmg);
-			break;
-		case POOL_TYPE::ENEMY_BOMBER:
-			enemy->GetComponent<Bomber>()->SetStats(SpawnAmplifier->BomberSpeed, SpawnAmplifier->BomberHP, SpawnAmplifier->BomberDmg
-													, SpawnAmplifier->BomberAimTime, SpawnAmplifier->BomberDashSpeed
-													, SpawnAmplifier->BomberExplodeDMG, SpawnAmplifier->BomberExplodeRadius);
-			break;
-		default:
-			break;
+			switch (SpawnType) {
+			case POOL_TYPE::ENEMY_FLYER:
+				enemy->GetComponent<Flyer>()->SetStats(SpawnAmplifier->FlyerSpeed, SpawnAmplifier->FlyerHP, SpawnAmplifier->FlyerDmg);
+				break;
+			case POOL_TYPE::ENEMY_BOMBER:
+				enemy->GetComponent<Bomber>()->SetStats(SpawnAmplifier->BomberSpeed, SpawnAmplifier->BomberHP, SpawnAmplifier->BomberDmg
+					, SpawnAmplifier->BomberAimTime, SpawnAmplifier->BomberDashSpeed
+					, SpawnAmplifier->BomberExplodeDMG, SpawnAmplifier->BomberExplodeRadius);
+				break;
+			default:
+				break;
+			}
+
+			return enemy;
 		}
-
-		return enemy;
+	}
+	else {
+		ENGINE_WARN("No enemy amplifier assigned");
 	}
 
 	return nullptr;
@@ -94,16 +99,21 @@ void EnemySpawner::SetSpawnType(int type) {
 
 void EnemySpawner::updateSpawner() {
 
-	switch (SpawnType)
-	{
-	case POOL_TYPE::ENEMY_FLYER:
-		SpawnRate = SpawnAmplifier->EnemySpawnRate / SpawnPreset->FlyerRatio;
-		break;
-	case POOL_TYPE::ENEMY_BOMBER:
-		SpawnRate = SpawnAmplifier->EnemySpawnRate / SpawnPreset->BomberRatio;
-		break;
-	default:
-		break;
+	if (SpawnPreset != nullptr) {
+		switch (SpawnType)
+		{
+		case POOL_TYPE::ENEMY_FLYER:
+			SpawnRate = SpawnAmplifier->EnemySpawnRate / SpawnPreset->FlyerRatio;
+			break;
+		case POOL_TYPE::ENEMY_BOMBER:
+			SpawnRate = SpawnAmplifier->EnemySpawnRate / SpawnPreset->BomberRatio;
+			break;
+		default:
+			break;
+		}
+	}
+	else {
+		ENGINE_WARN("No enemy preset assigned");
 	}
 	
 	SpawnRateCount = SpawnRate;

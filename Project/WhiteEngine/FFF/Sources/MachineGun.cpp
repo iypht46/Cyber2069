@@ -8,6 +8,7 @@ MachineGun::MachineGun()
 	weaponObj->AddComponent<MeshRenderer>();
 	weaponObj->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
 	weaponObj->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_shoot.png");
+	weaponObj->GetComponent<MeshRenderer>()->SetLayer(3);
 
 	weaponObj->SetActive(false);
 
