@@ -16,10 +16,10 @@ void ZapperGunBullet::OnUpdate(float dt)
 	winWidth = Graphic::Window::GetWidth() * cam->GetZoom();
 	winHeight = Graphic::Window::GetHeight() * cam->GetZoom();
 
-	if ((m_gameObject->m_transform.GetPosition().x > (camPos.x + (winWidth / 2)))
-		|| (m_gameObject->m_transform.GetPosition().x < (camPos.x - (winWidth / 2)))
-		|| (m_gameObject->m_transform.GetPosition().y > (camPos.y + (winHeight / 2)))
-		|| (m_gameObject->m_transform.GetPosition().y < (camPos.y - (winHeight / 2))))
+	if ((m_gameObject->m_transform->GetPosition().x > (camPos.x + (winWidth / 2)))
+		|| (m_gameObject->m_transform->GetPosition().x < (camPos.x - (winWidth / 2)))
+		|| (m_gameObject->m_transform->GetPosition().y > (camPos.y + (winHeight / 2)))
+		|| (m_gameObject->m_transform->GetPosition().y < (camPos.y - (winHeight / 2))))
 	{
 		if (!isTriggerEnemy) {
 
@@ -75,7 +75,7 @@ void ZapperGunBullet::OnTriggerEnter(const Physic::Collision col) {
 		if (!isTriggerEnemy) {
 
 			vector <Enemy*> tmp;
-			vector <Transform> transformTmp;
+			vector <Transform*> transformTmp;
 	
 			Physic::PhysicScene* ps = Physic::PhysicScene::GetInstance();
 			colliders = ps->GetColliderLayer(ps->GetLayerFromString("Enemy"));
@@ -90,7 +90,7 @@ void ZapperGunBullet::OnTriggerEnter(const Physic::Collision col) {
 				target->SetAffectedByWeapon(true);
 				target->SetGotZap(true);
 				tmp.push_back(target);
-				transformTmp.push_back(target->GetGameObject()->m_transform);
+				transformTmp.push_back(target->GetGameObject()->m_transform.get());
 
 			}
 
@@ -105,7 +105,7 @@ void ZapperGunBullet::OnTriggerEnter(const Physic::Collision col) {
 						target->SetAffectedByWeapon(true);
 						target->SetGotZap(true);
 						tmp.push_back(target);
-						transformTmp.push_back(target->GetGameObject()->m_transform);
+						transformTmp.push_back(target->GetGameObject()->m_transform.get());
 					}
 					else
 					{
@@ -154,7 +154,7 @@ Enemy* ZapperGunBullet::FindTarget(Enemy* e)
 			continue;
 		}
 
-		float distance = glm::length(c->GetGameObject()->m_transform.GetPosition() - e->GetGameObject()->m_transform.GetPosition());
+		float distance = glm::length(c->GetGameObject()->m_transform->GetPosition() - e->GetGameObject()->m_transform->GetPosition());
 
 		if (distance == 0) 
 		{
@@ -208,7 +208,7 @@ void ZapperGunBullet::Zap(float dt) {
 				e->TakeDamage(bulletDmg);
 			}
 
-			e->GetGameObject()->m_transform.SetPosition(TargetTranform.at(i).GetPosition());
+			e->GetGameObject()->m_transform->SetPosition(TargetTranform.at(i)->GetPosition());
 
 			if (i < (Targets.size() - 1))
 			{
@@ -216,8 +216,8 @@ void ZapperGunBullet::Zap(float dt) {
 
 				if (n != nullptr) {
 
-					GLRenderer::GetInstance()->DrawDebug_Line(TargetTranform.at(i).GetPosition().x, TargetTranform.at(i).GetPosition().y
-						, TargetTranform.at(i + 1).GetPosition().x, TargetTranform.at(i + 1).GetPosition().y
+					GLRenderer::GetInstance()->DrawDebug_Line(TargetTranform.at(i)->GetPosition().x, TargetTranform.at(i)->GetPosition().y
+						, TargetTranform.at(i + 1)->GetPosition().x, TargetTranform.at(i + 1)->GetPosition().y
 						, 0.0f, 0.0f, 1.0f);
 				}
 			}

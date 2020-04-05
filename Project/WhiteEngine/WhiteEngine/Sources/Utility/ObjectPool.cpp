@@ -1,5 +1,16 @@
 #include "ObjectPool.h"
 
+void ObjectPool::Init() {
+	if (prefabObjectPath != "") {
+		for (int i = 0; i < objectCount; ++i) {
+			AddObject(SceneManagement::Instantiate(prefabObjectPath));
+		}
+	}
+	else {
+		ENGINE_WARN("No Prefab Path");
+	}
+}
+
 void ObjectPool::AddObject(GameObject* obj) {
 	m_objects.push_back(obj);
 }
@@ -18,7 +29,7 @@ GameObject* ObjectPool::GetGameObject() {
 	return nullptr;
 }
 
-GameObject* ObjectPool::GetInactiveObject() 
+GameObject* ObjectPool::GetInactiveObject()
 {
 	for (GameObject* obj : m_objects) {
 		if (!obj->Active()) {

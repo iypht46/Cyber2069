@@ -1,16 +1,20 @@
 #pragma once
 #include <vector>
+#include <memory>
 #include "Core/EC/Components/BehaviourScript.h"
 #include "HPsystem.hpp"
 #include "Core/EC/Components/Animator.hpp"
-
 #include "Character.hpp"
+
+#include <cereal/types/polymorphic.hpp>
 
 enum EnemyState
 {
 	Idle = 0,
 	Chase,
 	Active,
+	Dash,
+	Reset
 };
 
 class Enemy :public Character {
@@ -31,11 +35,10 @@ protected:
 	//events on take damage (funct*)
 	//events on dead (funct*)
 
-	float CollideDamage = 1.0f;
-
 	void OnTakeDamage();
 	void OnDead();
 public:
+	float CollideDamage = 1.0f;
 	float targetDetectionRange = 0;
 
 	void Init();
@@ -52,4 +55,18 @@ public:
 
 	bool isZap() { return GotZap; }
 	void SetGotZap(bool z) { GotZap = z; }
+
+//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<BehaviourScript>(this),
+			targetDetectionRange,
+			CollideDamage
+		);
+	}
 };
+
+CEREAL_REGISTER_TYPE(Enemy);
+

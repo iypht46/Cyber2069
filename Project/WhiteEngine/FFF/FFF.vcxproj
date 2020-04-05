@@ -28,7 +28,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -80,6 +80,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)\WhiteEngine\Vendors\cereal-1.3.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -130,8 +131,10 @@
     <ClCompile Include="Sources\BlackholeGun.cpp" />
     <ClCompile Include="Sources\BlackholeGunBullet.cpp" />
     <ClCompile Include="Sources\Character.cpp" />
+    <ClCompile Include="Sources\Charger.cpp" />
     <ClCompile Include="Sources\GrenadeLauncher.cpp" />
     <ClCompile Include="Sources\GrenadeLauncherBullet.cpp" />
+    <ClCompile Include="Sources\GroundDash.cpp" />
     <ClCompile Include="Sources\GroundPatrol.cpp" />
     <ClCompile Include="Sources\Explosion.cpp" />
     <ClCompile Include="Sources\AirDash.cpp" />
@@ -156,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Character.hpp" />
+    <ClInclude Include="Sources\GroundDash.hpp" />
     <ClInclude Include="Sources\GroundPatrol.hpp" />
     <ClInclude Include="Sources\Explosion.hpp" />
     <ClInclude Include="Sources\AirDash.hpp" />

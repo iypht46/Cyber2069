@@ -1,16 +1,22 @@
 #pragma once
 
-#include <iostream>
+#include <memory>
 #include <vector>
 #include <string>
+
 #include "Components/Transform.hpp"
+#include "Components/BehaviourScript.h"
 #include "Core/Factory.h"
 #include "Core/LogCustomType.hpp"
+#include "Physic/PhysicScene.hpp"
 
 //Forward Declaration
-class Component;
-class BehaviourScript;
 namespace Physic { struct Collision; }
+
+#include <cereal/cereal.hpp>
+#include <cereal/types/string.hpp>
+#include <cereal/types/vector.hpp>
+#include <cereal/types/memory.hpp>
 
 class GameObject
 {
@@ -18,13 +24,13 @@ protected:
 	friend class BehaviourScript;
 	friend class Collider;
 
-	bool isActive;
+	bool isActive = true;
 
 	static int s_IDCounter;
 	int m_objectID;
-	
-	std::vector<Component*> m_components;
-	std::vector<BehaviourScript*> m_scripts;
+
+	std::vector<std::shared_ptr<Component>> m_components;
+	std::vector<std::shared_ptr<BehaviourScript>> m_scripts;
 
 	void CollisionEnter(const Physic::Collision);
 	void CollisionStay(const Physic::Collision);
@@ -34,20 +40,21 @@ protected:
 	void TriggerExit(const Physic::Collision);
 public:
 	GameObject();
-	std::string Name;
-	Transform m_transform;
+	~GameObject() {}
+
+	std::string Layer = "Default";
+
+	std::string Name = "GameObj";
+	//change this to smart ptr
+	std::shared_ptr<Transform> m_transform;
 
 	void SetActive(bool activestate);
 	bool Active();
 
 	int GetID();
 
-	virtual void OnAwake() {};
-	virtual void OnEnable() {};
-	virtual void OnStart() {};
-	virtual void OnUpdate(float dt) {};
-	virtual void OnFixedUpdate(float dt) {};
-	virtual void OnDisable() {};
+	//init all member component
+	void InitComponents();
 
 	template <class T>
 	T* AddComponent();
@@ -58,30 +65,49 @@ public:
 	//Log to logger
 	LogCustomType_DC(GameObject);
 
-	//GameObject* GetGameObject();
-	//void SetGameObject(GameObject* obj);
+	//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			isActive,
+			Name,
+			Layer,
+			m_transform,
+			m_components,
+			cereal::defer(m_scripts)
+			);
+	}
 };
 
 template<class T>
 T* GameObject::AddComponent() {
-	T* component = Factory<T>::Create();
+	std::shared_ptr<T> component = Factory<T>::Create();
+
 	m_components.push_back(component);
 	m_components.back()->SetGameObject(this);
+	m_components.back()->Init();
 
-	return component;
+	//if is behaviou script, also assign to script collection
+	std::shared_ptr<BehaviourScript> behaviour = dynamic_pointer_cast<BehaviourScript>(component);
+	if (behaviour) {
+		m_scripts.push_back(behaviour);
+	}
+
+	return component.get();
 }
 
 template<class T>
 T* GameObject::GetComponent() {
 
-	for (Component* component : m_components) 
+	for (std::shared_ptr<Component> component : m_components)
 	{
-		if (dynamic_cast<T*>(component))
+		if (dynamic_pointer_cast<T>(component))
 		{
-			return dynamic_cast<T*>(component);
+			return dynamic_pointer_cast<T>(component).get();
 		}
 	}
-	
+
 	return nullptr;
 }
 
@@ -89,4 +115,3 @@ LogCustomType_DF(GameObject)
 {
 	return os << "GameObject: " << obj.Name << "\n";
 }
-

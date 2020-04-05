@@ -4,7 +4,7 @@
 #include "Core/Logger.hpp"
 
 void DeQueen::Init() {
-	airPatrol = m_gameObject->GetComponent<AirPatrol>();
+	airPatrol = GetGameObject()->GetComponent<AirPatrol>();
 	PosX = -(Graphic::Window::GetWidth() / 2);
 	PosY = Graphic::Window::GetHeight() / 2;
 	
@@ -22,7 +22,8 @@ void DeQueen::OnStart() {
 
 void DeQueen::OnUpdate(float dt) {
 	
-	Enemy::OnUpdate(dt);
+	//no need to detect target
+	//Enemy::OnUpdate(dt);
 
 	airPatrol->Patrol();
 
@@ -34,12 +35,13 @@ void DeQueen::OnUpdate(float dt) {
 		int spawnPosX = airPatrol->queen->GetPosition().x;
 		int spawnPosY = airPatrol->queen->GetPosition().y - 100;
 		if (randSpawn == 0) {
+			//std::shared_ptr<GameObject> flyer = FlyerPool->GetInactiveObject();
 			GameObject* flyer = FlyerPool->GetInactiveObject();
 			if (flyer != nullptr)
 			{
 				flyer->SetActive(true);
 
-				flyer->m_transform.SetPosition(glm::vec3(spawnPosX, spawnPosY, 1.0f));
+				flyer->m_transform->SetPosition(glm::vec3(spawnPosX, spawnPosY, 1.0f));
 			}
 		}
 		else {
@@ -48,7 +50,7 @@ void DeQueen::OnUpdate(float dt) {
 			{
 				bomber->SetActive(true);
 
-				bomber->m_transform.SetPosition(glm::vec3(spawnPosX, spawnPosY, 1.0f));
+				bomber->m_transform->SetPosition(glm::vec3(spawnPosX, spawnPosY, 1.0f));
 			}
 		}
 		

@@ -49,11 +49,11 @@ void LaserGun::GameTimeBehaviour(float dt)
 			laser_length = (Graphic::Window::GetHeight() / 1.75f) * Graphic::getCamera()->GetZoom();
 		}
 
-		float gun_x = weaponObj->m_transform.GetPosition().x + (50.0f * glm::cos(glm::radians(*angle)));
-		float gun_y = weaponObj->m_transform.GetPosition().y + (50.0f * glm::sin(glm::radians(*angle)));
+		float gun_x = weaponObj->m_transform->GetPosition().x + (50.0f * glm::cos(glm::radians(*angle)));
+		float gun_y = weaponObj->m_transform->GetPosition().y + (50.0f * glm::sin(glm::radians(*angle)));
 
-		float end_x = weaponObj->m_transform.GetPosition().x + (laser_length * glm::cos(glm::radians(*angle)));
-		float end_y = weaponObj->m_transform.GetPosition().y + (laser_length * glm::sin(glm::radians(*angle)));
+		float end_x = weaponObj->m_transform->GetPosition().x + (laser_length * glm::cos(glm::radians(*angle)));
+		float end_y = weaponObj->m_transform->GetPosition().y + (laser_length * glm::sin(glm::radians(*angle)));
 
 		Physic::RayHit platHit = PhySc->Raycast(Physic::Ray(gun_x, gun_y, end_x, end_y), PhySc->GetLayerFromString("Platform"));
 
@@ -64,9 +64,9 @@ void LaserGun::GameTimeBehaviour(float dt)
 		}
 
 		float laser_length = glm::sqrt(((end_x - gun_x) * (end_x - gun_x)) + ((end_y - gun_y) * (end_y - gun_y)));
-		laser->m_transform.SetPosition(glm::vec3((end_x + gun_x) / 2, (end_y + gun_y) / 2, 1.0f));
-		laser->m_transform.SetScale(glm::vec3(laser_length, 25.0f, 1.0f));
-		laser->m_transform.SetRotation(*angle);
+		laser->m_transform->SetPosition(glm::vec3((end_x + gun_x) / 2, (end_y + gun_y) / 2, 1.0f));
+		laser->m_transform->SetScale(glm::vec3(laser_length, 25.0f, 1.0f));
+		laser->m_transform->SetRotation(*angle);
 
 		//GLRenderer::GetInstance()->DrawDebug_Line(gun_x, gun_y, end_x, end_y, 1.0f, 0.0f, 0.0f);
 		Physic::RayHits Hits = PhySc->RaycastAll(Physic::Ray(gun_x, gun_y, end_x, end_y), PhySc->GetLayerFromString("Enemy"));

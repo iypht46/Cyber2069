@@ -16,7 +16,7 @@ AirDash::AirDash()
 
 void AirDash::Init() {
 	this->m_target = glm::vec3(0);
-	bomber = &(m_gameObject->m_transform);
+	self = m_gameObject->m_transform.get();
 	rb = m_gameObject->GetComponent<Rigidbody>();
 }
 
@@ -35,7 +35,7 @@ void AirDash::SetAimSpeed(float value) {
 void AirDash::Dash(float dt) {
 	
 	float detectRange = 500.0f;
-	glm::vec3 dir = m_target - bomber->GetPosition();
+	glm::vec3 dir = m_target - self->GetPosition();
 	float distance = glm::length(dir);
 	m_angle = glm::atan(dir.y, dir.x);
 	dashEnd = false;
@@ -44,7 +44,7 @@ void AirDash::Dash(float dt) {
 		timer -= dt;
 		if (timer > 0) {
 			rb->SetVelocity(glm::vec3(0, 0, 0));
-			bomber->SetRotation(m_angle);
+			self->SetRotation(m_angle);
 		}
 		else {
 			dashState = true;
@@ -54,7 +54,7 @@ void AirDash::Dash(float dt) {
 
 	if (dashState) {
 		if (distance > 50.0f) {
-			rb->SetVelocity(glm::vec3(m_dashSpeed*glm::cos(bomber->GetRotation()), m_dashSpeed*glm::sin(bomber->GetRotation()), 0));
+			rb->SetVelocity(glm::vec3(m_dashSpeed*glm::cos(self->GetRotation()), m_dashSpeed*glm::sin(self->GetRotation()), 0));
 		}
 		else 
 		{

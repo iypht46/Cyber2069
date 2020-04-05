@@ -14,8 +14,9 @@ GroundPatrol::~GroundPatrol()
 void GroundPatrol::Init() {
 	m_stoppingDistance = 25.0f;
 	m_speed = 50.0f;
-	delay_timer = 3.0f;
-	thisTransform = &(m_gameObject->m_transform);
+	delay_timer = 2.0f;
+	MaxDelay = delay_timer;
+	thisTransform = m_gameObject->m_transform.get();
 	rb = m_gameObject->GetComponent<Rigidbody>();
 	ps = Physic::PhysicScene::GetInstance();
 	rb->SetVelocity(glm::vec3(m_speed, 0, 0));
@@ -29,6 +30,11 @@ void GroundPatrol::SetSpeed(float val) {
 	this->m_speed = val;
 }
 
+void GroundPatrol::SetMaxDelay(float val) {
+	this->delay_timer = val;
+	this->MaxDelay = delay_timer;
+}
+
 void GroundPatrol::Patrol(float dt) {
 	Physic::RayHit* Ground = nullptr;
 	float posX, posY;
@@ -40,33 +46,36 @@ void GroundPatrol::Patrol(float dt) {
 	Ground = &(ps->Raycast(Physic::Ray(posX, posY, (posX + (sign*m_stoppingDistance)), (posY - (thisTransform->GetScale().y / 2.0f))), ps->GetLayerFromString("Platform")));
 	GLRenderer::GetInstance()->DrawDebug_Line(posX, posY, (posX + (sign*m_stoppingDistance)), (posY - (thisTransform->GetScale().y / 2.0f)), 1.0f, 0.0f, 0.0f);
 	float dir = posX - Ground->position.x;
-	ENGINE_INFO("{}", dir);
 	if (!Ground->hit) {
-		delay_timer -= dt;
-
-		if (dir < 0) {
-			if (delay_timer > 0) {
-				rb->SetVelocity(glm::vec3(0, 0, 0));
-			}
-			else {
-				thisTransform->SetScale(glm::vec3(glm::abs(thisTransform->GetScale().x), thisTransform->GetScale().y, 1.0f));
-				rb->SetVelocity(glm::vec3(m_speed, 0, 0));
-				delay_timer = 3.0f;
-			}
+		MaxDelay -= dt;
+		if (MaxDelay > 0) {
+			rb->SetVelocity(glm::vec3(0, 0, 0));
 		}
 		else {
-			if (delay_timer > 0) {
-				rb->SetVelocity(glm::vec3(0, 0, 0));
+			if (dir < 0) {
+				thisTransform->SetScale(glm::vec3(glm::abs(thisTransform->GetScale().x), thisTransform->GetScale().y, 1.0f));
+				rb->SetVelocity(glm::vec3(m_speed, 0, 0));
 			}
 			else {
 				thisTransform->SetScale(glm::vec3(glm::abs(thisTransform->GetScale().x) * -1, thisTransform->GetScale().y, 1.0f));
 				rb->SetVelocity(glm::vec3(-m_speed, 0, 0));
-				delay_timer = 3.0f;
 			}
-		}	
+			MaxDelay = delay_timer;
+		}
 		
 	}
 
+}
+
+void GroundPatrol::OnAwake() {
+	m_stoppingDistance = 25.0f;
+	m_speed = 50.0f;
+	delay_timer = 2.0f;
+	MaxDelay = delay_timer;
+	thisTransform = m_gameObject->m_transform.get();
+	rb = m_gameObject->GetComponent<Rigidbody>();
+	ps = Physic::PhysicScene::GetInstance();
+	rb->SetVelocity(glm::vec3(m_speed, 0, 0));
 }
 
 void GroundPatrol::OnStart() {

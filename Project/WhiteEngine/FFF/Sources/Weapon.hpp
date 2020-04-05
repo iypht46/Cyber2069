@@ -154,7 +154,7 @@ protected:
 	Enemy* target;
 
 	vector <Enemy*> Targets;
-	vector <Transform> TargetTranform;
+	vector <Transform*> TargetTranform;
 	Physic::Colliders colliders;
 
 public:

@@ -16,10 +16,10 @@ void BlackholeGunBullet::OnUpdate(float dt)
 	winWidth = Graphic::Window::GetWidth() * cam->GetZoom();
 	winHeight = Graphic::Window::GetHeight() * cam->GetZoom();
 
-	if ((m_gameObject->m_transform.GetPosition().x > (camPos.x + (winWidth / 2)))
-		|| (m_gameObject->m_transform.GetPosition().x < (camPos.x - (winWidth / 2)))
-		|| (m_gameObject->m_transform.GetPosition().y > (camPos.y + (winHeight / 2)))
-		|| (m_gameObject->m_transform.GetPosition().y < (camPos.y - (winHeight / 2))))
+	if ((m_gameObject->m_transform->GetPosition().x > (camPos.x + (winWidth / 2)))
+		|| (m_gameObject->m_transform->GetPosition().x < (camPos.x - (winWidth / 2)))
+		|| (m_gameObject->m_transform->GetPosition().y > (camPos.y + (winHeight / 2)))
+		|| (m_gameObject->m_transform->GetPosition().y < (camPos.y - (winHeight / 2))))
 	{
 		if (!isTriggerEnemy) 
 		{
@@ -34,7 +34,7 @@ void BlackholeGunBullet::OnUpdate(float dt)
 
 		DragEnemy();
 
-		GLRenderer::GetInstance()->DrawDebug_Circle(m_gameObject->m_transform.GetPosition().x, m_gameObject->m_transform.GetPosition().y, Radius, 0.0f, 0.0f, 1.0f);
+		GLRenderer::GetInstance()->DrawDebug_Circle(m_gameObject->m_transform->GetPosition().x, m_gameObject->m_transform->GetPosition().y, Radius, 0.0f, 0.0f, 1.0f);
 
 		if (DurationCount >= Duration) 
 		{
@@ -96,7 +96,7 @@ void BlackholeGunBullet::DragEnemy()
 	Physic::Colliders collide;
 
 	for (Collider* c : colliders) {
-		float distance = glm::length(c->GetGameObject()->m_transform.GetPosition() - m_gameObject->m_transform.GetPosition());
+		float distance = glm::length(c->GetGameObject()->m_transform->GetPosition() - m_gameObject->m_transform->GetPosition());
 		
 		if (distance > Radius) {
 			continue;
@@ -108,7 +108,7 @@ void BlackholeGunBullet::DragEnemy()
 				enemRb = enemy->GetGameObject()->GetComponent<Rigidbody>();
 
 				enemy->SetAffectedByWeapon(true);
-				float angle = atan2((m_gameObject->m_transform.GetPosition().y - c->GetGameObject()->m_transform.GetPosition().y), (m_gameObject->m_transform.GetPosition().x - c->GetGameObject()->m_transform.GetPosition().x));
+				float angle = atan2((m_gameObject->m_transform->GetPosition().y - c->GetGameObject()->m_transform->GetPosition().y), (m_gameObject->m_transform->GetPosition().x - c->GetGameObject()->m_transform->GetPosition().x));
 
 				enemRb->SetVelocity(glm::vec3(ToCenterSpeed * cos(angle), ToCenterSpeed * sin(angle), 0.0f));
 
@@ -129,7 +129,7 @@ void BlackholeGunBullet::ReleaseEnemy() {
 	Physic::Colliders collide;
 
 	for (Collider* c : colliders) {
-		float distance = glm::length(c->GetGameObject()->m_transform.GetPosition() - m_gameObject->m_transform.GetPosition());
+		float distance = glm::length(c->GetGameObject()->m_transform->GetPosition() - m_gameObject->m_transform->GetPosition());
 
 		if (distance > Radius) {
 			continue;

@@ -21,19 +21,19 @@ void GrenadeLauncherBullet::OnUpdate(float dt)
 
 	float bulletAngle = glm::degrees(glm::atan(velo_y / velo_x));
 
-	m_gameObject->m_transform.SetRotation(bulletAngle);
+	m_gameObject->m_transform->SetRotation(bulletAngle);
 
 	if (velo_x < 0) {
-		m_gameObject->m_transform.SetScale(glm::vec3(scaleX * -1.0f, m_gameObject->m_transform.GetScale().y, m_gameObject->m_transform.GetScale().z));
+		m_gameObject->m_transform->SetScale(glm::vec3(scaleX * -1.0f, m_gameObject->m_transform->GetScale().y, m_gameObject->m_transform->GetScale().z));
 	}
 	else {
-		m_gameObject->m_transform.SetScale(glm::vec3(scaleX * 1.0f, m_gameObject->m_transform.GetScale().y, m_gameObject->m_transform.GetScale().z));
+		m_gameObject->m_transform->SetScale(glm::vec3(scaleX * 1.0f, m_gameObject->m_transform->GetScale().y, m_gameObject->m_transform->GetScale().z));
 	}
 	
-	if ((m_gameObject->m_transform.GetPosition().x > (camPos.x + (winWidth / 2)))
-		|| (m_gameObject->m_transform.GetPosition().x < (camPos.x - (winWidth / 2)))
-		|| (m_gameObject->m_transform.GetPosition().y > (camPos.y + (winHeight / 2)))
-		|| (m_gameObject->m_transform.GetPosition().y < (camPos.y - (winHeight / 2))))
+	if ((m_gameObject->m_transform->GetPosition().x > (camPos.x + (winWidth / 2)))
+		|| (m_gameObject->m_transform->GetPosition().x < (camPos.x - (winWidth / 2)))
+		|| (m_gameObject->m_transform->GetPosition().y > (camPos.y + (winHeight / 2)))
+		|| (m_gameObject->m_transform->GetPosition().y < (camPos.y - (winHeight / 2))))
 	{
 		rb->SetVelocity(glm::vec3(0));
 		m_gameObject->SetActive(false);
@@ -56,7 +56,7 @@ void GrenadeLauncherBullet::OnStart()
 {
 	rb = m_gameObject->GetComponent<Rigidbody>();
 	cam = Graphic::getCamera();
-	scaleX = m_gameObject->m_transform.GetScale().x;
+	scaleX = m_gameObject->m_transform->GetScale().x;
 }
 
 
@@ -87,7 +87,7 @@ void GrenadeLauncherBullet::Explode() {
 	Physic::Colliders colliders = ps->GetColliderLayer(enem);
 	for (Collider* c : colliders) {
 
-		float distance = glm::length(c->GetGameObject()->m_transform.GetPosition() - m_gameObject->m_transform.GetPosition());
+		float distance = glm::length(c->GetGameObject()->m_transform->GetPosition() - m_gameObject->m_transform->GetPosition());
 		
 		if (distance <= radius) {
 			
@@ -101,7 +101,7 @@ void GrenadeLauncherBullet::Explode() {
 	colliders = ps->GetColliderLayer(ps->GetLayerFromString("Player"));
 	for (Collider* c : colliders) {
 
-		float distance = glm::length(c->GetGameObject()->m_transform.GetPosition() - m_gameObject->m_transform.GetPosition());
+		float distance = glm::length(c->GetGameObject()->m_transform->GetPosition() - m_gameObject->m_transform->GetPosition());
 
 		if (distance <= radius) {
 

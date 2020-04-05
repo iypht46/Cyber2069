@@ -48,10 +48,10 @@ void ZapperGun::GameTimeBehaviour(float dt) {
 				angle_deg = *angle;
 				angle_rad = glm::radians(*angle);
 
-				float posX = m_gameObject->m_transform.GetPosition().x + (50 * cos(angle_rad));
-				float posY = m_gameObject->m_transform.GetPosition().y + (50 * sin(angle_rad));
-				bullet->m_transform.SetPosition(glm::vec3(posX, posY, 0.0f));
-				bullet->m_transform.SetRotation(angle_deg);
+				float posX = m_gameObject->m_transform->GetPosition().x + (50 * cos(angle_rad));
+				float posY = m_gameObject->m_transform->GetPosition().y + (50 * sin(angle_rad));
+				bullet->m_transform->SetPosition(glm::vec3(posX, posY, 0.0f));
+				bullet->m_transform->SetRotation(angle_deg);
 
 				float speedX = bullet_speed * cos(angle_rad);
 				float speedY = bullet_speed * sin(angle_rad);

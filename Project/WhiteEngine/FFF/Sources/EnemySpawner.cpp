@@ -7,11 +7,6 @@ void EnemySpawner::OnStart()
 
 void EnemySpawner::OnUpdate(float dt)
 {
-	if (GameController::GetInstance()->isChangeDifficulty()) 
-	{
-		updateSpawner();
-	}
-
 	SpawnRateCount -= dt;
 
 	if (SpawnRateCount <= 0)
@@ -62,7 +57,7 @@ GameObject* EnemySpawner::SpawnEnemy(float posX,float posY)
 		enemy->SetActive(true);
 		enemy->GetComponent<HPsystem>()->ResetHP();
 
-		enemy->m_transform.SetPosition(glm::vec3(posX, posY, 1.0f));
+		enemy->m_transform->SetPosition(glm::vec3(posX, posY, 1.0f));
 
 		switch (SpawnType) {
 		case POOL_TYPE::ENEMY_FLYER:
@@ -98,9 +93,6 @@ void EnemySpawner::SetSpawnType(int type) {
 }
 
 void EnemySpawner::updateSpawner() {
-
-	SpawnAmplifier = GameController::GetInstance()->GetCurrAmplifier();
-	SpawnPreset = GameController::GetInstance()->GetCurrPreset();
 
 	switch (SpawnType)
 	{

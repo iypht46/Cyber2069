@@ -44,7 +44,7 @@ void GameController::OnStart() {
 	Spawner.push_back(FlyerSpawner->GetComponent<EnemySpawner>());
 	Spawner.push_back(BomberSpawner->GetComponent<EnemySpawner>());
 
-	EnemyAmplifier* a = new EnemyAmplifier;
+	shared_ptr<EnemyAmplifier> a = std::make_shared<EnemyAmplifier>();
 	a->EnemySpawnRate = 1.0f;
 	a->FlyerHP = 1.0f;
 	a->FlyerSpeed = 100.0f;
@@ -60,7 +60,7 @@ void GameController::OnStart() {
 
 	Amplifier.push_back(a);
 
-	a = new EnemyAmplifier;
+	a = std::make_shared<EnemyAmplifier>();
 	a->EnemySpawnRate = 0.5f;
 	a->FlyerHP = 1.0f;
 	a->FlyerSpeed = 300.0f;
@@ -76,13 +76,13 @@ void GameController::OnStart() {
 
 	Amplifier.push_back(a);
 
-	EnemyPreset* p1 = new EnemyPreset;
+	std::shared_ptr<EnemyPreset> p1 = std::make_shared<EnemyPreset>();
 	p1->BomberRatio = 0.5f;
 	p1->FlyerRatio = 1.0f;
 	Preset.push_back(p1);
 
-	CurrAmplifier = new EnemyAmplifier;
-	CurrPreset = new EnemyPreset;
+	CurrAmplifier = Amplifier[0].get();
+	CurrPreset = Preset[0].get();
 }
 
 void GameController::OnUpdate(float dt) 
@@ -134,17 +134,17 @@ void GameController::AssignScoreText(GameObject* ScoreText) {
 
 void GameController::AssignHPbar(GameObject* hpbar) {
 	this->HPbar = hpbar;
-	startHPscaleX = hpbar->m_transform.GetScale().x;
-	startHPscaleY = hpbar->m_transform.GetScale().y;
-	startHPposX = hpbar->m_transform.GetPosition().x;
+	startHPscaleX = hpbar->m_transform->GetScale().x;
+	startHPscaleY = hpbar->m_transform->GetScale().y;
+	startHPposX = hpbar->m_transform->GetPosition().x;
 }
 
 void GameController::AssignStaminabar(GameObject* staminabar)
 {
 	this->Staminabar = staminabar;
-	startStaminascaleX = staminabar->m_transform.GetScale().x;
-	startStaminascaleY = staminabar->m_transform.GetScale().y;
-	startStaminaposX = staminabar->m_transform.GetPosition().x;
+	startStaminascaleX = staminabar->m_transform->GetScale().x;
+	startStaminascaleY = staminabar->m_transform->GetScale().y;
+	startStaminaposX = staminabar->m_transform->GetPosition().x;
 }
 
 void GameController::AssignPlayer(GameObject* player) {
@@ -165,10 +165,8 @@ void GameController::updateHPui() {
 
 	float movePos = ((hpDiff / 2) * startHPscaleX) / PlayerHP->GetMaxHP();
 
-	HPbar->m_transform.SetScale(glm::vec3(currentX, startHPscaleY, 1.0f));
-	HPbar->m_transform.SetPosition(glm::vec3(startHPposX - movePos, HPbar->m_transform.GetPosition().y, 1.0f));
-
-
+	HPbar->m_transform->SetScale(glm::vec3(currentX, startHPscaleY, 1.0f));
+	HPbar->m_transform->SetPosition(glm::vec3(startHPposX - movePos , HPbar->m_transform->GetPosition().y, 1.0f));
 }
 
 void GameController::updateStaminaUI()
@@ -185,8 +183,8 @@ void GameController::updateStaminaUI()
 
 	float movePos = ((staDiff / 2) * startStaminascaleX) / player->GetMaxStamina();
 
-	Staminabar->m_transform.SetScale(glm::vec3(currentX, startStaminascaleY, 1.0f));
-	Staminabar->m_transform.SetPosition(glm::vec3(startStaminaposX - movePos, Staminabar->m_transform.GetPosition().y, 1.0f));
+	Staminabar->m_transform->SetScale(glm::vec3(currentX, startStaminascaleY, 1.0f));
+	Staminabar->m_transform->SetPosition(glm::vec3(startStaminaposX - movePos, Staminabar->m_transform->GetPosition().y, 1.0f));
 }
 
 void GameController::AddPool(ObjectPool* pool, int type)
@@ -200,7 +198,6 @@ ObjectPool* GameController::GetPool(int type) {
 
 void GameController::updateSpawner() 
 {
-	changeDifficulty = false;
 
 	if ((currScoreCheckpoint) < (Amplifier.size())) {
 
@@ -208,11 +205,16 @@ void GameController::updateSpawner()
 		{
 			int randPreset = rand() % Preset.size();
 
-			CurrAmplifier = Amplifier[currScoreCheckpoint];
-			CurrPreset = Preset[randPreset];
+			CurrAmplifier = Amplifier[currScoreCheckpoint].get();
+			CurrPreset = Preset[randPreset].get();
+
+			for (EnemySpawner* spawner : Spawner) {
+				spawner->SpawnAmplifier = CurrAmplifier;
+				spawner->SpawnPreset = CurrPreset;
+				spawner->updateSpawner();
+			}
 
 			currScoreCheckpoint += 1;
-			changeDifficulty = true;
 		}
 	}
 }

@@ -194,6 +194,12 @@ namespace Physic
 				{
 					return (AABBtoAABB(this));
 				}
+				else {
+					//ENGINE_INFO("not box");
+				}
+			}
+			else {
+				//ENGINE_INFO("object inactive");
 			}
 		}
 		else

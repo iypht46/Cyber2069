@@ -2,13 +2,13 @@
 
 void Flyer::Init(Transform* player) {
 	SetTarget(player);
-	airFollow = m_gameObject->GetComponent<AirFollowing>();
+	airFollow = GetGameObject()->GetComponent<AirFollowing>();
 
 	airFollow->SetPlayer(target);
 
 	targetDetectionRange = 1000.0f;
 
-	rigidbody = m_gameObject->GetComponent<Rigidbody>();
+	rigidbody = GetGameObject()->GetComponent<Rigidbody>();
 	Enemy::Init();
 }
 
@@ -17,7 +17,7 @@ void Flyer::OnStart() {
 }
 
 void Flyer::OnUpdate(float dt) {
-	if (m_gameObject->Active()) {
+	if (GetGameObject()->Active()) {
 		Enemy::OnUpdate(dt);
 
 		if (foundTarget) {

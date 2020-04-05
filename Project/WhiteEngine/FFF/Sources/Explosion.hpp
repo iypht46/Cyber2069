@@ -23,6 +23,7 @@ public:
 	void SetLayer(std::string layer);
 	void SetDamage(float val);
 	void SetRadius(float val);
+	virtual void OnAwake();
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);

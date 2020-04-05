@@ -5,23 +5,30 @@
 #include "Core/EC/Components/Rigidbody.hpp"
 #include "Character.hpp"
 
-class AirDash : public Character
+#include <cereal/types/polymorphic.hpp>
+
+class AirDash : public BehaviourScript
 {
 private: 
 	float timer;
+	bool dashing;
 	bool dashState;
 	bool dashEnd;
 	bool targetLocked;
 protected:
 	glm::vec3 m_target;
-	Transform* bomber;
+	Transform* self;
 	Rigidbody* rb;
+
 	float m_dashSpeed;
 	float m_aimTime;
 	float m_aimSpeed;
+
 	float m_angle;
 public:
 	AirDash();
+
+	~AirDash() {}
 	void Init();
 	void SetDashSpeed(float value);
 	void SetAimTime(float value);
@@ -37,5 +44,18 @@ public:
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
 	virtual void OnDisable();
+
+	//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<BehaviourScript>(this),
+			m_dashSpeed,
+			m_aimTime,
+			m_aimSpeed
+		);
+	}
 };
 
+CEREAL_REGISTER_TYPE(AirDash);

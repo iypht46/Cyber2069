@@ -16,25 +16,28 @@
 
 #include "Utility/ObjectPool.h"
 
+#include <cereal/types/base_class.hpp>
+#include <cereal/types/polymorphic.hpp>
+
 #define PI 3.14159265358979323846
 
 class PlayerController : public Character {
 private://change later
 	Physic::PhysicScene* ps;
 protected:
-	HPsystem* hpSystem;
-	Rigidbody* rb;
+	HPsystem* hpSystem = nullptr;
+	Rigidbody* rb = nullptr;
 
-	ObjectPool* MGbulletPool;
+	ObjectPool* MGbulletPool = nullptr;
 
 	vector<Equipment*> Equipments;
 	vector<Weapon*> Weapons;
 
-	Weapon* weapon;
-	Transform* weaponTranform;
+	Weapon* weapon = nullptr;
+	Transform* weaponTranform = nullptr;
 	
+	//stats===============
 	float max_stamina;
-	float stamina;
 
 	float dashStamina;
 	float jumpStamina;
@@ -45,21 +48,22 @@ protected:
 	float dash_speed;
 	float jump_speed;
 	float dashTime;
-	float dashRemainingTime;
 	float delay;
 
 	float camZoomInSpeed;
 	float camZoomOutSpeed;
 	float camZoomInDelay;
-	float camDelay_count;
 	float camSmall;
 	float camLarge;
 
-	float bullet_speed;
-	float bullet_delay;
-	float bullet_delay_count;
-
 	float GunDistance;
+	//======================
+
+	//runtime var===========
+	float stamina;
+	float dashRemainingTime;
+	float camDelay_count;
+
 	bool inverseGun;
 	bool running;
 	bool jumping;
@@ -77,6 +81,7 @@ protected:
 public:
 	void PSSet(Physic::PhysicScene* ps) { this->ps = ps; }
 	PlayerController();
+	~PlayerController() {}
 	
 	void DebugInput();
 
@@ -109,4 +114,29 @@ public:
 	virtual void OnTriggerEnter(const Physic::Collision) override;
 	virtual void OnTriggerStay(const Physic::Collision) override;
 	virtual void OnTriggerExit(const Physic::Collision) override;
+
+	//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<BehaviourScript>(this),
+			max_stamina,
+			dashStamina,
+			jumpStamina,
+			max_move_speed,
+			dash_speed,
+			jump_speed,
+			dashTime,
+			delay,
+			camZoomInSpeed,
+			camZoomOutSpeed,
+			camZoomInDelay,
+			camSmall,
+			camLarge,
+			GunDistance
+			);
+	}
 };
+
+CEREAL_REGISTER_TYPE(PlayerController);

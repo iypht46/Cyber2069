@@ -1,4 +1,6 @@
 #pragma once
+#include <memory>
+
 #include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/GameObject.hpp"
 #include "Core/EC/Components/TextRenderer.hpp"
@@ -6,9 +8,15 @@
 #include "HPsystem.hpp"
 #include "EnemySpawner.hpp"
 #include "PlayerController.hpp"
+#include <memory>
 
 #include <map>
 #include <vector>
+
+#include <cereal/types/vector.hpp>
+#include <cereal/types/memory.hpp>
+#include <cereal/types/base_class.hpp>
+#include <cereal/types/polymorphic.hpp>
 
 class EnemySpawner;
 
@@ -24,6 +32,16 @@ enum POOL_TYPE {
 struct EnemyPreset {
 	float FlyerRatio;
 	float BomberRatio;
+
+	//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			FlyerRatio,
+			BomberRatio
+			);
+	}
 };
 
 struct EnemyAmplifier {
@@ -40,8 +58,28 @@ struct EnemyAmplifier {
 	float BomberExplodeRadius;
 
 	float EnemySpawnRate;
-};
 
+	//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			FlyerHP,
+			FlyerSpeed,
+			FlyerDmg,
+
+			BomberHP,
+			BomberSpeed,
+			BomberDmg,
+			BomberAimTime,
+			BomberDashSpeed,
+			BomberExplodeDMG,
+			BomberExplodeRadius,
+
+			EnemySpawnRate
+			);
+	}
+};
 
 class GameController : public BehaviourScript {
 private:
@@ -70,8 +108,8 @@ private:
 
 	vector<EnemySpawner*> Spawner;
 
-	vector<EnemyPreset*> Preset;
-	vector<EnemyAmplifier*> Amplifier;
+	vector<std::shared_ptr<EnemyPreset>> Preset;
+	vector< std::shared_ptr<EnemyAmplifier>> Amplifier;
 
 	EnemyPreset* CurrPreset;
 	EnemyAmplifier* CurrAmplifier;
@@ -79,11 +117,11 @@ private:
 	int currScoreCheckpoint = 0;
 
 	float scoreCheckpoint[4] = { 0.0f, 10.0f,200.0f,300.0f };
-	
-	bool changeDifficulty = false;
 
 public:
 	GameController();
+	~GameController() {}
+
 	static GameController* GetInstance();
 	float GetScore();
 	float GetCombo();
@@ -110,7 +148,6 @@ public:
 
 	EnemyPreset* GetCurrPreset() { return CurrPreset; }
 	EnemyAmplifier* GetCurrAmplifier() { return CurrAmplifier; }
-	bool isChangeDifficulty() { return changeDifficulty; };
 
 	virtual void OnAwake();
 	virtual void OnEnable();
@@ -118,4 +155,22 @@ public:
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
 	virtual void OnDisable();
+
+//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<BehaviourScript>(this),
+			Preset,
+			Amplifier,
+			ScoreValue,
+			ComboValue,
+			startHPscaleX,
+			startHPscaleY,
+			startHPposX
+			);
+	}
 };
+
+CEREAL_REGISTER_TYPE(GameController);

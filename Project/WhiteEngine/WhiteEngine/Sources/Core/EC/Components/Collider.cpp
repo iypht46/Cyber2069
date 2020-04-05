@@ -6,6 +6,15 @@
 
 
 	//////////////Base Collider/////////////
+	Collider::Collider() {
+		Factory<Collider>::Add(this);
+	}
+
+	Collider::~Collider() { }
+
+	void Collider::Init() {
+		Physic::PhysicScene::GetInstance()->Add(this, GetGameObject()->Layer);
+	}
 
 	COLLIDER_TYPE Collider::GetType()
 	{
@@ -28,13 +37,13 @@
 		switch (m_collisionState)
 		{
 		case COL_STATE::ENTER:
-			m_gameObject->CollisionEnter(msg.m_collision);
+			GetGameObject()->CollisionEnter(msg.m_collision);
 			break;
 		case COL_STATE::STAY:
-			m_gameObject->CollisionStay(msg.m_collision);
+			GetGameObject()->CollisionStay(msg.m_collision);
 			break;
 		case COL_STATE::EXIT:
-			m_gameObject->CollisionExit(msg.m_collision);
+			GetGameObject()->CollisionExit(msg.m_collision);
 			m_collisionState = COL_STATE::NONE;
 			break;
 		default:
@@ -50,13 +59,13 @@
 		switch (m_collisionState)
 		{
 		case COL_STATE::ENTER:
-			m_gameObject->TriggerEnter(msg.m_collision);
+			GetGameObject()->TriggerEnter(msg.m_collision);
 			break;
 		case COL_STATE::STAY:
-			m_gameObject->TriggerStay(msg.m_collision);
+			GetGameObject()->TriggerStay(msg.m_collision);
 			break;
 		case COL_STATE::EXIT:
-			m_gameObject->TriggerExit(msg.m_collision);
+			GetGameObject()->TriggerExit(msg.m_collision);
 			m_collisionState = COL_STATE::NONE;
 			break;
 		default:
@@ -68,14 +77,43 @@
 
 
 	//////////////Box Collider//////////////
+	BoxCollider::BoxCollider() : Collider(COLLIDER_TYPE::BOX) {
+		Factory<BoxCollider>::Add(this);
+	}
+
+	void BoxCollider::Init() {
+		//Set Rigidbody
+		m_rigidbody = GetGameObject()->GetComponent<Rigidbody>();
+		//Set Transform
+		m_transform = GetGameObject()->m_transform.get();
+
+		//Set Box Size
+		m_colliderScale.x = m_halfWidth / m_transform->GetScale().x;
+		m_colliderScale.y = m_halfHeight / m_transform->GetScale().y;
+
+		if (m_rigidbody)
+		{
+			m_rigidbody = m_rigidbody;
+			m_isStatic = false;
+
+			if (m_rigidbody->automass) {
+				ComputeMass();
+			}
+		}
+		else
+		{
+			m_isStatic = true;
+		}
+
+		Collider::Init();
+	}
+
 	void BoxCollider::Init(float hW, float hH)
 	{
-		//Set Transform
-		//m_transform = m_gameObject->GetTransform();
 		//Set Rigidbody
-		m_rigidbody = m_gameObject->GetComponent<Rigidbody>();
+		m_rigidbody = GetGameObject()->GetComponent<Rigidbody>();
 		//Set Transform
-		m_transform = &m_gameObject->m_transform;
+		m_transform = GetGameObject()->m_transform.get();
 
 		//Set Box Size
 		m_halfWidth = hW;
@@ -122,7 +160,7 @@
 	void BoxCollider::Init(float hW, float hH, Rigidbody* rigid)
 	{
 		//Set Transform
-		m_transform = &m_gameObject->m_transform;
+		m_transform = GetGameObject()->m_transform.get();
 		//Set Rigidbody
 		m_rigidbody = rigid;
 		//Set Box Size
@@ -134,7 +172,6 @@
 		ComputeMass();
 		//Set Static
 		m_isStatic = false;
-		
 	}
 
 	void BoxCollider::ComputeAABB(Physic::AABB& a)

@@ -204,7 +204,6 @@ void GLRenderer::Render()
 	glm::mat4 camera = glm::mat4(1.0);
 
 	//--------Render Object Here--------
-
 	for (MeshRenderer *obj : MeshSet) {
 
 		if (obj->GetGameObject()->Active())
@@ -439,7 +438,7 @@ void GLRenderer::RenderDebugCollider(BoxCollider* col)
 	GameObject* obj = col->GetGameObject();
 
 	glm::mat4 sMat = glm::scale(glm::mat4(1.0f), glm::vec3(col->GetHw() * 2, col->GetHh() * 2, 1.0f));
-	glm::mat4 tMat = glm::translate(glm::mat4(1.0f), obj->m_transform.GetLocalPosition());
+	glm::mat4 tMat = glm::translate(glm::mat4(1.0f), obj->m_transform->GetLocalPosition());
 	glm::mat4 transformMat = tMat * sMat;
 
 	glm::mat4 projectionMatrix = Graphic::getCamera()->GetProjectionMatrix();

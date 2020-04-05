@@ -110,7 +110,7 @@ void PlayerController::OnEnable() {
 
 void PlayerController::OnUpdate(float dt)
 {
-	Graphic::getCamera()->SetPos(glm::vec3(m_gameObject->m_transform.GetPosition().x, m_gameObject->m_transform.GetPosition().y, m_gameObject->m_transform.GetPosition().z));
+	Graphic::getCamera()->SetPos(glm::vec3(GetGameObject()->m_transform->GetPosition().x, GetGameObject()->m_transform->GetPosition().y, GetGameObject()->m_transform->GetPosition().z));
 
 	cameraZoom(dt);
 
@@ -170,7 +170,7 @@ void PlayerController::DebugInput() {
 	
 	if (Input::GetKeyDown(Input::KeyCode::KEY_R))
 	{
-		m_gameObject->m_transform.SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
+		m_gameObject->m_transform->SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
 		hpSystem->ResetHP();
 		m_gameObject->SetActive(true);
 	}
@@ -264,6 +264,7 @@ void PlayerController::move()
 		direction.x = 1.0f;
 		velocity.x = move_speed * direction.x;
 		//rb->SetVelocity(glm::vec3(move_speed * direction.x, rb->GetVelocity().y, rb->GetVelocity().z));
+
 		if (!facingRight) {
 			flip();
 		}
@@ -278,21 +279,21 @@ void PlayerController::move()
 		falling = false;
 		onGround = false;
 
-		m_gameObject->GetComponent<Animator>()->setCurrentState(3);
+		GetGameObject()->GetComponent<Animator>()->setCurrentState(3);
 	}
 
 	if ((!Input::GetKeyHold(Input::KeyCode::KEY_A) && !Input::GetKeyHold(Input::KeyCode::KEY_D)) && !jumping && !falling)
 	{
 		if (!Dash) {
 			running = false;
-			m_gameObject->GetComponent<Animator>()->setCurrentState(0);
+			GetGameObject()->GetComponent<Animator>()->setCurrentState(0);
 		}
 	}
 	else if ((Input::GetKeyHold(Input::KeyCode::KEY_A) || Input::GetKeyHold(Input::KeyCode::KEY_D)) && !jumping && !falling) {
 
 		if (!running && !Dash) {
 			running = true;
-			m_gameObject->GetComponent<Animator>()->setCurrentState(1);
+			GetGameObject()->GetComponent<Animator>()->setCurrentState(1);
 		}
 	}
 
@@ -323,7 +324,7 @@ void PlayerController::dash(float dt)
 	{
 		hpSystem->SetInvincible(false);
 		running = false;
-		m_gameObject->GetComponent<Animator>()->setCurrentState(4);
+		GetGameObject()->GetComponent<Animator>()->setCurrentState(4);
 		Dash = false;
 	}
 	else
@@ -340,13 +341,13 @@ void PlayerController::dash(float dt)
 			if (!setDashAnim)
 			{
 				setDashAnim = true;
-				m_gameObject->GetComponent<Animator>()->setCurrentState(2);
+				GetGameObject()->GetComponent<Animator>()->setCurrentState(2);
 			}
 		}
 
 		if (dashDirection.x != 0)
 		{
-			m_gameObject->m_transform.SetScale(glm::vec3(glm::abs(m_gameObject->m_transform.GetScale().x) * dashDirection.x, m_gameObject->m_transform.GetScale().y, m_gameObject->m_transform.GetScale().z));
+			GetGameObject()->m_transform->SetScale(glm::vec3(glm::abs(GetGameObject()->m_transform->GetScale().x) * dashDirection.x, GetGameObject()->m_transform->GetScale().y, GetGameObject()->m_transform->GetScale().z));
 		}
 
 		rb->SetVelocity(glm::vec3(dash_speed * dashDirection.x, 0, 0));
@@ -357,8 +358,8 @@ void PlayerController::mouseAim()
 {
 	float mouse_x, mouse_y, pos_x, pos_y;
 
-	pos_x = m_gameObject->m_transform.GetPosition().x;
-	pos_y = m_gameObject->m_transform.GetPosition().y;
+	pos_x = GetGameObject()->m_transform->GetPosition().x;
+	pos_y = GetGameObject()->m_transform->GetPosition().y;
 
 	mouse_x = Input::GetMouseWorldPosition().x;
 	mouse_y = Input::GetMouseWorldPosition().y;
@@ -367,7 +368,7 @@ void PlayerController::mouseAim()
 
 	angle_rad = angle_deg / 180 * PI;
 
-	if (m_gameObject->m_transform.GetScale().x > 0) {
+	if (m_gameObject->m_transform->GetScale().x > 0) {
 		weaponTranform->SetRotation(angle_deg);
 
 		if (angle_deg > 90) {
@@ -413,8 +414,8 @@ bool PlayerController::checkGround()
 	float pos_x, pos_y, raycastRange;
 	Physic::PhysicScene* PhySc = Physic::PhysicScene::GetInstance();
 	
-	pos_x = m_gameObject->m_transform.GetPosition().x;
-	pos_y = m_gameObject->m_transform.GetPosition().y;
+	pos_x = GetGameObject()->m_transform->GetPosition().x;
+	pos_y = GetGameObject()->m_transform->GetPosition().y;
 	raycastRange = 25.0f;
 
 	hits = PhySc->RaycastAll(Physic::Ray(pos_x, pos_y, pos_x, pos_y - raycastRange), PhySc->GetLayerFromString("Platform")).size();
@@ -476,26 +477,28 @@ void PlayerController::assignWeapon(Weapon* wp)
 		weapon = wp;
 	}
 
-	weaponTranform = &(wp->GetWeapon()->m_transform);
-	float currDirY = weapon->GetWeapon()->m_transform.GetScale().y / glm::abs(weapon->GetWeapon()->m_transform.GetScale().y);
+	weaponTranform = wp->GetWeapon()->m_transform.get();
+	float currDirY = weapon->GetWeapon()->m_transform->GetScale().y / glm::abs(weapon->GetWeapon()->m_transform->GetScale().y);
 
 	weapon = wp;
 
 	wp->GetWeapon()->SetActive(true);
 	wp->AssignAngle(&angle_deg);
 	wp->SetGameObject(m_gameObject);
-	wp->GetWeapon()->m_transform.SetParent(&m_gameObject->m_transform);
+
+	//already set in editor, no need to set here
+	wp->GetWeapon()->m_transform->SetParent(m_gameObject->m_transform);
 
 
 	if (direction.x == -1.0f) 
 	{
-		wp->GetWeapon()->m_transform.SetScale(glm::vec3(wp->GetWeaponScale().x * -1.0f, wp->GetWeaponScale().y * currDirY, 1));
+		wp->GetWeapon()->m_transform->SetScale(glm::vec3(wp->GetWeaponScale().x * -1.0f, wp->GetWeaponScale().y * currDirY, 1));
 	}
 	else {
-		wp->GetWeapon()->m_transform.SetScale(glm::vec3(wp->GetWeaponScale().x, wp->GetWeaponScale().y * currDirY, 1));
+		wp->GetWeapon()->m_transform->SetScale(glm::vec3(wp->GetWeaponScale().x, wp->GetWeaponScale().y * currDirY, 1));
 	}
 
-	wp->GetWeapon()->m_transform.SetLocalPosition(glm::vec3(1.0f, 0.0f, 0.0f));
+	wp->GetWeapon()->m_transform->SetLocalPosition(glm::vec3(1.0f, 0.0f, 0.0f));
 }
 
 void PlayerController::AddEquipment(Equipment* e) 
