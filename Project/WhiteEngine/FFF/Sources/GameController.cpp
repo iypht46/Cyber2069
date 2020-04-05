@@ -198,7 +198,6 @@ ObjectPool* GameController::GetPool(int type) {
 
 void GameController::updateSpawner() 
 {
-
 	if ((currScoreCheckpoint) < (Amplifier.size())) {
 
 		if (ScoreValue >= scoreCheckpoint[currScoreCheckpoint])
@@ -215,6 +214,8 @@ void GameController::updateSpawner()
 			}
 
 			currScoreCheckpoint += 1;
+
+			ENGINE_INFO("updtae diff");
 		}
 	}
 }

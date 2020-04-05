@@ -255,12 +255,12 @@ namespace World
 		Bg2->AddComponent<MeshRenderer>();
 		Bg2->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 		Bg2->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer2.png");
-		Bg2->GetComponent<MeshRenderer>()->SetLayer(0);
+		//Bg2->GetComponent<MeshRenderer>()->SetLayer(0);
 
 		Bg1->AddComponent<MeshRenderer>();
 		Bg1->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 		Bg1->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer1.png");
-		Bg1->GetComponent<MeshRenderer>()->SetLayer(1);
+		//Bg1->GetComponent<MeshRenderer>()->SetLayer(1);
 
 		Bg2->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
 		Bg1->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
@@ -340,7 +340,7 @@ namespace World
 
 		//Behavior Script
 		Rabbit->AddComponent<HPsystem>();
-		Rabbit->GetComponent<HPsystem>()->SetMaxHP(100);
+		Rabbit->GetComponent<HPsystem>()->SetMaxHP(10000);
 		Rabbit->AddComponent<PlayerController>();
 
 		platform->AddComponent<MeshRenderer>();
@@ -380,7 +380,7 @@ namespace World
 		EnemCon->AddState(Fly, true);
 
 		ENGINE_INFO("Flyer creation==========================================================");
-		for (int i = 0; i < 50; i++)
+		for (int i = 0; i < 100; i++)
 		{
 			GameObject* flyer = Instantiate();
 			flyer->Layer = "Enemy";
@@ -452,7 +452,7 @@ namespace World
 		BomberAnimController->AddState(BomberDie, false);
 
 		//bomber
-		for (int i = 0; i < 50; i++)
+		for (int i = 0; i < 100; i++)
 		{
 			GameObject* bomber = Instantiate();
 			bomber->Layer = "Enemy";
@@ -472,6 +472,7 @@ namespace World
 			bomber->AddComponent<AirFollowing>();
 			bomber->AddComponent<AirDash>();
 			bomber->AddComponent<Bomber>();
+			bomber->AddComponent<Explosion>();
 			bomber->GetComponent<Bomber>()->Init(Rabbit->m_transform.get());
 
 			bomber->GetComponent<AirFollowing>()->OnAwake();

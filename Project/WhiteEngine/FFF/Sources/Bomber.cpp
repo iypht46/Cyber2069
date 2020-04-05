@@ -6,7 +6,7 @@ void Bomber::Init(Transform* player) {
 	SetTarget(player);
 	airFollow = m_gameObject->GetComponent<AirFollowing>();
 	airDash = m_gameObject->GetComponent<AirDash>();
-	explosion = m_gameObject->AddComponent<Explosion>();
+	explosion = m_gameObject->GetComponent<Explosion>();
 
 	airFollow->SetPlayer(target);
 

@@ -144,8 +144,6 @@
 		ComputeMass();
 		//Set Static
 		m_isStatic = false;
-
-		Collider::Init();
 	}
 
 	void BoxCollider::ComputeAABB(Physic::AABB& a)
