@@ -6,11 +6,11 @@ namespace Tools
 {
 	void ObjectHierarchy::Init()
 	{
-		ImVec2 main_window_size = ImVec2(Graphic::Window::GetWidth(), Graphic::Window::GetHeight());
+		ImVec2 main_window_size = ImVec2(static_cast<float>(Graphic::Window::GetWidth()), static_cast<float>(Graphic::Window::GetHeight()));
 		ImVec2 main_window_pos = ImGui::GetMainViewport()->Pos;
 		std::cout << "Viewport Pos " << main_window_pos.x << " ," << main_window_pos.y << std::endl;
-		m_width = main_window_size.x / 4;
-		m_height = main_window_size.y - 20;
+		m_width = static_cast<int>(main_window_size.x / 4);
+		m_height = static_cast<int>(main_window_size.y - 20);
 		m_position.x = 0;
 		m_position.y = main_window_pos.y + 20;
 

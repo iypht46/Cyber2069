@@ -76,12 +76,17 @@ void MeshRenderer::SetLayer(unsigned int layer)
 
 void MeshRenderer::SetUI(bool ui)
 {
-	isUI = ui;
+	m_isUI = ui;
 }
 
 int MeshRenderer::GetLayer()
 {
 	return this->layer;
+}
+
+bool MeshRenderer::IsUI()
+{
+	return m_isUI;
 }
 
 void  MeshRenderer::CreateMesh(float NumframeX, float NumFrameY)
@@ -127,7 +132,8 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 		return;
 	}
 
-	vector<glm::mat4> matrixStack;
+	//vector<glm::mat4> matrixStack;
+	glm::mat4 modelMatrix = GetGameObject()->m_transform->GetModelMatrix();
 
 	glm::mat4 currentMatrix = globalModelTransform * modelMatrix;
 

@@ -31,7 +31,8 @@ namespace Graphic
 		if (!Window::ShouldClose())
 		{
 			glm::mat4 globalMatrix = getCamera()->GetProjectionMatrix() * getCamera()->GetViewMatrix();
-			g_renderer->Render(globalMatrix);
+			g_renderer->Render(getCamera());
+			//g_renderer->Render(globalMatrix);
 			Window::SwapBuffer();
 			glfwPollEvents();
 		}

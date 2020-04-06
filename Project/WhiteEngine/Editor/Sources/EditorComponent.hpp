@@ -6,7 +6,7 @@
 
 #define IMPLEMENT_CLONE(TYPE)	EditorComponent* clone() const { return new TYPE(*this); }
 #define MAKE_COMPONENT(TYPE)	EditorComponent* TYPE ## _myComponent = EditorComponent::addComponent(#TYPE, new TYPE());
-#define INIT_COMPONENT(TYPE)	TYPE* m_typeComponent;
+#define INIT_COMPONENT(TYPE)	TYPE* m_typeComponent = nullptr;
 
 namespace Tools
 {

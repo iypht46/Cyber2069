@@ -100,7 +100,7 @@ void Rigidbody::UpdateTransform(float dt)
 void Rigidbody::SetMass(float mass) {
 	if (automass) {
 		m_mass = mass;
-		m_invMass = 1.0 / m_mass;
+		m_invMass = 1.0f / m_mass;
 	}
 }
 

@@ -79,29 +79,62 @@ namespace Physic
 		//Loop throuch every layer
 		for (auto mainLayer : m_collisionLayer)
 		{
-			//Set main layer
-			LayerBit mainLayerBit = mainLayer.second.first;
 			
+			LayerBitPair mapValue = mainLayer.second;
 
-			if (mainLayerBit.count() != 0)
+			for (auto layerToCheck : layerEnumArr)
 			{
-				//Loop through main layer bit to get layer to check with
-				for (auto layerToCheck : layerEnumArr)
-				{
-					if (mainLayer.first == layerToCheck)
-						continue;
+				if (layerToCheck == mainLayer.first)
+					continue;
 
-					//Get layerToCheck in LayerBit type
-					LayerBit layerToCheckBit = GetLayerInBit(layerToCheck);
-					RESOLVE_TYPE resolveType = ((mainLayer.second.second & layerToCheckBit) == layerToCheckBit) ? RESOLVE_TYPE::COLLISION : RESOLVE_TYPE::TRIGGER;
-					//Check mainLayerBit with layerToCheckBit
-					if ((mainLayerBit & layerToCheckBit) == layerToCheckBit)
+				//Convert layer to check from enum to bit
+				LayerBit layerToCheckBit = GetLayerInBit(layerToCheck);
+
+				if ((layerToCheckBit & mapValue.first) == layerToCheckBit)
+				{
+					if ((layerToCheckBit & mapValue.second) == layerToCheckBit)
 					{
-						CheckLayerCollision(mainLayer.first, layerToCheck, resolveType);
-						//ENGINE_INFO("Main Layer: {}, LayerToCheck: {}", LayerToNum(mainLayer.first), LayerToNum(layerToCheck));
+						CheckLayerCollision(mainLayer.first, layerToCheck, RESOLVE_TYPE::COLLISION);
 					}
+					else
+					{
+						CheckLayerCollision(mainLayer.first, layerToCheck, RESOLVE_TYPE::TRIGGER);
+					}
+					
 				}
+
+				/*if ((layerToCheckBit & mapValue.second) == layerToCheckBit)
+				{
+					CheckLayerCollision(mainLayer.first, layerToCheck, RESOLVE_TYPE::COLLISION);
+				}*/
+
 			}
+
+			////LayerBit mainLayerBit = GetLayerInBit(mainLayer.first);
+			////Main layerbit from the map of layer and layerbit pair.
+			//LayerBit mainLayerBit = mainLayer.second.first;
+			//
+			//if (mainLayerBit.count() != 0)
+			//{
+			//	//Loop through the layer enum to find layer to check with main layer
+			//	for (auto layerToCheck : layerEnumArr)
+			//	{
+			//		//If same layer as main then do not check
+			//		if (mainLayer.first == layerToCheck)
+			//			continue;
+
+			//		//Convert layer enum to std::bitset of 8 bits.
+			//		LayerBit layerToCheckBit = GetLayerInBit(layerToCheck);
+			//		//Determine the resolve type of this collision.
+			//		RESOLVE_TYPE resolveType = ((mainLayer.second.second & layerToCheckBit) == layerToCheckBit) ? RESOLVE_TYPE::COLLISION : RESOLVE_TYPE::TRIGGER;
+			//		//Check mainLayerBit with layerToCheckBit
+			//		if ((mainLayerBit & layerToCheckBit) == layerToCheckBit)
+			//		{
+			//			CheckLayerCollision(mainLayer.first, layerToCheck, resolveType);
+			//			//ENGINE_INFO("Main Layer: {}, LayerToCheck: {}", LayerToNum(mainLayer.first), LayerToNum(layerToCheck));
+			//		}
+			//	}
+			//}
 
 		}
 	}
@@ -371,10 +404,16 @@ namespace Physic
 	void PhysicScene::SetLayerCollisions(Layer layer, Layer layerToCollide, RESOLVE_TYPE type)
 	{
 		uint32_t lay = LayerToNum(layerToCollide);
+
 		m_collisionLayer[layer].first |= static_cast<unsigned>(layerToCollide);
 
 		if (type == RESOLVE_TYPE::COLLISION)
 			m_collisionLayer[layer].second |= static_cast<unsigned>(layerToCollide);
+
+		/*if (type == RESOLVE_TYPE::TRIGGER)
+			m_collisionLayer[layer].first |= static_cast<unsigned>(layerToCollide);
+		else if (type == RESOLVE_TYPE::COLLISION)
+			m_collisionLayer[layer].second |= static_cast<unsigned>(layerToCollide);*/
 
 	}
 

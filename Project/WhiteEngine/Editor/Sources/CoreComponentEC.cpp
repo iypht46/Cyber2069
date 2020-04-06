@@ -47,7 +47,7 @@ namespace Tools
 			m_typeComponent->SetScale(m_scale);
 		}
 		ImGui::AlignTextToFramePadding(); ImGui::Text("Rotation"); ImGui::SameLine(); 
-		if (ImGui::DragFloat("##Rotation (Euler)", &m_rotation, 0.1f, 0.0f, 360.0f, "%.1f", 1.0f))
+		if (ImGui::DragFloat("##Rotation", &m_rotation, 0.1f, 0.0f, 360.0f, "%.1f", 1.0f))
 		{
 			m_typeComponent->SetRotation(m_rotation);
 		}
@@ -94,8 +94,7 @@ namespace Tools
 
 	void MeshRendererEC::RenderTexture(glm::mat4 matrix)
 	{
-		MeshRenderer* meshRenderer = dynamic_cast<MeshRenderer*>(m_component);
-		meshRenderer->Render(matrix);
+		m_typeComponent->Render(matrix);
 	}
 
 	bool MeshRendererEC::IsTextureLoaded()
@@ -123,12 +122,14 @@ namespace Tools
 		if (m_textureFileDialog.HasSelected())
 		{
 			m_texturePath = Utility::File::GetRelativePath(m_textureFileDialog.GetSelected(), Utility::File::s_projectPath);
-			m_typeComponent->SetTexture(m_texturePath.generic_string());
-			if (m_typeComponent->m_texLoaded)
+
+			m_isLoaded = this->AddTexture(m_texturePath.generic_string());
+
+			if (m_isLoaded)
 			{
-				m_textureName = m_texturePath.filename().generic_string();
-				m_isLoaded = true;
 				m_typeComponent->CreateMesh(1.0f, 1.0f);
+				m_textureName = m_texturePath.filename().generic_string();
+				
 			}
 			else
 			{
@@ -148,7 +149,8 @@ namespace Tools
 	{
 		//MeshRenderer* meshRenderer = dynamic_cast<MeshRenderer*>(m_component);
 		m_typeComponent->SetTexture(path);
-		return true;
+
+		return m_typeComponent->m_texLoaded;
 	}
 
 	void BoxColliderEC::Init(Component* engineComponent)
@@ -234,28 +236,28 @@ namespace Tools
 
 			if (!m_typeComponent->m_controller)
 			{
-				m_typeComponent->m_controller = new AnimationController();
+				//m_typeComponent->m_controller = new AnimationController();
 			}
 
-			m_animationController = m_typeComponent->m_controller;
+			//m_animationController = m_typeComponent->m_controller;
 		}
 		
 	}
 
 	void AnimatorEC::RenderAnimation(Animation * anim)
 	{
-		ImGui::PushItemWidth(-1);
+		/*ImGui::PushItemWidth(-1);
 		ImGui::InputText("State Name", &anim->stateName);
 		ImGui::Checkbox("Looping", &anim->m_looping);
 		ImGui::InputFloat2("Start Position", &anim->m_StartPosition.x, 0, ImGuiInputTextFlags_CharsNoBlank);
 		ImGui::InputFloat2("End Position", &anim->m_EndPosition.x, 0, ImGuiInputTextFlags_CharsNoBlank);
 		ImGui::InputInt("Speed", &anim->speedMultiplier);
-		ImGui::PopItemWidth();
+		ImGui::PopItemWidth();*/
 	}
 
 	void AnimatorEC::RenderAnimationController()
 	{
-		ImGui::InputFloat2("Sheet Size", &m_animationController->m_spriteSheetFrameSize.x, 0, ImGuiInputTextFlags_CharsNoBlank);
+		/*ImGui::InputFloat2("Sheet Size", &m_animationController->m_spriteSheetFrameSize.x, 0, ImGuiInputTextFlags_CharsNoBlank);
 		int i = 1;
 		for (auto it = m_animationController->m_states.begin(); it != m_animationController->m_states.end(); ++it, ++i)
 		{
@@ -271,7 +273,7 @@ namespace Tools
 		if (ImGui::Button("Add State"))
 		{
 			m_animationController->AddState(new Animation());
-		}
+		}*/
 	}
 
 	void AnimatorEC::OnRender()

@@ -1,21 +1,23 @@
 #pragma once
-
-#include <iostream>
-#include <GL\glew.h>
+//White Engine
 #include "Graphic/Shader.h"
+#include "Graphic/SquareMeshVbo.h"
+#include "Graphic/Framebuffer.hpp"
+#include "Graphic/CameraObject.hpp"
+#include "Core/EC/Components/MeshRenderer.hpp"
+#include "Core/EC/Components/Collider.hpp"
+//Third Party Library
+#include <GL\glew.h>
+#include <glm/glm.hpp>
+#include <SDL_surface.h>
+#include <SDL_image.h>
+//Standard Library
+#include <iostream>
 #include <map>
 #include <vector>
 #include <string>
 #include <set>
 #include <queue>
-#include "glm/glm.hpp"
-#include "SDL_surface.h"
-#include "SDL_image.h"
-#include "Graphic/SquareMeshVbo.h"
-#include "Graphic/Framebuffer.hpp"
-
-#include "Core/EC/Components/MeshRenderer.hpp"
-#include "Core/EC/Components/Collider.hpp"
 
 using namespace std;
 
@@ -91,6 +93,7 @@ protected:
 	Shader *vertexShaderT;
 	Shader *fragmentShaderT;
 public:
+	void Render(Graphic::CameraObject* cam);
 	void Render(glm::mat4 globalModelTransform);
 	static GLRenderer* GetInstance();
 	bool InitGL(string vertexShaderFile, string fragmentShaderFile);
@@ -130,7 +133,7 @@ public:
 	GLuint GetOffsetXUniformId();
 	GLuint GetOffsetYUniformId();
 	Graphic::Framebuffer* GetFrameBuffer();
-	GLuint GetProgramID();
+	//GLuint GetProgramID();
 
 	int GetgTex2DLocation();
 	int GetgPos2DLocation();

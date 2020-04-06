@@ -12,9 +12,9 @@ namespace Tools
 		//TODO: Add pointer to members of each component
 		INIT_COMPONENT(Transform)
 
-		glm::vec3 m_position;
+		glm::vec3 m_position = glm::vec3(0.0f);
 		glm::vec3 m_scale = glm::vec3(1.0f);
-		float m_rotation;
+		float m_rotation = 0.0f;
 	protected:
 
 		virtual void OnRender() override;

@@ -20,7 +20,7 @@ class MeshRenderer : public Component
 {
 	friend class Tools::MeshRendererEC;
 private:
-	bool isUI = false;
+	bool m_isUI = false;
 
 	std::string sr_texturePath;
 	float sr_NumFrameX;
@@ -52,6 +52,7 @@ public:
 	void RemoveReplaceColor();
 
 	int GetLayer();
+	bool IsUI();
 
 	void Render(glm::mat4 globalModelTransform);
 	unsigned int GetTexture();
@@ -61,7 +62,7 @@ public:
 	void serialize(Archive& archive) {
 		archive(
 			cereal::base_class<Component>(this),
-			isUI,
+			m_isUI,
 			sr_texturePath,
 			sr_NumFrameX,
 			sr_NumFrameY,

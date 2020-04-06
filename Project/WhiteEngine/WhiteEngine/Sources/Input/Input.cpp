@@ -155,8 +155,8 @@ namespace Input
 
 		//Update mouse position in Window
 		g_prevMousePosition = g_mousePosition;
-		g_mousePosition.x = xpos;
-		g_mousePosition.y = ypos;
+		g_mousePosition.x = static_cast<float>(xpos);
+		g_mousePosition.y = static_cast<float>(ypos);
 
 		/*std::cout << "Mouse POS: " << g_mousePosition.x << " / " << g_mousePosition.y << std::endl;
 
@@ -267,8 +267,8 @@ namespace Input
 
 		in[0] = (2.0f * ((float)(g_mousePosition.x - 0) / (Window::GetWidth() - 0))) - 1.0f;
 		in[1] = 1.0f - (2.0f * ((float)(g_mousePosition.y - 0) / (Window::GetHeight() - 0)));
-		in[2] = 2.0 * winZ - 1.0;
-		in[3] = 1.0;
+		in[2] = 2.0f * winZ - 1.0f;
+		in[3] = 1.0f;
 
 		glm::vec4 vIn = glm::vec4(in[0], in[1], in[2], in[3]);
 		glm::vec4 pos = vIn * matInverse;

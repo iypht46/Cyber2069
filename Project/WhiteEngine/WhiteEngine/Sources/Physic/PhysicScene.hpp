@@ -34,6 +34,7 @@ namespace Physic
 
 	//Collider
 	using LayerBit = std::bitset<LAYER_BIT>;
+	//Store pair of the main layerbit and the set collision layerbit
 	using LayerBitPair = std::pair<LayerBit, LayerBit>;
 	using Colliders = std::vector<Collider*>;
 	using Bodies = std::vector<Rigidbody*>;

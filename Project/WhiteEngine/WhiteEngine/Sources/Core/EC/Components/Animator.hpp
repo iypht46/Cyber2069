@@ -1,11 +1,8 @@
 #pragma once
-
-#include "Core/Animator/AnimationController.hpp"
-//#include "../../Animator/AnimationController.hpp"
-
-#include "../../Animation/Animation.hpp"
-#include "../../Animation/AnimationController.hpp"
-
+//White Engine
+#include "Core/Animation/Animation.hpp"
+#include "Core/Animation/AnimationController.hpp"
+//Third Party
 #include <cereal/types/string.hpp>
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/base_class.hpp>

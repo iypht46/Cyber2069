@@ -1,7 +1,9 @@
 #pragma once
+//White Engine
+#include "Window.hpp"
+//Third Party Library
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include "Window.hpp"
 
 namespace Graphic
 {

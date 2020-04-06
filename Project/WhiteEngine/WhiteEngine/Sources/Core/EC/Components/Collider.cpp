@@ -97,7 +97,7 @@
 			m_isStatic = false;
 
 			if (m_rigidbody->automass) {
-				ComputeMass();
+				ComputeMass(m_rigidbody);
 			}
 		}
 		else
@@ -127,7 +127,7 @@
 			m_isStatic = false;
 
 			if (m_rigidbody->automass) {
-				ComputeMass();
+				ComputeMass(m_rigidbody);
 			}
 		}
 		else
@@ -148,7 +148,7 @@
 			m_isStatic = false;
 
 			if (m_rigidbody->automass) {
-				ComputeMass();
+				ComputeMass(m_rigidbody);
 			}
 		}
 		else
@@ -186,7 +186,7 @@
 	void BoxCollider::ComputeMass(Rigidbody* rigid)
 	{
 		rigid->m_mass = ((m_halfWidth*2) * (m_halfHeight*2)) * m_density;
-		rigid->m_invMass = 1.0 / m_rigidbody->m_mass;
+		rigid->m_invMass = 1.0f / m_rigidbody->m_mass;
 	}
 
 	glm::vec3 BoxCollider::GetColliderScale()

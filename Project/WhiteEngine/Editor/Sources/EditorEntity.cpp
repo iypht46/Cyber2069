@@ -1,9 +1,11 @@
+//White Engine
 #include "EditorEntity.hpp"
 #include "CoreComponentEC.hpp"
 #include "Core/EC/GameObject.hpp"
 #include "Core/EC/Components/MeshRenderer.hpp"
+#include "Core/Logger.hpp"
 //Third Party Library
-#include "imgui.h"
+#include <imgui.h>
 //Standard Library
 #include <algorithm>
 #include <iostream>
@@ -15,7 +17,7 @@ namespace Tools
 		//Create transform
 		m_gameObject = std::make_unique<GameObject>();
 		 TransformEC* transform = new TransformEC();
-		 transform->Init(&m_gameObject->m_transform);
+		 transform->Init(m_gameObject->m_transform.get());
 		 m_componentsMap[transform->GetName()] = transform; //Add to map of component name and component*
 		 m_components.push_back(transform); //Add to vector of component*
 		 //Point to gameobject member
@@ -29,7 +31,7 @@ namespace Tools
 		m_gameObject = std::make_unique<GameObject>(*gameObject);
 		//Create transform
 		TransformEC* transform = new TransformEC();
-		transform->Init(&m_gameObject->m_transform);
+		transform->Init(m_gameObject->m_transform.get());
 		m_componentsMap[transform->GetName()] = transform; //Add to map of component name and component*
 		m_components.push_back(transform); //Add to vector of component*
 		//m_components.push_back(transform.get());
@@ -82,6 +84,10 @@ namespace Tools
 			//ComponentHandle editorComp = make_unique<EditorComponent>(component);
 			//m_components.push_back(std::move(editorComp));
 		}
+		else
+		{
+			ENGINE_ERROR("ERROR: Failed adding " + type + " component.");
+		}
 	}
 
 	EditorComponent * EditorEntity::GetComponent(std::string name)
@@ -109,7 +115,7 @@ namespace Tools
 
 	void EditorEntity::PrintInfo()
 	{
-		Transform* transform = &m_gameObject->m_transform;
+		Transform* transform = m_gameObject->m_transform.get();
 		std::cout << "GameObject Transform: \n";
 		std::cout << "Position: " << glm::to_string(transform->GetPosition()) << std::endl;
 		std::cout << "Scale: " << glm::to_string(transform->GetScale()) << std::endl;

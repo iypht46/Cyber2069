@@ -190,6 +190,92 @@ bool GLRenderer::Initialize(string vertexShaderFile, string fragmentShaderFile)
 
 }
 
+void GLRenderer::Render(Graphic::CameraObject* cam)
+{
+	//SetViewPort(0, 0, Graphic::Window::GetWidth(), Graphic::Window::GetHeight());
+	//Bind FBO
+	if (framebuffer)
+	{
+		framebuffer->BindFrameBuffer();
+		//ENGINE_INFO("Bind Frame Buffer");
+	}
+
+	AssignLayer();
+
+	// Clear color buffer
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_BLEND);
+
+	// Update window with OpenGL rendering
+	glUseProgram(gProgramId); //Use gameobject shader program
+
+	this->PrintProgramLog(gProgramId);
+
+	//--------Render Object Here--------
+	for (MeshRenderer* obj : MeshSet) {
+
+		if (obj->GetGameObject()->Active())
+		{
+			if (obj->IsUI())
+				obj->Render(this->GetprojectionMatrix());
+			else
+				obj->Render(cam->GetViewProjMatrix());
+		}
+	}
+
+	for (TextRenderer* obj : Factory<TextRenderer>::getCollection()) {
+
+		if (obj->GetGameObject()->Active())
+		{
+			obj->Render();
+		}
+	}
+
+	if (drawDebug) {
+		for (BoxCollider* obj : Factory<BoxCollider>::getCollection())
+		{
+			if (obj->GetGameObject()->Active())
+			{
+				RenderDebugCollider(obj);
+			}
+		}
+
+		while (!Lineq.empty())
+		{
+			RenderLine(Lineq.front());
+			Lineq.pop();
+		}
+
+		while (!Circleq.empty())
+		{
+			RenderCircle(Circleq.front());
+			Circleq.pop();
+		}
+	}
+
+	while (!Lineq.empty())
+	{
+		Lineq.pop();
+	}
+
+	while (!Circleq.empty())
+	{
+		Circleq.pop();
+	}
+
+	//FBO Render
+	if (framebuffer)
+	{
+		framebuffer->UnBindFrameBuffer();
+		if (fboState == FBO_STATE::MAIN)
+		{
+			//SetClearColor(1.0f, 0.0f, 0.0f);
+			framebuffer->Render();
+			//ENGINE_INFO("Render form framebuffer");
+		}
+	}
+}
+
 void GLRenderer::Render(glm::mat4 globalModelTransform)
 {
 	//SetViewPort(0, 0, Graphic::Window::GetWidth(), Graphic::Window::GetHeight());
@@ -212,9 +298,7 @@ void GLRenderer::Render(glm::mat4 globalModelTransform)
 	this->PrintProgramLog(gProgramId);
 
 	//Set up matrix uniform
-	glm::mat4 camera = glm::mat4(1.0);
-
-	glm::mat4 camera = glm::mat4(1.0);
+	glm::mat4 camera = glm::mat4(1.0f);
 
 	//--------Render Object Here--------
 	for (MeshRenderer *obj : MeshSet) {
@@ -383,6 +467,11 @@ void GLRenderer::SetViewPort(int x, int y, int w, int h)
 void GLRenderer::SetClearColor(float r, float g, float b)
 {
 	glClearColor(r, g, b, 1.0);
+}
+
+void GLRenderer::SetClearColor(float r, float g, float b, float w)
+{
+	glClearColor(r, g, b, w);
 }
 
 void GLRenderer::AddMeshToSet(MeshRenderer* mesh)
