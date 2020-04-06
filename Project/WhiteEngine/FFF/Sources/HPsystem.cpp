@@ -61,15 +61,15 @@ void HPsystem::OnStart() {
 }
 
 void HPsystem::OnUpdate(float dt) {
+
+}
+
+void HPsystem::OnFixedUpdate(float dt) {
 	if (!dead && hp <= 0)
 	{
 		hp = 0;
 		Dead();
 	}
-}
-
-void HPsystem::OnFixedUpdate(float dt) {
-
 }
 
 void HPsystem::OnDisable() {

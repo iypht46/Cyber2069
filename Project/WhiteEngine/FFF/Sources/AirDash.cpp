@@ -15,9 +15,7 @@ AirDash::AirDash()
 }
 
 void AirDash::Init() {
-	this->m_target = glm::vec3(0);
-	self = m_gameObject->m_transform.get();
-	rb = m_gameObject->GetComponent<Rigidbody>();
+
 }
 
 void AirDash::SetDashSpeed(float value) {
@@ -84,7 +82,9 @@ void AirDash::Reset() {
 
 
 void AirDash::OnAwake() {
-
+	this->m_target = glm::vec3(0);
+	self = m_gameObject->m_transform.get();
+	rb = m_gameObject->GetComponent<Rigidbody>();
 }
 
 void AirDash::OnEnable() {

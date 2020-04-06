@@ -16,6 +16,19 @@ GameObject::GameObject()
 }
 
 void GameObject::SetActive(bool activestate) {
+
+	//call behaviour
+	for (std::shared_ptr<BehaviourScript> behaviour : m_scripts) {
+
+		if (activestate) {
+			behaviour->OnEnable();
+		}
+		else if (!activestate) {
+			behaviour->OnDisable();
+
+		}
+	}
+
 	isActive = activestate;
 }
 

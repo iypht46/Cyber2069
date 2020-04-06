@@ -92,6 +92,7 @@ T* GameObject::AddComponent() {
 	std::shared_ptr<BehaviourScript> behaviour = dynamic_pointer_cast<BehaviourScript>(component);
 	if (behaviour) {
 		m_scripts.push_back(behaviour);
+		m_scripts.back()->OnAwake();
 	}
 
 	return component.get();

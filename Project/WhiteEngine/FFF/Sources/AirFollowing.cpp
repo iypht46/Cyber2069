@@ -4,9 +4,7 @@
 
 AirFollowing::AirFollowing()
 {
-	m_speed = 300.0f;
-	rotAngle = 15.0f;
-	rotRate = 2.0f;
+
 }
 
 void AirFollowing::SetPlayer(Transform* player) {
@@ -49,13 +47,10 @@ void AirFollowing::FollowPlayer(float dt) {
 }
 
 void AirFollowing::OnAwake() {
-	m_speed = 300.0f;
-	rotAngle = 15.0f;
-	rotRate = 2.0f;
 
 	t = GetGameObject()->m_transform.get();
 	rb = GetGameObject()->GetComponent<Rigidbody>();
-	e = GetGameObject()->GetComponent<Enemy>();
+	e = GetGameObject()->GetComponent<Character>();
 }
 
 void AirFollowing::OnEnable() {

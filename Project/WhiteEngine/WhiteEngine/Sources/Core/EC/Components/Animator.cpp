@@ -42,9 +42,14 @@ void Animator::setCurrentState(int state) {
 }
 
 void Animator::setCurrentState(std::weak_ptr<AnimationState> state) {
-	m_currentState = state;
+	if (!state.expired()) {
+		m_currentState = state;
 
-	m_currentUVFrames = m_currentState.lock()->animation->getStartPosition();
+		m_currentUVFrames = m_currentState.lock()->animation->getStartPosition();
+	}
+	else {
+		ENGINE_WARN("Assigned state invalid");
+	}
 }
 
 void Animator::animUpdate(float dt)

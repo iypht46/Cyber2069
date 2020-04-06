@@ -19,19 +19,25 @@ namespace FactoryCollection {
 	void FixedUpdateComponents(float dt) {
 		//update animator
 		for (Animator* anim : Factory<Animator>::getCollection()) {
-			anim->animUpdate(dt);
+			if (anim->GetGameObject()->Active()) {
+				anim->animUpdate(dt);
+			}
 		}
 
 		//update behaviour script
 		for (BehaviourScript* behaviour : Factory<BehaviourScript>::getCollection()) {
-			behaviour->OnFixedUpdate(dt);
+			if (behaviour->GetGameObject()->Active()) {
+				behaviour->OnFixedUpdate(dt);
+			}
 		}
 	}
 
 	void UpdateComponents(float dt) {
 		//update behaviour script
 		for (BehaviourScript* behaviour : Factory<BehaviourScript>::getCollection()) {
-			behaviour->OnUpdate(dt);
+			if (behaviour->GetGameObject()->Active()) {
+				behaviour->OnUpdate(dt);
+			}
 		}
 	}
 }

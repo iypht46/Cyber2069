@@ -32,8 +32,8 @@ protected:
 	ObjectPool* EnemyPool;
 
 public:
-	EnemyPreset* SpawnPreset;
-	EnemyAmplifier* SpawnAmplifier;
+	EnemyPreset* SpawnPreset = nullptr;
+	EnemyAmplifier* SpawnAmplifier = nullptr;
 
 	GameObject* SpawnEnemy(float rangeX, float rangeY);
 
