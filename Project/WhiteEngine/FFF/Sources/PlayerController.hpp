@@ -99,6 +99,7 @@ public:
 	void assignWeapon(Weapon* wp);
 
 	void AddEquipment(Equipment* e);
+	void AddWeaponObject(GameObject* obj);
 
 	virtual void OnAwake();
 	virtual void OnEnable();

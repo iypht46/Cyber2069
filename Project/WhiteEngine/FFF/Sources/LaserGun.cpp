@@ -9,27 +9,31 @@
 
 LaserGun::LaserGun() 
 {
-	weaponObj = new GameObject();
+	/*weaponObj = new GameObject();
 	weaponObj->AddComponent<MeshRenderer>();
 	weaponObj->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
 	weaponObj->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/laser_idle.png");
-	weaponObj->SetActive(false);
+	weaponObj->SetActive(false);*/
 
-	laser = new GameObject();
+	/*laser = new GameObject();
 	laser->AddComponent<MeshRenderer>();
 	laser->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 	laser->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/laser_bullet2.png");
-	laser->SetActive(false);
+	laser->SetActive(false);*/
+}
 
+void LaserGun::OnAwake() {
 	weapon_damage = 10.0f;
 
 	weapon_scale.x = 70.0f;
 	weapon_scale.y = 70.0f;
+
+	m_gameObject->SetActive(false);
+	//laser->SetActive(false);
 }
 
 void LaserGun::Modify(GameObject* obj) 
 {
-
 }
 
 void LaserGun::GameTimeBehaviour(float dt) 
@@ -49,11 +53,11 @@ void LaserGun::GameTimeBehaviour(float dt)
 			laser_length = (Graphic::Window::GetHeight() / 1.75f) * Graphic::getCamera()->GetZoom();
 		}
 
-		float gun_x = weaponObj->m_transform->GetPosition().x + (50.0f * glm::cos(glm::radians(*angle)));
-		float gun_y = weaponObj->m_transform->GetPosition().y + (50.0f * glm::sin(glm::radians(*angle)));
+		float gun_x = m_gameObject->m_transform->GetPosition().x + (50.0f * glm::cos(glm::radians(*angle)));
+		float gun_y = m_gameObject->m_transform->GetPosition().y + (50.0f * glm::sin(glm::radians(*angle)));
 
-		float end_x = weaponObj->m_transform->GetPosition().x + (laser_length * glm::cos(glm::radians(*angle)));
-		float end_y = weaponObj->m_transform->GetPosition().y + (laser_length * glm::sin(glm::radians(*angle)));
+		float end_x = m_gameObject->m_transform->GetPosition().x + (laser_length * glm::cos(glm::radians(*angle)));
+		float end_y = m_gameObject->m_transform->GetPosition().y + (laser_length * glm::sin(glm::radians(*angle)));
 
 		Physic::RayHit platHit = PhySc->Raycast(Physic::Ray(gun_x, gun_y, end_x, end_y), PhySc->GetLayerFromString("Platform"));
 
@@ -83,8 +87,10 @@ void LaserGun::GameTimeBehaviour(float dt)
 	}
 }
 
-void LaserGun::onDisable() 
+void LaserGun::OnDisable() 
 {
-	weaponObj->SetActive(false);
-	laser->SetActive(false);
+	if (laser != nullptr) {
+
+		laser->SetActive(false);
+	}
 }

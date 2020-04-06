@@ -20,13 +20,13 @@ void PlayerController::OnAwake() {
 	direction.y = 1;
 
 
-	AddEquipment(new MachineGun());
+	/*AddEquipment(new MachineGun());
 	AddEquipment(new LaserGun());
 	AddEquipment(new GrenadeLauncher());
 	AddEquipment(new ZapperGun());
-	AddEquipment(new BlackholeGun());
+	AddEquipment(new BlackholeGun());*/
 
-	assignWeapon(Weapons[0]);
+	//assignWeapon(Weapons[0]);
 
 	for (Equipment* e : Equipments)
 	{
@@ -114,7 +114,10 @@ void PlayerController::OnUpdate(float dt)
 		dash(dt);
 	}
 
-	mouseAim();
+	if (weapon != nullptr) {
+
+		mouseAim();
+	}
 
 	for (Equipment* e : Equipments)
 	{
@@ -126,7 +129,7 @@ void PlayerController::OnUpdate(float dt)
 			}
 		}
 		else {
-			w->GameTimeBehaviour(dt);
+			e->GameTimeBehaviour(dt);
 		}
 	}
 }
@@ -444,21 +447,21 @@ void PlayerController::assignWeapon(Weapon* wp)
 {
 	if (this->weapon != nullptr)
 	{
-		this->weapon->onDisable();
+		this->weapon->GetWeapon()->SetActive(false);
 	}
 	else 
 	{
-		weapon = wp;
+		this->weapon = wp;
 	}
 
 	weaponTranform = wp->GetWeapon()->m_transform.get();
 	float currDirY = weapon->GetWeapon()->m_transform->GetScale().y / glm::abs(weapon->GetWeapon()->m_transform->GetScale().y);
 
-	weapon = wp;
 
+	this->weapon = wp;
 	wp->GetWeapon()->SetActive(true);
 	wp->AssignAngle(&angle_deg);
-	wp->SetGameObject(m_gameObject);
+	wp->SetmodifyObject(m_gameObject);
 
 	//already set in editor, no need to set here
 	wp->GetWeapon()->m_transform->SetParent(m_gameObject->m_transform);
@@ -477,11 +480,21 @@ void PlayerController::assignWeapon(Weapon* wp)
 
 void PlayerController::AddEquipment(Equipment* e) 
 {
-	e->SetGameObject(m_gameObject);
+	e->SetmodifyObject(m_gameObject);
 	Equipments.push_back(e);
 
 	if (Weapon* w = dynamic_cast<Weapon*>(e))
 	{
 		Weapons.push_back(w);
+	}
+}
+
+void PlayerController::AddWeaponObject(GameObject* obj) 
+{
+	Weapon* w = obj->GetComponent<Weapon>();
+
+	if (w != nullptr)
+	{
+		AddEquipment(w);
 	}
 }

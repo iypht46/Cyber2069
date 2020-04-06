@@ -9,10 +9,10 @@
 class Equipment 
 {
 protected:
-	GameObject* m_gameObject;
+	GameObject* modifyObject;
 public:
 	virtual void Modify(GameObject* obj) = 0;
 	virtual void GameTimeBehaviour(float dt) = 0;
-	void SetGameObject(GameObject* obj) { this->m_gameObject = obj; }
-	GameObject* GetGameObject(){ return m_gameObject; }
+	void SetmodifyObject(GameObject* obj) { this->modifyObject = obj; }
+	GameObject* GetmodifyObject(){ return modifyObject; }
 };

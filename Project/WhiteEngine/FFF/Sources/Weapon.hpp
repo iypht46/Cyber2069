@@ -12,17 +12,17 @@
 #include "Graphic/Window.hpp"
 #include "Enemy.hpp"
 
-class Weapon : public Equipment 
+class Weapon : public Equipment , public BehaviourScript
 {
 protected:
 	float bullet_speed;
 	float weapon_firerate;
 	float weapon_damage;
 
-	float weapon_delay_count;
+	float weapon_delay_count = 0.0f;
 
-	GameObject* weaponObj;
-	ObjectPool* BulletPool;
+	GameObject* weaponObj = nullptr;
+	ObjectPool* BulletPool = nullptr;
 	
 	float* angle;
 
@@ -33,9 +33,8 @@ protected:
 public:
 	virtual void Modify(GameObject* obj) = 0;
 	virtual void GameTimeBehaviour(float dt) = 0;
-	virtual void onDisable() = 0;
 
-	GameObject* GetWeapon() { return this->weaponObj; }
+	GameObject* GetWeapon() { return this->m_gameObject; }
 	
 	void SetBulletSpeed(float value) { this->bullet_speed = value; }
 	void SetWeaponFireRate(float value) { this->weapon_firerate = value; }
@@ -52,7 +51,8 @@ public:
 	MachineGun();
 	void Modify(GameObject* obj);
 	void GameTimeBehaviour(float dt);
-	void onDisable();
+
+	virtual void OnAwake();
 };
 
 class MachineGunBullet : public BehaviourScript {
@@ -77,13 +77,16 @@ public:
 
 class LaserGun : public Weapon {
 private:
-	GameObject* laser;
+	GameObject* laser = nullptr;
 	float laser_length;
 public:
 	LaserGun();
 	void Modify(GameObject* obj);
 	void GameTimeBehaviour(float dt);
-	void onDisable();
+	void AssignLaserObj(GameObject* obj) { this->laser = obj; }
+	
+	virtual void OnAwake();
+	virtual void OnDisable();
 };
 
 class GrenadeLauncher : public Weapon {
@@ -93,7 +96,8 @@ public:
 	GrenadeLauncher();
 	void Modify(GameObject* obj);
 	void GameTimeBehaviour(float dt);
-	void onDisable();
+
+	virtual void OnAwake();
 };
 
 class GrenadeLauncherBullet : public BehaviourScript {
@@ -132,7 +136,8 @@ public:
 	ZapperGun();
 	void Modify(GameObject* obj);
 	void GameTimeBehaviour(float dt);
-	void onDisable();
+	
+	virtual void OnAwake();
 };
 
 class ZapperGunBullet : public BehaviourScript {
@@ -187,7 +192,8 @@ public:
 	BlackholeGun();
 	void Modify(GameObject* obj);
 	void GameTimeBehaviour(float dt);
-	void onDisable();
+
+	virtual void OnAwake();
 };
 
 class BlackholeGunBullet : public BehaviourScript {

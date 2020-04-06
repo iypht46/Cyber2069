@@ -67,6 +67,14 @@ namespace World
 	GameObject* ui_HPbar;
 	GameObject* ui_StaminaBar;
 
+	GameObject* wp_MachineGun;
+	GameObject* wp_LaserGun;
+	GameObject* wp_GrenadeLauncher;
+	GameObject* wp_ZapperGun;
+	GameObject* wp_BlackHoleGun;
+
+	GameObject* laser;
+
 	GameObject* Enemy;
 	GameObject* Spawner;
 
@@ -207,6 +215,14 @@ namespace World
 		ui_HPbar = Instantiate();
 		ui_StaminaBar = Instantiate();
 
+		wp_MachineGun = Instantiate();
+		wp_LaserGun = Instantiate();
+		wp_GrenadeLauncher = Instantiate();
+		wp_ZapperGun = Instantiate();
+		wp_BlackHoleGun = Instantiate();
+
+		laser = Instantiate();
+
 		Spawner = Instantiate();
 
 		BulletPool = new ObjectPool();
@@ -342,6 +358,53 @@ namespace World
 		Rabbit->AddComponent<HPsystem>();
 		Rabbit->GetComponent<HPsystem>()->SetMaxHP(10000);
 		Rabbit->AddComponent<PlayerController>();
+
+
+		//ADD Weapon
+		wp_MachineGun->AddComponent<MeshRenderer>();
+		wp_MachineGun->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
+		wp_MachineGun->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_shoot.png");
+		wp_MachineGun->GetComponent<MeshRenderer>()->SetLayer(3);
+		wp_MachineGun->AddComponent<MachineGun>();
+
+		
+		wp_LaserGun->AddComponent<MeshRenderer>();
+		wp_LaserGun->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
+		wp_LaserGun->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/laser_idle.png");
+		wp_LaserGun->GetComponent<MeshRenderer>()->SetLayer(3);
+		laser->AddComponent<MeshRenderer>();
+		laser->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+		laser->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/laser_bullet2.png");
+		laser->GetComponent<MeshRenderer>()->SetLayer(3);
+		wp_LaserGun->AddComponent<LaserGun>();
+		wp_LaserGun->GetComponent<LaserGun>()->AssignLaserObj(laser);
+
+		
+		wp_GrenadeLauncher->AddComponent<MeshRenderer>();
+		wp_GrenadeLauncher->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
+		wp_GrenadeLauncher->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/grenadeL_spritesheet.png");
+		wp_GrenadeLauncher->GetComponent<MeshRenderer>()->SetLayer(3);
+		wp_GrenadeLauncher->AddComponent<GrenadeLauncher>();
+		
+		wp_ZapperGun->AddComponent<MeshRenderer>();
+		wp_ZapperGun->GetComponent<MeshRenderer>()->CreateMesh(12, 1);
+		wp_ZapperGun->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/zapper_spritesheet.png");
+		wp_ZapperGun->GetComponent<MeshRenderer>()->SetLayer(3);
+		wp_ZapperGun->AddComponent<ZapperGun>();
+
+		wp_BlackHoleGun->AddComponent<MeshRenderer>();
+		wp_BlackHoleGun->GetComponent<MeshRenderer>()->CreateMesh(3, 5);
+		wp_BlackHoleGun->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/blackhole_spritesheet.png");
+		wp_BlackHoleGun->GetComponent<MeshRenderer>()->SetLayer(3);
+		wp_BlackHoleGun->AddComponent<BlackholeGun>();
+
+		Rabbit->GetComponent<PlayerController>()->AddWeaponObject(wp_MachineGun);
+		Rabbit->GetComponent<PlayerController>()->AddWeaponObject(wp_LaserGun);
+		Rabbit->GetComponent<PlayerController>()->AddWeaponObject(wp_GrenadeLauncher);
+		Rabbit->GetComponent<PlayerController>()->AddWeaponObject(wp_ZapperGun);
+		Rabbit->GetComponent<PlayerController>()->AddWeaponObject(wp_BlackHoleGun);
+
+		//Rabbit->GetComponent<PlayerController>()->AddEquipment(wp_MachineGun->GetComponent<MachineGun>());
 
 		platform->AddComponent<MeshRenderer>();
 		platform->GetComponent<MeshRenderer>()->CreateMesh(1, 1);

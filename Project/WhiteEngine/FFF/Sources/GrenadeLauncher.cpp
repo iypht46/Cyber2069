@@ -3,13 +3,17 @@
 #include "GameController.hpp"
 
 GrenadeLauncher::GrenadeLauncher() {
-	weaponObj = new GameObject();
+	/*weaponObj = new GameObject();
 	weaponObj->AddComponent<MeshRenderer>();
 	weaponObj->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
 	weaponObj->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/grenadeL_spritesheet.png");
 
-	weaponObj->SetActive(false);
+	weaponObj->SetActive(false);*/
 
+	
+}
+
+void GrenadeLauncher::OnAwake() {
 	weapon_damage = 1.0f;
 	weapon_firerate = 0.3f;
 	bullet_speed = 500.0f;
@@ -18,6 +22,8 @@ GrenadeLauncher::GrenadeLauncher() {
 
 	weapon_scale.x = 50.0f;
 	weapon_scale.y = 50.0f;
+
+	m_gameObject->SetActive(false);
 }
 
 void GrenadeLauncher::Modify(GameObject* obj) {
@@ -57,9 +63,4 @@ void GrenadeLauncher::GameTimeBehaviour(float dt) {
 			}
 		}
 	}
-}
-
-void GrenadeLauncher::onDisable() 
-{
-	weaponObj->SetActive(false);
 }

@@ -3,12 +3,16 @@
 #include "GameController.hpp"
 
 BlackholeGun::BlackholeGun() {
-	weaponObj = new GameObject();
+	/*weaponObj = new GameObject();
 	weaponObj->AddComponent<MeshRenderer>();
 	weaponObj->GetComponent<MeshRenderer>()->CreateMesh(3, 5);
 	weaponObj->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/blackhole_spritesheet.png");
 
-	weaponObj->SetActive(false);
+	weaponObj->SetActive(false);*/
+
+}
+
+void BlackholeGun::OnAwake() {
 
 	weapon_damage = 1.0f;
 	weapon_firerate = 0.3f;
@@ -20,6 +24,8 @@ BlackholeGun::BlackholeGun() {
 
 	weapon_scale.x = 70.0f;
 	weapon_scale.y = 70.0f;
+
+	m_gameObject->SetActive(false);
 }
 
 void BlackholeGun::Modify(GameObject* obj) {
@@ -47,8 +53,8 @@ void BlackholeGun::GameTimeBehaviour(float dt) {
 				angle_deg = *angle;
 				angle_rad = glm::radians(*angle);
 
-				float posX = m_gameObject->m_transform->GetPosition().x + (50 * cos(angle_rad));
-				float posY = m_gameObject->m_transform->GetPosition().y + (50 * sin(angle_rad));
+				float posX = modifyObject->m_transform->GetPosition().x + (50 * cos(angle_rad));
+				float posY = modifyObject->m_transform->GetPosition().y + (50 * sin(angle_rad));
 				bullet->m_transform->SetPosition(glm::vec3(posX, posY, 0.0f));
 				bullet->m_transform->SetRotation(angle_deg);
 
@@ -61,8 +67,4 @@ void BlackholeGun::GameTimeBehaviour(float dt) {
 			}
 		}
 	}
-}
-
-void BlackholeGun::onDisable() {
-	weaponObj->SetActive(false);
 }
