@@ -17,7 +17,7 @@ void ZapperGun::OnAwake(){
 	weapon_firerate = 0.1f;
 	bullet_speed = 300.0f;
 
-	chainNumber = 5;
+	chainNumber = 3;
 	zapDistance = 300.0f;
 	zapDuration = 0.5f;
 
@@ -29,6 +29,10 @@ void ZapperGun::OnAwake(){
 
 void ZapperGun::Modify(GameObject* obj) {
 
+}
+
+void ZapperGun::MultiplyWeaponAmplifier(float value) {
+	chainNumber = chainNumber * value;
 }
 
 void ZapperGun::GameTimeBehaviour(float dt) {

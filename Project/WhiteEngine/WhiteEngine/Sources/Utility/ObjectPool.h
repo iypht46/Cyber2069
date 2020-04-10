@@ -25,6 +25,9 @@ public:
 	//get inactive gameobject from pool
 	GameObject* GetInactiveObject();
 
+	//get all gameobject from pool
+	std::vector<GameObject*> GetAllGameObject() { return m_objects; }
+
 	//serialization
 private:
 	template<class Archive>

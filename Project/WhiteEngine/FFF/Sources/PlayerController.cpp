@@ -174,6 +174,8 @@ void PlayerController::DebugInput() {
 		}
 	}
 
+
+	//Test Weapon
 	if (Input::GetKeyDown(Input::KeyCode::KEY_1))
 	{
 		assignWeapon(Weapons[0]);
@@ -197,6 +199,39 @@ void PlayerController::DebugInput() {
 	if (Input::GetKeyDown(Input::KeyCode::KEY_5))
 	{
 		assignWeapon(Weapons[4]);
+	}
+
+
+	//Test Setter for Artifact
+	if (weapon != nullptr) 
+	{
+		if (Input::GetKeyDown(Input::KeyCode::KEY_F))
+		{
+			weapon->MultiplyWeaponFireRate(2.0f);
+		}
+
+		if (Input::GetKeyDown(Input::KeyCode::KEY_G))
+		{
+			weapon->MultiplyWeaponDamage(2.0f);
+		}
+
+		if (Input::GetKeyDown(Input::KeyCode::KEY_H))
+		{
+			weapon->MultiplyWeaponAmplifier(2.0f);
+		}
+
+		if (Input::GetKeyDown(Input::KeyCode::KEY_J))
+		{
+			m_gameObject->GetComponent<Rigidbody>()->SetGravityScale(0.5f);
+		}
+
+		if (Input::GetKeyDown(Input::KeyCode::KEY_K))
+		{
+			move_speed = move_speed * 2.0f;
+			max_move_speed = max_move_speed * 2.0f;
+		}
+
+
 	}
 
 }

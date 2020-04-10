@@ -19,7 +19,7 @@ void BlackholeGun::OnAwake() {
 	bullet_speed = 300.0f;
 
 	bullet_Duration = 2.0f;
-	bullet_Radius = 200.0f;
+	bullet_Radius = 100.0f;
 	bullet_ToCenterSpeed = 100.0f;
 
 	weapon_scale.x = 70.0f;
@@ -30,6 +30,10 @@ void BlackholeGun::OnAwake() {
 
 void BlackholeGun::Modify(GameObject* obj) {
 
+}
+
+void BlackholeGun::MultiplyWeaponAmplifier(float value) {
+	bullet_Radius = bullet_Radius * value;
 }
 
 void BlackholeGun::GameTimeBehaviour(float dt) {

@@ -16,9 +16,9 @@ GrenadeLauncher::GrenadeLauncher() {
 void GrenadeLauncher::OnAwake() {
 	weapon_damage = 1.0f;
 	weapon_firerate = 0.3f;
-	bullet_speed = 500.0f;
+	bullet_speed = 300.0f;
 
-	grenade_radius = 200.0f;
+	grenade_radius = 100.0f;
 
 	weapon_scale.x = 50.0f;
 	weapon_scale.y = 50.0f;
@@ -28,6 +28,10 @@ void GrenadeLauncher::OnAwake() {
 
 void GrenadeLauncher::Modify(GameObject* obj) {
 
+}
+
+void GrenadeLauncher::MultiplyWeaponAmplifier(float value) {
+	grenade_radius = grenade_radius * value;
 }
 
 void GrenadeLauncher::GameTimeBehaviour(float dt) {

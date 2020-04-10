@@ -6,6 +6,8 @@
 #include "Core/EC/Components/Animator.hpp"
 #include "Core/EC/Components/MeshRenderer.hpp"
 
+#include <cereal/types/polymorphic.hpp>
+
 class Equipment 
 {
 protected:

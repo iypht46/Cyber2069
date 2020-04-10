@@ -16,8 +16,8 @@ MachineGun::MachineGun()
 void MachineGun::OnAwake() {
 
 	weapon_damage = 1.0f;
-	weapon_firerate = 0.1f;
-	bullet_speed = 300.0f;
+	weapon_firerate = 0.3f;
+	bullet_speed = 400.0f;
 
 	weapon_scale.x = 70.0f;
 	weapon_scale.y = 70.0f;
@@ -28,6 +28,21 @@ void MachineGun::OnAwake() {
 void MachineGun::Modify(GameObject* obj) 
 {
 }
+
+void MachineGun::MultiplyWeaponAmplifier(float value) 
+{
+	std::vector<GameObject*> PoolObj = GameController::GetInstance()->GetPool(POOL_TYPE::BULLET_MG)->GetAllGameObject();
+
+	for (GameObject* obj : PoolObj) 
+	{
+		obj->m_transform->SetScale(value * obj->m_transform->GetScale());
+		BoxCollider* box = dynamic_cast<BoxCollider*>(obj->GetComponent<Rigidbody>()->GetCollider());
+
+		box->ReSize(box->GetHw() * value, box->GetHh() * value);
+	}
+
+}
+
 
 void MachineGun::GameTimeBehaviour(float dt) {
 
