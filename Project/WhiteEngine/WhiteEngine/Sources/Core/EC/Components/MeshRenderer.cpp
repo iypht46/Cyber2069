@@ -4,6 +4,7 @@
 #include "Graphic/Camera.hpp"
 #include "Core/EC/GameObject.hpp"
 
+#include <string.h>
 
 //bool operator < (const MeshRenderer &m1, const MeshRenderer &m2)
 //{
@@ -92,6 +93,11 @@ void  MeshRenderer::CreateMesh(float NumframeX, float NumFrameY)
 void MeshRenderer::SetReplaceColor(glm::vec3 color) {
 	isReplaceColor = true;
 	this->ReplaceColor = color;
+}
+
+void MeshRenderer::SetReplaceColor(std::string hexcode) {
+	//glm::vec3 smthign = hextovec3;
+	//SetReplaceColor(smthing);
 }
 
 void MeshRenderer::RemoveReplaceColor() {

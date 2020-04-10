@@ -123,6 +123,15 @@
     <ClInclude Include="Sources\SceneManagement\SceneManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Core\Particle\ParticleSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utility\WhiteMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Core\FactoryCollection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\Core\EC\GameObject.cpp">
@@ -213,6 +222,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sources\SceneManagement\SceneManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Core\Particle\ParticleSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Utility\WhiteMath.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Core\FactoryCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

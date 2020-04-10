@@ -12,7 +12,12 @@ Animator::Animator()
 }
 
 void Animator::Init() {
-	m_controller = std::make_shared<AnimationController>();
+	if (m_controller == nullptr) {
+		m_controller = std::make_shared<AnimationController>();
+	}
+	else {
+		ENGINE_WARN("Already have animation controller, make sure you didn't Initialize animator component twice.");
+	}
 
 	try
 	{

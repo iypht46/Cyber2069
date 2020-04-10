@@ -144,7 +144,6 @@
     <ClCompile Include="Sources\DeQueen.cpp" />
     <ClCompile Include="Sources\Enemy.cpp" />
     <ClCompile Include="Sources\EnemySpawner.cpp" />
-    <ClCompile Include="Sources\FactoryCollection.cpp" />
     <ClCompile Include="Sources\Flyer.cpp" />
     <ClCompile Include="Sources\GameController.cpp" />
     <ClCompile Include="Sources\HPsystem.cpp" />
@@ -170,7 +169,6 @@
     <ClInclude Include="Sources\EnemyBehaviours.h" />
     <ClInclude Include="Sources\EnemySpawner.hpp" />
     <ClInclude Include="Sources\Equipment.hpp" />
-    <ClInclude Include="Sources\FactoryCollection.h" />
     <ClInclude Include="Sources\GameController.hpp" />
     <ClInclude Include="Sources\HPsystem.hpp" />
     <ClInclude Include="Sources\PlayerController.hpp" />

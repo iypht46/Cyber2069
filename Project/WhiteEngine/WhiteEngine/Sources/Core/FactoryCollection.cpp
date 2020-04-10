@@ -3,16 +3,13 @@
 #include "Core/Factory.h"
 
 //essential component
-#include "Core/EC/Components/Animator.hpp"
-#include "Core/EC/Components/MeshRenderer.hpp"
-#include "Core/EC/Components/Rigidbody.hpp"
-#include "Core/EC/Components/Transform.hpp"
+#include "EC/GameObject.hpp"
 
-#include "Core/EC/Components/BehaviourScript.h"
-#include "PlayerController.hpp"
-#include "EnemySpawner.hpp"
+#include "Ec/Components/Animator.hpp"
+#include "Core/Particle/ParticleSystem.h"
+#include "EC/Components/BehaviourScript.h"
 
-#include "Core/Logger.hpp"
+#include "Logger.hpp"
 
 namespace FactoryCollection {
 
@@ -22,6 +19,14 @@ namespace FactoryCollection {
 			if (anim->GetGameObject()->Active()) {
 				anim->animUpdate(dt);
 			}
+		}
+
+		//update particle
+		for (ParticleSystem* particlesystem : Factory<ParticleSystem>::getCollection()) {
+			if (particlesystem->GetGameObject()->Active()) {
+				particlesystem->ConstantEmit(dt);
+			}
+			particlesystem->LifeTimeModification(dt);
 		}
 
 		//update behaviour script

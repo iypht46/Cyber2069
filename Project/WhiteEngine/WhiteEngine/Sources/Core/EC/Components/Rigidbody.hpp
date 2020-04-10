@@ -33,6 +33,7 @@ private:
 	Transform* m_transform;
 public:
 	//Rigidbody Interface
+
 	virtual void Init();
 	void Init(float, float);
 	Collider* GetCollider();
@@ -42,6 +43,7 @@ public:
 	float GetGravityScale();
 	void SetGravityScale(float);
 	void AddForce(glm::vec3);
+	//add force relative to its rotation
 	void AddRelativeForce(glm::vec3);
 	void UpdateTransform(float dt);
 	void SetMass(float);
