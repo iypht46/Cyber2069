@@ -15,7 +15,7 @@
 #include "Physic/Collision.hpp"
 
 #include "Core/Factory.h"
-#include "FactoryCollection.h"
+#include "Core/FactoryCollection.h"
 #include "Core/EC/GameObject.hpp"
 
 #include "Utility/ObjectPool.h"
@@ -27,6 +27,7 @@
 #include "Core/EC/Components/MeshRenderer.hpp"
 #include "Core/EC/Components/SoundPlayer.hpp"
 #include "Core/EC/Components/TextRenderer.hpp"
+#include "Core/Particle/ParticleSystem.h"
 
 #include "EnemyBehaviours.h"
 #include "PlayerController.hpp"
@@ -467,6 +468,7 @@ namespace World
 
 			bomber->AddComponent<Rigidbody>();
 			bomber->GetComponent<Rigidbody>()->Init(15, 15);
+			bomber->GetComponent<Rigidbody>()->SetGravityScale(0.000001);
 
 			bomber->AddComponent<HPsystem>();
 			bomber->AddComponent<AirFollowing>();
@@ -499,10 +501,27 @@ namespace World
 
 			Bullet->AddComponent<Rigidbody>();
 			Bullet->GetComponent<Rigidbody>()->Init(7, 7);
-			Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0f);
+			Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0000001f);
 
-			g_physicScene->Add(Bullet->GetComponent<Rigidbody>());
-			g_physicScene->Add(Bullet->GetComponent<BoxCollider>(), "Bullet");
+			Bullet->AddComponent<ParticleSystem>();
+			Bullet->GetComponent<ParticleSystem>()->texturePath = "Sources/Assets/yellow_square.png";
+			Bullet->GetComponent<ParticleSystem>()->emitter->isEnabled = true;
+			Bullet->GetComponent<ParticleSystem>()->emitter->constantParticle = false;
+			Bullet->GetComponent<ParticleSystem>()->emitter->burstParticleNumber = 3;
+			Bullet->GetComponent<ParticleSystem>()->emitter->particleSamples = 3;
+			Bullet->GetComponent<ParticleSystem>()->emitter->minEmissionAngle = 135;
+			Bullet->GetComponent<ParticleSystem>()->emitter->maxEmissionAngle = 225;
+			Bullet->GetComponent<ParticleSystem>()->emitter->spawnRadius = 0.1f;
+			Bullet->GetComponent<ParticleSystem>()->velocity->minSpeed = 300.0f;
+			Bullet->GetComponent<ParticleSystem>()->velocity->maxSpeed = 300.0f;
+			Bullet->GetComponent<ParticleSystem>()->velocity->sr_directionTypeAsInt = 0;
+			Bullet->GetComponent<ParticleSystem>()->velocity->gravityScale = 2;
+			Bullet->GetComponent<ParticleSystem>()->lifetime->minLifeTime = 0.2f;
+			Bullet->GetComponent<ParticleSystem>()->lifetime->maxLifeTime = 0.2f;
+			Bullet->GetComponent<ParticleSystem>()->shape->minXSize = 4.5f;
+			Bullet->GetComponent<ParticleSystem>()->shape->maxXSize = 4.5f;
+			Bullet->GetComponent<ParticleSystem>()->shape->minYSize = 4.5f;
+			Bullet->GetComponent<ParticleSystem>()->shape->maxYSize = 4.5f;
 
 			Bullet->AddComponent<MachineGunBullet>();
 			Bullet->GetComponent<MachineGunBullet>()->OnStart();
@@ -530,9 +549,6 @@ namespace World
 			Bullet->GetComponent<Rigidbody>()->Init(7, 7);
 			Bullet->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
 
-			g_physicScene->Add(Bullet->GetComponent<Rigidbody>());
-			g_physicScene->Add(Bullet->GetComponent<BoxCollider>(), "Bullet");
-
 			Bullet->m_transform->SetScale(glm::vec3(30, 30, 1));
 
 			Bullet->AddComponent<GrenadeLauncherBullet>();
@@ -558,9 +574,6 @@ namespace World
 			Bullet->GetComponent<Rigidbody>()->Init(7, 7);
 			Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0f);
 
-			g_physicScene->Add(Bullet->GetComponent<Rigidbody>());
-			g_physicScene->Add(Bullet->GetComponent<BoxCollider>(), "Bullet");
-
 			Bullet->m_transform->SetScale(glm::vec3(10, 10, 1));
 
 			Bullet->AddComponent<ZapperGunBullet>();
@@ -585,10 +598,10 @@ namespace World
 
 			Bullet->AddComponent<Rigidbody>();
 			Bullet->GetComponent<Rigidbody>()->Init(7, 7);
-			Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0f);
+			Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0000001f);
 
-			g_physicScene->Add(Bullet->GetComponent<Rigidbody>());
-			g_physicScene->Add(Bullet->GetComponent<BoxCollider>(), "Bullet");
+			Bullet->AddComponent<ParticleSystem>();
+			Bullet->GetComponent<ParticleSystem>()->emitter->isEnabled = true;
 
 			Bullet->m_transform->SetScale(glm::vec3(30, 30, 1));
 
@@ -682,7 +695,7 @@ namespace World
 		//	ENGINE_INFO("MR active {}", mr->enabled);
 		//}
 
-		//SceneManagement::ActiveScene->Init();
+		SceneManagement::ActiveScene->Init();
 	}
 
 	void FixedUpdate(float dt)
@@ -697,18 +710,10 @@ namespace World
 
 		while (accumulator >= c_targetDT)
 		{
-			//Update Physic
-
+			//Update Components
 			FactoryCollection::FixedUpdateComponents(dt);
 
-			//for (int i = 0; i < Factory<MachineGunBullet>::getCollection().size(); i++)
-			//{
-			//	if (Factory<MachineGunBullet>::getCollection().at(i)->GetGameObject()->Active())
-			//	{
-			//		Factory<MachineGunBullet>::getCollection().at(i)->GetGameObject()->GetComponent<Rigidbody>()->UpdateTransform(dt);
-			//	}
-			//}
-
+			//Update Physic
 			g_physicScene->Update(c_targetDT);
 			//ENGINE_INFO("FixedUpdate: {}", dt
 			accumulator -= c_targetDT;

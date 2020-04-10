@@ -86,7 +86,6 @@ T* GameObject::AddComponent() {
 
 	m_components.push_back(component);
 	m_components.back()->SetGameObject(this);
-	m_components.back()->Init();
 
 	//if is behaviou script, also assign to script collection
 	std::shared_ptr<BehaviourScript> behaviour = dynamic_pointer_cast<BehaviourScript>(component);

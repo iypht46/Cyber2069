@@ -13,7 +13,7 @@ MachineGun::MachineGun()
 	weaponObj->SetActive(false);
 
 	weapon_damage = 1.0f;
-	weapon_firerate = 0.1f;
+	weapon_firerate = 0.05f;
 	bullet_speed = 300.0f;
 
 	weapon_scale.x = 70.0f;
