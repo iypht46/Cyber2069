@@ -27,11 +27,6 @@ void PlayerController::OnAwake() {
 	AddEquipment(new BlackholeGun());*/
 
 	//assignWeapon(Weapons[0]);
-
-	for (Equipment* e : Equipments)
-	{
-		e->Modify(this->m_gameObject);
-	}
 }
 
 void PlayerController::OnDisable() {
@@ -201,11 +196,21 @@ void PlayerController::DebugInput() {
 		assignWeapon(Weapons[4]);
 	}
 
+	//Test Modify and Revert Artifact
+	if (Input::GetKeyDown(Input::KeyCode::KEY_F))
+	{
+		ModifyFromEquipment();
+	}
+
+	if (Input::GetKeyDown(Input::KeyCode::KEY_G))
+	{
+		RevertArtifact();
+	}
 
 	//Test Setter for Artifact
 	if (weapon != nullptr) 
 	{
-		if (Input::GetKeyDown(Input::KeyCode::KEY_F))
+		/*if (Input::GetKeyDown(Input::KeyCode::KEY_F))
 		{
 			weapon->MultiplyWeaponFireRate(2.0f);
 		}
@@ -229,7 +234,7 @@ void PlayerController::DebugInput() {
 		{
 			move_speed = move_speed * 2.0f;
 			max_move_speed = max_move_speed * 2.0f;
-		}
+		}*/
 
 
 	}
@@ -524,12 +529,37 @@ void PlayerController::AddEquipment(Equipment* e)
 	}
 }
 
-void PlayerController::AddWeaponObject(GameObject* obj) 
+void PlayerController::AddEquipment(GameObject* obj)
 {
-	Weapon* w = obj->GetComponent<Weapon>();
+	Equipment* e = obj->GetComponent<Equipment>();
 
-	if (w != nullptr)
+	if (e != nullptr)
 	{
-		AddEquipment(w);
+		AddEquipment(e);
 	}
+}
+
+void PlayerController::ModifyFromEquipment() 
+{
+	for (Equipment* e : Equipments)
+	{
+		e->Modify();
+	}
+}
+
+void PlayerController::RevertArtifact() 
+{
+	for (Equipment* e : Equipments)
+	{
+		if (Artifact* a = dynamic_cast<Artifact*>(e)) 
+		{
+			a->Revert();
+		}
+	}
+}
+
+void PlayerController::MultiplyMoveSpeed(float value) 
+{
+	this->move_speed = this->move_speed * value; 
+	this->max_move_speed = this->max_move_speed * value; 
 }

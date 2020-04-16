@@ -42,7 +42,7 @@ void LaserGun::MultiplyWeaponAmplifier(float value) {
 	laser_duration = laser_duration * value;
 }
 
-void LaserGun::Modify(GameObject* obj) 
+void LaserGun::Modify() 
 {
 }
 

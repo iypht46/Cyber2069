@@ -1,18 +1,5 @@
 #pragma once
 #include "Equipment.hpp"
-#include "Core/EC/Components/BehaviourScript.h"
-#include "Core/EC/Components/Transform.hpp"
-#include "Core/EC/Components/Rigidbody.hpp"
-#include "Core/EC/GameObject.hpp"
-#include "Utility/ObjectPool.h"
-
-#include "Physic/PhysicScene.hpp"
-
-#include "Graphic/Camera.hpp"
-#include "Graphic/Window.hpp"
-#include "Enemy.hpp"
-
-#include <cereal/types/polymorphic.hpp>
 
 class Weapon : public Equipment , public BehaviourScript
 {
@@ -34,7 +21,7 @@ protected:
 	glm::vec2 weapon_scale;
 	glm::vec2 bullet_scale;
 public:
-	virtual void Modify(GameObject* obj) = 0;
+	virtual void Modify() = 0;
 	virtual void GameTimeBehaviour(float dt) = 0;
 
 	GameObject* GetWeapon() { return this->m_gameObject; }
@@ -70,7 +57,7 @@ CEREAL_REGISTER_TYPE(Weapon);
 class MachineGun : public Weapon {
 public:
 	MachineGun();
-	void Modify(GameObject* obj);
+	void Modify();
 	void GameTimeBehaviour(float dt);
 	void MultiplyWeaponAmplifier(float value);
 
@@ -113,7 +100,7 @@ private:
 	glm::vec2 endPos;
 public:
 	LaserGun();
-	void Modify(GameObject* obj);
+	void Modify();
 	void GameTimeBehaviour(float dt);
 	void AssignLaserObj(GameObject* obj) { this->laser = obj; }
 	void MultiplyWeaponAmplifier(float value);
@@ -141,7 +128,7 @@ private:
 	float grenade_radius;
 public:
 	GrenadeLauncher();
-	void Modify(GameObject* obj);
+	void Modify();
 	void GameTimeBehaviour(float dt);
 	void MultiplyWeaponAmplifier(float value);
 
@@ -193,7 +180,7 @@ private:
 	float zapRate;
 public:
 	ZapperGun();
-	void Modify(GameObject* obj);
+	void Modify();
 	void GameTimeBehaviour(float dt);
 	void MultiplyWeaponAmplifier(float value);
 	
@@ -264,7 +251,7 @@ private:
 	float bullet_ToCenterSpeed;
 public:
 	BlackholeGun();
-	void Modify(GameObject* obj);
+	void Modify();
 	void GameTimeBehaviour(float dt);
 	void MultiplyWeaponAmplifier(float value);
 

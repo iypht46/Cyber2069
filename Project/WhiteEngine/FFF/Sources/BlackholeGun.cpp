@@ -28,7 +28,7 @@ void BlackholeGun::OnAwake() {
 	m_gameObject->SetActive(false);
 }
 
-void BlackholeGun::Modify(GameObject* obj) {
+void BlackholeGun::Modify() {
 
 }
 

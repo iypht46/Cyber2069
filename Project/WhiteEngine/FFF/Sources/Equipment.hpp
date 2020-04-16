@@ -5,15 +5,23 @@
 #include "Core/EC/Components/Rigidbody.hpp"
 #include "Core/EC/Components/Animator.hpp"
 #include "Core/EC/Components/MeshRenderer.hpp"
+#include "Core/EC/GameObject.hpp"
+#include "Utility/ObjectPool.h"
+
+#include "Physic/PhysicScene.hpp"
+
+#include "Graphic/Camera.hpp"
+#include "Graphic/Window.hpp"
+#include "Enemy.hpp"
 
 #include <cereal/types/polymorphic.hpp>
 
-class Equipment 
+class Equipment
 {
 protected:
 	GameObject* modifyObject;
 public:
-	virtual void Modify(GameObject* obj) = 0;
+	virtual void Modify() = 0;
 	virtual void GameTimeBehaviour(float dt) = 0;
 	void SetmodifyObject(GameObject* obj) { this->modifyObject = obj; }
 	GameObject* GetmodifyObject(){ return modifyObject; }

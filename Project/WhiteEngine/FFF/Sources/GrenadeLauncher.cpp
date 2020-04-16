@@ -26,7 +26,7 @@ void GrenadeLauncher::OnAwake() {
 	m_gameObject->SetActive(false);
 }
 
-void GrenadeLauncher::Modify(GameObject* obj) {
+void GrenadeLauncher::Modify() {
 
 }
 

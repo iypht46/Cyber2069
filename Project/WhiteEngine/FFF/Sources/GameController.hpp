@@ -118,6 +118,8 @@ private:
 
 	float scoreCheckpoint[4] = { 0.0f, 10.0f,200.0f,300.0f };
 
+	bool CursedMode = false;
+
 public:
 	GameController();
 	~GameController() {}
@@ -148,6 +150,9 @@ public:
 
 	EnemyPreset* GetCurrPreset() { return CurrPreset; }
 	EnemyAmplifier* GetCurrAmplifier() { return CurrAmplifier; }
+
+	bool isCursedMode() { return CursedMode; }
+	void SetCursedMode(bool mode) { this->CursedMode = mode; }
 
 	virtual void OnAwake();
 	virtual void OnEnable();

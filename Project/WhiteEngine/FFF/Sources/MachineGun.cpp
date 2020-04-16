@@ -25,7 +25,7 @@ void MachineGun::OnAwake() {
 	m_gameObject->SetActive(false);
 }
 
-void MachineGun::Modify(GameObject* obj) 
+void MachineGun::Modify() 
 {
 }
 

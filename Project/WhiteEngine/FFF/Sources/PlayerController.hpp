@@ -9,6 +9,7 @@
 
 #include "HPsystem.hpp"
 #include "Weapon.hpp"
+#include "Artifact.hpp"
 
 #include "Enemy.hpp"
 #include "Character.hpp"
@@ -99,7 +100,14 @@ public:
 	void assignWeapon(Weapon* wp);
 
 	void AddEquipment(Equipment* e);
-	void AddWeaponObject(GameObject* obj);
+	void AddEquipment(GameObject* obj);
+	void ModifyFromEquipment();
+	void RevertArtifact();
+
+	void MultiplyMoveSpeed(float value);
+
+	vector<Weapon*> GetWeapons() { return Weapons; }
+	vector<Equipment*> GetEquipments() { return Equipments; }
 
 	virtual void OnAwake();
 	virtual void OnEnable();

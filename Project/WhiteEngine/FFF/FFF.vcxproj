@@ -128,6 +128,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Artifact.cpp" />
     <ClCompile Include="Sources\BlackholeGun.cpp" />
     <ClCompile Include="Sources\BlackholeGunBullet.cpp" />
     <ClCompile Include="Sources\Character.cpp" />
@@ -158,6 +159,7 @@
     <ClCompile Include="Sources\ZapperGunBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Artifact.hpp" />
     <ClInclude Include="Sources\Character.hpp" />
     <ClInclude Include="Sources\GroundDash.hpp" />
     <ClInclude Include="Sources\GroundPatrol.hpp" />

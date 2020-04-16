@@ -27,7 +27,7 @@ void ZapperGun::OnAwake(){
 	m_gameObject->SetActive(false);
 }
 
-void ZapperGun::Modify(GameObject* obj) {
+void ZapperGun::Modify() {
 
 }
 
