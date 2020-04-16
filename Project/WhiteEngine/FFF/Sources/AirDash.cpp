@@ -9,15 +9,13 @@ AirDash::AirDash()
 	m_aimSpeed = 50.0f;
 	m_angle = 0.0f;
 	timer = m_aimTime;
-	dashing = false;
+	dashState = false;
 	dashEnd = false;
 	targetLocked = false;
 }
 
 void AirDash::Init() {
-	this->m_target = glm::vec3(0);
-	bomber = &(m_gameObject->m_transform);
-	rb = m_gameObject->GetComponent<Rigidbody>();
+
 }
 
 void AirDash::SetDashSpeed(float value) {
@@ -35,31 +33,30 @@ void AirDash::SetAimSpeed(float value) {
 void AirDash::Dash(float dt) {
 	
 	float detectRange = 500.0f;
-	glm::vec3 dir = m_target - bomber->GetPosition();
+	glm::vec3 dir = m_target - self->GetPosition();
 	float distance = glm::length(dir);
 	m_angle = glm::atan(dir.y, dir.x);
+	dashEnd = false;
 
-	if (distance <= detectRange && !dashing) {
+	if (distance <= detectRange && !dashState) {
 		timer -= dt;
 		if (timer > 0) {
 			rb->SetVelocity(glm::vec3(0, 0, 0));
-			bomber->SetRotation(m_angle);
+			self->SetRotation(m_angle);
 		}
 		else {
-			dashing = true;
+			dashState = true;
 			
 		}
 	}
 
-	if (dashing) {
+	if (dashState) {
 		if (distance > 50.0f) {
-			rb->SetVelocity(glm::vec3(m_dashSpeed*glm::cos(bomber->GetRotation()), m_dashSpeed*glm::sin(bomber->GetRotation()), 0));
+			rb->SetVelocity(glm::vec3(m_dashSpeed*glm::cos(self->GetRotation()), m_dashSpeed*glm::sin(self->GetRotation()), 0));
 		}
 		else 
 		{
-			timer = m_aimTime;
-			dashing = false;
-			dashEnd = true;
+			Reset();
 		}
 
 	}
@@ -76,18 +73,17 @@ void AirDash::TargetLock(glm::vec3 pos) {
 	}
 }
 
+void AirDash::Reset() {
+	timer = m_aimTime;
+	dashState = false;
+	dashEnd = true;
+	targetLocked = false;
+}
+
 
 void AirDash::OnAwake() {
-	m_dashSpeed = 700.0f;
-	m_aimTime = 1.0f;
-	m_aimSpeed = 50.0f;
-	m_angle = 0.0f;
-	timer = m_aimTime;
-	dashing = false;
-	dashEnd = false;
-	targetLocked = false;
 	this->m_target = glm::vec3(0);
-	bomber = &(m_gameObject->m_transform);
+	self = m_gameObject->m_transform.get();
 	rb = m_gameObject->GetComponent<Rigidbody>();
 }
 

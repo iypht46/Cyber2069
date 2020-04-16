@@ -11,7 +11,7 @@ void Explosion::Init() {
 	m_damage = 100.0f;
 	m_radius = 500.0f;
 
-	thisTransform = &(m_gameObject->m_transform);
+	thisTransform = m_gameObject->m_transform.get();
 	ps = Physic::PhysicScene::GetInstance();
 	targetLayer = ps->GetLayerFromString("Player");
 }
@@ -24,7 +24,7 @@ void Explosion::Explode() {
 	Physic::Colliders colliders = ps->GetColliderLayer(targetLayer);
 	for (Collider* c : colliders) {
 
-		float distance = glm::length(c->GetGameObject()->m_transform.GetPosition() -
+		float distance = glm::length(c->GetGameObject()->m_transform->GetPosition() -
 			thisTransform->GetPosition());
 		if (distance <= m_radius) {
 			HPsystem* hp = c->GetGameObject()->GetComponent<HPsystem>();
@@ -51,7 +51,7 @@ void Explosion::OnAwake() {
 	m_damage = 100.0f;
 	m_radius = 500.0f;
 
-	thisTransform = &(m_gameObject->m_transform);
+	thisTransform = m_gameObject->m_transform.get();
 	ps = Physic::PhysicScene::GetInstance();
 	targetLayer = ps->GetLayerFromString("Player");
 }

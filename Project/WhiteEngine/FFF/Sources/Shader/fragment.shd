@@ -25,4 +25,8 @@ void main()
 		vec4 sampled = vec4(1.0, 1.0, 1.0, texture(ourTexture, TexCoords).r);
 		finalColor = vec4(OutColor, 1.0) * sampled;
 	}
+	else if(mode == 3)
+	{
+		finalColor = texture(ourTexture, TexCoords) * vec4(OutColor, 1.0);
+	}
 }  

@@ -4,6 +4,7 @@
 #include "Graphic/Camera.hpp"
 #include "Core/EC/GameObject.hpp"
 
+#include <string.h>
 
 //bool operator < (const MeshRenderer &m1, const MeshRenderer &m2)
 //{
@@ -12,13 +13,9 @@
 
 MeshRenderer::MeshRenderer() 
 {
-	isUI = false;
-	
-	/*mesh = new SquareMeshVbo();
-	mesh->LoadData(1, 1);*/
+	ReplaceColor = glm::vec3(1, 1, 1);
 
-	//this->layer = 0;
-	//GLRenderer::GetInstance()->AddMeshToSet(this);
+	Factory<MeshRenderer>::Add(this);
 }
 
 MeshRenderer::~MeshRenderer()
@@ -28,7 +25,11 @@ MeshRenderer::~MeshRenderer()
 
 MeshRenderer::MeshRenderer(std::string texture_path,float NumframeX,float NumFrameY)
 {
-	//SetGameObject(m_gameObject);
+	//save data
+	sr_texturePath = texture_path;
+	sr_NumFrameX = NumframeX;
+	sr_NumFrameY = NumFrameY;
+
 	SetTexture(texture_path);
 
 	mesh = new SquareMeshVbo();
@@ -37,8 +38,24 @@ MeshRenderer::MeshRenderer(std::string texture_path,float NumframeX,float NumFra
 
 }
 
+void MeshRenderer::Init() {
+	//ENGINE_INFO("{}", sr_texturePath);
+	SetTexture(sr_texturePath);
+
+	mesh = new SquareMeshVbo();
+	//ENGINE_INFO("numframe {},{}", sr_NumFrameX, sr_NumFrameY);
+	//ENGINE_INFO("scale {}, pos {}", GetGameObject()->m_transform->GetScale().x, GetGameObject()->m_transform->GetLocalPosition().x);
+	mesh->LoadData(sr_NumFrameX, sr_NumFrameY);
+	GLRenderer::GetInstance()->SetMeshAttribId(mesh);
+
+	anim = GetGameObject()->GetComponent<Animator>();
+}
+
 void MeshRenderer::SetTexture(std::string path)
 {
+	//save data
+	sr_texturePath = path;
+
 	texture = GLRenderer::GetInstance()->LoadTexture(path);
 }
 
@@ -64,9 +81,27 @@ int MeshRenderer::GetLayer()
 
 void  MeshRenderer::CreateMesh(float NumframeX, float NumFrameY)
 {
+	//save data
+	sr_NumFrameX = NumframeX;
+	sr_NumFrameY = NumFrameY;
+
 	this->mesh = new SquareMeshVbo();
 	this->mesh->LoadData(NumframeX, NumFrameY);
 	GLRenderer::GetInstance()->SetMeshAttribId(mesh);
+}
+
+void MeshRenderer::SetReplaceColor(glm::vec3 color) {
+	isReplaceColor = true;
+	this->ReplaceColor = color;
+}
+
+void MeshRenderer::SetReplaceColor(std::string hexcode) {
+	//glm::vec3 smthign = hextovec3;
+	//SetReplaceColor(smthing);
+}
+
+void MeshRenderer::RemoveReplaceColor() {
+	isReplaceColor = false;
 }
 
 void MeshRenderer::Render(glm::mat4 globalModelTransform)
@@ -76,6 +111,7 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 	GLuint modelMatixId = GLRenderer::GetInstance()->GetModelMatrixAttrId();
 	GLuint modeId = GLRenderer::GetInstance()->GetModeUniformId();
 	GLuint vmodeId = GLRenderer::GetInstance()->GetvModeUniformId();
+	GLuint colorId = GLRenderer::GetInstance()->GetColorUniformId();
 
 	GLuint offsetXId = GLRenderer::GetInstance()->GetOffsetXUniformId();
 	GLuint offsetYId = GLRenderer::GetInstance()->GetOffsetYUniformId();
@@ -97,14 +133,14 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 	glm::mat4 currentMatrix;
 
 	if (!isUI){
-		glm::mat4 modelMatrix = GetGameObject()->m_transform.GetModelMatrix();
+		glm::mat4 modelMatrix = GetGameObject()->m_transform->GetModelMatrix();
 		glm::mat4 projectionMatrix = Graphic::getCamera()->GetProjectionMatrix();
 		glm::mat4 viewMatrix = Graphic::getCamera()->GetViewMatrix();
 
 		currentMatrix = projectionMatrix * viewMatrix * modelMatrix;
 	}
 	else {
-		glm::mat4 modelMatrix = GetGameObject()->m_transform.GetModelMatrix();
+		glm::mat4 modelMatrix = GetGameObject()->m_transform->GetModelMatrix();
 		glm::mat4 projectionMatrix = GLRenderer::GetInstance()->GetprojectionMatrix();
 
 		currentMatrix = projectionMatrix * modelMatrix;
@@ -112,7 +148,16 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 
 	if (squareMesh != nullptr)
 	{
-		glUniform1i(modeId, 1);
+		if (isReplaceColor) {
+
+			glUniform1i(modeId, 3);
+			glUniform3f(colorId,ReplaceColor.x, ReplaceColor.y, ReplaceColor.z);
+
+		}
+		else {
+			glUniform1i(modeId, 1);
+		}
+
 		glUniformMatrix4fv(modelMatixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
 
 		//-------Animation--------

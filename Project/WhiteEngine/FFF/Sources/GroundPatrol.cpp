@@ -16,7 +16,7 @@ void GroundPatrol::Init() {
 	m_speed = 50.0f;
 	delay_timer = 2.0f;
 	MaxDelay = delay_timer;
-	thisTransform = &(m_gameObject->m_transform);
+	thisTransform = m_gameObject->m_transform.get();
 	rb = m_gameObject->GetComponent<Rigidbody>();
 	ps = Physic::PhysicScene::GetInstance();
 	rb->SetVelocity(glm::vec3(m_speed, 0, 0));
@@ -72,7 +72,7 @@ void GroundPatrol::OnAwake() {
 	m_speed = 50.0f;
 	delay_timer = 2.0f;
 	MaxDelay = delay_timer;
-	thisTransform = &(m_gameObject->m_transform);
+	thisTransform = m_gameObject->m_transform.get();
 	rb = m_gameObject->GetComponent<Rigidbody>();
 	ps = Physic::PhysicScene::GetInstance();
 	rb->SetVelocity(glm::vec3(m_speed, 0, 0));

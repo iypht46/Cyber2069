@@ -9,12 +9,6 @@ AirPatrol::AirPatrol()
 	m_pointBX = 0.0f;
 }
 
-
-AirPatrol::~AirPatrol()
-{
-	
-}
-
 void AirPatrol::Patrol() {
 	if (queen->GetPosition().x <= m_pointAX) {
 		rb->SetVelocity(glm::vec3(m_speed, 0, 0));
@@ -27,8 +21,8 @@ void AirPatrol::Patrol() {
 }
 
 void AirPatrol::SetPoint(float aX, float bX) {
-	queen = &(m_gameObject->m_transform);
-	rb = m_gameObject->GetComponent<Rigidbody>();
+	queen = GetGameObject()->m_transform.get();
+	rb = GetGameObject()->GetComponent<Rigidbody>();
 	m_pointAX = aX;
 	m_pointBX = bX;
 

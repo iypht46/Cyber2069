@@ -195,10 +195,11 @@ namespace Physic
 	{
 		//ENGINE_INFO("Check Collision");
 		//ENGINE_INFO("Main: {}, LayerToCheck: {}", LayerToNum(mainLayer), LayerToNum(layerToCheck));
+		//ENGINE_INFO("main col {}:{} , Layertochacke {}:{}", GetStringFromLayer(mainLayer), m_colliders[mainLayer].size(), GetStringFromLayer(layerToCheck), m_colliders[layerToCheck].size());
+
 		//Check collision of main collider with layer to check
 		for (auto mainCol : m_colliders[mainLayer])
 		{
-
 			for (auto colToCheck : m_colliders[layerToCheck])
 			{
 				//If same collider then skip

@@ -1,0 +1,2 @@
+D:\Projects\University\Cyberfunk\Project\WhiteEngine\bin\Debug-Win32\WhiteEngine\WhiteEngine.pdb
+D:\Projects\University\Cyberfunk\Project\WhiteEngine\bin-int\Debug-Win32\WhiteEngine\WhiteEngine.pdb

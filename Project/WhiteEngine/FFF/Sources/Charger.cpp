@@ -25,7 +25,7 @@ void Charger::OnUpdate(float dt) {
 	if (m_gameObject->Active()) {
 		Enemy::OnUpdate(dt);
 
-		if (glm::length(target->GetPosition() - m_gameObject->m_transform.GetPosition()) < targetDetectionRange && target->GetPosition().y <= m_gameObject->m_transform.GetPosition().y) {
+		if (glm::length(target->GetPosition() - m_gameObject->m_transform->GetPosition()) < targetDetectionRange && target->GetPosition().y <= m_gameObject->m_transform->GetPosition().y) {
 			groundDash->LockTarget(target);
 			state = EnemyState::Dash;
 

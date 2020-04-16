@@ -2,16 +2,13 @@
 
 void Flyer::Init(Transform* player) {
 	SetTarget(player);
-	airFollow = m_gameObject->GetComponent<AirFollowing>();
-
+	airFollow = GetGameObject()->GetComponent<AirFollowing>();
 
 	airFollow->SetPlayer(target);
 
 	targetDetectionRange = 1000.0f;
 
-
-	rigidbody = m_gameObject->GetComponent<Rigidbody>();
-	rigidbody->SetGravityScale(0);
+	rigidbody = GetGameObject()->GetComponent<Rigidbody>();
 	Enemy::Init();
 }
 
@@ -20,10 +17,10 @@ void Flyer::OnStart() {
 }
 
 void Flyer::OnUpdate(float dt) {
-	if (m_gameObject->Active()) {
+	if (GetGameObject()->Active()) {
 		Enemy::OnUpdate(dt);
 
-	 if (foundTarget) {
+		if (foundTarget) {
 			state = EnemyState::Chase;
 		}
 		else {
@@ -33,18 +30,25 @@ void Flyer::OnUpdate(float dt) {
 }
 
 void Flyer::OnFixedUpdate(float dt) {
-	if (m_gameObject->Active()) {
+	if (!affectedByWeapon) {
 		switch (state)
 		{
 		case Idle:
 			rigidbody->SetVelocity(glm::vec3(0));
-			airFollow->FollowPlayer(dt);
 			break;
 		case Chase:
 			airFollow->FollowPlayer(dt);
 			break;
+		case Active:
 		default:
 			break;
 		}
 	}
+}
+
+void Flyer::SetStats(float Speed, float HP, float Dmg) 
+{
+	airFollow->SetFlySpeed(Speed);
+	hpSystem->SetMaxHP(HP);
+	CollideDamage = Dmg;
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "Enemy.hpp"
 #include "Utility/ObjectPool.h"
+#include "Utility/Event.h" 
 #include "AirFollowing.hpp"
 #include "AirDash.hpp"
 #include "AirPatrol.hpp"
@@ -8,14 +9,9 @@
 #include "GroundPatrol.hpp"
 #include "GroundDash.hpp"
 
-enum EnemyState
-{
-	Idle = 0,
-	Chase,
-	Active,
-	Dash,
-	Reset,
-};
+#include <memory>
+
+#include <cereal/types/polymorphic.hpp>
 
 
 class Flyer :public Enemy {
@@ -25,15 +21,30 @@ protected:
 	AirFollowing* airFollow;
 	
 public:
-	EnemyState state = EnemyState::Idle;
 
+	Flyer() {}
+	~Flyer() {}
+
+	void SetStats(float Speed, float HP, float Dmg);
+
+	//change this to awake
 	void Init(Transform* player);
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
 
+
+	//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Enemy>(this)
+		);
+	}
 };
 
+CEREAL_REGISTER_TYPE(Flyer);
 
 class Bomber :public Enemy {
 private:
@@ -43,31 +54,52 @@ private:
 protected:
 	AirFollowing* airFollow;
 	AirDash* airDash;
-	Explosion* explosion;
 
 public:
 	EnemyState state = EnemyState::Idle;
 
+	Bomber() {}
+	~Bomber() {}
+
+	Explosion* explosion;
+
+public:
 	void Init(Transform* player);
+	void SetStats(float Speed, float HP, float Dmg, float AimTime, float DashSpeed, float ExplodeDmg, float ExplodeRadius);
+
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
+
+	//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Enemy>(this),
+			DashTriggerRadius
+		);
+	}
 };
+
+CEREAL_REGISTER_TYPE(Bomber);
 
 class DeQueen :public Enemy {
 private:
 	float PosX;
 	float PosY;
 	float SpawnDelay;
+
 	float SpawnDelayCount;
 protected:
 	AirPatrol* airPatrol;
 	ObjectPool* FlyerPool;
 	ObjectPool* BomberPool;
 public:
-
-	//EnemyState state = EnemyState::Idle;
 	
+	DeQueen() {}
+	~DeQueen() {}
+
 	void Init();
 	void assignFlyPool(ObjectPool* pool);
 	void assignBombPool(ObjectPool* pool);
@@ -75,7 +107,22 @@ public:
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
+
+		//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Enemy>(this),
+			PosX,
+			PosY,
+			SpawnDelay
+		);
+	}
 };
+
+CEREAL_REGISTER_TYPE(DeQueen);
+
 
 class Charger : public Enemy {
 private:
@@ -84,7 +131,6 @@ protected:
 	GroundPatrol* groundPatrol;
 	GroundDash* groundDash;
 public:
-	EnemyState state = EnemyState::Idle;
 
 	void Init(Transform* player);
 	virtual void OnStart();

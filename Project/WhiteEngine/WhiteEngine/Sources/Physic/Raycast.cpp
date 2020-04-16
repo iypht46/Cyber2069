@@ -8,7 +8,7 @@ namespace Physic
 	RayHits PhysicScene::RaycastAll(Ray ray, Layer targetLayer) {
 		RayHits hits;
 		//Check collision with layer to check
-		for (auto* collider : m_colliders[targetLayer])
+		for (auto collider : m_colliders[targetLayer])
 		{
 			//check collision
 			if (collider != nullptr)

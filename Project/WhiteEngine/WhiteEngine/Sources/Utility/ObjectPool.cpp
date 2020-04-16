@@ -1,30 +1,54 @@
 #include "ObjectPool.h"
 
+void ObjectPool::Init() {
+	if (prefabObjectPath != "") {
+		for (int i = 0; i < objectCount; ++i) {
+			AddObject(SceneManagement::Instantiate(prefabObjectPath));
+		}
+	}
+	else {
+		ENGINE_WARN("No Prefab Path");
+	}
+}
+
 void ObjectPool::AddObject(GameObject* obj) {
-	m_objects.push_back(obj);
+	m_objects.push(obj);
 }
 
 int ObjectPool::GetPoolSize() {
 	return m_objects.size();
 }
 
+//get obj from the queue regardless of active state
 GameObject* ObjectPool::GetGameObject() {
-	for (GameObject* obj : m_objects) {
-		if (obj->Active()) {
-			return obj;
-		}
-	}
-	//not found
-	return nullptr;
+	GameObject* obj = m_objects.front();
+	m_objects.pop();
+	m_objects.push(obj);
+
+	return obj;
 }
 
-GameObject* ObjectPool::GetInactiveObject() 
+//get inactive obj from the queue, if none is inactive, return null
+GameObject* ObjectPool::GetInactiveObject()
 {
-	for (GameObject* obj : m_objects) {
+
+	GameObject* back = m_objects.back();
+	GameObject* obj = nullptr;
+
+	do {
+		obj = m_objects.front();
 		if (!obj->Active()) {
+			m_objects.pop();
+			m_objects.push(obj);
+
 			return obj;
 		}
-	}
-	//not found
+		else {
+			m_objects.pop();
+			m_objects.push(obj);
+		}
+
+	} while (obj != back);
+
 	return nullptr;
 }

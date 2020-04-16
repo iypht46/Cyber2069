@@ -14,6 +14,17 @@ TextRenderer::TextRenderer()
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+
+	Factory<TextRenderer>::Add(this);
+}
+
+void TextRenderer::Init() {
+	if (fontPath != "") {
+		LoadFont(fontPath, fontSize);
+	}
+	else {
+		ENGINE_ERROR("No font path assigned");
+	}
 }
 
 void TextRenderer::LoadFont(string path, float DefautFontSize) {
@@ -30,7 +41,14 @@ void TextRenderer::LoadFont(string path, float DefautFontSize) {
 		std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
 
 	// Set size to load glyphs as
-	FT_Set_Pixel_Sizes(face, 0, DefautFontSize);
+	try
+	{
+		FT_Set_Pixel_Sizes(face, 0, DefautFontSize);
+	}
+	catch (const std::exception&)
+	{
+		ENGINE_ERROR("No font path assigned");
+	}
 
 	// Disable byte-alignment restriction
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -106,7 +124,7 @@ void TextRenderer::Render()
 
 	glm::mat4 currentMatrix;
 
-	//glm::mat4 modelMatrix = GetGameObject()->m_transform.GetModelMatrix();
+	//glm::mat4 modelMatrix = GetGameObject()->m_transform->GetModelMatrix();
 	glm::mat4 projectionMatrix = GLRenderer::GetInstance()->GetprojectionMatrix();
 
 	currentMatrix = projectionMatrix;
@@ -122,10 +140,10 @@ void TextRenderer::Render()
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(this->VAO);
 
-	float x = GetGameObject()->m_transform.GetPosition().x;
-	float y = GetGameObject()->m_transform.GetPosition().y;
+	float x = GetGameObject()->m_transform->GetPosition().x;
+	float y = GetGameObject()->m_transform->GetPosition().y;
 
-	glm::vec2 scale(GetGameObject()->m_transform.GetScale().x, GetGameObject()->m_transform.GetScale().y);
+	glm::vec2 scale(GetGameObject()->m_transform->GetScale().x, GetGameObject()->m_transform->GetScale().y);
 
 	// Iterate through all characters
 	std::string::const_iterator c;

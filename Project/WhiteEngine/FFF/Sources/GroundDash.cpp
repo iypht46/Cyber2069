@@ -24,7 +24,7 @@ void GroundDash::Init() {
 	dashEnd = false;
 	targetLocked = false;
 	m_target = nullptr;
-	thisTransform = &(m_gameObject->m_transform);
+	thisTransform = m_gameObject->m_transform.get();
 	rb = m_gameObject->GetComponent<Rigidbody>();
 }
 
@@ -115,7 +115,7 @@ void GroundDash::OnAwake() {
 	dashEnd = false;
 	targetLocked = false;
 	m_target = nullptr;
-	thisTransform = &(m_gameObject->m_transform);
+	thisTransform = m_gameObject->m_transform.get();
 	rb = m_gameObject->GetComponent<Rigidbody>();
 }
 

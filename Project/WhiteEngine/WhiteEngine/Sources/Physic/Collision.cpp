@@ -45,7 +45,7 @@ namespace Physic
 		BoxCollider* B = dynamic_cast<BoxCollider*>(m->m_objectB);
 
 		// Vector from A to B
-		glm::vec3 n = B->m_transform->GetPosition() - A->m_transform->GetPosition();
+		glm::vec3 n = B->GetGameObject()->m_transform->GetPosition() - A->GetGameObject()->m_transform->GetPosition();
 
 
 		AABB abox, bbox;
@@ -194,6 +194,12 @@ namespace Physic
 				{
 					return (AABBtoAABB(this));
 				}
+				else {
+					//ENGINE_INFO("not box");
+				}
+			}
+			else {
+				//ENGINE_INFO("object inactive");
 			}
 		}
 		else
