@@ -1,5 +1,6 @@
 #include "Animator.hpp"
 
+#include "Core/GameInfo.h"
 #include "Core/Logger.hpp"
 #include <Serialization/Serialization.h>
 
@@ -12,17 +13,21 @@ Animator::Animator()
 }
 
 void Animator::Init() {
-	m_controller = std::make_shared<AnimationController>();
+	if (m_controller == nullptr) {
+		m_controller = std::make_shared<AnimationController>();
+	}
+	else {
+		ENGINE_WARN("Already have animation controller, make sure you didn't Initialize animator component twice.");
+	}
 
 	try
 	{
-		Serialization::LoadObject<AnimationController>(*m_controller, sr_controllerPath);
+		Serialization::LoadObject(*m_controller, sr_controllerPath);
 	}
 	catch (const std::exception&)
 	{
 		ENGINE_WARN("No animation controller path assigned");
 	}
-
 
 	m_currentState = m_controller->m_defaultState;
 }

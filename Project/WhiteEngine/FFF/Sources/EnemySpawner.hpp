@@ -32,6 +32,8 @@ protected:
 	ObjectPool* EnemyPool;
 
 public:
+	GameObject* EnemyTarget = nullptr;
+
 	EnemyPreset* SpawnPreset = nullptr;
 	EnemyAmplifier* SpawnAmplifier = nullptr;
 
@@ -47,12 +49,7 @@ public:
 	EnemySpawner() {}
 	~EnemySpawner() {}
 
-	virtual void OnAwake();
-	virtual void OnEnable();
-	virtual void OnStart();
 	virtual void OnUpdate(float dt);
-	virtual void OnFixedUpdate(float dt);
-	virtual void OnDisable();
 	//serialization
 public:
 	template<class Archive>

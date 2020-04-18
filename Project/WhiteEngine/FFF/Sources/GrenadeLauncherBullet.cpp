@@ -41,28 +41,11 @@ void GrenadeLauncherBullet::OnUpdate(float dt)
 	}
 }
 
-void GrenadeLauncherBullet::OnFixedUpdate(float dt) {
-
-}
-
-void GrenadeLauncherBullet::OnAwake() {
-
-}
-
-void GrenadeLauncherBullet::OnEnable() {
-
-}
-
 void GrenadeLauncherBullet::OnStart()
 {
 	rb = m_gameObject->GetComponent<Rigidbody>();
 	cam = Graphic::getCamera();
 	scaleX = m_gameObject->m_transform->GetScale().x;
-}
-
-
-void GrenadeLauncherBullet::OnDisable() {
-
 }
 
 void GrenadeLauncherBullet::OnTriggerEnter(const Physic::Collision col) {

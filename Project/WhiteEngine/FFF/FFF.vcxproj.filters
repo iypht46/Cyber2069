@@ -33,9 +33,6 @@
     <ClCompile Include="Sources\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\FactoryCollection.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\AirDash.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -111,7 +108,13 @@
     <ClCompile Include="Sources\GroundDash.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Artifact.cpp">
+    <ClCompile Include="Sources\ObjectShooter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Spitter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Tank.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -123,9 +126,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sources\World.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\FactoryCollection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sources\AirDash.hpp">
@@ -176,7 +176,7 @@
     <ClInclude Include="Sources\GroundDash.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Artifact.hpp">
+    <ClInclude Include="Sources\ObjectShooter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

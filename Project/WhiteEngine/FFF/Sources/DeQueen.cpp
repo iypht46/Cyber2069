@@ -3,21 +3,13 @@
 #include "Graphic/Window.hpp"
 #include "Core/Logger.hpp"
 
-void DeQueen::Init() {
+void DeQueen::OnAwake() {
 	airPatrol = GetGameObject()->GetComponent<AirPatrol>();
-	PosX = -(Graphic::Window::GetWidth() / 2);
-	PosY = Graphic::Window::GetHeight() / 2;
 	
-	airPatrol->SetPoint(PosX, -PosX);
 	SpawnDelay = 0.2f;
 	SpawnDelayCount = SpawnDelay;
 
-	Enemy::Init();
-}
-
-
-void DeQueen::OnStart() {
-
+	Enemy::OnAwake();
 }
 
 void DeQueen::OnUpdate(float dt) {

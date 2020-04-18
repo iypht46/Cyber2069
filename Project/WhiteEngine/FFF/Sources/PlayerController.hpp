@@ -110,11 +110,8 @@ public:
 	vector<Equipment*> GetEquipments() { return Equipments; }
 
 	virtual void OnAwake();
-	virtual void OnEnable();
-	virtual void OnStart();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
-	virtual void OnDisable();
 	virtual void OnCollisionEnter(const Physic::Collision) override;
 	virtual void OnCollisionStay(const Physic::Collision) override;
 	virtual void OnCollisionExit(const Physic::Collision) override;
@@ -127,7 +124,7 @@ public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
-			cereal::base_class<BehaviourScript>(this),
+			cereal::base_class<Character>(this),
 			max_stamina,
 			dashStamina,
 			jumpStamina,

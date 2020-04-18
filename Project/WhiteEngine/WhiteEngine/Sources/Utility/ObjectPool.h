@@ -1,14 +1,17 @@
 #pragma once
-#include <vector>
+#include <queue>
 #include <memory>
 #include "SceneManagement/SceneManager.h"
 
+#include <cereal/types/base_class.hpp>
+#include <cereal/types/polymorphic.hpp>
 #include <cereal/types/string.hpp>
 
 //template <class OBJ>
-class ObjectPool :Component {
+class ObjectPool :public Component {
 private:
-	std::vector<GameObject*> m_objects;
+	std::queue<GameObject*> m_objects;
+	int lastReturnedObject = 0;
 public:
 	std::string prefabObjectPath;
 	int objectCount;
@@ -19,17 +22,17 @@ public:
 	void AddObject(GameObject*);
 	int GetPoolSize();
 
-	//get active gameobject from pool
+	//get gameobject cycling through all object from pool,
 	GameObject* GetGameObject();
 
 	//get inactive gameobject from pool
 	GameObject* GetInactiveObject();
 
 	//get all gameobject from pool
-	std::vector<GameObject*> GetAllGameObject() { return m_objects; }
+	std::queue<GameObject*> GetAllGameObject() { return m_objects; }
 
 	//serialization
-private:
+public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(

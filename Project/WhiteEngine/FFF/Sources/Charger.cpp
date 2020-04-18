@@ -1,67 +1,40 @@
 #include "EnemyBehaviours.h"
 
-void Charger::Init(Transform* player) {
-	SetTarget(player);
-
+void Charger::OnAwake() {
 	groundPatrol = m_gameObject->GetComponent<GroundPatrol>();
 	groundDash = m_gameObject->GetComponent<GroundDash>();
 
-	groundPatrol->Init();
-	groundDash->Init();
-	targetDetectionRange = 200.0f;
-	groundPatrol->SetMaxDelay(0.5f);
-
 	rigidbody = m_gameObject->GetComponent<Rigidbody>();
-	rigidbody->SetGravityScale(0);
 
-	Enemy::Init();
-}
-
-void Charger::OnStart() {
-
+	Enemy::OnAwake();
 }
 
 void Charger::OnUpdate(float dt) {
-	if (m_gameObject->Active()) {
-		Enemy::OnUpdate(dt);
+	Enemy::OnUpdate(dt);
 
-		if (glm::length(target->GetPosition() - m_gameObject->m_transform->GetPosition()) < targetDetectionRange && target->GetPosition().y <= m_gameObject->m_transform->GetPosition().y) {
-			groundDash->LockTarget(target);
-			state = EnemyState::Dash;
-
-		}
-		else if (foundTarget && state != EnemyState::Dash) {
-			state = EnemyState::Chase;
-		}
-		else {
-			state = EnemyState::Idle;
-		}
+	//if target in dash range
+	if (state != EnemyState::Dash && foundTarget && glm::abs(target->GetPosition().y - m_gameObject->m_transform->GetPosition().y) <= DashTriggerRangeY) {
+		groundDash->LockTarget(target);
+		state = EnemyState::Dash;
+	}
+	else if(!foundTarget || glm::abs(target->GetPosition().y - m_gameObject->m_transform->GetPosition().y) >= DashTriggerRangeY){
+		state = EnemyState::Idle;
 	}
 }
 
 void Charger::OnFixedUpdate(float dt) {
-	if (m_gameObject->Active()) {
-		switch (state)
-		{
-		case Idle:
-			groundPatrol->Patrol(dt);
-			break;
-		case Chase:
-			groundPatrol->Patrol(dt);
-			break;
-		case Active:
-		case Dash:
-			groundDash->Dash(dt);
-			if (groundDash->DashEnd()) {
-				state = EnemyState::Reset;
-			}
-			break;
-		case Reset:
-			groundDash->Reset();
-			ENGINE_INFO("AAAAAAAA");
-			break;
-		default:
-			break;
+	switch (state)
+	{
+	case Idle:
+		groundPatrol->Patrol(dt);
+		break;
+	case Dash:
+		groundDash->Dash(dt);
+		if (groundDash->DashEnd()) {
+			state = EnemyState::Idle;
 		}
+		break;
+	default:
+		break;
 	}
 }

@@ -31,15 +31,32 @@ void MachineGun::Modify()
 
 void MachineGun::MultiplyWeaponAmplifier(float value) 
 {
-	std::vector<GameObject*> PoolObj = GameController::GetInstance()->GetPool(POOL_TYPE::BULLET_MG)->GetAllGameObject();
+	std::queue<GameObject*> PoolObj = GameController::GetInstance()->GetPool(POOL_TYPE::BULLET_MG)->GetAllGameObject();
 
-	for (GameObject* obj : PoolObj) 
+	if (PoolObj.size() > 0) {
+		GameObject* back = PoolObj.back();
+		GameObject* obj = nullptr;
+
+		do {
+			obj = PoolObj.front();
+			PoolObj.pop();
+			PoolObj.push(obj);
+
+			obj->m_transform->SetScale(value * obj->m_transform->GetScale());
+			BoxCollider* box = dynamic_cast<BoxCollider*>(obj->GetComponent<Rigidbody>()->GetCollider());
+
+			box->ReSize(box->GetHw() * value, box->GetHh() * value);
+
+		} while (obj != back);
+	}
+
+	/*for (GameObject* obj : PoolObj) 
 	{
 		obj->m_transform->SetScale(value * obj->m_transform->GetScale());
 		BoxCollider* box = dynamic_cast<BoxCollider*>(obj->GetComponent<Rigidbody>()->GetCollider());
 
 		box->ReSize(box->GetHw() * value, box->GetHh() * value);
-	}
+	}*/
 
 }
 

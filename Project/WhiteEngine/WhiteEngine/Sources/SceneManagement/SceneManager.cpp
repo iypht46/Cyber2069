@@ -13,20 +13,20 @@ namespace SceneManagement {
 		}
 	}
 
-	GameObject* Instantiate() {
+	std::shared_ptr<GameObject> Instantiate() {
 		std::shared_ptr<GameObject> newObj = Factory<GameObject>::Create();
 		SceneManagement::ActiveScene->GameObjectsInScene.insert(newObj);
 
-		return newObj.get();
+		return newObj;
 	}
 
-	GameObject* Instantiate(std::string prefabPath) {
+	std::shared_ptr<GameObject> Instantiate(std::string prefabPath) {
 		std::shared_ptr<GameObject> newObj = Factory<GameObject>::Create(prefabPath);
 		SceneManagement::ActiveScene->GameObjectsInScene.insert(newObj);
 
 		newObj->InitComponents();
 
-		return newObj.get();
+		return newObj;
 	}
 
 	void LoadScene(std::string scenePath) {

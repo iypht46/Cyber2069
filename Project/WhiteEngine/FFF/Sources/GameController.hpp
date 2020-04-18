@@ -26,7 +26,12 @@ enum POOL_TYPE {
 	BULLET_ZP,
 	BULLET_BH,
 	ENEMY_FLYER,
-	ENEMY_BOMBER
+	ENEMY_BOMBER,
+	ENEMY_TANK,
+	ENEMY_CHARGER,
+	ENEMY_SPITTER,
+	ENEMY_QUEEN,
+	BULLET_FUME
 };
 
 struct EnemyPreset {
@@ -95,17 +100,21 @@ private:
 
 	float startHPposX;
 	float startStaminaposX;
-	
-	PlayerController* player;
+
+	PlayerController* playerControl;
 	HPsystem* PlayerHP;
 	GameObject* HPbar;
 	GameObject* Staminabar;
 	GameObject* ScoreText;
 
-	map<int, ObjectPool*> Pools;
-	GameObject* FlyerSpawner;
+	map<int, ObjectPool*> Pools; //assigned by user
+
+	//created in constructor
+
+	GameObject* FlyerSpawner; 
 	GameObject* BomberSpawner;
 
+	//extracted in on awake after created
 	vector<EnemySpawner*> Spawner;
 
 	vector<std::shared_ptr<EnemyPreset>> Preset;
@@ -121,6 +130,8 @@ private:
 	bool CursedMode = false;
 
 public:
+	std::weak_ptr<GameObject> player;
+
 	GameController();
 	~GameController() {}
 
@@ -143,7 +154,7 @@ public:
 	void AssignScoreText(GameObject* ScoreText);
 	void AssignHPbar(GameObject* hpbar);
 	void AssignStaminabar(GameObject* staminabar);
-	void AssignPlayer(GameObject* player);
+	void AssignPlayer(std::weak_ptr<GameObject> player);
 
 	void AddPool(ObjectPool* pool, int type);
 	ObjectPool* GetPool(int type);
@@ -155,11 +166,7 @@ public:
 	void SetCursedMode(bool mode) { this->CursedMode = mode; }
 
 	virtual void OnAwake();
-	virtual void OnEnable();
-	virtual void OnStart();
 	virtual void OnUpdate(float dt);
-	virtual void OnFixedUpdate(float dt);
-	virtual void OnDisable();
 
 //serialization
 public:
@@ -167,6 +174,7 @@ public:
 	void serialize(Archive& archive) {
 		archive(
 			cereal::base_class<BehaviourScript>(this),
+			player,
 			Preset,
 			Amplifier,
 			ScoreValue,

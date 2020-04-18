@@ -9,27 +9,30 @@
 
 class AirDash : public BehaviourScript
 {
-private: 
+private:
+	//runtime tmp var
 	float timer;
 	bool dashing;
-	bool dashState;
-	bool dashEnd;
-	bool targetLocked;
+
+	bool dashState = false;
+	bool dashEnd = false;
+	bool targetLocked = false;
+	//---------------------------
 protected:
 	glm::vec3 m_target;
 	Transform* self;
 	Rigidbody* rb;
 
-	float m_dashSpeed;
-	float m_aimTime;
-	float m_aimSpeed;
+	float m_dashSpeed = 700.f;
+	float m_aimTime = 1.0f;
+	float m_aimSpeed = 50.0f;
 
-	float m_angle;
+	//runtime tmp
+	float m_angle = 0.0f;
 public:
 	AirDash();
 
 	~AirDash() {}
-	void Init();
 	void SetDashSpeed(float value);
 	void SetAimTime(float value);
 	void SetAimSpeed(float value);
@@ -54,7 +57,7 @@ public:
 			m_dashSpeed,
 			m_aimTime,
 			m_aimSpeed
-		);
+			);
 	}
 };
 

@@ -12,7 +12,6 @@ class Animator : public Component
 {
 private:
 	//serialized data
-	std::string sr_controllerPath;
 	float framePerSec = 12;
 
 
@@ -23,6 +22,8 @@ private:
 	glm::vec2 m_currentUVFrames;
 
 public:
+	std::string sr_controllerPath;
+
 	Animator();
 
 	virtual void Init();

@@ -29,10 +29,6 @@ void PlayerController::OnAwake() {
 	//assignWeapon(Weapons[0]);
 }
 
-void PlayerController::OnDisable() {
-
-}
-
 void PlayerController::OnCollisionEnter(const Physic::Collision col)
 {
 	//GAME_INFO("Collider Enter");
@@ -66,14 +62,6 @@ void PlayerController::OnTriggerStay(const Physic::Collision col)
 void PlayerController::OnTriggerExit(const Physic::Collision col)
 {
 	//GAME_INFO("Collider Exit");
-}
-
-void PlayerController::OnStart() {
-
-}
-
-void PlayerController::OnEnable() {
-
 }
 
 void PlayerController::OnUpdate(float dt)

@@ -21,8 +21,8 @@ private:
 	bool isUI = false;
 	
 	std::string sr_texturePath;
-	float sr_NumFrameX;
-	float sr_NumFrameY;
+	float sr_NumFrameX = 1;
+	float sr_NumFrameY = 1;
 
 	bool isReplaceColor = false;
 	MeshVbo* mesh;
@@ -33,7 +33,7 @@ private:
 	glm::vec3 ReplaceColor;
 
 public:
-	int layer = -1;
+	int layer = 0; //higher layer is infront
 	bool inSet = false;
 
 	MeshRenderer();
@@ -45,9 +45,11 @@ public:
 	void CreateMesh(float NumframeX, float NumFrameY);
 	void SetTexture(std::string path);
 	void SetTexture(unsigned int tex);
+	//higher layer is in front, player is on 0
 	void SetLayer(unsigned int layer);
 	void SetUI(bool ui);
 	void SetReplaceColor(glm::vec3 color);
+	void SetReplaceColor(std::string hexcode);
 	void RemoveReplaceColor();
 
 	int GetLayer();
@@ -65,6 +67,7 @@ public:
 			sr_NumFrameX,
 			sr_NumFrameY,
 			layer,
+			ReplaceColor,
 			inSet
 		);
 	}

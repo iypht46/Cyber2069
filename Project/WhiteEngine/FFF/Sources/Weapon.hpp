@@ -162,12 +162,8 @@ public:
 
 	void Explode();
 
-	virtual void OnAwake();
-	virtual void OnEnable();
 	virtual void OnStart();
 	virtual void OnUpdate(float dt);
-	virtual void OnFixedUpdate(float dt);
-	virtual void OnDisable();
 	virtual void OnTriggerEnter(const Physic::Collision col) override;
 	virtual void OnCollisionEnter(const Physic::Collision col) override;
 };
