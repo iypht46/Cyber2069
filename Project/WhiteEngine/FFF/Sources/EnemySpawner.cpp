@@ -1,10 +1,5 @@
 #include "EnemySpawner.hpp"
 
-
-void EnemySpawner::OnStart()
-{
-}
-
 void EnemySpawner::OnUpdate(float dt)
 {
 	SpawnRateCount -= dt;
@@ -33,22 +28,6 @@ void EnemySpawner::OnUpdate(float dt)
 	}
 }
 
-void EnemySpawner::OnFixedUpdate(float dt) {
-
-}
-
-void EnemySpawner::OnAwake() {
-
-}
-
-void EnemySpawner::OnEnable() {
-
-}
-
-void EnemySpawner::OnDisable() {
-
-}
-
 GameObject* EnemySpawner::SpawnEnemy(float posX,float posY)
 {
 	if (SpawnAmplifier != nullptr) {
@@ -57,6 +36,7 @@ GameObject* EnemySpawner::SpawnEnemy(float posX,float posY)
 		{
 			enemy->SetActive(true);
 			enemy->GetComponent<HPsystem>()->ResetHP();
+			enemy->GetComponent<Enemy>()->SetTarget(EnemyTarget->m_transform.get());
 
 			enemy->m_transform->SetPosition(glm::vec3(posX, posY, 1.0f));
 

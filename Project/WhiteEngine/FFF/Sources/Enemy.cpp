@@ -1,7 +1,7 @@
 #include "Enemy.hpp"
 #include "GameController.hpp"
 
-void Enemy::Init() {
+void Enemy::OnAwake() {
 	hpSystem = GetGameObject()->GetComponent<HPsystem>();
 	animator = GetGameObject()->GetComponent<Animator>();
 }

@@ -1,5 +1,6 @@
 #include "Animator.hpp"
 
+#include "Core/GameInfo.h"
 #include "Core/Logger.hpp"
 #include <Serialization/Serialization.h>
 
@@ -21,13 +22,12 @@ void Animator::Init() {
 
 	try
 	{
-		Serialization::LoadObject<AnimationController>(*m_controller, sr_controllerPath);
+		Serialization::LoadObject(*m_controller, sr_controllerPath);
 	}
 	catch (const std::exception&)
 	{
 		ENGINE_WARN("No animation controller path assigned");
 	}
-
 
 	m_currentState = m_controller->m_defaultState;
 }

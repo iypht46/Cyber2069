@@ -264,11 +264,11 @@ void GLRenderer::AssignLayer()
 		{
 			obj->inSet = true;
 
-			if (obj->layer == -1) 
-			{
-				ENGINE_WARN("GameObjectMeshLayer unassigned (set Layer to 0)");
-				obj->SetLayer(0);
-			}
+			//if (obj->layer == -1) 
+			//{
+				//ENGINE_WARN("GameObjectMeshLayer unassigned (set Layer to 0)");
+				//obj->SetLayer(0);
+			//}
 
 			GLRenderer::GetInstance()->AddMeshToSet(obj);
 		}
