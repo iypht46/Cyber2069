@@ -2,25 +2,16 @@
 #include "Core/Logger.hpp"
 #include "Graphic/GLRenderer.h"
 
-void Bomber::Init(Transform* player) {
-	SetTarget(player);
+void Bomber::OnAwake() {
 	airFollow = m_gameObject->GetComponent<AirFollowing>();
 	airDash = m_gameObject->GetComponent<AirDash>();
 	explosion = m_gameObject->GetComponent<Explosion>();
 
 	airFollow->SetPlayer(target);
 
-	targetDetectionRange = 1000.0f;
-	DashTriggerRadius = 300.0f;
-	ExplodeTriggerRadius = 100.0f;
-
 	rigidbody = GetGameObject()->GetComponent<Rigidbody>();
 
-	Enemy::Init();
-}
-
-void Bomber::OnStart() {
-
+	Enemy::OnAwake();
 }
 
 void Bomber::OnUpdate(float dt) {

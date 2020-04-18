@@ -41,8 +41,8 @@ namespace SceneManagement {
 	extern Scenes ScenePaths;
 	extern std::unique_ptr<Scene> ActiveScene;
 
-	extern GameObject* Instantiate();
-	extern GameObject* Instantiate(std::string prefabPath);
+	extern std::shared_ptr<GameObject> Instantiate();
+	extern std::shared_ptr<GameObject> Instantiate(std::string prefabPath);
 
 	void LoadScene(std::string scenePath);
 	void LoadScene(int sceneIndex);

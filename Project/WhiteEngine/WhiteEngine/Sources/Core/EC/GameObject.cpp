@@ -42,10 +42,16 @@ int GameObject::GetID() {
 }
 
 void GameObject::InitComponents() {
+
 	for (std::shared_ptr<Component> component : m_components) {
-		ENGINE_INFO("Init");
 		component->SetGameObject(this);
 		component->Init();
+
+		//if is behaviou script, also assign to script collection
+		std::shared_ptr<BehaviourScript> behaviour = dynamic_pointer_cast<BehaviourScript>(component);
+		if (behaviour) {
+			m_scripts.push_back(behaviour);
+		}
 	}
 
 	for (std::shared_ptr<BehaviourScript> behaviour : m_scripts) {

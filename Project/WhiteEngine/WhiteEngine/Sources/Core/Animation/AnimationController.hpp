@@ -58,10 +58,10 @@ public:
 		archive(
 			m_spriteSheetFrameSize,
 			m_states,
-			cereal::defer(m_defaultState)
+			m_defaultState
 		);
 
-		//for default state and next states of each state
+		//for /*default state and*/ next states of each state
 		archive.serializeDeferments();
 	}
 };

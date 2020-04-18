@@ -33,7 +33,7 @@ private:
 	glm::vec3 ReplaceColor;
 
 public:
-	int layer = -1; //higher layer is infront
+	int layer = 0; //higher layer is infront
 	bool inSet = false;
 
 	MeshRenderer();
@@ -45,6 +45,7 @@ public:
 	void CreateMesh(float NumframeX, float NumFrameY);
 	void SetTexture(std::string path);
 	void SetTexture(unsigned int tex);
+	//higher layer is in front, player is on 0
 	void SetLayer(unsigned int layer);
 	void SetUI(bool ui);
 	void SetReplaceColor(glm::vec3 color);

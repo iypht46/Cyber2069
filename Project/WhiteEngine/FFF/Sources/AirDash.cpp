@@ -4,17 +4,6 @@
 
 AirDash::AirDash()
 {
-	m_dashSpeed = 700.0f;
-	m_aimTime = 1.0f;
-	m_aimSpeed = 50.0f;
-	m_angle = 0.0f;
-	timer = m_aimTime;
-	dashState = false;
-	dashEnd = false;
-	targetLocked = false;
-}
-
-void AirDash::Init() {
 
 }
 
@@ -85,6 +74,8 @@ void AirDash::OnAwake() {
 	this->m_target = glm::vec3(0);
 	self = m_gameObject->m_transform.get();
 	rb = m_gameObject->GetComponent<Rigidbody>();
+
+	Reset();
 }
 
 void AirDash::OnEnable() {

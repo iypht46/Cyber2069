@@ -1,19 +1,14 @@
 #include "EnemyBehaviours.h"
 
-void Flyer::Init(Transform* player) {
-	SetTarget(player);
+void Flyer::OnAwake() {
+	ENGINE_INFO("flyer init");
 	airFollow = GetGameObject()->GetComponent<AirFollowing>();
 
 	airFollow->SetPlayer(target);
 
-	targetDetectionRange = 1000.0f;
-
 	rigidbody = GetGameObject()->GetComponent<Rigidbody>();
-	Enemy::Init();
-}
 
-void Flyer::OnStart() {
-
+	Enemy::OnAwake();
 }
 
 void Flyer::OnUpdate(float dt) {

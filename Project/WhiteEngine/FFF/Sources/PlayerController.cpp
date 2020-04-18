@@ -19,7 +19,7 @@ void PlayerController::OnAwake() {
 	direction.x = 1;
 	direction.y = 1;
 
-
+	//need changes? Poom 17/04/2020---------
 	AddEquipment(new MachineGun());
 	AddEquipment(new LaserGun());
 	AddEquipment(new GrenadeLauncher());
@@ -32,10 +32,7 @@ void PlayerController::OnAwake() {
 	{
 		e->Modify(this->m_gameObject);
 	}
-}
-
-void PlayerController::OnDisable() {
-
+	//--------------------------------------
 }
 
 void PlayerController::OnCollisionEnter(const Physic::Collision col)
@@ -71,14 +68,6 @@ void PlayerController::OnTriggerStay(const Physic::Collision col)
 void PlayerController::OnTriggerExit(const Physic::Collision col)
 {
 	//GAME_INFO("Collider Exit");
-}
-
-void PlayerController::OnStart() {
-
-}
-
-void PlayerController::OnEnable() {
-
 }
 
 void PlayerController::OnUpdate(float dt)

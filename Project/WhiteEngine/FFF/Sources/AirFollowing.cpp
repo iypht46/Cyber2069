@@ -7,6 +7,12 @@ AirFollowing::AirFollowing()
 
 }
 
+void AirFollowing::OnAwake() {
+	t = GetGameObject()->m_transform.get();
+	rb = GetGameObject()->GetComponent<Rigidbody>();
+	e = GetGameObject()->GetComponent<Character>();
+}
+
 void AirFollowing::SetPlayer(Transform* player) {
 	m_target = player;
 }
@@ -43,32 +49,5 @@ void AirFollowing::FollowPlayer(float dt) {
 			e->flip();
 		}
 	}
-
-}
-
-void AirFollowing::OnAwake() {
-
-	t = GetGameObject()->m_transform.get();
-	rb = GetGameObject()->GetComponent<Rigidbody>();
-	e = GetGameObject()->GetComponent<Character>();
-}
-
-void AirFollowing::OnEnable() {
-
-}
-
-void AirFollowing::OnStart() {
-
-}
-
-void AirFollowing::OnUpdate(float dt) {
-
-}
-
-void AirFollowing::OnFixedUpdate(float dt) {
-
-}
-
-void AirFollowing::OnDisable() {
 
 }

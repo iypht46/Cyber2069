@@ -13,12 +13,13 @@ Rigidbody::Rigidbody()
 	m_mass = 1;
 	m_drag = 0.0f;
 
-	//Factory<Rigidbody>::Add(this);
+	Factory<Rigidbody>::Add(this);
 }
 
 //Create BoxCollider
 void Rigidbody::Init()
 {
+	ENGINE_INFO("rigid id {}", m_componentID);
 	//assign Collider
 	m_collider = GetGameObject()->GetComponent<Collider>();
 	//assign transform
@@ -33,7 +34,8 @@ void Rigidbody::Init(float hW, float hH)
 {
 	//Create new box collider
 	BoxCollider* col = GetGameObject()->AddComponent<BoxCollider>();
-	//Init Box
+
+	//Init Box, ref to rigidbody will be init in OnAwake of collider
 	col->Init(hW, hH, this);
 	//Set Collider
 	m_collider = col;

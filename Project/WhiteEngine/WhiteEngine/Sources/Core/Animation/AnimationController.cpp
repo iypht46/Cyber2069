@@ -19,6 +19,8 @@ void AnimationController::AddState(std::shared_ptr<AnimationState> state) {
 	m_states.push_back(state);
 
 	ENGINE_INFO("number of states: {}", m_states.size());
+
+	//if no default state
 	if (m_defaultState.expired()) {
 		ENGINE_INFO("default anim state set");
 		m_defaultState = state;

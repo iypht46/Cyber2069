@@ -13,6 +13,9 @@
 	Collider::~Collider() { }
 
 	void Collider::Init() {
+		//Set Rigidbody
+		m_rigidbody = GetGameObject()->GetComponent<Rigidbody>();
+
 		Physic::PhysicScene::GetInstance()->Add(this, GetGameObject()->Layer);
 	}
 
@@ -82,8 +85,6 @@
 	}
 
 	void BoxCollider::Init() {
-		//Set Rigidbody
-		m_rigidbody = GetGameObject()->GetComponent<Rigidbody>();
 		//Set Transform
 		//m_transform = GetGameObject()->m_transform.get();
 

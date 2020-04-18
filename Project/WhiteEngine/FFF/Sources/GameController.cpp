@@ -7,6 +7,7 @@ GameController::GameController() {
 	{
 		instance = this;
 
+		//change to adding object from scene instead, and get component to modify
 		FlyerSpawner = new GameObject();
 		BomberSpawner = new GameObject();
 	}
@@ -25,19 +26,18 @@ GameController* GameController::GetInstance()
 
 void GameController::OnAwake() {
 
-}
+	this->PlayerHP = player.lock()->GetComponent<HPsystem>();
+	this->playerControl = player.lock()->GetComponent<PlayerController>();
 
-void GameController::OnEnable() {
-
-}
-
-void GameController::OnStart() {
-
+	//change to adding object from scene instead, and get component to modify
 	FlyerSpawner->AddComponent<EnemySpawner>();
-	FlyerSpawner->GetComponent<EnemySpawner>()->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() / -2);
-	FlyerSpawner->GetComponent<EnemySpawner>()->SetSpawnType(POOL_TYPE::ENEMY_FLYER);
+	FlyerSpawner->GetComponent<EnemySpawner>()->EnemyTarget = player.lock().get();
+	//FlyerSpawner->GetComponent<EnemySpawner>()->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() / -2);
+	FlyerSpawner->GetComponent<EnemySpawner>()->SetSpawnRange(0, 100, 0, 100);
+	FlyerSpawner->GetComponent<EnemySpawner>()->SetSpawnType(POOL_TYPE::ENEMY_CHARGER);
 
 	BomberSpawner->AddComponent<EnemySpawner>();
+	BomberSpawner->GetComponent<EnemySpawner>()->EnemyTarget = player.lock().get();
 	BomberSpawner->GetComponent<EnemySpawner>()->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() / -2);
 	BomberSpawner->GetComponent<EnemySpawner>()->SetSpawnType(POOL_TYPE::ENEMY_BOMBER);
 
@@ -85,7 +85,7 @@ void GameController::OnStart() {
 	CurrPreset = Preset[0].get();
 }
 
-void GameController::OnUpdate(float dt) 
+void GameController::OnUpdate(float dt)
 {
 	int sc = ScoreValue;
 	this->ScoreText->GetComponent<TextRenderer>()->SetText("Score: " + to_string(sc));
@@ -93,14 +93,6 @@ void GameController::OnUpdate(float dt)
 	updateHPui();
 	updateStaminaUI();
 	updateSpawner();
-}
-
-void GameController::OnFixedUpdate(float dt) {
-
-}
-
-void GameController::OnDisable() {
-
 }
 
 float GameController::GetScore() {
@@ -147,9 +139,8 @@ void GameController::AssignStaminabar(GameObject* staminabar)
 	startStaminaposX = staminabar->m_transform->GetPosition().x;
 }
 
-void GameController::AssignPlayer(GameObject* player) {
-	this->PlayerHP = player->GetComponent<HPsystem>();
-	this->player = player->GetComponent<PlayerController>();
+void GameController::AssignPlayer(std::weak_ptr<GameObject> player) {
+	this->player = player;
 }
 
 void GameController::updateHPui() {
@@ -171,17 +162,17 @@ void GameController::updateHPui() {
 
 void GameController::updateStaminaUI()
 {
-	float playerSta = player->GetStamina();
+	float playerSta = playerControl->GetStamina();
 
 	if (playerSta < 0)
 	{
 		playerSta = 0;
 	}
 
-	float currentX = (playerSta * startStaminascaleX) / player->GetMaxStamina();
-	float staDiff = player->GetMaxStamina() - playerSta;
+	float currentX = (playerSta * startStaminascaleX) / playerControl->GetMaxStamina();
+	float staDiff = playerControl->GetMaxStamina() - playerSta;
 
-	float movePos = ((staDiff / 2) * startStaminascaleX) / player->GetMaxStamina();
+	float movePos = ((staDiff / 2) * startStaminascaleX) / playerControl->GetMaxStamina();
 
 	Staminabar->m_transform->SetScale(glm::vec3(currentX, startStaminascaleY, 1.0f));
 	Staminabar->m_transform->SetPosition(glm::vec3(startStaminaposX - movePos, Staminabar->m_transform->GetPosition().y, 1.0f));

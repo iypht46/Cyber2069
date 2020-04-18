@@ -151,7 +151,10 @@
     <ClCompile Include="Sources\MachineGun.cpp" />
     <ClCompile Include="Sources\MachineGunBullet.cpp" />
     <ClCompile Include="Sources\main.cpp" />
+    <ClCompile Include="Sources\ObjectShooter.cpp" />
     <ClCompile Include="Sources\PlayerController.cpp" />
+    <ClCompile Include="Sources\Spitter.cpp" />
+    <ClCompile Include="Sources\Tank.cpp" />
     <ClCompile Include="Sources\World.cpp" />
     <ClCompile Include="Sources\ZapperGun.cpp" />
     <ClCompile Include="Sources\ZapperGunBullet.cpp" />
@@ -171,6 +174,7 @@
     <ClInclude Include="Sources\Equipment.hpp" />
     <ClInclude Include="Sources\GameController.hpp" />
     <ClInclude Include="Sources\HPsystem.hpp" />
+    <ClInclude Include="Sources\ObjectShooter.h" />
     <ClInclude Include="Sources\PlayerController.hpp" />
     <ClInclude Include="Sources\Weapon.hpp" />
     <ClInclude Include="Sources\World.hpp" />
