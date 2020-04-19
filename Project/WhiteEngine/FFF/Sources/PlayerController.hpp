@@ -101,6 +101,9 @@ public:
 
 	void AddEquipment(Equipment* e);
 	void AddEquipment(GameObject* obj);
+	void RemoveWeapon(int index);
+	void RemoveEquipment(int index);
+
 	void ModifyFromEquipment();
 	void RevertArtifact();
 

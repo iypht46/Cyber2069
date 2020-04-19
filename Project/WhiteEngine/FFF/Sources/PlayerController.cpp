@@ -164,7 +164,7 @@ void PlayerController::DebugInput() {
 		assignWeapon(Weapons[0]);
 	}
 	
-	if (Input::GetKeyDown(Input::KeyCode::KEY_2))
+	/*if (Input::GetKeyDown(Input::KeyCode::KEY_2))
 	{
 		assignWeapon(Weapons[1]);
 	}
@@ -182,7 +182,7 @@ void PlayerController::DebugInput() {
 	if (Input::GetKeyDown(Input::KeyCode::KEY_5))
 	{
 		assignWeapon(Weapons[4]);
-	}
+	}*/
 
 	//Test Modify and Revert Artifact
 	if (Input::GetKeyDown(Input::KeyCode::KEY_F))
@@ -492,15 +492,15 @@ void PlayerController::assignWeapon(Weapon* wp)
 	wp->SetmodifyObject(m_gameObject);
 
 	//already set in editor, no need to set here
-	wp->GetWeapon()->m_transform->SetParent(m_gameObject->m_transform);
+	//wp->GetWeapon()->m_transform->SetParent(m_gameObject->m_transform);
 
 
 	if (direction.x == -1.0f) 
 	{
-		wp->GetWeapon()->m_transform->SetScale(glm::vec3(wp->GetWeaponScale().x * -1.0f, wp->GetWeaponScale().y * currDirY, 1));
+		wp->GetWeapon()->m_transform->SetScale(glm::vec3(glm::abs(wp->GetWeapon()->m_transform->GetScale().x) * -1.0f, glm::abs(wp->GetWeapon()->m_transform->GetScale().y) * currDirY, 1));
 	}
 	else {
-		wp->GetWeapon()->m_transform->SetScale(glm::vec3(wp->GetWeaponScale().x, wp->GetWeaponScale().y * currDirY, 1));
+		wp->GetWeapon()->m_transform->SetScale(glm::vec3(glm::abs(wp->GetWeapon()->m_transform->GetScale().x), glm::abs(wp->GetWeapon()->m_transform->GetScale().y) * currDirY, 1));
 	}
 
 	wp->GetWeapon()->m_transform->SetLocalPosition(glm::vec3(1.0f, 0.0f, 0.0f));
@@ -525,6 +525,16 @@ void PlayerController::AddEquipment(GameObject* obj)
 	{
 		AddEquipment(e);
 	}
+}
+
+void PlayerController::RemoveWeapon(int index) 
+{
+	Weapons.erase(Weapons.begin() + index);
+}
+
+void PlayerController::RemoveEquipment(int index)
+{
+	Equipments.erase(Equipments.begin() + index);
 }
 
 void PlayerController::ModifyFromEquipment() 

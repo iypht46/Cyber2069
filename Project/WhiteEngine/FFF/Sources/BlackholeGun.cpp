@@ -3,6 +3,9 @@
 #include "GameController.hpp"
 
 BlackholeGun::BlackholeGun() {
+
+	this->type = WEAPON_TYPE::WEAPON_GRENADELAUNCHER;
+
 	/*weaponObj = new GameObject();
 	weaponObj->AddComponent<MeshRenderer>();
 	weaponObj->GetComponent<MeshRenderer>()->CreateMesh(3, 5);
@@ -21,9 +24,6 @@ void BlackholeGun::OnAwake() {
 	bullet_Duration = 2.0f;
 	bullet_Radius = 100.0f;
 	bullet_ToCenterSpeed = 100.0f;
-
-	weapon_scale.x = 70.0f;
-	weapon_scale.y = 70.0f;
 
 	m_gameObject->SetActive(false);
 }

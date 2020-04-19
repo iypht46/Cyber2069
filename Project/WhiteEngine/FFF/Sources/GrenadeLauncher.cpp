@@ -3,6 +3,9 @@
 #include "GameController.hpp"
 
 GrenadeLauncher::GrenadeLauncher() {
+
+	this->type = WEAPON_TYPE::WEAPON_GRENADELAUNCHER;
+
 	/*weaponObj = new GameObject();
 	weaponObj->AddComponent<MeshRenderer>();
 	weaponObj->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
@@ -14,14 +17,12 @@ GrenadeLauncher::GrenadeLauncher() {
 }
 
 void GrenadeLauncher::OnAwake() {
+
 	weapon_damage = 1.0f;
 	weapon_firerate = 0.3f;
 	bullet_speed = 300.0f;
 
 	grenade_radius = 100.0f;
-
-	weapon_scale.x = 50.0f;
-	weapon_scale.y = 50.0f;
 
 	m_gameObject->SetActive(false);
 }

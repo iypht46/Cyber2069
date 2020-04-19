@@ -4,6 +4,9 @@
 
 MachineGun::MachineGun() 
 {
+
+	this->type = WEAPON_TYPE::WEAPON_MACHINEGUN;
+
 	/*weaponObj = new GameObject();
 	weaponObj->AddComponent<MeshRenderer>();
 	weaponObj->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
@@ -18,9 +21,6 @@ void MachineGun::OnAwake() {
 	weapon_damage = 1.0f;
 	weapon_firerate = 0.3f;
 	bullet_speed = 400.0f;
-
-	weapon_scale.x = 70.0f;
-	weapon_scale.y = 70.0f;
 	
 	m_gameObject->SetActive(false);
 }

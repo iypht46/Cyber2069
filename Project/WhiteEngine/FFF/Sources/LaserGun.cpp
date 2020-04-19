@@ -11,6 +11,9 @@
 
 LaserGun::LaserGun() 
 {
+
+	this->type = WEAPON_TYPE::WEAPON_LASER;
+
 	/*weaponObj = new GameObject();
 	weaponObj->AddComponent<MeshRenderer>();
 	weaponObj->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
@@ -25,11 +28,9 @@ LaserGun::LaserGun()
 }
 
 void LaserGun::OnAwake() {
+
 	weapon_damage = 10.0f;
 	weapon_firerate = 1.0f;
-
-	weapon_scale.x = 70.0f;
-	weapon_scale.y = 70.0f;
 
 	laser_size = 25.0f;
 	laser_duration = 1.0f;
@@ -48,7 +49,7 @@ void LaserGun::Modify()
 
 void LaserGun::GameTimeBehaviour(float dt) 
 {
-	laser->SetActive(false);
+	laserObj->SetActive(false);
 
 	if (Input::GetMouseHold(Input::MouseKeyCode::MOUSE_LEFT) ||
 		Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT))
@@ -65,7 +66,7 @@ void LaserGun::GameTimeBehaviour(float dt)
 				laser_duration_count = 0.0f;
 			}
 
-			laser->SetActive(true);
+			laserObj->SetActive(true);
 			laser_length = (Graphic::Window::GetWidth() / 1.75f) * Graphic::getCamera()->GetZoom();
 
 			if ((*angle > 60 && *angle < 120) || (*angle > 250) || (*angle < -60))
@@ -91,9 +92,9 @@ void LaserGun::GameTimeBehaviour(float dt)
 			endPos = glm::vec2(end_x, end_y);
 
 			float laser_length = glm::sqrt(((end_x - gun_x) * (end_x - gun_x)) + ((end_y - gun_y) * (end_y - gun_y)));
-			laser->m_transform->SetPosition(glm::vec3((end_x + gun_x) / 2, (end_y + gun_y) / 2, 1.0f));
-			laser->m_transform->SetScale(glm::vec3(laser_length, laser_size, 1.0f));
-			laser->m_transform->SetRotation(*angle);
+			laserObj->m_transform->SetPosition(glm::vec3((end_x + gun_x) / 2, (end_y + gun_y) / 2, 1.0f));
+			laserObj->m_transform->SetScale(glm::vec3(laser_length, laser_size, 1.0f));
+			laserObj->m_transform->SetRotation(*angle);
 
 			//DamageEnemyInRange();
 
@@ -159,8 +160,8 @@ void LaserGun::GameTimeBehaviour(float dt)
 
 void LaserGun::OnDisable() 
 {
-	if (laser != nullptr) {
+	if (laserObj != nullptr) {
 
-		laser->SetActive(false);
+		laserObj->SetActive(false);
 	}
 }

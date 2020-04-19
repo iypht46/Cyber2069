@@ -35,6 +35,7 @@
 #include "EnemySpawner.hpp"
 #include "GameController.hpp"
 #include "Weapon.hpp"
+#include "EquipmentManager.hpp"
 
 using SceneManagement::Instantiate;
 
@@ -373,8 +374,31 @@ namespace World
 		gamecontroller->GetComponent<GameController>()->AssignScoreText(ui_ScoreText);
 		gamecontroller->GetComponent<GameController>()->AssignHPbar(ui_HPbar);
 		gamecontroller->GetComponent<GameController>()->AssignStaminabar(ui_StaminaBar);
+		
+
 
 		EnemCon = std::make_shared<AnimationController>();
+
+		std::shared_ptr<GameObject> wp_MachineGun = Instantiate();
+		wp_MachineGun->AddComponent<MeshRenderer>();
+		wp_MachineGun->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
+		wp_MachineGun->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_shoot.png");
+		wp_MachineGun->GetComponent<MeshRenderer>()->SetLayer(3);
+
+
+		wp_MachineGun->AddComponent<MachineGun>();
+
+		wp_MachineGun->m_transform->SetLocalScale(glm::vec3(70.0f, 70.0f, 1.0f));
+		wp_MachineGun->m_transform->SetParent(Rabbit->m_transform);
+
+		gamecontroller->AddComponent<EquipmentManager>();
+		gamecontroller->GetComponent<EquipmentManager>()->AssignWeaponToManager(wp_MachineGun);
+		gamecontroller->GetComponent<EquipmentManager>()->AssignPlayer(Rabbit);
+		gamecontroller->GetComponent<EquipmentManager>()->InitData();
+
+		gamecontroller->GetComponent<EquipmentManager>()->Unlock_WEAPON(WEAPON_TYPE::WEAPON_MACHINEGUN);
+		gamecontroller->GetComponent<EquipmentManager>()->AddPlayerWeapon(WEAPON_TYPE::WEAPON_MACHINEGUN);
+
 
 		//std::shared_ptr<Animation> Fly = std::make_shared<Animation>();
 		//Fly->setStartPosition(0, 0);

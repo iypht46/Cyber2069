@@ -1,5 +1,15 @@
 #pragma once
 #include "Equipment.hpp"
+#include <memory>
+
+
+enum WEAPON_TYPE {
+	WEAPON_MACHINEGUN = 0,
+	WEAPON_LASER,
+	WEAPON_GRENADELAUNCHER,
+	WEAPON_ZAPPER,
+	WEAPON_BLACKHOLE,
+};
 
 class Weapon : public Equipment , public BehaviourScript
 {
@@ -86,7 +96,7 @@ public:
 
 class LaserGun : public Weapon {
 private:
-	GameObject* laser = nullptr;
+	std::shared_ptr <GameObject> laserObj = nullptr;
 	float laser_length;
 	float laser_size;
 	float laser_duration;
@@ -102,7 +112,7 @@ public:
 	LaserGun();
 	void Modify();
 	void GameTimeBehaviour(float dt);
-	void AssignLaserObj(GameObject* obj) { this->laser = obj; }
+	void AssignLaserObj(std::shared_ptr <GameObject> obj) { this->laserObj = obj; }
 	void MultiplyWeaponAmplifier(float value);
 
 	/*void DamageEnemyInRange();
@@ -116,6 +126,7 @@ public:
 	void serialize(Archive& archive) {
 		archive(
 			cereal::base_class<Weapon>(this),
+			laserObj,
 			laser_size
 		);
 	}

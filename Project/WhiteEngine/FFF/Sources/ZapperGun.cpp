@@ -3,6 +3,9 @@
 #include "GameController.hpp"
 
 ZapperGun::ZapperGun() {
+
+	this->type = WEAPON_TYPE::WEAPON_ZAPPER;
+
 	/*weaponObj = new GameObject();
 	weaponObj->AddComponent<MeshRenderer>();
 	weaponObj->GetComponent<MeshRenderer>()->CreateMesh(12, 1);
@@ -20,9 +23,6 @@ void ZapperGun::OnAwake(){
 	chainNumber = 3;
 	zapDistance = 300.0f;
 	zapDuration = 0.5f;
-
-	weapon_scale.x = 70.0f;
-	weapon_scale.y = 70.0f;
 
 	m_gameObject->SetActive(false);
 }

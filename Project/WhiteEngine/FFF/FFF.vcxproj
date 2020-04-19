@@ -148,6 +148,7 @@
     <ClCompile Include="Sources\Flyer.cpp" />
     <ClCompile Include="Sources\GameController.cpp" />
     <ClCompile Include="Sources\HPsystem.cpp" />
+    <ClCompile Include="Sources\EquipmentManager.cpp" />
     <ClCompile Include="Sources\LaserGun.cpp" />
     <ClCompile Include="Sources\MachineGun.cpp" />
     <ClCompile Include="Sources\MachineGunBullet.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="Sources\Equipment.hpp" />
     <ClInclude Include="Sources\GameController.hpp" />
     <ClInclude Include="Sources\HPsystem.hpp" />
+    <ClInclude Include="Sources\EquipmentManager.hpp" />
     <ClInclude Include="Sources\ObjectShooter.h" />
     <ClInclude Include="Sources\PlayerController.hpp" />
     <ClInclude Include="Sources\Weapon.hpp" />
