@@ -9,35 +9,37 @@ Rigidbody::Rigidbody()
 {
 	m_gravityScale = 1.0f;
 	m_position = glm::vec3(0.0f, 0.0f, 0.0f);
-	//m_orientation = 0.0f;
-	m_transform = &m_gameObject->m_transform;
 	m_velocity = vec3(0.0f);
 	m_mass = 1;
 	m_drag = 0.0f;
+
+	Factory<Rigidbody>::Add(this);
 }
 
 //Create BoxCollider
-void Rigidbody::Init(void)
+void Rigidbody::Init()
 {
-	////Create new box collider
-	//BoxCollider* col = m_gameObject->AddComponent<BoxCollider>();
-	////Init Box
-	//col->Init(hW, hH, this);
-	////Set Collider
-	//m_collider = col;
-	m_transform = &(m_gameObject->m_transform);
+	ENGINE_INFO("rigid id {}", m_componentID);
+	//assign Collider
+	m_collider = GetGameObject()->GetComponent<Collider>();
+	//assign transform
+	m_transform = GetGameObject()->m_transform.get();
+
+	//assign self to physicsscene
+	Physic::PhysicScene::GetInstance()->Add(this);
 }
 
 //Create BoxCollider
 void Rigidbody::Init(float hW, float hH)
 {
 	//Create new box collider
-	BoxCollider* col = m_gameObject->AddComponent<BoxCollider>();
-	//Init Box
+	BoxCollider* col = GetGameObject()->AddComponent<BoxCollider>();
+
+	//Init Box, ref to rigidbody will be init in OnAwake of collider
 	col->Init(hW, hH, this);
 	//Set Collider
 	m_collider = col;
-	m_transform = &(m_gameObject->m_transform);
+	m_transform = GetGameObject()->m_transform.get();
 }
 
 Collider* Rigidbody::GetCollider()

@@ -27,6 +27,17 @@ namespace Physic
 		return glm::length(end - origin);
 	}
 
+	RayHit::RayHit(bool hit) {
+		this->hit = hit;
+		collider = nullptr;
+	}
+
+	RayHit::RayHit(glm::vec2 pos, Collider* col) {
+		hit = true;
+		position = pos;
+		collider = col;
+	}
+
 	bool AABBtoAABB(Manifold* m)
 	{
 		//Cast Collider to BoxCollider
@@ -34,7 +45,7 @@ namespace Physic
 		BoxCollider* B = dynamic_cast<BoxCollider*>(m->m_objectB);
 
 		// Vector from A to B
-		glm::vec3 n = B->m_transform->GetPosition() - A->m_transform->GetPosition();
+		glm::vec3 n = B->GetGameObject()->m_transform->GetPosition() - A->GetGameObject()->m_transform->GetPosition();
 
 
 		AABB abox, bbox;
@@ -91,7 +102,7 @@ namespace Physic
 		return true;
 	}
 
-	bool RaytoRay(Ray rayA, Ray rayB) {
+	RayHit RaytoRay(Ray rayA, Ray rayB) {
 		float x1 = rayA.origin.x;
 		float x2 = rayA.end.x;
 		float x3 = rayB.origin.x;
@@ -101,25 +112,63 @@ namespace Physic
 		float y3 = rayB.origin.y;
 		float y4 = rayB.end.y;
 
-		float uA = ((x4 - x3)*(y1 - y3) - (y4 - y3)*(x1 - x3)) / ((y4 - y3)*(x2 - x1) - (x4 - x3)*(y2 - y1));
-		float uB = ((x2 - x1)*(y1 - y3) - (y2 - y1)*(x1 - x3)) / ((y4 - y3)*(x2 - x1) - (x4 - x3)*(y2 - y1));
+		float A1 = y2 - y1;
+		float B1 = x1 - x2;
+		float C1 = (A1*x1) + (B1*y1);
+		float A2 = y4 - y3;
+		float B2 = x3 - x4;
+		float C2 = (A2*x3) + (B2*y3);
+		float denom = (A1*B2) - (A2*B1);
 
-		if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
-			return true;
+		if (denom == 0) {
+			return RayHit();
 		}
-		return false;
+
+		float ix = ((B2*C1) - (B1*C2)) / denom;
+		float iy = ((A1*C2) - (A2*C1)) / denom;
+
+		float rx1 = (ix - x1) / (x2 - x1);
+		float ry1 = (iy - y1) / (y2 - y1);
+		float rx2 = (ix - x3) / (x4 - x3);
+		float ry2 = (iy - y3) / (y4 - y3);
+
+		if (((rx1 >= 0 && rx1 <= 1) || (ry1 >= 0 && ry1 <= 1)) &&
+			((rx2 >= 0 && rx2 <= 1) || (ry2 >= 0 && ry2 <= 1))) {
+			return RayHit(glm::vec2(ix, iy), nullptr);
+		}
+
+		return RayHit(false);
 	}
 
-	bool RaytoAABB(Ray ray, AABB box) {
+	RayHit RaytoAABB(Ray ray, AABB box) {
 		glm::vec2 tl = box.m_min; //box topleft
 		glm::vec2 lr = box.m_max; //box lowerright
 
-		bool up		= RaytoRay(ray, Ray(tl.x, tl.y, lr.x, tl.y));
-		bool down	= RaytoRay(ray, Ray(tl.x, lr.y, lr.x, lr.y));
-		bool left	= RaytoRay(ray, Ray(tl.x, tl.y, tl.x, lr.y));
-		bool right	= RaytoRay(ray, Ray(lr.x, tl.y, lr.x, lr.y));
+		RayHit up		= RaytoRay(ray, Ray(tl.x, tl.y, lr.x, tl.y));
+		RayHit down		= RaytoRay(ray, Ray(tl.x, lr.y, lr.x, lr.y));
+		RayHit left		= RaytoRay(ray, Ray(tl.x, tl.y, tl.x, lr.y));
+		RayHit right	= RaytoRay(ray, Ray(lr.x, tl.y, lr.x, lr.y));
 
-		return up || down || left || right;
+		float closest = ray.distance();
+		RayHit closestSide;
+		if (up.hit && glm::length(up.position - ray.origin) <= closest) {
+			closest = glm::length(up.position - ray.origin) <= closest;
+			closestSide = up;
+		}
+		if (down.hit && glm::length(down.position - ray.origin) <= closest) {
+			closest = glm::length(down.position - ray.origin) <= closest;
+			closestSide = down;
+		}
+		if (left.hit && glm::length(left.position - ray.origin) <= closest) {
+			closest = glm::length(left.position - ray.origin) <= closest;
+			closestSide = left;
+		}
+		if (right.hit && glm::length(right.position - ray.origin) <= closest) {
+			closest = glm::length(right.position - ray.origin) <= closest;
+			closestSide = right;
+		}
+
+		return closestSide;
 	}
 
 	//Default Constructor
@@ -145,6 +194,12 @@ namespace Physic
 				{
 					return (AABBtoAABB(this));
 				}
+				else {
+					//ENGINE_INFO("not box");
+				}
+			}
+			else {
+				//ENGINE_INFO("object inactive");
 			}
 		}
 		else
@@ -160,6 +215,7 @@ namespace Physic
 		if (m_type == RESOLVE_TYPE::COLLISION)
 		{
 			glm::vec3 resultVec = m_normal * (m_penetration * RESOLVE_MUL);
+			float meanFriction = (m_objectB->GetFriction() + m_objectA->GetFriction()) / 2.0f;
 
 			//If both object is moving (Both is not static) then check its velocity
 			if (m_objAResFlag && m_objBResFlag)
@@ -175,13 +231,21 @@ namespace Physic
 			
 			if (m_objAResFlag)
 			{
+				glm::vec3 vel = m_objectA->m_rigidbody->GetVelocity();
+				vel.x *= (1.0f - meanFriction);
+
+				m_objectA->m_rigidbody->SetVelocity(vel);
 				m_objectA->m_rigidbody->SetVelocity0Masked(-resultVec);
 				//ENGINE_INFO("objA {}", m_objectA->GetGameObject()->GetID());
 			}
 
 			if (m_objBResFlag)
 			{
-				m_objectA->m_rigidbody->SetVelocity0Masked(resultVec);
+				glm::vec3 vel = m_objectB->m_rigidbody->GetVelocity();
+				vel.x *= (1.0f - meanFriction);
+
+				m_objectB->m_rigidbody->SetVelocity(m_objectB->m_rigidbody->GetVelocity()*(1.0f - meanFriction));
+				m_objectB->m_rigidbody->SetVelocity0Masked(resultVec);
 				//ENGINE_INFO("objB {}", m_objectB->GetGameObject()->GetID());
 			}
 			//ENGINE_INFO("reslv\n");

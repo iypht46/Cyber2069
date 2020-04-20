@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 //#include "Core/EC/Components/Collider.hpp"
 #include <iostream>
+#include <memory>
 
 //Forward Declaration
 class Collider;
@@ -30,6 +31,16 @@ namespace Physic
 		Ray(glm::vec2 origin, glm::vec2 direction, float distance);
 		Ray(float originx, float originy, float endx, float endy);
 		float distance();
+	};
+
+	struct RayHit
+	{
+		bool hit;
+		glm::vec2 position;
+		Collider* collider;
+
+		RayHit(bool hit = false);
+		RayHit(glm::vec2, Collider*);
 	};
 
 	struct Collision
@@ -67,9 +78,8 @@ namespace Physic
 
 	//For Box to Box
 	bool AABBtoAABB(AABB, AABB);
-	bool RaytoRay(Ray, Ray);
-	bool RaytoAABB(Ray, AABB);
+	RayHit RaytoRay(Ray, Ray);
+	RayHit RaytoAABB(Ray, AABB);
 
 	//typedef void(*CollisionFunc)(Collider*, Collider*);
-
 }

@@ -8,6 +8,8 @@ namespace Core
 	class IMessageHandler
 	{
 	public:
+		IMessageHandler() {}
+
 		//Generic Interface
 		inline virtual void HandleMessage(const Message&) {}
 		inline virtual IMessageHandler* GetParent() const { return nullptr; }

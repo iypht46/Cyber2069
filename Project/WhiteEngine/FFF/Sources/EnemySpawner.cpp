@@ -1,54 +1,100 @@
 #include "EnemySpawner.hpp"
 
-#include "FlyerBehaviour.hpp"
-
-void EnemySpawner::OnStart()
-{
-	SpawnDelay = 1;
-	SpawnDelayCount = SpawnDelay;
-}
-
 void EnemySpawner::OnUpdate(float dt)
 {
-	SpawnDelayCount -= dt;
-	if (SpawnDelayCount <= 0)
+	SpawnRateCount -= dt;
+
+	if (SpawnRateCount <= 0)
 	{
-		SpawnDelayCount = SpawnDelay;
-		GameObject* flyer = FlyerPool->GetInactiveObject();
-		if (flyer != nullptr) 
-		{
-			int testPosX = -(Graphic::Window::GetWidth() / 2);
-			int testPosY = Graphic::Window::GetHeight() / 2;
-			//int randPosX = (rand() % (Graphic::Window::GetWidth() * 2)) - Graphic::Window::GetWidth();
-			//int randPosY = (rand() % (Graphic::Window::GetHeight() * 2)) - Graphic::Window::GetHeight();
+		SpawnRateCount = SpawnRate;
 
-			flyer->SetActive(true);
-			//
-			flyer->GetComponent<FlyerBehaviour>()->hp = 3;
-			//
+		float randPosX, randPosY;
 
-			flyer->m_transform.SetPosition(glm::vec3(testPosX, testPosY, 1.0f));
+		if (x2 > x1) {
+			randPosX = (rand() % (x2 - x1 + 1)) + x1;
 		}
+		else {
+			randPosX = (rand() % (x1 - x2 + 1)) + x2;
+		}
+
+		if (y2 > y1) {
+			randPosY = (rand() % (y2 - y1 + 1)) + y1;
+		}
+		else {
+			randPosY = (rand() % (y1 - y2 + 1)) + y2;
+		}
+
+		SpawnEnemy(randPosX, randPosY);
 	}
 }
 
-void EnemySpawner::OnFixedUpdate(float dt) {
-
-}
-
-void EnemySpawner::OnAwake() {
-
-}
-
-void EnemySpawner::OnEnable() {
-
-}
-
-void EnemySpawner::OnDisable() {
-
-}
-
-void EnemySpawner::assignPool(ObjectPool* pool)
+GameObject* EnemySpawner::SpawnEnemy(float posX,float posY)
 {
-	this->FlyerPool = pool;
+	if (SpawnAmplifier != nullptr) {
+		GameObject* enemy = EnemyPool->GetInactiveObject();
+		if (enemy != nullptr)
+		{
+			enemy->SetActive(true);
+			enemy->GetComponent<HPsystem>()->ResetHP();
+			enemy->GetComponent<Enemy>()->SetTarget(EnemyTarget->m_transform.get());
+
+			enemy->m_transform->SetPosition(glm::vec3(posX, posY, 1.0f));
+
+			switch (SpawnType) {
+			case POOL_TYPE::ENEMY_FLYER:
+				enemy->GetComponent<Flyer>()->SetStats(SpawnAmplifier->FlyerSpeed, SpawnAmplifier->FlyerHP, SpawnAmplifier->FlyerDmg);
+				break;
+			case POOL_TYPE::ENEMY_BOMBER:
+				enemy->GetComponent<Bomber>()->SetStats(SpawnAmplifier->BomberSpeed, SpawnAmplifier->BomberHP, SpawnAmplifier->BomberDmg
+					, SpawnAmplifier->BomberAimTime, SpawnAmplifier->BomberDashSpeed
+					, SpawnAmplifier->BomberExplodeDMG, SpawnAmplifier->BomberExplodeRadius);
+				break;
+			default:
+				break;
+			}
+
+			return enemy;
+		}
+	}
+	else {
+		ENGINE_WARN("No enemy amplifier assigned");
+	}
+
+	return nullptr;
+}
+
+void EnemySpawner::SetSpawnRange(float x1, float y1, float x2, float y2) {
+	this->x1 = x1; this->x2 = x2; this->y1 = y1; this->y2 = y2;
+}
+
+void EnemySpawner::SetSpawnRate(float value) {
+	this->SpawnRate = value;
+	SpawnRateCount = SpawnRate;
+}
+
+void EnemySpawner::SetSpawnType(int type) {
+	this->SpawnType = type;
+	EnemyPool = GameController::GetInstance()->GetPool(type);
+}
+
+void EnemySpawner::updateSpawner() {
+
+	if (SpawnPreset != nullptr) {
+		switch (SpawnType)
+		{
+		case POOL_TYPE::ENEMY_FLYER:
+			SpawnRate = SpawnAmplifier->EnemySpawnRate / SpawnPreset->FlyerRatio;
+			break;
+		case POOL_TYPE::ENEMY_BOMBER:
+			SpawnRate = SpawnAmplifier->EnemySpawnRate / SpawnPreset->BomberRatio;
+			break;
+		default:
+			break;
+		}
+	}
+	else {
+		ENGINE_WARN("No enemy preset assigned");
+	}
+	
+	SpawnRateCount = SpawnRate;
 }

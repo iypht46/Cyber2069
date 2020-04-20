@@ -28,7 +28,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -87,6 +87,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)\WhiteEngine\Vendors\cereal-1.3.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -129,16 +130,18 @@
     <ClInclude Include="Sources\Core\EC\Components\BehaviourScript.h" />
     <ClInclude Include="Sources\Core\EC\Components\SoundPlayer.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\TextRenderer.hpp" />
+    <ClInclude Include="Sources\Core\FactoryCollection.h" />
     <ClInclude Include="Sources\Core\LogCustomType.hpp" />
     <ClInclude Include="Sources\Core\Message\Observer.hpp" />
+    <ClInclude Include="Sources\Core\Particle\ParticleSystem.h" />
     <ClInclude Include="Sources\Physic\Collision.hpp" />
     <ClInclude Include="Sources\Physic\PhysicScene.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\Collider.hpp" />
     <ClInclude Include="Sources\Core\Factory.h" />
     <ClInclude Include="Sources\Core\Logger.hpp" />
-    <ClInclude Include="Sources\Core\Animator\AnimationController.hpp" />
+    <ClInclude Include="Sources\Core\Animation\AnimationController.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\Animator.hpp" />
-    <ClInclude Include="Sources\Core\EC\Components\Animation.hpp" />
+    <ClInclude Include="Sources\Core\Animation\Animation.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\Component.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\MeshRenderer.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\Rigidbody.hpp" />
@@ -157,20 +160,27 @@
     <ClInclude Include="Sources\Graphic\SquareMeshVbo.h" />
     <ClInclude Include="Sources\Graphic\Window.hpp" />
     <ClInclude Include="Sources\Input\Input.hpp" />
+    <ClInclude Include="Sources\SceneManagement\SceneManager.h" />
+    <ClInclude Include="Sources\Serialization\glmCereal.h" />
+    <ClInclude Include="Sources\Serialization\Serialization.h" />
+    <ClInclude Include="Sources\Utility\Event.h" />
     <ClInclude Include="Sources\Utility\ObjectPool.h" />
+    <ClInclude Include="Sources\Utility\WhiteMath.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\Core\EC\Components\BehaviourScript.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\SoundPlayer.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\TextRenderer.cpp" />
+    <ClCompile Include="Sources\Core\FactoryCollection.cpp" />
+    <ClCompile Include="Sources\Core\Particle\ParticleSystem.cpp" />
     <ClCompile Include="Sources\Physic\Collision.cpp" />
     <ClCompile Include="Sources\Physic\PhysicScene.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Collider.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Rigidbody.cpp" />
     <ClCompile Include="Sources\Core\Logger.cpp" />
-    <ClCompile Include="Sources\Core\Animator\AnimationController.cpp" />
+    <ClCompile Include="Sources\Core\Animation\AnimationController.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Animator.cpp" />
-    <ClCompile Include="Sources\Core\EC\Components\Animation.cpp" />
+    <ClCompile Include="Sources\Core\Animation\Animation.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Component.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\MeshRenderer.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Transform.cpp" />
@@ -187,7 +197,10 @@
     <ClCompile Include="Sources\Graphic\Window.cpp" />
     <ClCompile Include="Sources\Input\Input.cpp" />
     <ClCompile Include="Sources\Physic\Raycast.cpp" />
+    <ClCompile Include="Sources\SceneManagement\SceneManager.cpp" />
+    <ClCompile Include="Sources\Utility\Event.cpp" />
     <ClCompile Include="Sources\Utility\ObjectPool.cpp" />
+    <ClCompile Include="Sources\Utility\WhiteMath.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sources\Graphic\Shader\fragment.shd" />

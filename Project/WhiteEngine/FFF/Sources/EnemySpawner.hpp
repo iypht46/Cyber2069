@@ -5,23 +5,62 @@
 #include "Core/EC/Components/Rigidbody.hpp"
 #include "Core/EC/GameObject.hpp"
 #include "Utility/ObjectPool.h"
+#include "GameController.hpp"
+
+#include "EnemyBehaviours.h"
 
 #include "Graphic/Camera.hpp"
 #include "Graphic/Window.hpp"
 
+#include <cereal/types/base_class.hpp>
+#include <cereal/types/polymorphic.hpp>
+
+
+struct EnemyPreset;
+struct EnemyAmplifier;
+
 class EnemySpawner : public BehaviourScript 
 {
 protected:
-	float SpawnDelay;
-	float SpawnDelayCount;
-	ObjectPool* FlyerPool;
-public:
-	void assignPool(ObjectPool* pool);
+	float SpawnRate;
+	//spawn area
+	int x1, x2, y1, y2;
+	//enemy type
+	int SpawnType;
 
-	virtual void OnAwake();
-	virtual void OnEnable();
-	virtual void OnStart();
+	float SpawnRateCount = -1;
+	ObjectPool* EnemyPool;
+
+public:
+	GameObject* EnemyTarget = nullptr;
+
+	EnemyPreset* SpawnPreset = nullptr;
+	EnemyAmplifier* SpawnAmplifier = nullptr;
+
+	GameObject* SpawnEnemy(float rangeX, float rangeY);
+
+	void SetSpawnRate(float value);
+	void SetSpawnRange(float x1, float y1, float x2, float y2);
+	void SetSpawnType(int type);
+	int GetType() { return this->SpawnType; }
+
+	void updateSpawner();
+
+	EnemySpawner() {}
+	~EnemySpawner() {}
+
 	virtual void OnUpdate(float dt);
-	virtual void OnFixedUpdate(float dt);
-	virtual void OnDisable();
+	//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<BehaviourScript>(this),
+			SpawnRate,
+			x1, x2, y1, y2,
+			SpawnType
+			);
+	}
 };
+
+CEREAL_REGISTER_TYPE(EnemySpawner);

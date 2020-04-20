@@ -10,11 +10,23 @@ PlayerController::PlayerController() {
 }
 
 void PlayerController::OnAwake() {
+	rb = m_gameObject->GetComponent<Rigidbody>();
+	hpSystem = m_gameObject->GetComponent<HPsystem>();
 
-}
+	stamina = max_stamina;
 
-void PlayerController::OnDisable() {
 
+	direction.x = 1;
+	direction.y = 1;
+
+
+	/*AddEquipment(new MachineGun());
+	AddEquipment(new LaserGun());
+	AddEquipment(new GrenadeLauncher());
+	AddEquipment(new ZapperGun());
+	AddEquipment(new BlackholeGun());*/
+
+	//assignWeapon(Weapons[0]);
 }
 
 void PlayerController::OnCollisionEnter(const Physic::Collision col)
@@ -34,7 +46,12 @@ void PlayerController::OnCollisionExit(const Physic::Collision col)
 
 void PlayerController::OnTriggerEnter(const Physic::Collision col)
 {
-	//GAME_INFO("HIT");
+	GameObject* obj = col.m_otherCollider->GetGameObject();
+	Enemy* enem = obj->GetComponent<Enemy>();
+	
+	if (enem != nullptr) {
+		hpSystem->TakeDamage(enem->GetCollideDamage());
+	}
 }
 
 void PlayerController::OnTriggerStay(const Physic::Collision col)
@@ -47,86 +64,11 @@ void PlayerController::OnTriggerExit(const Physic::Collision col)
 	//GAME_INFO("Collider Exit");
 }
 
-void PlayerController::OnStart() {
-	Gun = m_gameObject->m_transform.GetChild(0);
-	rb = m_gameObject->GetComponent<Rigidbody>();
-	hpSystem = m_gameObject->GetComponent<HPsystem>();
-
-	hpSystem->SetMaxHP(100.0f);
-	hpSystem->ResetHP();
-
-	inverseGun = false;
-
-	jumping = false;
-	falling = false;
-	max_move_speed = 300.0f;
-	move_speed = 300.0f;
-	dash_speed = 750.0f;
-	jump_speed = 300.0f;
-	direction.x = 1;
-	direction.y = 1;
-
-	camZoomSpeed = 0.01f;
-	camDelay = 0.5f;
-
-	bullet_speed = 300.0f;
-	bullet_delay = 0.1f;
-
-	dashTime = 0.35f;
-
-	GunDistance = 0.45f;
-
-}
-
-void PlayerController::OnEnable() {
-
-}
-
 void PlayerController::OnUpdate(float dt)
 {
-	/*if (m_gameObject->m_transform.GetPosition().y < -(720 / 2))
-	{
-		jumping = false;
-		m_gameObject->m_transform.SetPosition(glm::vec3(m_gameObject->m_transform.GetPosition().x, -(720 / 2) + 1, m_gameObject->m_transform.GetPosition().z));
-	}*/
+	Graphic::getCamera()->SetPos(glm::vec3(GetGameObject()->m_transform->GetPosition().x, GetGameObject()->m_transform->GetPosition().y, GetGameObject()->m_transform->GetPosition().z));
 
-	/*if (hpSystem->GetHP() > 10.0f) {
-		hpSystem->TakeDamage(1.0f);
-	}
-	else {
-		hpSystem->ResetHP();
-	}*/
-
-	Graphic::getCamera()->SetPos(glm::vec3(m_gameObject->m_transform.GetPosition().x, m_gameObject->m_transform.GetPosition().y, m_gameObject->m_transform.GetPosition().z));
-
-
-	if (!falling && jumping)
-	{
-		camDelay_count = 0.0f;
-		if (Graphic::getCamera()->GetZoom() < 1.5f)
-		{
-			Graphic::getCamera()->Zoom(camZoomSpeed);
-		}
-		else
-		{
-			Graphic::getCamera()->SetZoom(1.5f);
-		}
-	}
-	else {
-		camDelay_count += dt;
-
-		if (camDelay_count > camDelay) {
-
-			if (Graphic::getCamera()->GetZoom() > 0.75f)
-			{
-				Graphic::getCamera()->Zoom(-camZoomSpeed);
-			}
-			else
-			{
-				Graphic::getCamera()->SetZoom(0.75f);
-			}
-		}
-	}
+	cameraZoom(dt);
 
 	if ((rb->GetVelocity().y < -5.0f) && !falling)
 	{
@@ -135,29 +77,155 @@ void PlayerController::OnUpdate(float dt)
 
 	if (falling)
 	{
-		if (rb->GetVelocity().y >= 0)
+		if (checkGround())
 		{
 			jumping = false;
 			falling = false;
+			onGround = true;
 		}
 	}
 
+	if (onGround && (stamina < max_stamina)) 
+	{
+		stamina += staminaRegenRate;
+	}
+
+	DebugInput();
 	move();
 
 	if (Dash) {
 		dash(dt);
 	}
 
-	mouseAim();
+	if (weapon != nullptr) {
 
-	shoot(dt);
+		mouseAim();
+	}
+
+	for (Equipment* e : Equipments)
+	{
+		if (Weapon* w = dynamic_cast<Weapon*>(e)) 
+		{
+			if (w->GetWeapon()->Active()) 
+			{
+				w->GameTimeBehaviour(dt);
+			}
+		}
+		else {
+			e->GameTimeBehaviour(dt);
+		}
+	}
 }
 
 void PlayerController::OnFixedUpdate(float dt)
 {
+
 }
 
 void PlayerController::updateDirection() {
+
+}
+
+void PlayerController::DebugInput() {
+	
+	if (Input::GetKeyDown(Input::KeyCode::KEY_R))
+	{
+		m_gameObject->m_transform->SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
+		hpSystem->ResetHP();
+		m_gameObject->SetActive(true);
+	}
+
+	if (Input::GetKeyDown(Input::KeyCode::KEY_N))
+	{
+		if (GLRenderer::GetInstance()->drawDebug) {
+
+			GLRenderer::GetInstance()->drawDebug = false;
+		}
+		else {
+			GLRenderer::GetInstance()->drawDebug = true;
+		}
+	}
+
+	if (Input::GetKeyDown(Input::KeyCode::KEY_M))
+	{
+		if (!hpSystem->isInvicible()) {
+
+			hpSystem->SetInvincible(true);
+		}
+		else {
+			hpSystem->SetInvincible(false);
+		}
+	}
+
+
+	//Test Weapon
+	if (Input::GetKeyDown(Input::KeyCode::KEY_1))
+	{
+		assignWeapon(Weapons[0]);
+	}
+	
+	/*if (Input::GetKeyDown(Input::KeyCode::KEY_2))
+	{
+		assignWeapon(Weapons[1]);
+	}
+
+	if (Input::GetKeyDown(Input::KeyCode::KEY_3))
+	{
+		assignWeapon(Weapons[2]);
+	}
+
+	if (Input::GetKeyDown(Input::KeyCode::KEY_4))
+	{
+		assignWeapon(Weapons[3]);
+	}
+
+	if (Input::GetKeyDown(Input::KeyCode::KEY_5))
+	{
+		assignWeapon(Weapons[4]);
+	}*/
+
+	//Test Modify and Revert Artifact
+	if (Input::GetKeyDown(Input::KeyCode::KEY_F))
+	{
+		ModifyFromEquipment();
+	}
+
+	if (Input::GetKeyDown(Input::KeyCode::KEY_G))
+	{
+		RevertArtifact();
+	}
+
+	//Test Setter for Artifact
+	if (weapon != nullptr) 
+	{
+		/*if (Input::GetKeyDown(Input::KeyCode::KEY_F))
+		{
+			weapon->MultiplyWeaponFireRate(2.0f);
+		}
+
+		if (Input::GetKeyDown(Input::KeyCode::KEY_G))
+		{
+			weapon->MultiplyWeaponDamage(2.0f);
+		}
+
+		if (Input::GetKeyDown(Input::KeyCode::KEY_H))
+		{
+			weapon->MultiplyWeaponAmplifier(2.0f);
+		}
+
+		if (Input::GetKeyDown(Input::KeyCode::KEY_J))
+		{
+			m_gameObject->GetComponent<Rigidbody>()->SetGravityScale(0.5f);
+		}
+
+		if (Input::GetKeyDown(Input::KeyCode::KEY_K))
+		{
+			move_speed = move_speed * 2.0f;
+			max_move_speed = max_move_speed * 2.0f;
+		}*/
+
+
+	}
 
 }
 
@@ -165,6 +233,11 @@ void PlayerController::move()
 {
 	glm::vec3 velocity(0, 0, 0);
 	//direction = glm::vec2(0);
+
+	if (stamina < 0)
+	{
+		stamina = 0;
+	}
 
 	if (Input::GetKeyHold(Input::KeyCode::KEY_W))
 	{
@@ -186,7 +259,9 @@ void PlayerController::move()
 		//rb->SetVelocity(glm::vec3(move_speed * direction.x, rb->GetVelocity().y, rb->GetVelocity().z));
 
 
-		m_gameObject->m_transform.SetScale(glm::vec3(glm::abs(m_gameObject->m_transform.GetScale().x) * -1.0f, m_gameObject->m_transform.GetScale().y, m_gameObject->m_transform.GetScale().z));
+		if (facingRight) {
+			flip();
+		}
 
 	}
 	else if (Input::GetKeyHold(Input::KeyCode::KEY_D))
@@ -194,52 +269,42 @@ void PlayerController::move()
 		direction.x = 1.0f;
 		velocity.x = move_speed * direction.x;
 		//rb->SetVelocity(glm::vec3(move_speed * direction.x, rb->GetVelocity().y, rb->GetVelocity().z));
-		m_gameObject->m_transform.SetScale(glm::vec3(glm::abs(m_gameObject->m_transform.GetScale().x), m_gameObject->m_transform.GetScale().y, m_gameObject->m_transform.GetScale().z));
+
+		if (!facingRight) {
+			flip();
+		}
 	}
 
-	if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE))
+	if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE) && (stamina > 0))
 	{
 		rb->SetVelocity(glm::vec3(0, jump_speed, 0));
+		stamina -= jumpStamina;
 		jumping = true;
 		running = false;
 		falling = false;
+		onGround = false;
 
-		m_gameObject->GetComponent<Animator>()->setCurrentState(3);
-	}
-
-	if (Input::GetKeyDown(Input::KeyCode::KEY_R)) 
-	{
-		m_gameObject->m_transform.SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
-	}
-
-	if (Input::GetKeyDown(Input::KeyCode::KEY_N))
-	{
-		if (GLRenderer::GetInstance()->drawDebug) {
-
-			GLRenderer::GetInstance()->drawDebug = false;
-		}
-		else {
-			GLRenderer::GetInstance()->drawDebug = true;
-		}
+		GetGameObject()->GetComponent<Animator>()->setCurrentState(3);
 	}
 
 	if ((!Input::GetKeyHold(Input::KeyCode::KEY_A) && !Input::GetKeyHold(Input::KeyCode::KEY_D)) && !jumping && !falling)
 	{
 		if (!Dash) {
 			running = false;
-			m_gameObject->GetComponent<Animator>()->setCurrentState(0);
+			GetGameObject()->GetComponent<Animator>()->setCurrentState(0);
 		}
 	}
 	else if ((Input::GetKeyHold(Input::KeyCode::KEY_A) || Input::GetKeyHold(Input::KeyCode::KEY_D)) && !jumping && !falling) {
 
 		if (!running && !Dash) {
 			running = true;
-			m_gameObject->GetComponent<Animator>()->setCurrentState(1);
+			GetGameObject()->GetComponent<Animator>()->setCurrentState(1);
 		}
 	}
 
-	if (Input::GetKeyDown(Input::KeyCode::KEY_LEFT_SHIFT) && !Dash)
+	if (Input::GetKeyDown(Input::KeyCode::KEY_LEFT_SHIFT) && !Dash && !checkGround() && (stamina > 0))
 	{
+		stamina -= dashStamina;
 		dashRemainingTime = dashTime;
 		Dash = true;
 		setDashAnim = false;
@@ -260,15 +325,16 @@ void PlayerController::move()
 
 void PlayerController::dash(float dt)
 {
-
 	if (dashRemainingTime <= 0)
 	{
+		hpSystem->SetInvincible(false);
 		running = false;
-		m_gameObject->GetComponent<Animator>()->setCurrentState(4);
+		GetGameObject()->GetComponent<Animator>()->setCurrentState(4);
 		Dash = false;
 	}
 	else
 	{
+		hpSystem->SetInvincible(true);
 		dashRemainingTime -= dt;
 		delay -= dt;
 
@@ -280,13 +346,13 @@ void PlayerController::dash(float dt)
 			if (!setDashAnim)
 			{
 				setDashAnim = true;
-				m_gameObject->GetComponent<Animator>()->setCurrentState(2);
+				GetGameObject()->GetComponent<Animator>()->setCurrentState(2);
 			}
 		}
 
 		if (dashDirection.x != 0)
 		{
-			m_gameObject->m_transform.SetScale(glm::vec3(glm::abs(m_gameObject->m_transform.GetScale().x) * dashDirection.x, m_gameObject->m_transform.GetScale().y, m_gameObject->m_transform.GetScale().z));
+			GetGameObject()->m_transform->SetScale(glm::vec3(glm::abs(GetGameObject()->m_transform->GetScale().x) * dashDirection.x, GetGameObject()->m_transform->GetScale().y, GetGameObject()->m_transform->GetScale().z));
 		}
 
 		rb->SetVelocity(glm::vec3(dash_speed * dashDirection.x, 0, 0));
@@ -297,8 +363,8 @@ void PlayerController::mouseAim()
 {
 	float mouse_x, mouse_y, pos_x, pos_y;
 
-	pos_x = m_gameObject->m_transform.GetPosition().x;
-	pos_y = m_gameObject->m_transform.GetPosition().y;
+	pos_x = GetGameObject()->m_transform->GetPosition().x;
+	pos_y = GetGameObject()->m_transform->GetPosition().y;
 
 	mouse_x = Input::GetMouseWorldPosition().x;
 	mouse_y = Input::GetMouseWorldPosition().y;
@@ -307,109 +373,191 @@ void PlayerController::mouseAim()
 
 	angle_rad = angle_deg / 180 * PI;
 
-	if (m_gameObject->m_transform.GetScale().x > 0) {
-		Gun->SetRotation(angle_deg);
+	if (m_gameObject->m_transform->GetScale().x > 0) {
+		weaponTranform->SetRotation(angle_deg);
 
 		if (angle_deg > 90) {
 			if (!inverseGun) {
-				Gun->SetScale(glm::vec3(Gun->GetScale().x, -1.0f * Gun->GetScale().y, Gun->GetScale().z));
+				weaponTranform->SetScale(glm::vec3(weaponTranform->GetScale().x, -1.0f * weaponTranform->GetScale().y, weaponTranform->GetScale().z));
 				inverseGun = true;
 			}
 		}
 		else {
 			if (inverseGun) {
 
-				Gun->SetScale(glm::vec3(Gun->GetScale().x, -1.0f * Gun->GetScale().y, Gun->GetScale().z));
+				weaponTranform->SetScale(glm::vec3(weaponTranform->GetScale().x, -1.0f * weaponTranform->GetScale().y, weaponTranform->GetScale().z));
 				inverseGun = false;
 			}
 		}
 
-		Gun->SetLocalPosition(glm::vec3(GunDistance * cos(angle_rad), GunDistance * sin(angle_rad) + 0.05f, 1));
+		weaponTranform->SetLocalPosition(glm::vec3(GunDistance * cos(angle_rad), GunDistance * sin(angle_rad), 1));
 	}
 	else {
-		Gun->SetRotation(-1.0f * (angle_deg + 180));
+		weaponTranform->SetRotation(-1.0f * (angle_deg + 180));
 
 		if (angle_deg < 90) {
 			if (!inverseGun) {
-				Gun->SetScale(glm::vec3(Gun->GetScale().x, -1.0f * Gun->GetScale().y, Gun->GetScale().z));
+				weaponTranform->SetScale(glm::vec3(weaponTranform->GetScale().x, -1.0f * weaponTranform->GetScale().y, weaponTranform->GetScale().z));
 				inverseGun = true;
 			}
 		}
 		else {
 			if (inverseGun) {
 
-				Gun->SetScale(glm::vec3(Gun->GetScale().x, -1.0f * Gun->GetScale().y, Gun->GetScale().z));
+				weaponTranform->SetScale(glm::vec3(weaponTranform->GetScale().x, -1.0f * weaponTranform->GetScale().y, weaponTranform->GetScale().z));
 				inverseGun = false;
 			}
 		}
 
-		Gun->SetLocalPosition(glm::vec3( -1.0f * GunDistance * cos(angle_rad), GunDistance * sin(angle_rad) + 0.05f, 1));
+		weaponTranform->SetLocalPosition(glm::vec3( -1.0f * GunDistance * cos(angle_rad), GunDistance * sin(angle_rad), 1));
 	}
-
-
-	//std::cout << angle_deg << std::endl;
 }
 
-void PlayerController::shoot(float dt)
+bool PlayerController::checkGround() 
 {
-	if (Input::GetMouseHold(Input::MouseKeyCode::MOUSE_LEFT))
+	int hits = 0;
+	float pos_x, pos_y, raycastRange;
+	Physic::PhysicScene* PhySc = Physic::PhysicScene::GetInstance();
+	
+	pos_x = GetGameObject()->m_transform->GetPosition().x;
+	pos_y = GetGameObject()->m_transform->GetPosition().y;
+	raycastRange = 25.0f;
+
+	hits = PhySc->RaycastAll(Physic::Ray(pos_x, pos_y, pos_x, pos_y - raycastRange), PhySc->GetLayerFromString("Platform")).size();
+	GLRenderer::GetInstance()->DrawDebug_Line(pos_x, pos_y, pos_x, pos_y - raycastRange, 1.0f, 0.0f, 0.0f);
+
+	if (hits > 0) 
 	{
-		bullet_delay_count += dt;
-		if (bullet_delay_count > bullet_delay)
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+void PlayerController::cameraZoom(float dt) {
+
+	if (!onGround && jumping && !falling)
+	{
+		camDelay_count = 0.0f;
+		if (Graphic::getCamera()->GetZoom() < camSmall)
 		{
+			Graphic::getCamera()->Zoom(camZoomOutSpeed);
+		}
+		else
+		{
+			Graphic::getCamera()->SetZoom(camSmall);
+		}
+	}
+	else if(onGround) {
+		camDelay_count += dt;
 
-			GameObject* bullet = MGbulletPool->GetInactiveObject();
+		if (camDelay_count > camZoomInDelay) {
 
-			if (bullet != nullptr) {
-				bullet->SetActive(true);
-
-				float posX = m_gameObject->m_transform.GetPosition().x + (50 * cos(angle_rad));
-				float posY = m_gameObject->m_transform.GetPosition().y + (50 * sin(angle_rad));
-				bullet->m_transform.SetPosition(glm::vec3(posX, posY, 0.0f));
-				bullet->m_transform.SetRotation(angle_deg);
-
-				float speedX = bullet_speed * cos(angle_rad);
-				float speedY = bullet_speed * sin(angle_rad);
-
-				//if (((rb->GetVelocity().x > 0) && (speedX < 0)) ||
-				//	((rb->GetVelocity().x < 0) && (speedX > 0)))
-				//{
-				//	speedX += -1.0 * rb->GetVelocity().x;
-				//}
-				//else {
-				//	speedX += rb->GetVelocity().x;
-				//}
-
-				//if (((rb->GetVelocity().y > 0) && (speedY < 0)) ||
-				//	((rb->GetVelocity().y < 0) && (speedY > 0)))
-				//{
-				//	speedY += -1.0 * rb->GetVelocity().y;
-				//}
-				//else {
-				//	speedY += rb->GetVelocity().y;
-				//}
-
-				bullet->GetComponent<Rigidbody>()->SetVelocity(glm::vec3(speedX, speedY, 0.0f));
-
-				bullet_delay_count = 0.0f;
+			if (Graphic::getCamera()->GetZoom() > camLarge)
+			{
+				Graphic::getCamera()->Zoom(-camZoomInSpeed);
+			}
+			else
+			{
+				Graphic::getCamera()->SetZoom(camLarge);
 			}
 		}
 	}
-
-	float mouse_x, mouse_y, pos_x, pos_y;
-
-	pos_x = m_gameObject->m_transform.GetPosition().x;
-	pos_y = m_gameObject->m_transform.GetPosition().y;
-
-	mouse_x = Input::GetMouseWorldPosition().x;
-	mouse_y = Input::GetMouseWorldPosition().y;
-
-	int hits = ps->RaycastAll(Physic::Ray(pos_x, pos_y, mouse_x, mouse_y), ps->GetLayerFromString("Enemy")).size();
-	ENGINE_INFO("{} enemies hit with ray", hits);
-	GLRenderer::GetInstance()->DrawDebug_Line(pos_x, pos_y, mouse_x, mouse_y, 1.0f, 0.0f, 0.0f);
 }
 
 void PlayerController::assignPool(ObjectPool* pool)
 {
 	this->MGbulletPool = pool;
+}
+
+void PlayerController::assignWeapon(Weapon* wp) 
+{
+	if (this->weapon != nullptr)
+	{
+		this->weapon->GetWeapon()->SetActive(false);
+	}
+	else 
+	{
+		this->weapon = wp;
+	}
+
+	weaponTranform = wp->GetWeapon()->m_transform.get();
+	float currDirY = weapon->GetWeapon()->m_transform->GetScale().y / glm::abs(weapon->GetWeapon()->m_transform->GetScale().y);
+
+
+	this->weapon = wp;
+	wp->GetWeapon()->SetActive(true);
+	wp->AssignAngle(&angle_deg);
+	wp->SetmodifyObject(m_gameObject);
+
+	//already set in editor, no need to set here
+	//wp->GetWeapon()->m_transform->SetParent(m_gameObject->m_transform);
+
+
+	if (direction.x == -1.0f) 
+	{
+		wp->GetWeapon()->m_transform->SetScale(glm::vec3(glm::abs(wp->GetWeapon()->m_transform->GetScale().x) * -1.0f, glm::abs(wp->GetWeapon()->m_transform->GetScale().y) * currDirY, 1));
+	}
+	else {
+		wp->GetWeapon()->m_transform->SetScale(glm::vec3(glm::abs(wp->GetWeapon()->m_transform->GetScale().x), glm::abs(wp->GetWeapon()->m_transform->GetScale().y) * currDirY, 1));
+	}
+
+	wp->GetWeapon()->m_transform->SetLocalPosition(glm::vec3(1.0f, 0.0f, 0.0f));
+}
+
+void PlayerController::AddEquipment(Equipment* e) 
+{
+	e->SetmodifyObject(m_gameObject);
+	Equipments.push_back(e);
+
+	if (Weapon* w = dynamic_cast<Weapon*>(e))
+	{
+		Weapons.push_back(w);
+	}
+}
+
+void PlayerController::AddEquipment(GameObject* obj)
+{
+	Equipment* e = obj->GetComponent<Equipment>();
+
+	if (e != nullptr)
+	{
+		AddEquipment(e);
+	}
+}
+
+void PlayerController::RemoveWeapon(int index) 
+{
+	Weapons.erase(Weapons.begin() + index);
+}
+
+void PlayerController::RemoveEquipment(int index)
+{
+	Equipments.erase(Equipments.begin() + index);
+}
+
+void PlayerController::ModifyFromEquipment() 
+{
+	for (Equipment* e : Equipments)
+	{
+		e->Modify();
+	}
+}
+
+void PlayerController::RevertArtifact() 
+{
+	for (Equipment* e : Equipments)
+	{
+		if (Artifact* a = dynamic_cast<Artifact*>(e)) 
+		{
+			a->Revert();
+		}
+	}
+}
+
+void PlayerController::MultiplyMoveSpeed(float value) 
+{
+	this->move_speed = this->move_speed * value; 
+	this->max_move_speed = this->max_move_speed * value; 
 }

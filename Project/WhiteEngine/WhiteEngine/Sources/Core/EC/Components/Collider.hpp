@@ -1,8 +1,14 @@
 #pragma once
+
+#include <string>
+#include <memory>
 #include <glm/glm.hpp>
 #include "Core/EC/Components/Component.hpp"
 #include "Core/Message/IMessageHandler.hpp"
 
+#include <cereal/types/string.hpp>
+#include <cereal/types/polymorphic.hpp>
+#include <cereal/types/base_class.hpp>
 
 #define BOX_VERTICES 4
 
@@ -20,24 +26,35 @@
 	protected:
 		friend class Physic::PhysicScene;
 
-		COLLIDER_TYPE m_colliderType;
-		COL_STATE m_collisionState = COL_STATE::NONE;
+		std::string m_layer;
 		bool m_isStatic = true;
-		bool m_hasCollided = false;
 		float m_density;
+		float m_friction = 0.1f;
+
+		COLLIDER_TYPE m_colliderType;
+
+		COL_STATE m_collisionState = COL_STATE::NONE;
+		bool m_hasCollided = false;
 	public:
-		Transform* m_transform;
-		Rigidbody* m_rigidbody;
+		//Transform* m_transform;
+		Rigidbody* m_rigidbody = nullptr;
 
 		//Constructor
+		Collider();
 		Collider(COLLIDER_TYPE col) 
 			: m_colliderType(col), m_density(1.0f) {}
 		//Destructor
-		~Collider() {};
+		~Collider() = 0;
+
+		virtual void Init();
+
 		//Collider Interface
 		COLLIDER_TYPE GetType();
 		bool IsStatic();
 		COL_STATE GetCollisionState();
+
+		void SetFriction(float friction) { m_friction = friction; }
+		float GetFriction() { return m_friction; }
 
 		//Virtual
 		virtual void SetOrient() {};
@@ -48,7 +65,22 @@
 		virtual void HandleMessage(const Core::Collision&);
 		virtual void HandleMessage(const Core::Trigger&);
 
+	//serialization
+	public:
+		template<class Archive>
+		void serialize(Archive& archive) {
+			archive(
+				cereal::base_class<Component>(this),
+				m_layer,
+				m_isStatic,
+				m_density,
+				m_friction
+			);
+		}
 	};
+
+	CEREAL_REGISTER_TYPE(Collider);
+	CEREAL_REGISTER_POLYMORPHIC_RELATION(Core::IMessageHandler, Collider);
 
 	class BoxCollider : public Collider
 	{
@@ -56,13 +88,14 @@
 	private:
 		float m_halfWidth;
 		float m_halfHeight;
-		glm::vec3 m_colliderScale; //Scale multiplier in halfwidth and halfheight
+		/*unused var*/glm::vec3 m_colliderScale; //Scale multiplier in halfwidth and halfheight
 	public:
 		//Constructor
-		BoxCollider() : Collider(COLLIDER_TYPE::BOX) {}
-		void Init(float, float);
-		void Init(float, float, Rigidbody*);
-		void ReSize(float, float);
+		BoxCollider();
+		virtual void Init();
+		void Init(float sizeX, float sizeY, Rigidbody*);
+		void ReSize(float sizeX, float sizeY);
+		void ReScale(float scaleX, float scaleY);
 		void ComputeAABB(Physic::AABB&);
 		
 		//Box Collider Interface
@@ -72,6 +105,17 @@
 		float GetHw() { return m_halfWidth; }
 		float GetHh() { return m_halfHeight; }
 		//virtual void Update(float) const;
+
+	//serialization
+	public:
+		template<class Archive>
+		void serialize(Archive& archive) {
+			archive(cereal::base_class<Collider>(this),
+				m_halfWidth,
+				m_halfHeight
+			);
+		}
 	};
 
+	CEREAL_REGISTER_TYPE(BoxCollider);
 
