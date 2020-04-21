@@ -9,6 +9,7 @@
 #include "GroundPatrol.hpp"
 #include "GroundDash.hpp"
 #include "ObjectShooter.h"
+#include "Core/EC/Components/SoundPlayer.hpp"
 
 #include <memory>
 
@@ -21,6 +22,7 @@ private:
 	Rigidbody* rigidbody;
 protected:
 	AirFollowing* airFollow;
+	SoundPlayer* FlyerSound;
 	
 public:
 
@@ -53,6 +55,7 @@ private:
 protected:
 	AirFollowing* airFollow = nullptr;
 	AirDash* airDash = nullptr;
+	SoundPlayer* BomberSound;
 
 public:
 	EnemyState state = EnemyState::Idle;
@@ -92,6 +95,7 @@ protected:
 	AirPatrol* airPatrol;
 	ObjectPool* FlyerPool;
 	ObjectPool* BomberPool;
+	SoundPlayer* QueenSound;
 public:
 	
 	DeQueen() {}
@@ -120,6 +124,7 @@ class Tank : public Enemy {
 private:
 	Rigidbody* rigidbody;
 	GroundPatrol* groundPatrol;
+	SoundPlayer* TankSound;
 public:
 	virtual void OnAwake();
 	virtual void OnUpdate(float dt);
@@ -141,6 +146,7 @@ private:
 	Rigidbody* rigidbody;
 	GroundPatrol* groundPatrol;
 	GroundDash* groundDash;
+	SoundPlayer* ChargerSound;
 public:
 	float DashTriggerRangeY = 150.0f;
 
@@ -165,6 +171,7 @@ private:
 	Rigidbody* rigidbody;
 	GroundPatrol* groundPatrol;
 	ObjectShooter* shooting;
+	SoundPlayer* SpitterSound;
 public:
 
 	virtual void OnAwake();
