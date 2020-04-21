@@ -16,14 +16,14 @@ namespace FactoryCollection {
 	void FixedUpdateComponents(float dt) {
 		//update animator
 		for (Animator* anim : Factory<Animator>::getCollection()) {
-			if (anim->GetGameObject()->Active()) {
+			if (anim->GetGameObject() != nullptr && anim->GetGameObject()->Active()) {
 				anim->animUpdate(dt);
 			}
 		}
 
 		//update particle
 		for (ParticleSystem* particlesystem : Factory<ParticleSystem>::getCollection()) {
-			if (particlesystem->GetGameObject()->Active()) {
+			if (particlesystem->GetGameObject() != nullptr && particlesystem->GetGameObject()->Active()) {
 				particlesystem->ConstantEmit(dt);
 			}
 			particlesystem->LifeTimeModification(dt);
@@ -31,7 +31,7 @@ namespace FactoryCollection {
 
 		//update behaviour script
 		for (BehaviourScript* behaviour : Factory<BehaviourScript>::getCollection()) {
-			if (behaviour->GetGameObject()->Active()) {
+			if (behaviour->GetGameObject() != nullptr && behaviour->GetGameObject()->Active()) {
 				behaviour->OnFixedUpdate(dt);
 			}
 		}
@@ -40,7 +40,7 @@ namespace FactoryCollection {
 	void UpdateComponents(float dt) {
 		//update behaviour script
 		for (BehaviourScript* behaviour : Factory<BehaviourScript>::getCollection()) {
-			if (behaviour->GetGameObject()->Active()) {
+			if (behaviour->GetGameObject() != nullptr && behaviour->GetGameObject()->Active()) {
 				behaviour->OnUpdate(dt);
 			}
 		}

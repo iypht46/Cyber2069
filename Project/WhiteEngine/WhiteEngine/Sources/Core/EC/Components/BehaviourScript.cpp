@@ -11,7 +11,7 @@ BehaviourScript::~BehaviourScript() { }
 
 void BehaviourScript::Init() { }
 
-void BehaviourScript::OnAwake() { ENGINE_INFO("raw behav"); }
+void BehaviourScript::OnAwake() { /*ENGINE_INFO("raw behav init");*/ }
 void BehaviourScript::OnEnable() { }
 void BehaviourScript::OnDisable() { }
 

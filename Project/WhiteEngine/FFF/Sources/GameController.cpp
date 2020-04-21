@@ -6,10 +6,6 @@ GameController::GameController() {
 	if (instance == nullptr) 
 	{
 		instance = this;
-
-		//change to adding object from scene instead, and get component to modify
-		FlyerSpawner = new GameObject();
-		BomberSpawner = new GameObject();
 	}
 }
 
@@ -29,21 +25,22 @@ void GameController::OnAwake() {
 	this->PlayerHP = player.lock()->GetComponent<HPsystem>();
 	this->playerControl = player.lock()->GetComponent<PlayerController>();
 
-	//change to adding object from scene instead, and get component to modify
-	FlyerSpawner->AddComponent<EnemySpawner>();
-	FlyerSpawner->GetComponent<EnemySpawner>()->EnemyTarget = player.lock().get();
-	//FlyerSpawner->GetComponent<EnemySpawner>()->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() / -2);
-	FlyerSpawner->GetComponent<EnemySpawner>()->SetSpawnRange(0, 100, 0, 100);
-	FlyerSpawner->GetComponent<EnemySpawner>()->SetSpawnType(POOL_TYPE::ENEMY_CHARGER);
+	EnemySpawner* FlyerSpawner = m_gameObject->AddComponent<EnemySpawner>();
+	FlyerSpawner->EnemyTarget = player.lock().get();
+	//FlyerSpawn()->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() / -2);
+	FlyerSpawner->SetSpawnRange(0, 100, 0, 100);
+	FlyerSpawner->SetSpawnType(POOL_TYPE::ENEMY_CHARGER);
 
-	BomberSpawner->AddComponent<EnemySpawner>();
-	BomberSpawner->GetComponent<EnemySpawner>()->EnemyTarget = player.lock().get();
-	BomberSpawner->GetComponent<EnemySpawner>()->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() / -2);
-	BomberSpawner->GetComponent<EnemySpawner>()->SetSpawnType(POOL_TYPE::ENEMY_BOMBER);
+	EnemySpawner* BomberSpawner = m_gameObject->AddComponent<EnemySpawner>();
+	BomberSpawner->EnemyTarget = player.lock().get();
+	BomberSpawner->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() / -2);
+	BomberSpawner->SetSpawnType(POOL_TYPE::ENEMY_BOMBER);
 
-	Spawner.push_back(FlyerSpawner->GetComponent<EnemySpawner>());
-	Spawner.push_back(BomberSpawner->GetComponent<EnemySpawner>());
+	Spawners.push_back(FlyerSpawner);
+	Spawners.push_back(BomberSpawner);
 
+
+	//difficulty ting needs to go out side---------------------------
 	shared_ptr<EnemyAmplifier> a = std::make_shared<EnemyAmplifier>();
 	a->EnemySpawnRate = 1.0f;
 	a->FlyerHP = 1.0f;
@@ -58,7 +55,7 @@ void GameController::OnAwake() {
 	a->BomberExplodeDMG = 30.0f;
 	a->BomberExplodeRadius = 200.0f;
 
-	Amplifier.push_back(a);
+	Amplifiers.push_back(a);
 
 	a = std::make_shared<EnemyAmplifier>();
 	a->EnemySpawnRate = 0.5f;
@@ -74,15 +71,16 @@ void GameController::OnAwake() {
 	a->BomberExplodeDMG = 30.0f;
 	a->BomberExplodeRadius = 200.0f;
 
-	Amplifier.push_back(a);
+	Amplifiers.push_back(a);
 
 	std::shared_ptr<EnemyPreset> p1 = std::make_shared<EnemyPreset>();
 	p1->BomberRatio = 0.5f;
 	p1->FlyerRatio = 1.0f;
-	Preset.push_back(p1);
+	Presets.push_back(p1);
+	//------------------------------------------------------------
 
-	CurrAmplifier = Amplifier[0].get();
-	CurrPreset = Preset[0].get();
+	CurrAmplifier = Amplifiers[0].get();
+	CurrPreset = Presets[0].get();
 }
 
 void GameController::OnUpdate(float dt)
@@ -184,21 +182,21 @@ void GameController::AddPool(ObjectPool* pool, int type)
 }
 
 ObjectPool* GameController::GetPool(int type) {
-	return Pools[type];
+	return Pools[type].get();
 }
 
 void GameController::updateSpawner() 
 {
-	if ((currScoreCheckpoint) < (Amplifier.size())) {
+	if ((currScoreCheckpoint) < (Amplifiers.size())) {
 
 		if (ScoreValue >= scoreCheckpoint[currScoreCheckpoint])
 		{
-			int randPreset = rand() % Preset.size();
+			int randPreset = rand() % Presets.size();
 
-			CurrAmplifier = Amplifier[currScoreCheckpoint].get();
-			CurrPreset = Preset[randPreset].get();
+			CurrAmplifier = Amplifiers[currScoreCheckpoint].get();
+			CurrPreset = Presets[randPreset].get();
 
-			for (EnemySpawner* spawner : Spawner) {
+			for (EnemySpawner* spawner : Spawners) {
 				spawner->SpawnAmplifier = CurrAmplifier;
 				spawner->SpawnPreset = CurrPreset;
 				spawner->updateSpawner();

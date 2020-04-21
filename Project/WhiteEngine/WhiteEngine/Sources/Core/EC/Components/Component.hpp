@@ -15,7 +15,7 @@ protected:
 	static int s_IDcounter;
 	int m_componentID;
 
-	GameObject* m_gameObject;
+	GameObject* m_gameObject = nullptr;
 
 public:
 	bool enabled = true;
