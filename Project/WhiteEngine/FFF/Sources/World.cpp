@@ -55,8 +55,6 @@ namespace World
 	//TESTING ONLY, DON'T FORGET TO REMOVE v
 	//======================================
 	ObjectPool* BulletPool;
-	ObjectPool* FlyerPool;
-	ObjectPool* BomberPool;
 
 	GameObject* title;
 	std::shared_ptr<GameObject> Rabbit;
@@ -216,9 +214,6 @@ namespace World
 		ui_StaminaBar = Instantiate().get();
 
 		Spawner = Instantiate().get();
-
-		FlyerPool = new ObjectPool();
-		BomberPool = new ObjectPool();
 
 		//Add Renderer
 
@@ -414,11 +409,10 @@ namespace World
 		Serialization::LoadObject(*EnemCon, "flyer.animcon");
 
 		ENGINE_INFO("Flyer creation==========================================================");
-		for (int i = 0; i < 1; i++)
 		{
-
+			/*
 			GameObject* flyer = Instantiate().get();
-			flyer->Layer = "GroundEnemy";
+			flyer->Layer = "Enemy";
 			flyer->AddComponent<MeshRenderer>();
 			flyer->GetComponent<MeshRenderer>()->SetLayer(1);
 			flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
@@ -426,7 +420,6 @@ namespace World
 
 			flyer->AddComponent<Rigidbody>();
 			flyer->GetComponent<Rigidbody>()->Init(15, 15);
-			//flyer->GetComponent<Rigidbody>()->SetGravityScale(0.00000001f);
 
 			flyer->AddComponent<HPsystem>();
 
@@ -442,14 +435,15 @@ namespace World
 			//flyer->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
 
 			//tank tmp
-			flyer->AddComponent<GroundPatrol>()->SetSpeed(50.0f);
-			flyer->AddComponent<Tank>();
-			flyer->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
-			flyer->GetComponent<HPsystem>()->SetMaxHP(50.0);
+			//flyer->AddComponent<GroundPatrol>()->SetSpeed(50.0f);
+			//flyer->AddComponent<Tank>();
+			//flyer->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
+			//flyer->GetComponent<HPsystem>()->SetMaxHP(50.0);
 
 			//og flyer
-			//flyer->AddComponent<AirFollowing>();
-			//flyer->AddComponent<Flyer>();
+			flyer->AddComponent<AirFollowing>();
+			flyer->AddComponent<Flyer>();
+			flyer->GetComponent<Rigidbody>()->SetGravityScale(0.00000001f);
 
 			flyer->AddComponent<Animator>();
 			flyer->GetComponent<Animator>()->setFramePerSec(12);
@@ -460,12 +454,14 @@ namespace World
 
 			flyer->SetActive(false);
 
-			//Serialization::SaveObject(*flyer, "Flyer.prefab");
-
-			flyer->GetComponent<Enemy>()->SetTarget(Rabbit->m_transform.get());
-		
-			FlyerPool->AddObject(flyer);
+			Serialization::SaveObject(*flyer, "Flyer.prefab");
+			*/
 		}
+
+		ObjectPool* FlyerPool = Instantiate()->AddComponent<ObjectPool>();
+
+		FlyerPool->prefabObjectPath = "Flyer.prefab";
+		FlyerPool->objectCount = 10;
 
 		gamecontroller->GetComponent<GameController>()->AddPool(FlyerPool, POOL_TYPE::ENEMY_CHARGER);
 
@@ -545,6 +541,7 @@ namespace World
 		BomberAnimController->AddState(BomberDie, false);
 
 		//bomber
+		ObjectPool* BomberPool = Instantiate()->AddComponent<ObjectPool>();
 		for (int i = 0; i < 0; i++)
 		{
 			GameObject* bomber = Instantiate().get();

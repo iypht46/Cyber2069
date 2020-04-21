@@ -16,9 +16,9 @@ private:
 	Transform* t;
 	Transform* m_target;
 protected:
-	float m_speed = 300;
-	float rotAngle = 15;
-	float rotRate = 2;
+	float m_speed = 300.0f;
+	float rotAngle = 15.0f;
+	float rotRate = 5.0f;
 public:
 	AirFollowing();
 	~AirFollowing() {}

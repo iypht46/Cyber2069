@@ -14,6 +14,7 @@
 #include <vector>
 
 #include <cereal/types/vector.hpp>
+#include <cereal/types/map.hpp>
 #include <cereal/types/memory.hpp>
 #include <cereal/types/base_class.hpp>
 #include <cereal/types/polymorphic.hpp>
@@ -119,18 +120,13 @@ private:
 	GameObject* Staminabar;
 	GameObject* ScoreText;
 
-	map<int, ObjectPool*> Pools; //assigned by user
+	map<int, std::shared_ptr<ObjectPool>> Pools; //assigned by user, collect all pool used in game
 
-	//created in constructor
+	//extracted in on awake after created, need to assign since the editor or don't bother create any object
+	vector<EnemySpawner*> Spawners;
 
-	GameObject* FlyerSpawner; 
-	GameObject* BomberSpawner;
-
-	//extracted in on awake after created
-	vector<EnemySpawner*> Spawner;
-
-	vector<std::shared_ptr<EnemyPreset>> Preset;
-	vector< std::shared_ptr<EnemyAmplifier>> Amplifier;
+	vector<std::shared_ptr<EnemyPreset>> Presets;
+	vector< std::shared_ptr<EnemyAmplifier>> Amplifiers;
 
 	EnemyPreset* CurrPreset;
 	EnemyAmplifier* CurrAmplifier;
@@ -193,8 +189,9 @@ public:
 		archive(
 			cereal::base_class<BehaviourScript>(this),
 			player,
-			Preset,
-			Amplifier,
+			Pools,
+			Presets,
+			Amplifiers,
 			ScoreValue,
 			ComboValue,
 			startHPscaleX,

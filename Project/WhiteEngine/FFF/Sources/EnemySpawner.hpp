@@ -22,13 +22,13 @@ struct EnemyAmplifier;
 class EnemySpawner : public BehaviourScript 
 {
 protected:
-	float SpawnRate;
+	float SpawnRate = 2;
 	//spawn area
 	int x1, x2, y1, y2;
 	//enemy type
 	int SpawnType;
 
-	float SpawnRateCount = -1;
+	float SpawnRateCount = 0;
 	ObjectPool* EnemyPool;
 
 public:

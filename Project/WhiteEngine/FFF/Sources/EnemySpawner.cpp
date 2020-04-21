@@ -2,6 +2,7 @@
 
 void EnemySpawner::OnUpdate(float dt)
 {
+	//ENGINE_INFO("intv = {}/{}", SpawnRateCount, SpawnRate);
 	SpawnRateCount -= dt;
 
 	if (SpawnRateCount <= 0)
@@ -34,9 +35,10 @@ GameObject* EnemySpawner::SpawnEnemy(float posX,float posY)
 		GameObject* enemy = EnemyPool->GetInactiveObject();
 		if (enemy != nullptr)
 		{
+			enemy->GetComponent<Enemy>()->SetTarget(EnemyTarget->m_transform.get());
+
 			enemy->SetActive(true);
 			enemy->GetComponent<HPsystem>()->ResetHP();
-			enemy->GetComponent<Enemy>()->SetTarget(EnemyTarget->m_transform.get());
 
 			enemy->m_transform->SetPosition(glm::vec3(posX, posY, 1.0f));
 
