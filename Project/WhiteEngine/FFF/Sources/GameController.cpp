@@ -1,4 +1,5 @@
 #include "GameController.hpp"
+#include "Input/Input.hpp"
 
 GameController* GameController::instance = nullptr;
 
@@ -83,16 +84,49 @@ void GameController::OnAwake() {
 
 	CurrAmplifier = Amplifier[0].get();
 	CurrPreset = Preset[0].get();
+
+	SetActiveAllSpawner(false);
 }
 
 void GameController::OnUpdate(float dt)
 {
-	int sc = ScoreValue;
-	this->ScoreText->GetComponent<TextRenderer>()->SetText("Score: " + to_string(sc));
+	switch (CurrentState)
+	{
+	case GAME_STATE::MAINMENU:
+		playerControl->GetGameObject()->SetActive(false);
+		HPbar->SetActive(false);
+		Staminabar->SetActive(false);
+		ScoreText->SetActive(false);
 
-	updateHPui();
-	updateStaminaUI();
-	updateSpawner();
+		if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE)) 
+		{
+			CurrentState = GAME_STATE::GAMEPLAY;
+		}
+
+
+		break;
+	case GAME_STATE::LOADOUT:
+		break;
+	case GAME_STATE::GAMEPLAY:
+		playerControl->GetGameObject()->SetActive(true);
+		HPbar->SetActive(true);
+		Staminabar->SetActive(true);
+		ScoreText->SetActive(true);
+
+		this->ScoreText->GetComponent<TextRenderer>()->SetText("Score: " + to_string((int)ScoreValue));
+
+		SetActiveAllSpawner(true);
+
+		updateHPui();
+		updateStaminaUI();
+		updateSpawner();
+
+		break;
+	case GAME_STATE::ENDING:
+		break;
+	default:
+		break;
+	}
 }
 
 float GameController::GetScore() {
@@ -208,5 +242,18 @@ void GameController::updateSpawner()
 
 			ENGINE_INFO("updtae diff");
 		}
+	}
+}
+
+void GameController::AddSpawner(EnemySpawner* spawner) 
+{
+	Spawner.push_back(spawner);
+}
+
+void GameController::SetActiveAllSpawner(bool active) 
+{
+	for (EnemySpawner* e : Spawner) 
+	{
+		e->GetGameObject()->SetActive(active);
 	}
 }

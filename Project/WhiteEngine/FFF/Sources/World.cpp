@@ -388,8 +388,9 @@ namespace World
 
 		wp_MachineGun->AddComponent<MachineGun>();
 
-		wp_MachineGun->m_transform->SetLocalScale(glm::vec3(70.0f, 70.0f, 1.0f));
 		wp_MachineGun->m_transform->SetParent(Rabbit->m_transform);
+
+		wp_MachineGun->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
 
 		gamecontroller->AddComponent<EquipmentManager>();
 		gamecontroller->GetComponent<EquipmentManager>()->AssignWeaponToManager(wp_MachineGun);

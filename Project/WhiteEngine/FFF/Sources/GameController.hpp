@@ -34,6 +34,18 @@ enum POOL_TYPE {
 	BULLET_FUME
 };
 
+enum GAME_STATE {
+	MAINMENU = 0,
+	LOADOUT,
+	GAMEPLAY,
+	ENDING
+};
+
+enum GAMEPLAY_STATE {
+	NORMAL = 0,
+	QUEEN
+};
+
 struct EnemyPreset {
 	float FlyerRatio;
 	float BomberRatio;
@@ -129,6 +141,9 @@ private:
 
 	bool CursedMode = false;
 
+	int CurrentState = MAINMENU;
+	int CurrentGameplayState = NORMAL;
+
 public:
 	std::weak_ptr<GameObject> player;
 
@@ -164,6 +179,9 @@ public:
 
 	bool isCursedMode() { return CursedMode; }
 	void SetCursedMode(bool mode) { this->CursedMode = mode; }
+
+	void AddSpawner(EnemySpawner* spawner);
+	void SetActiveAllSpawner(bool active);
 
 	virtual void OnAwake();
 	virtual void OnUpdate(float dt);
