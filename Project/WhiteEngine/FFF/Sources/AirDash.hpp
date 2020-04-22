@@ -5,6 +5,7 @@
 #include "Core/EC/Components/Rigidbody.hpp"
 #include "Character.hpp"
 
+#include <cereal/types/base_class.hpp>
 #include <cereal/types/polymorphic.hpp>
 
 class AirDash : public BehaviourScript
@@ -30,6 +31,8 @@ protected:
 	//runtime tmp
 	float m_angle = 0.0f;
 public:
+	float dashDamage = 1.0f;
+
 	AirDash();
 
 	~AirDash() {}
@@ -42,11 +45,7 @@ public:
 	void Reset();
 
 	virtual void OnAwake();
-	virtual void OnEnable();
-	virtual void OnStart();
-	virtual void OnUpdate(float dt);
-	virtual void OnFixedUpdate(float dt);
-	virtual void OnDisable();
+	virtual void OnTriggerEnter(const Physic::Collision collision);
 
 	//serialization
 public:
@@ -55,6 +54,7 @@ public:
 		archive(
 			cereal::base_class<BehaviourScript>(this),
 			m_dashSpeed,
+			dashDamage,
 			m_aimTime,
 			m_aimSpeed
 			);

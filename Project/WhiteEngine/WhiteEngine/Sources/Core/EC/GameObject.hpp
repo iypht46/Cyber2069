@@ -56,6 +56,9 @@ public:
 	//init all member component
 	void InitComponents();
 
+	//start all member behaviour script
+	void StartComponents();
+
 	template <class T>
 	T* AddComponent();
 

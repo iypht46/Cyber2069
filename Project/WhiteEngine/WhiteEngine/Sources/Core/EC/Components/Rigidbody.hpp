@@ -24,9 +24,9 @@ private:
 
 	bool automass = true;
 	float m_mass = 1.0f;
-	float m_invMass;
-	float m_gravityScale;
-	float m_drag;
+	float m_invMass = 1;
+	float m_gravityScale = 1;
+	float m_drag = 0;
 
 	//Pointers to other components
 	Collider* m_collider;

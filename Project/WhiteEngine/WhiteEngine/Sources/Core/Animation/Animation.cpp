@@ -6,7 +6,7 @@ Animation::Animation()
 {
 	m_StartPosition = glm::vec2(0.0f, 0.0f);
 	m_EndPosition = glm::vec2(0.0f, 0.0f);
-	speedMultiplier = 0;
+	speedMultiplier = 1;
 }
 
 glm::vec2 Animation::getStartPosition() {

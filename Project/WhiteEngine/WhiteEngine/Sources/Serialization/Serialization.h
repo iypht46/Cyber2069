@@ -4,8 +4,12 @@
 #include <fstream>
 #include <cereal/archives/binary.hpp>
 
+#define ScenePath(path) "Sources/Assets/Scenes/" path ".scene"
+#define AnimationControllerPath(path) "Sources/Assets/AnimationControllers/" path ".animcon"
+#define PrefabPath(path) "Sources/Assets/Prefabs/" path ".prefab"
+#define ParticlePath(path) "Sources/Assets/ParticleConfigs/" path ".ptcl"
+
 namespace Serialization {
-	//#define SCENE_PATH "source/scene"
 
 	template <class T>
 	void SaveObject(T& object, std::string path) {

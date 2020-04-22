@@ -1,4 +1,5 @@
 #include "EnemyBehaviours.h"
+#include "GameController.hpp"
 #include "Graphic/Camera.hpp"
 #include "Graphic/Window.hpp"
 #include "Core/Logger.hpp"
@@ -9,7 +10,16 @@ void DeQueen::OnAwake() {
 	SpawnDelay = 0.2f;
 	SpawnDelayCount = SpawnDelay;
 
+	FlyerPool = GameController::GetInstance()->GetPool(POOL_TYPE::ENEMY_FLYER);
+	BomberPool = GameController::GetInstance()->GetPool(POOL_TYPE::ENEMY_BOMBER);
+
 	Enemy::OnAwake();
+}
+
+void DeQueen::SetStats(float Speed, float HP, float SpawnDelay) {
+	airPatrol->SetSpeed(Speed);
+	hpSystem->SetMaxHP(HP);
+	this->SpawnDelay = SpawnDelay;
 }
 
 void DeQueen::OnUpdate(float dt) {
@@ -54,13 +64,13 @@ void DeQueen::OnFixedUpdate(float dt) {
 
 }
 
-void DeQueen::assignFlyPool(ObjectPool* pool) {
-	this->FlyerPool = pool;
-}
-
-void DeQueen::assignBombPool(ObjectPool* pool) {
-	this->BomberPool = pool;
-}
+//void DeQueen::assignFlyPool(ObjectPool* pool) {
+//	this->FlyerPool = pool;
+//}
+//
+//void DeQueen::assignBombPool(ObjectPool* pool) {
+//	this->BomberPool = pool;
+//}
 
 void DeQueen::SetSpawnDelay(int time) {
 	this->SpawnDelay = time;

@@ -48,5 +48,7 @@ void Flyer::SetStats(float Speed, float HP, float Dmg)
 {
 	airFollow->SetFlySpeed(Speed);
 	hpSystem->SetMaxHP(HP);
+
+	//will add air dash
 	CollideDamage = Dmg;
 }

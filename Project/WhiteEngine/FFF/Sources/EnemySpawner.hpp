@@ -31,13 +31,15 @@ protected:
 	float SpawnRateCount = 0;
 	ObjectPool* EnemyPool;
 
+
 public:
 	GameObject* EnemyTarget = nullptr;
 
 	EnemyPreset* SpawnPreset = nullptr;
 	EnemyAmplifier* SpawnAmplifier = nullptr;
 
-	GameObject* SpawnEnemy(float rangeX, float rangeY);
+	GameObject* SpawnEnemy();
+	GameObject* SpawnEnemy(float posX, float posY);
 
 	void SetSpawnRate(float value);
 	void SetSpawnRange(float x1, float y1, float x2, float y2);
@@ -49,7 +51,7 @@ public:
 	EnemySpawner() {}
 	~EnemySpawner() {}
 
-	virtual void OnUpdate(float dt);
+	virtual void OnUpdate(float dt) override;
 	//serialization
 public:
 	template<class Archive>
