@@ -6,6 +6,7 @@ void Flyer::OnAwake() {
 
 	rigidbody = GetGameObject()->GetComponent<Rigidbody>();
 
+	FlyerSound->CreateSoundPlayer();
 	Enemy::OnAwake();
 }
 
@@ -32,6 +33,9 @@ void Flyer::OnFixedUpdate(float dt) {
 		case Chase:
 			airFollow->SetPlayer(target);
 			airFollow->FollowPlayer(dt);
+			FlyerSound->SetSound("Assets/EnemySFX/SFX_FlyingEnemy_Fly.wav");
+			FlyerSound->SetLoop(true);
+			FlyerSound->PlaySound();
 			break;
 		case Active:
 		default:
