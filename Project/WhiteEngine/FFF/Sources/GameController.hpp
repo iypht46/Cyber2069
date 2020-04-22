@@ -32,6 +32,7 @@ enum POOL_TYPE {
 	ENEMY_CHARGER,
 	ENEMY_SPITTER,
 	ENEMY_QUEEN,
+	ENEMY_COCOON,
 	BULLET_FUME
 };
 
@@ -119,6 +120,13 @@ private:
 	GameObject* HPbar;
 	GameObject* Staminabar;
 	GameObject* ScoreText;
+	glm::vec3 PlayerStartPosition;
+
+	GameObject* Current_Queen = nullptr;
+	GameObject* Current_Cocoon = nullptr;
+
+	int CocoonNeed = 5;
+	int CocoonCount = 0;
 
 	map<int, std::shared_ptr<ObjectPool>> Pools; //assigned by user, collect all pool used in game
 
@@ -126,7 +134,7 @@ private:
 	vector<EnemySpawner*> Spawners;
 
 	vector<std::shared_ptr<EnemyPreset>> Presets;
-	vector< std::shared_ptr<EnemyAmplifier>> Amplifiers;
+	vector<std::shared_ptr<EnemyAmplifier>> Amplifiers;
 
 	EnemyPreset* CurrPreset;
 	EnemyAmplifier* CurrAmplifier;
@@ -136,9 +144,15 @@ private:
 	float scoreCheckpoint[4] = { 0.0f, 10.0f,200.0f,300.0f };
 
 	bool CursedMode = false;
-
+	
 	int CurrentState = MAINMENU;
 	int CurrentGameplayState = NORMAL;
+
+	int NextState = MAINMENU;
+	int NextGameplayState = NORMAL;
+
+	bool StateChanged = false;
+	bool StateGamplayChanged = false;
 
 public:
 	std::weak_ptr<GameObject> player;
@@ -170,6 +184,8 @@ public:
 	void AddPool(ObjectPool* pool, int type);
 	ObjectPool* GetPool(int type);
 
+	void SetActiveAllObjectInPool(bool active);
+
 	EnemyPreset* GetCurrPreset() { return CurrPreset; }
 	EnemyAmplifier* GetCurrAmplifier() { return CurrAmplifier; }
 
@@ -177,7 +193,15 @@ public:
 	void SetCursedMode(bool mode) { this->CursedMode = mode; }
 
 	void AddSpawner(EnemySpawner* spawner);
-	void SetActiveAllSpawner(bool active);
+	EnemySpawner* GetSpawner(int pooltype);
+	void SetSpawningAllSpawner(bool spawning);
+
+	int GetGameState() { return CurrentState; }
+	int GetGameplayState() { return CurrentGameplayState; }
+
+	void SetGameState(int state) { this->NextState = state; }
+	void SetGameplayState(int state) { this->NextGameplayState = state; }
+
 
 	virtual void OnAwake();
 	virtual void OnUpdate(float dt);

@@ -337,7 +337,7 @@ namespace World
 
 		//Behavior Script
 		Rabbit->AddComponent<HPsystem>();
-		Rabbit->GetComponent<HPsystem>()->SetMaxHP(10000);
+		Rabbit->GetComponent<HPsystem>()->SetMaxHP(100);
 		Rabbit->AddComponent<PlayerController>();
 
 		platform->AddComponent<MeshRenderer>();

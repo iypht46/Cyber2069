@@ -83,44 +83,170 @@ void GameController::OnAwake() {
 	CurrAmplifier = Amplifiers[0].get();
 	CurrPreset = Presets[0].get();
 
-	SetActiveAllSpawner(false);
+	SetSpawningAllSpawner(false);
+	playerControl->GetGameObject()->SetActive(false);
+	HPbar->SetActive(false);
+	Staminabar->SetActive(false);
+	ScoreText->SetActive(false);
+
+	PlayerStartPosition = playerControl->GetGameObject()->m_transform->GetPosition();
 }
 
 void GameController::OnUpdate(float dt)
 {
+	if (CurrentState != NextState) 
+	{
+		CurrentState = NextState;
+		StateChanged = true;
+	}
+
+	if (CurrentGameplayState != NextGameplayState)
+	{
+		CurrentGameplayState = NextGameplayState;
+		StateGamplayChanged = true;
+	}
+
 	switch (CurrentState)
 	{
 	case GAME_STATE::MAINMENU:
-		playerControl->GetGameObject()->SetActive(false);
-		HPbar->SetActive(false);
-		Staminabar->SetActive(false);
-		ScoreText->SetActive(false);
+		//Do only once after state changed
+		if (StateChanged) 
+		{
+			playerControl->GetGameObject()->SetActive(false);
+			HPbar->SetActive(false);
+			Staminabar->SetActive(false);
+			ScoreText->SetActive(false);
+
+			StateChanged = false;
+		}
 
 		if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE)) 
 		{
-			CurrentState = GAME_STATE::GAMEPLAY;
+			SetGameState(GAME_STATE::GAMEPLAY);
 		}
 
 
 		break;
 	case GAME_STATE::LOADOUT:
+		//Do only once after state changed
+		if (StateChanged)
+		{
+			
+
+			StateChanged = false;
+		}
 		break;
 	case GAME_STATE::GAMEPLAY:
-		playerControl->GetGameObject()->SetActive(true);
-		HPbar->SetActive(true);
-		Staminabar->SetActive(true);
-		ScoreText->SetActive(true);
+		//Do only once after state changed
+		if (StateChanged) 
+		{
+			ScoreValue = 0;
+			playerControl->GetGameObject()->SetActive(true);
+			playerControl->GetGameObject()->m_transform->SetPosition(PlayerStartPosition);
+
+			HPbar->SetActive(true);
+			Staminabar->SetActive(true);
+			ScoreText->SetActive(true);
+
+			StateChanged = false;
+		}
 
 		this->ScoreText->GetComponent<TextRenderer>()->SetText("Score: " + to_string((int)ScoreValue));
 
-		SetActiveAllSpawner(true);
+		SetSpawningAllSpawner(true);
 
 		updateHPui();
 		updateStaminaUI();
 		updateSpawner();
 
+		switch (CurrentGameplayState)
+		{
+		case GAMEPLAY_STATE::NORMAL:
+			//Do only once after gameplaystate changed
+			if (StateGamplayChanged) 
+			{
+				//Spawn Cocoon
+				if (GetSpawner(POOL_TYPE::ENEMY_COCOON) != nullptr)
+				{
+					//Gonna write manual random Spawn func for cocoon later
+					//Current_Cocoon = GetSpawner(POOL_TYPE::ENEMY_COCOON)->SpawnEnemy();
+				}
+
+				StateGamplayChanged = false;
+			}
+			
+			if (Current_Cocoon != nullptr) 
+			{
+				//if cocoon dead plus score and spawn a new one
+				if (Current_Cocoon->GetComponent<HPsystem>()->isDead())
+				{
+					CocoonCount++;
+					//Gonna write manual random Spawn func for cocoon later
+					//Current_Cocoon = GetSpawner(POOL_TYPE::ENEMY_COCOON)->SpawnEnemy();
+				}
+
+				if (CocoonCount == CocoonNeed)
+				{
+					CocoonCount = 0;
+					SetGameplayState(GAMEPLAY_STATE::QUEEN);
+				}
+			}
+
+			break;
+		case GAMEPLAY_STATE::QUEEN:
+			//Do only once after gameplaystate changed
+			if (StateGamplayChanged) 
+			{
+				//Spawn Queen
+				if (GetSpawner(POOL_TYPE::ENEMY_QUEEN) != nullptr)
+				{
+					//manualSpawn func for queen
+					//Current_Queen = GetSpawner(POOL_TYPE::ENEMY_Queen)->SpawnEnemy();
+				}
+
+				StateGamplayChanged = false;
+			}
+
+			if (Current_Queen != nullptr) 
+			{
+				//if Queen Dead go back to normal state
+				if (Current_Queen->GetComponent<HPsystem>()->isDead()) 
+				{
+					SetGameplayState(GAMEPLAY_STATE::QUEEN);
+				}
+			}
+
+			break;
+		default:
+			break;
+		}
+
+
+		if (playerControl->GetGameObject()->GetComponent<HPsystem>()->isDead()) 
+		{
+			SetGameState(GAME_STATE::ENDING);
+		}
+
 		break;
 	case GAME_STATE::ENDING:
+		//Do only once after state changed
+		if (StateChanged) 
+		{
+			SetSpawningAllSpawner(false);
+			SetActiveAllObjectInPool(false);
+			playerControl->GetGameObject()->SetActive(false);
+			HPbar->SetActive(false);
+			Staminabar->SetActive(false);
+			ScoreText->SetActive(false);
+			
+			StateChanged = false;
+		}
+
+		if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE))
+		{
+			SetGameState(GAME_STATE::MAINMENU);
+		}
+
 		break;
 	default:
 		break;
@@ -248,10 +374,31 @@ void GameController::AddSpawner(EnemySpawner* spawner)
 	Spawners.push_back(spawner);
 }
 
-void GameController::SetActiveAllSpawner(bool active) 
+EnemySpawner* GameController::GetSpawner(int pooltype) 
+{
+	for (EnemySpawner* e : Spawners)
+	{
+		if (e->GetType() == pooltype) 
+		{
+			return e;
+		}
+	}
+
+	return nullptr;
+}
+
+void GameController::SetSpawningAllSpawner(bool spawning)
 {
 	for (EnemySpawner* e : Spawners) 
 	{
-		e->GetGameObject()->SetActive(active);
+		e->SetSpawning(spawning);
+	}
+}
+
+void GameController::SetActiveAllObjectInPool(bool active) 
+{
+	for (pair<int, std::shared_ptr<ObjectPool>> pool : Pools) 
+	{
+		pool.second->SetActiveAllGameObject(active);
 	}
 }
