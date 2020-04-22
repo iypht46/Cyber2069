@@ -135,7 +135,6 @@ namespace Physic
 		for (auto it = m_bodies.begin(); it != m_bodies.end(); ++it)
 		{
 			Rigidbody* body = (*it);
-
 			body->AddForce(m_gravity * body->GetGravityScale() * body->GetMass() * GRAVITY_MUL);
 		}
 	}
@@ -443,7 +442,7 @@ namespace Physic
 		auto layer = m_layerString.find(layerName);
 		if (layer == m_layerString.end())
 		{
-			ENGINE_ERROR("Undefined layer name: {}", layerName);
+			ENGINE_ERROR("Undefined layer name: \"{}\"", layerName);
 			return Layer::LAYER_INVALID;
 		}
 

@@ -85,8 +85,8 @@
 	}
 
 	void BoxCollider::Init() {
-		//Set Transform
-		//m_transform = GetGameObject()->m_transform.get();
+
+		Collider::Init();
 
 		//Set Box Size
 		m_colliderScale.x = m_halfWidth / m_gameObject->m_transform->GetScale().x;
@@ -105,8 +105,6 @@
 		{
 			m_isStatic = true;
 		}
-
-		Collider::Init();
 	}
 
 	void BoxCollider::ReSize(float hW, float hH) {

@@ -43,27 +43,10 @@ void ZapperGunBullet::OnUpdate(float dt)
 	}
 }
 
-void ZapperGunBullet::OnFixedUpdate(float dt) {
-
-}
-
-void ZapperGunBullet::OnAwake() {
-
-}
-
-void ZapperGunBullet::OnEnable() {
-
-}
-
-void ZapperGunBullet::OnStart()
+void ZapperGunBullet::OnAwake()
 {
 	rb = m_gameObject->GetComponent<Rigidbody>();
 	cam = Graphic::getCamera();
-}
-
-
-void ZapperGunBullet::OnDisable() {
-
 }
 
 void ZapperGunBullet::OnTriggerEnter(const Physic::Collision col) {

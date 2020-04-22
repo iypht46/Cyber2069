@@ -17,6 +17,7 @@ public:
 
 	ObjectPool* BulletPool;
 
+	bool CooledDown();
 	void Shoot(Transform* target);
 
 	virtual void OnAwake() override;
@@ -27,7 +28,7 @@ private:
 	float weapon_delay_count;
 
 public:
-	int sr_BulletObjectTypeAsInt = 0;
+	int BulletObjectTypeAsInt = 0;
 
 	template <class Archive>
 	void serialize(Archive& archive) {
@@ -35,7 +36,9 @@ public:
 			cereal::base_class<BehaviourScript>(this),
 			bullet_speed,
 			firerate,
-			sr_BulletObjectTypeAsInt
+			BulletObjectTypeAsInt
 			);
 	}
 };
+
+CEREAL_REGISTER_TYPE(ObjectShooter);

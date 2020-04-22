@@ -1,10 +1,19 @@
 #include "AirDash.hpp"
 #include "Core/EC/GameObject.hpp"
 #include "Core/Logger.hpp"
+#include "PlayerController.hpp"
 
 AirDash::AirDash()
 {
 
+}
+
+void AirDash::OnAwake() {
+	this->m_target = glm::vec3(0);
+	self = m_gameObject->m_transform.get();
+	rb = m_gameObject->GetComponent<Rigidbody>();
+
+	Reset();
 }
 
 void AirDash::SetDashSpeed(float value) {
@@ -21,13 +30,12 @@ void AirDash::SetAimSpeed(float value) {
 
 void AirDash::Dash(float dt) {
 	
-	float detectRange = 500.0f;
 	glm::vec3 dir = m_target - self->GetPosition();
 	float distance = glm::length(dir);
 	m_angle = glm::atan(dir.y, dir.x);
 	dashEnd = false;
 
-	if (distance <= detectRange && !dashState) {
+	if (!dashState) {
 		timer -= dt;
 		if (timer > 0) {
 			rb->SetVelocity(glm::vec3(0, 0, 0));
@@ -37,17 +45,14 @@ void AirDash::Dash(float dt) {
 			dashState = true;
 			
 		}
-	}
-
-	if (dashState) {
-		if (distance > 50.0f) {
-			rb->SetVelocity(glm::vec3(m_dashSpeed*glm::cos(self->GetRotation()), m_dashSpeed*glm::sin(self->GetRotation()), 0));
+	}else if (dashState) {
+		if (distance <= 10.0f) {
+			Reset();
 		}
 		else 
 		{
-			Reset();
+			rb->SetVelocity(glm::vec3(m_dashSpeed * glm::cos(self->GetRotation()), m_dashSpeed * glm::sin(self->GetRotation()), 0));
 		}
-
 	}
 }
 
@@ -69,31 +74,12 @@ void AirDash::Reset() {
 	targetLocked = false;
 }
 
+void AirDash::OnTriggerEnter(const Physic::Collision collision) {
+	GameObject* obj = collision.m_otherCollider->GetGameObject();
+	PlayerController* player = obj->GetComponent<PlayerController>();
 
-void AirDash::OnAwake() {
-	this->m_target = glm::vec3(0);
-	self = m_gameObject->m_transform.get();
-	rb = m_gameObject->GetComponent<Rigidbody>();
-
-	Reset();
-}
-
-void AirDash::OnEnable() {
-
-}
-
-void AirDash::OnStart() {
-
-}
-
-void AirDash::OnUpdate(float dt) {
-
-}
-
-void AirDash::OnFixedUpdate(float dt) {
-
-}
-
-void AirDash::OnDisable() {
-
+	///damage player
+	if (player != nullptr) {
+		obj->GetComponent<HPsystem>()->TakeDamage(dashDamage);
+	}
 }

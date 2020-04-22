@@ -19,7 +19,8 @@ Rigidbody::Rigidbody()
 //Create BoxCollider
 void Rigidbody::Init()
 {
-	ENGINE_INFO("rigid id {}", m_componentID);
+	//ENGINE_INFO("init rigid id {}", m_componentID);
+
 	//assign Collider
 	m_collider = GetGameObject()->GetComponent<Collider>();
 	//assign transform

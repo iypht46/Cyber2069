@@ -9,6 +9,7 @@
 #include "GroundPatrol.hpp"
 #include "GroundDash.hpp"
 #include "ObjectShooter.h"
+#include "Core/EC/Components/SoundPlayer.hpp"
 
 #include <memory>
 
@@ -21,6 +22,7 @@ private:
 	Rigidbody* rigidbody;
 protected:
 	AirFollowing* airFollow;
+	SoundPlayer* FlyerSound;
 	
 public:
 
@@ -32,7 +34,6 @@ public:
 	virtual void OnAwake() override;
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
-
 
 	//serialization
 public:
@@ -53,6 +54,7 @@ private:
 protected:
 	AirFollowing* airFollow = nullptr;
 	AirDash* airDash = nullptr;
+	SoundPlayer* BomberSound;
 
 public:
 	EnemyState state = EnemyState::Idle;
@@ -63,7 +65,6 @@ public:
 	Explosion* explosion = nullptr;
 
 public:
-	//void Init(Transform* player);
 	void SetStats(float Speed, float HP, float Dmg, float AimTime, float DashSpeed, float ExplodeDmg, float ExplodeRadius);
 
 	virtual void OnAwake();
@@ -92,18 +93,20 @@ protected:
 	AirPatrol* airPatrol;
 	ObjectPool* FlyerPool;
 	ObjectPool* BomberPool;
+	SoundPlayer* QueenSound;
 public:
-	
-	DeQueen() {}
-	~DeQueen() {}
 
-	void assignFlyPool(ObjectPool* pool);
-	void assignBombPool(ObjectPool* pool);
+	void SetStats(float Speed, float HP, float SpawnDelay);
+
+	//void assignFlyPool(ObjectPool* pool);
+	//void assignBombPool(ObjectPool* pool);
 	void SetSpawnDelay(int time);
 	virtual void OnAwake();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
 
+	DeQueen() {}
+	~DeQueen() {}
 //serialization
 public:
 	template<class Archive>
@@ -120,7 +123,10 @@ class Tank : public Enemy {
 private:
 	Rigidbody* rigidbody;
 	GroundPatrol* groundPatrol;
+	SoundPlayer* TankSound;
 public:
+	void SetStats(float Speed, float HP);
+
 	virtual void OnAwake();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
@@ -141,8 +147,14 @@ private:
 	Rigidbody* rigidbody;
 	GroundPatrol* groundPatrol;
 	GroundDash* groundDash;
+	SoundPlayer* ChargerSound;
+
+	bool dashingTmp = false;
+
 public:
 	float DashTriggerRangeY = 150.0f;
+
+	void SetStats(float Speed, float HP, float DashPauseTime, float DashSpeed, float Dmg);
 
 	virtual void OnAwake();
 	virtual void OnUpdate(float dt);
@@ -165,7 +177,10 @@ private:
 	Rigidbody* rigidbody;
 	GroundPatrol* groundPatrol;
 	ObjectShooter* shooting;
+	SoundPlayer* SpitterSound;
 public:
+
+	void SetStats(float Speed, float HP, float FireRate);
 
 	virtual void OnAwake();
 	virtual void OnUpdate(float dt);

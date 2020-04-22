@@ -15,7 +15,7 @@ protected:
 	std::string stateName;
 	glm::vec2 m_StartPosition;
 	glm::vec2 m_EndPosition;
-	int speedMultiplier;
+	int speedMultiplier = 1;
 
 public:
 	Animation();
