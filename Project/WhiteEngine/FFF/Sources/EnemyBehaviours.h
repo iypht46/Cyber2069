@@ -35,7 +35,6 @@ public:
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
 
-
 	//serialization
 public:
 	template<class Archive>
@@ -66,7 +65,6 @@ public:
 	Explosion* explosion = nullptr;
 
 public:
-	//void Init(Transform* player);
 	void SetStats(float Speed, float HP, float Dmg, float AimTime, float DashSpeed, float ExplodeDmg, float ExplodeRadius);
 
 	virtual void OnAwake();
@@ -97,17 +95,18 @@ protected:
 	ObjectPool* BomberPool;
 	SoundPlayer* QueenSound;
 public:
-	
-	DeQueen() {}
-	~DeQueen() {}
 
-	void assignFlyPool(ObjectPool* pool);
-	void assignBombPool(ObjectPool* pool);
+	void SetStats(float Speed, float HP, float SpawnDelay);
+
+	//void assignFlyPool(ObjectPool* pool);
+	//void assignBombPool(ObjectPool* pool);
 	void SetSpawnDelay(int time);
 	virtual void OnAwake();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
 
+	DeQueen() {}
+	~DeQueen() {}
 //serialization
 public:
 	template<class Archive>
@@ -126,6 +125,8 @@ private:
 	GroundPatrol* groundPatrol;
 	SoundPlayer* TankSound;
 public:
+	void SetStats(float Speed, float HP);
+
 	virtual void OnAwake();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
@@ -147,8 +148,13 @@ private:
 	GroundPatrol* groundPatrol;
 	GroundDash* groundDash;
 	SoundPlayer* ChargerSound;
+
+	bool dashingTmp = false;
+
 public:
 	float DashTriggerRangeY = 150.0f;
+
+	void SetStats(float Speed, float HP, float DashPauseTime, float DashSpeed, float Dmg);
 
 	virtual void OnAwake();
 	virtual void OnUpdate(float dt);
@@ -173,6 +179,8 @@ private:
 	ObjectShooter* shooting;
 	SoundPlayer* SpitterSound;
 public:
+
+	void SetStats(float Speed, float HP, float FireRate);
 
 	virtual void OnAwake();
 	virtual void OnUpdate(float dt);

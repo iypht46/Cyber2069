@@ -59,6 +59,13 @@ void GameObject::InitComponents() {
 	}
 }
 
+void GameObject::StartComponents() {
+
+	for (std::shared_ptr<BehaviourScript> behaviour : m_scripts) {
+		behaviour->OnStart();
+	}
+}
+
 void GameObject::CollisionEnter(const Physic::Collision col)
 {
 	for (auto scripts : m_scripts)

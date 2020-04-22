@@ -41,6 +41,7 @@ public:
 		float lifetime = 0;
 
 	public:
+		//create partcle object and translate value from serialization
 		virtual void Init();
 		virtual void OnEnable();
 		virtual void OnUpdate(float dt);
@@ -53,7 +54,7 @@ public:
 		//serialization
 	public:
 		template<class Archive>
-		void serialization(Archive& archive) {
+		void serialize(Archive& archive) {
 			archive(
 				isEnabled
 				);
@@ -65,10 +66,10 @@ public:
 		float minLifeTime = 1.5f;
 		float maxLifeTime = 1.5f;
 
-	//serialization
+		//serialization
 	public:
 		template<class Archive>
-		void serialization(Archive& archive) {
+		void serialize(Archive& archive) {
 			archive(
 				cereal::base_class<ParticleModule>(this),
 				minLifeTime,
@@ -114,7 +115,7 @@ public:
 		int sr_rotationTypeAsInt = 2;
 
 		template<class Archive>
-		void serialization(Archive& archive) {
+		void serialize(Archive& archive) {
 			archive(
 				cereal::base_class<ParticleModule>(this),
 				minXSize,
@@ -161,7 +162,7 @@ public:
 	//serialization
 	public:
 		template<class Archive>
-		void serialization(Archive& archive) {
+		void serialize(Archive& archive) {
 			archive(
 				cereal::base_class<ParticleModule>(this),
 				particleSamples,
@@ -181,14 +182,28 @@ public:
 
 		//particle color setting
 		//=================================
-		string ColorHex;
+		glm::vec3 Color;
 		//lifetime modifier----------------
 		bool useLifeTimeMod;
 		//=================================
 
+		//void SetColor(std::string colorHex);
+
+		ParticleColor() { Color = glm::vec3(1); }
+
 	private:
 		friend class ParticleSystem;
-		glm::vec3 color;
+
+		//serialization
+	public:
+
+		template<class Archive>
+		void serialize(Archive& archive) {
+			archive(
+				cereal::base_class<ParticleModule>(this),
+				Color
+				);
+		}
 	};
 
 	class ParticleVelocity :public ParticleModule {
@@ -221,12 +236,12 @@ public:
 		friend class ParticleSystem;
 		DirectionType directionType;
 
-	//serialization
+		//serialization
 	public:
 		int sr_directionTypeAsInt = 1;
 
 		template<class Archive>
-		void serialization(Archive& archive) {
+		void serialize(Archive& archive) {
 			archive(
 				cereal::base_class<ParticleModule>(this),
 				sr_directionTypeAsInt,
@@ -246,18 +261,17 @@ public:
 	class ParticleAnimation :public ParticleModule {
 	public:
 		std::string controllerPath = "";
-	
-	//serialization
+
+		//serialization
 	public:
 		template<class Archive>
-		void serialization(Archive& archive) {
+		void serialize(Archive& archive) {
 			archive(
 				cereal::base_class<ParticleModule>(this),
 				controllerPath
 				);
 		}
 	};
-
 public:
 	std::shared_ptr<ParticleEmitter> emitter;
 	std::shared_ptr<ParticleLifeTime> lifetime;
@@ -290,7 +304,7 @@ private:
 	//serialization
 	public:
 		template<class Archive>
-		void serialization(Archive& archive) {
+		void serialize(Archive& archive) {
 			archive(
 				cereal::base_class<Component>(this),
 				emitter,
@@ -306,7 +320,6 @@ private:
 };
 
 CEREAL_REGISTER_TYPE(ParticleSystem);
-CEREAL_REGISTER_TYPE(ParticleSystem::ParticleBehaviour);
 
 //CEREAL_REGISTER_TYPE(ParticleSystem::ParticleEmitter);
 //CEREAL_REGISTER_TYPE(ParticleSystem::ParticleLifeTime);

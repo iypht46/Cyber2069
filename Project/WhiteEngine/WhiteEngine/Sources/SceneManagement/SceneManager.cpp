@@ -11,6 +11,11 @@ namespace SceneManagement {
 		for (std::shared_ptr<GameObject> obj : GameObjectsInScene) {
 			obj->InitComponents();
 		}
+
+		//start gameobjects
+		for (std::shared_ptr<GameObject> obj : GameObjectsInScene) {
+			obj->StartComponents();
+		}
 	}
 
 	std::shared_ptr<GameObject> Instantiate() {
@@ -23,8 +28,6 @@ namespace SceneManagement {
 	std::shared_ptr<GameObject> Instantiate(std::string prefabPath) {
 		std::shared_ptr<GameObject> newObj = Factory<GameObject>::Create(prefabPath);
 		SceneManagement::ActiveScene->GameObjectsInScene.insert(newObj);
-
-		newObj->InitComponents();
 
 		return newObj;
 	}

@@ -8,7 +8,6 @@ ParticleSystem::ParticleSystem() {
 
 	//create standard module, these could get replaced when load from prefab
 	emitter = std::make_shared<ParticleEmitter>();
-	emitter->particlePool = std::make_shared<ObjectPool>();
 	lifetime = std::make_shared<ParticleLifeTime>();
 	shape = std::make_shared<ParticleShape>();
 	color = std::make_shared<ParticleColor>();
@@ -34,6 +33,7 @@ void ParticleSystem::Init() {
 	velocity->directionType = (DirectionType)(velocity->sr_directionTypeAsInt);
 
 	//emitter============================================================================
+	emitter->particlePool = std::make_shared<ObjectPool>();
 	emitter->particlePool->objectCount = emitter->particleSamples;
 	//create object and add appropriate cmponent
 	while (emitter->particleInstanceCount < emitter->particleSamples) {
@@ -68,7 +68,7 @@ void ParticleSystem::Init() {
 		//setup mesh renderer
 		mr->SetTexture(texturePath);
 		mr->SetLayer(RenderLayer);
-		mr->SetReplaceColor(color->ColorHex);
+		mr->SetReplaceColor(color->Color);
 
 
 		//setup rigidbody
@@ -163,6 +163,8 @@ void ParticleSystem::ConstantEmit(float dt) {
 	if (emitter->isEnabled && emitter->constantParticle) {
 		emitTimer += dt;
 		if (emitTimer > (1.0f / emitter->particleRate)) {
+			emitTimer = 0;
+
 			//spawn a single particle
 			GameObject* particle = emitter->particlePool->GetGameObject();
 

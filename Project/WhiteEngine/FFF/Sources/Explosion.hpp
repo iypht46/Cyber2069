@@ -5,28 +5,44 @@
 #include "Core/EC/Components/Collider.hpp"
 #include "Physic/PhysicScene.hpp"
 #include "HPsystem.hpp"
+#include <string>
+
+#include <cereal/types/base_class.hpp>
+#include <cereal/types/polymorphic.hpp>
 
 class Explosion : public BehaviourScript
 {
 private:
-	float m_damage;
-	float m_radius;
-	Transform* thisTransform;
+	Transform* thisTransform = nullptr;
 	Physic::PhysicScene* ps;
-	Physic::Layer targetLayer;
-	
+
+	Physic::Layer targetlayer;
+
 public:
+	float m_damage = 10.0f;
+	float m_radius = 200.0f;
+	std::string targetLayer = "Player";
+
 	Explosion();
 	~Explosion();
-	void Init();
+
 	void Explode();
 	void SetLayer(std::string layer);
 	void SetDamage(float val);
 	void SetRadius(float val);
 	virtual void OnAwake();
-	virtual void OnStart();
-	virtual void OnUpdate(float dt);
-	virtual void OnFixedUpdate(float dt);
 
+//serialization
+public:
+	template <class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<BehaviourScript>(this),
+			m_damage,
+			m_radius,
+			targetLayer
+			);
+	}
 };
 
+CEREAL_REGISTER_TYPE(Explosion);
