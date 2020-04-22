@@ -2,7 +2,6 @@
 #include "Core/Logger.hpp"
 #include "Input/Input.hpp"
 #include "Graphic/Window.hpp"
-#include "SDL.h"
 
 namespace World
 {
@@ -26,11 +25,11 @@ namespace World
 
 		//If the delay time is negative then the frame took longer that it should
 		//but if not then we delay until this frame time reach the expected time.
-		if (delayTime.count() > 0.0f)
+		while (delayTime.count() > 0.0f)
 		{
-			
-			SDL_Delay(static_cast<Uint32>(delayTime.count()));
-			
+			/*SDL_Delay(static_cast<Uint32>(delayTime.count()));
+			ENGINE_INFO("Delay: {}", delayTime.count());*/
+			 delayTime = m_expectedDeltaTime - (Clock::now() - m_frameStartTime);
 		}
 
 		//Assign the delta time for this frame

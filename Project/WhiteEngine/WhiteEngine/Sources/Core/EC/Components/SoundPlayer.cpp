@@ -1,12 +1,18 @@
 #include "SoundPlayer.hpp"
 
 SoundPlayer::SoundPlayer() {
-	isLooping = false;
-	volumeValue = 1;
+	//isLooping = false;
+	//volumeValue = 1.0f;
+	Factory<SoundPlayer>::Add(this);
 }
 
 SoundPlayer::~SoundPlayer() {
 
+}
+
+void SoundPlayer::Init() {
+	CreateSoundPlayer();
+	SetSound(&(sr_soundpath[0]));
 }
 
 void SoundPlayer::CreateSoundPlayer() {
@@ -14,6 +20,7 @@ void SoundPlayer::CreateSoundPlayer() {
 }
 
 void SoundPlayer::SetSound(const ik_c8* path) {
+	sr_soundpath = path;
 	soundSource = soundPlayer->addSoundSourceFromFile(path); 
 }
 
@@ -31,7 +38,9 @@ void SoundPlayer::SetLoop(bool loop) {
 }
 
 void SoundPlayer::UpdateVolume() {
-	soundVolume->setVolume(volumeValue);
+	if (soundVolume != nullptr) {
+		soundVolume->setVolume(volumeValue);
+	}
 }
 
 void SoundPlayer::SetVolume(float value) {
@@ -43,7 +52,7 @@ void SoundPlayer::IncreaseVolume() {
 		volumeValue += 0;
 	}
 	else {
-		volumeValue += 0.05;
+		volumeValue += 0.05f;
 	}
 }
 
@@ -52,6 +61,6 @@ void SoundPlayer::DecreaseVolume() {
 		volumeValue -= 0;
 	}
 	else {
-		volumeValue -= 0.05;
+		volumeValue -= 0.05f;
 	}
 }

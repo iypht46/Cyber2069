@@ -8,13 +8,19 @@ namespace Core
 	class IMessageHandler
 	{
 	public:
+		IMessageHandler() {}
+
 		//Generic Interface
-		virtual void HandleMessage(const Message&) {}
-		virtual IMessageHandler* GetParent() const { return nullptr; }
-		virtual void SendToChildren(const Message&) {}
+		inline virtual void HandleMessage(const Message&) {}
+		inline virtual IMessageHandler* GetParent() const { return nullptr; }
+		inline virtual void SendToChildren(const Message&) {}
 
 		//Handle Message for each type
-		virtual void HandleMessage(const TestMessage&) {}
-		virtual void HandleMessage(const GameCloseMessage&) {}
+		inline virtual void HandleMessage(const TestMessage&) {}
+		inline virtual void HandleMessage(const GameCloseMessage&) {}
+		inline virtual void HandleMessage(const Trigger&) {}
+		inline virtual void HandleMessage(const Collision&) {}
+		//inline virtual void HandleMessage(const PhysicObjectAdd&) {}
+		//inline virtual void HandleMessage(const PhysicObjectAddRemove&) {}
 	};
 }
