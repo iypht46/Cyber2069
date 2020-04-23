@@ -181,14 +181,16 @@ void GameController::OnUpdate(float dt)
 				if (Current_Cocoon->GetComponent<HPsystem>()->isDead())
 				{
 					CocoonCount++;
-					//Gonna write manual random Spawn func for cocoon later
-					//Current_Cocoon = GetSpawner(POOL_TYPE::ENEMY_COCOON)->SpawnEnemy();
-				}
 
-				if (CocoonCount == CocoonNeed)
-				{
-					CocoonCount = 0;
-					SetGameplayState(GAMEPLAY_STATE::QUEEN);
+					if (CocoonCount == CocoonNeed)
+					{
+						CocoonCount = 0;
+						SetGameplayState(GAMEPLAY_STATE::QUEEN);
+					}
+					else {
+						//Gonna write manual random Spawn func for cocoon later
+						//Current_Cocoon = GetSpawner(POOL_TYPE::ENEMY_COCOON)->SpawnEnemy();
+					}
 				}
 			}
 
