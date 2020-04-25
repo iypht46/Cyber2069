@@ -26,7 +26,7 @@
 #include "Core/EC/Components/Animator.hpp"
 #include "Core/EC/Components/MeshRenderer.hpp"
 #include "Core/EC/Components/SoundPlayer.hpp"
-#include "Core/EC/Components/TextRenderer.hpp"
+#include "Core/EC/UIComponents/TextRenderer.hpp"
 #include "Core/Particle/ParticleSystem.h"
 
 #include "Enemy.hpp"

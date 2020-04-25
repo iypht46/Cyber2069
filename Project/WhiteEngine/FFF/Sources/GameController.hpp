@@ -3,7 +3,7 @@
 
 #include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/GameObject.hpp"
-#include "Core/EC/Components/TextRenderer.hpp"
+#include "Core/EC/UIComponents/TextRenderer.hpp"
 #include "Utility/ObjectPool.h"
 #include "HPsystem.hpp"
 #include "EnemySpawner.hpp"

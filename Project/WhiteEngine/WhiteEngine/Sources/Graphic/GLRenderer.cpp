@@ -7,7 +7,7 @@
 #include "Window.hpp"
 #include <vector>
 #include <glm/glm.hpp>
-#include "Core/EC/Components/TextRenderer.hpp"
+#include "Core/EC/UIComponents/TextRenderer.hpp"
 #include "Core/EC/Components/MeshRenderer.hpp"
 #include "Core/EC/GameObject.hpp"
 #include "Graphic/Camera.hpp"
