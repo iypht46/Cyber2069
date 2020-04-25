@@ -54,15 +54,14 @@ private:
 protected:
 	AirFollowing* airFollow = nullptr;
 	AirDash* airDash = nullptr;
+	Explosion* explosion = nullptr;
 	SoundPlayer* BomberSound;
 
 public:
 	EnemyState state = EnemyState::Idle;
 
-	Bomber() {}
+	Bomber();
 	~Bomber() {}
-
-	Explosion* explosion = nullptr;
 
 public:
 	void SetStats(float Speed, float HP, float Dmg, float AimTime, float DashSpeed, float ExplodeDmg, float ExplodeRadius);

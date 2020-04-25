@@ -136,8 +136,12 @@ EnemySpawner* GameController::CreateSpawner(int enemyType) {
 
 void GameController::OnUpdate(float dt)
 {
-	int sc = ScoreValue;
-	this->ScoreText.lock()->GetComponent<TextRenderer>()->SetText("Score: " + to_string(sc));
+	this->ScoreText.lock()->GetComponent<TextRenderer>()->SetText("Score: " + to_string((int)ScoreValue));
+	this->ComboText.lock()->GetComponent<TextRenderer>()->SetText("x " + to_string((int)ComboValue));
+
+	if (playerControl && playerControl->checkGround()) {
+		SetCombo(1);
+	}
 
 	updateHPui();
 	updateStaminaUI();
@@ -173,6 +177,10 @@ void GameController::AddScoreValue(float baseScore) {
 
 void GameController::AddComboValue(float value) {
 	this->ComboValue += value;
+}
+
+void GameController::SetCombo(float combo) {
+	ComboValue = combo;
 }
 
 void GameController::ResetScore() {

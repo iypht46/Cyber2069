@@ -187,6 +187,7 @@ public:
 	std::weak_ptr<GameObject> HPbar;
 	std::weak_ptr<GameObject> Staminabar;
 	std::weak_ptr<GameObject> ScoreText;
+	std::weak_ptr<GameObject> ComboText;
 
 	GameController();
 	~GameController() {}
@@ -199,6 +200,8 @@ public:
 
 	void AddScoreValue(float baseScore);
 	void AddComboValue(float value);
+
+	void SetCombo(float combo);
 
 	void ResetScore();
 

@@ -81,6 +81,8 @@ public:
 	PlayerController();
 	~PlayerController() {}
 	
+	void EVENTTEST(int i) { ENGINE_INFO("I {} you", i); }
+
 	void DebugInput();
 
 	void mouseAim();
