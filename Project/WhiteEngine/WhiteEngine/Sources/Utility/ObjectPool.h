@@ -22,6 +22,8 @@ public:
 	void AddObject(GameObject*);
 	int GetPoolSize();
 
+	void SetActiveAllGameObject(bool active);
+
 	//get gameobject cycling through all object from pool,
 	GameObject* GetGameObject();
 

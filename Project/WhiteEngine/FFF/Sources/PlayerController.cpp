@@ -14,7 +14,7 @@ void PlayerController::OnAwake() {
 	hpSystem = m_gameObject->GetComponent<HPsystem>();
 
 	stamina = max_stamina;
-
+	hpSystem->ResetHP();
 
 	direction.x = 1;
 	direction.y = 1;

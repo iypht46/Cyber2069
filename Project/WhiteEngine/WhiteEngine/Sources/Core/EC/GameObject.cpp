@@ -12,7 +12,7 @@ GameObject::GameObject()
 	m_objectID = GameObject::s_IDCounter++;
 	m_transform = make_shared<Transform>();
 
-	Factory<GameObject>::Add(this);
+	Factory<void, GameObject>::Add(this);
 }
 
 void GameObject::SetActive(bool activestate) {
@@ -56,6 +56,13 @@ void GameObject::InitComponents() {
 
 	for (std::shared_ptr<BehaviourScript> behaviour : m_scripts) {
 		behaviour->OnAwake();
+	}
+}
+
+void GameObject::StartComponents() {
+
+	for (std::shared_ptr<BehaviourScript> behaviour : m_scripts) {
+		behaviour->OnStart();
 	}
 }
 

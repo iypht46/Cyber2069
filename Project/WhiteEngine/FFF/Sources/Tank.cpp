@@ -7,6 +7,11 @@ void Tank::OnAwake() {
 	Enemy::OnAwake();
 }
 
+void Tank::SetStats(float Speed, float HP) {
+	groundPatrol->SetSpeed(Speed);
+	hpSystem->SetMaxHP(HP);
+}
+
 void Tank::OnUpdate(float dt) {
 	Enemy::OnUpdate(dt);
 

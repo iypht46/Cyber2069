@@ -15,11 +15,12 @@ MeshRenderer::MeshRenderer()
 {
 	ReplaceColor = glm::vec3(1, 1, 1);
 
-	Factory<MeshRenderer>::Add(this);
+	Factory<Component, MeshRenderer>::Add(this);
 }
 
 MeshRenderer::~MeshRenderer()
 {
+	Factory<Component, MeshRenderer>::Remove(this);
 }
 
 
@@ -91,7 +92,6 @@ void  MeshRenderer::CreateMesh(float NumframeX, float NumFrameY)
 }
 
 void MeshRenderer::SetReplaceColor(glm::vec3 color) {
-	isReplaceColor = true;
 	this->ReplaceColor = color;
 }
 
@@ -101,7 +101,7 @@ void MeshRenderer::SetReplaceColor(std::string hexcode) {
 }
 
 void MeshRenderer::RemoveReplaceColor() {
-	isReplaceColor = false;
+	ReplaceColor = glm::vec3(1);
 }
 
 void MeshRenderer::Render(glm::mat4 globalModelTransform)
@@ -148,7 +148,7 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 
 	if (squareMesh != nullptr)
 	{
-		if (isReplaceColor) {
+		if (/*isReplaceColor*/ true) {
 
 			glUniform1i(modeId, 3);
 			glUniform3f(colorId,ReplaceColor.x, ReplaceColor.y, ReplaceColor.z);

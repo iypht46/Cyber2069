@@ -41,7 +41,7 @@ void GrenadeLauncherBullet::OnUpdate(float dt)
 	}
 }
 
-void GrenadeLauncherBullet::OnStart()
+void GrenadeLauncherBullet::OnAwake()
 {
 	rb = m_gameObject->GetComponent<Rigidbody>();
 	cam = Graphic::getCamera();

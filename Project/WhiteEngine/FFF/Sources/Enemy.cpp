@@ -13,7 +13,8 @@ void Enemy::OnTakeDamage() {
 void Enemy::OnDead() {
 	//call all funct from events vector
 	GetGameObject()->SetActive(false);
-	GameController::GetInstance()->AddScoreValue(1.0);
+	GameController::GetInstance()->AddScoreValue(baseScore);
+	GameController::GetInstance()->AddComboValue(1.0);
 	state = EnemyState::Idle;
 	affectedByWeapon = false;
 	GotZap = false;

@@ -7,10 +7,12 @@
 
 	//////////////Base Collider/////////////
 	Collider::Collider() {
-		Factory<Collider>::Add(this);
+		Factory<Component, Collider>::Add(this);
 	}
 
-	Collider::~Collider() { }
+	Collider::~Collider() {
+		Factory<Component, Collider>::Remove(this);
+	}
 
 	void Collider::Init() {
 		//Set Rigidbody
@@ -81,12 +83,16 @@
 
 	//////////////Box Collider//////////////
 	BoxCollider::BoxCollider() : Collider(COLLIDER_TYPE::BOX) {
-		Factory<BoxCollider>::Add(this);
+		Factory<Component, BoxCollider>::Add(this);
+	}
+
+	BoxCollider::~BoxCollider() {
+		Factory<Component, BoxCollider>::Remove(this);
 	}
 
 	void BoxCollider::Init() {
-		//Set Transform
-		//m_transform = GetGameObject()->m_transform.get();
+
+		Collider::Init();
 
 		//Set Box Size
 		m_colliderScale.x = m_halfWidth / m_gameObject->m_transform->GetScale().x;
@@ -105,8 +111,6 @@
 		{
 			m_isStatic = true;
 		}
-
-		Collider::Init();
 	}
 
 	void BoxCollider::ReSize(float hW, float hH) {

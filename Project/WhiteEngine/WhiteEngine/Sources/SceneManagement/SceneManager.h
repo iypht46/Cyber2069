@@ -2,7 +2,6 @@
 
 #include <memory>
 #include <map>
-#include <set>
 #include <string>
 
 #include "Core/EC/GameObject.hpp"
@@ -10,7 +9,7 @@
 
 #include <cereal/cereal.hpp>
 #include <cereal/types/memory.hpp>
-#include <cereal/types/set.hpp>
+#include <cereal/types/map.hpp>
 
 class GameObject;
 
@@ -18,7 +17,7 @@ namespace SceneManagement {
 	class Scene
 	{
 	public:
-		std::set<std::shared_ptr<GameObject>> GameObjectsInScene;
+		std::map<int, std::shared_ptr<GameObject>> GameObjectsInScene;
 
 		//call init/awake/start on component assign gameobject assing collider/rigid body to physics scene
 		void Init();

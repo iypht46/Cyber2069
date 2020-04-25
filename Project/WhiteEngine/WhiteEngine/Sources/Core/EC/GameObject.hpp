@@ -56,11 +56,20 @@ public:
 	//init all member component
 	void InitComponents();
 
+	//start all member behaviour script
+	void StartComponents();
+
 	template <class T>
 	T* AddComponent();
 
 	template <class T>
+	std::weak_ptr<T> AddComponent_weak();
+
+	template <class T>
 	T* GetComponent();
+
+	template <class T>
+	std::weak_ptr<T> GetComponent_weak();
 
 	//Log to logger
 	LogCustomType_DC(GameObject);
@@ -81,12 +90,23 @@ public:
 
 template<class T>
 T* GameObject::AddComponent() {
-	std::shared_ptr<T> component = Factory<T>::Create();
+	std::shared_ptr<T> component = Factory<Component, T>::Create();
 
 	m_components.push_back(component);
 	m_components.back()->SetGameObject(this);
 
 	return component.get();
+}
+
+//return a weak ptr of component instead of raw
+template<class T>
+std::weak_ptr<T> GameObject::AddComponent_weak() {
+	std::shared_ptr<T> component = Factory<Component, T>::Create();
+
+	m_components.push_back(component);
+	m_components.back()->SetGameObject(this);
+
+	return component;
 }
 
 template<class T>
@@ -97,6 +117,21 @@ T* GameObject::GetComponent() {
 		if (dynamic_pointer_cast<T>(component))
 		{
 			return dynamic_pointer_cast<T>(component).get();
+		}
+	}
+
+	return nullptr;
+}
+
+//return a weak ptr of component instead of raw
+template<class T>
+std::weak_ptr<T> GameObject::GetComponent_weak() {
+
+	for (std::shared_ptr<Component> component : m_components)
+	{
+		if (dynamic_pointer_cast<T>(component))
+		{
+			return dynamic_pointer_cast<T>(component);
 		}
 	}
 

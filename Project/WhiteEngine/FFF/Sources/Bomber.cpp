@@ -2,12 +2,14 @@
 #include "Core/Logger.hpp"
 #include "Graphic/GLRenderer.h"
 
+Bomber::Bomber() {
+
+}
+
 void Bomber::OnAwake() {
 	airFollow = m_gameObject->GetComponent<AirFollowing>();
 	airDash = m_gameObject->GetComponent<AirDash>();
 	explosion = m_gameObject->GetComponent<Explosion>();
-
-	airFollow->SetPlayer(target);
 
 	rigidbody = GetGameObject()->GetComponent<Rigidbody>();
 
@@ -46,6 +48,7 @@ void Bomber::OnFixedUpdate(float dt) {
 				airDash->Reset();
 				break;
 			case EnemyState::Chase:
+				airFollow->SetPlayer(target);
 				airFollow->FollowPlayer(dt);
 				break;
 			case EnemyState::Active:
@@ -53,7 +56,6 @@ void Bomber::OnFixedUpdate(float dt) {
 				if (airDash->DashEnd()) {
 					explosion->Explode();
 					hpSystem->Dead();
-
 
 					state = EnemyState::Idle;
 				}
@@ -68,10 +70,10 @@ void Bomber::OnFixedUpdate(float dt) {
 void Bomber::SetStats(float Speed, float HP, float Dmg, float AimTime, float DashSpeed, float ExplodeDmg, float ExplodeRadius) {
 	airFollow->SetFlySpeed(Speed);
 	hpSystem->SetMaxHP(HP);
-	CollideDamage = Dmg;
 
 	airDash->SetAimTime(AimTime);
 	airDash->SetDashSpeed(DashSpeed);
+	airDash->dashDamage = Dmg;
 
 	explosion->SetDamage(ExplodeDmg);
 	explosion->SetRadius(ExplodeRadius);

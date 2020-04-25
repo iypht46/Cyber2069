@@ -37,17 +37,8 @@ void AirFollowing::FollowPlayer(float dt) {
 
 	rb->SetVelocity(glm::vec3(glm::cos(t->GetRotation() + this->rotAngle), glm::sin(t->GetRotation() + this->rotAngle), 0) * m_speed);
 
-	if (direction.x > 0) {
-		if (e->facingRight)
-		{
-			e->flip();
-		}
-	}
-	else {
-		if (!e->facingRight)
-		{
-			e->flip();
-		}
+	if (direction.x > 0 != e->facingRight) {
+		e->flip();
 	}
 
 }
