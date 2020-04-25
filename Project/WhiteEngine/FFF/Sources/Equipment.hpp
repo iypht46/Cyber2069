@@ -5,13 +5,26 @@
 #include "Core/EC/Components/Rigidbody.hpp"
 #include "Core/EC/Components/Animator.hpp"
 #include "Core/EC/Components/MeshRenderer.hpp"
+#include "Core/EC/GameObject.hpp"
+#include "Utility/ObjectPool.h"
 
-class Equipment 
+#include "Physic/PhysicScene.hpp"
+
+#include "Graphic/Camera.hpp"
+#include "Graphic/Window.hpp"
+#include "Enemy.hpp"
+
+#include <cereal/types/polymorphic.hpp>
+
+class Equipment
 {
 protected:
-	GameObject* m_gameObject;
+	int type = -1;
+	GameObject* modifyObject;
 public:
-	virtual void Modify(GameObject* obj) = 0;
+	virtual void Modify() = 0;
 	virtual void GameTimeBehaviour(float dt) = 0;
-	void SetGameObject(GameObject* obj) { this->m_gameObject = obj; }
+	void SetmodifyObject(GameObject* obj) { this->modifyObject = obj; }
+	GameObject* GetmodifyObject(){ return modifyObject; }
+	int GetType() { return type; }
 };

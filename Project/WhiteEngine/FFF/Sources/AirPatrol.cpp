@@ -4,15 +4,12 @@
 
 AirPatrol::AirPatrol()
 {
-	m_speed = 30.0f;
-	m_pointAX = 0.0f;
-	m_pointBX = 0.0f;
+
 }
 
-
-AirPatrol::~AirPatrol()
-{
-	
+void AirPatrol::OnAwake() {
+	queen = GetGameObject()->m_transform.get();
+	rb = GetGameObject()->GetComponent<Rigidbody>();
 }
 
 void AirPatrol::Patrol() {
@@ -27,37 +24,10 @@ void AirPatrol::Patrol() {
 }
 
 void AirPatrol::SetPoint(float aX, float bX) {
-	queen = &(m_gameObject->m_transform);
-	rb = m_gameObject->GetComponent<Rigidbody>();
 	m_pointAX = aX;
 	m_pointBX = bX;
-
 }
 
 void AirPatrol::SetSpeed(float speed) {
 	this->m_speed = speed;
-}
-
-void AirPatrol::OnAwake() {
-
-}
-
-void AirPatrol::OnEnable() {
-
-}
-
-void AirPatrol::OnStart() {
-
-}
-
-void AirPatrol::OnUpdate(float dt) {
-
-}
-
-void AirPatrol::OnFixedUpdate(float dt) {
-
-}
-
-void AirPatrol::OnDisable() {
-
 }

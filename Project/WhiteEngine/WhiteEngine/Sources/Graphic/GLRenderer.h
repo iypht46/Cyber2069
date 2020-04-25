@@ -22,7 +22,7 @@ using namespace std;
 #define LAYERCOMP
 struct LayerComparator
 {
-	bool operator()(const MeshRenderer* lhs, const MeshRenderer* rhs)
+	bool operator()(const MeshRenderer* lhs, const MeshRenderer* rhs) const
 	{
 		return lhs->layer < rhs->layer;
 	}

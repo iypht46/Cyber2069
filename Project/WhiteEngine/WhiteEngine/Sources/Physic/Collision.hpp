@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 //#include "Core/EC/Components/Collider.hpp"
 #include <iostream>
+#include <memory>
 
 //Forward Declaration
 class Collider;

@@ -28,7 +28,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -80,6 +80,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)\WhiteEngine\Vendors\cereal-1.3.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -127,6 +128,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Artifact.cpp" />
+    <ClCompile Include="Sources\BlackholeGun.cpp" />
+    <ClCompile Include="Sources\BlackholeGunBullet.cpp" />
+    <ClCompile Include="Sources\Character.cpp" />
+    <ClCompile Include="Sources\Charger.cpp" />
+    <ClCompile Include="Sources\GrenadeLauncher.cpp" />
+    <ClCompile Include="Sources\GrenadeLauncherBullet.cpp" />
+    <ClCompile Include="Sources\GroundDash.cpp" />
     <ClCompile Include="Sources\GroundPatrol.cpp" />
     <ClCompile Include="Sources\Explosion.cpp" />
     <ClCompile Include="Sources\AirDash.cpp" />
@@ -136,17 +145,26 @@
     <ClCompile Include="Sources\DeQueen.cpp" />
     <ClCompile Include="Sources\Enemy.cpp" />
     <ClCompile Include="Sources\EnemySpawner.cpp" />
-    <ClCompile Include="Sources\FactoryCollection.cpp" />
     <ClCompile Include="Sources\Flyer.cpp" />
     <ClCompile Include="Sources\GameController.cpp" />
     <ClCompile Include="Sources\HPsystem.cpp" />
+    <ClCompile Include="Sources\EquipmentManager.cpp" />
+    <ClCompile Include="Sources\LaserGun.cpp" />
     <ClCompile Include="Sources\MachineGun.cpp" />
     <ClCompile Include="Sources\MachineGunBullet.cpp" />
     <ClCompile Include="Sources\main.cpp" />
+    <ClCompile Include="Sources\ObjectShooter.cpp" />
     <ClCompile Include="Sources\PlayerController.cpp" />
+    <ClCompile Include="Sources\Spitter.cpp" />
+    <ClCompile Include="Sources\Tank.cpp" />
     <ClCompile Include="Sources\World.cpp" />
+    <ClCompile Include="Sources\ZapperGun.cpp" />
+    <ClCompile Include="Sources\ZapperGunBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Artifact.hpp" />
+    <ClInclude Include="Sources\Character.hpp" />
+    <ClInclude Include="Sources\GroundDash.hpp" />
     <ClInclude Include="Sources\GroundPatrol.hpp" />
     <ClInclude Include="Sources\Explosion.hpp" />
     <ClInclude Include="Sources\AirDash.hpp" />
@@ -157,11 +175,10 @@
     <ClInclude Include="Sources\EnemyBehaviours.h" />
     <ClInclude Include="Sources\EnemySpawner.hpp" />
     <ClInclude Include="Sources\Equipment.hpp" />
-    <ClInclude Include="Sources\FactoryCollection.h" />
     <ClInclude Include="Sources\GameController.hpp" />
     <ClInclude Include="Sources\HPsystem.hpp" />
-    <ClInclude Include="Sources\MachineGun.hpp" />
-    <ClInclude Include="Sources\MachineGunBullet.hpp" />
+    <ClInclude Include="Sources\EquipmentManager.hpp" />
+    <ClInclude Include="Sources\ObjectShooter.h" />
     <ClInclude Include="Sources\PlayerController.hpp" />
     <ClInclude Include="Sources\Weapon.hpp" />
     <ClInclude Include="Sources\World.hpp" />
