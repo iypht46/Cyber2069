@@ -9,7 +9,7 @@ Animator::Animator()
 	timeElapse = 0;
 	m_currentUVFrames = glm::vec2(0);
 
-	Factory<Animator>::Add(this);
+	Factory<Component, Animator>::Add(this);
 }
 
 void Animator::Init() {
@@ -115,4 +115,5 @@ void Animator::setFramePerSec(float frame) {
 
 Animator::~Animator()
 {
+	Factory<Component, Animator>::Remove(this);
 }

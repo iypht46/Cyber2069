@@ -2,8 +2,6 @@
 
 #include <memory>
 
-#include "Core/Factory.h"
-
 #include <cereal/cereal.hpp>
 #include <cereal/types/memory.hpp>
 

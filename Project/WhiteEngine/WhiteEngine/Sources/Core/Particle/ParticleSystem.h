@@ -294,6 +294,7 @@ public:
 	void LifeTimeModification(float dt); ///+++++++++++ call thi in fac cl too
 
 	ParticleSystem();
+	~ParticleSystem();
 
 private:
 	float emitTimer = 0;

@@ -7,10 +7,12 @@
 
 	//////////////Base Collider/////////////
 	Collider::Collider() {
-		Factory<Collider>::Add(this);
+		Factory<Component, Collider>::Add(this);
 	}
 
-	Collider::~Collider() { }
+	Collider::~Collider() {
+		Factory<Component, Collider>::Remove(this);
+	}
 
 	void Collider::Init() {
 		//Set Rigidbody
@@ -81,7 +83,11 @@
 
 	//////////////Box Collider//////////////
 	BoxCollider::BoxCollider() : Collider(COLLIDER_TYPE::BOX) {
-		Factory<BoxCollider>::Add(this);
+		Factory<Component, BoxCollider>::Add(this);
+	}
+
+	BoxCollider::~BoxCollider() {
+		Factory<Component, BoxCollider>::Remove(this);
 	}
 
 	void BoxCollider::Init() {

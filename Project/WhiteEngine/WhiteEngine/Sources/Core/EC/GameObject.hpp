@@ -90,7 +90,7 @@ public:
 
 template<class T>
 T* GameObject::AddComponent() {
-	std::shared_ptr<T> component = Factory<T>::Create();
+	std::shared_ptr<T> component = Factory<Component, T>::Create();
 
 	m_components.push_back(component);
 	m_components.back()->SetGameObject(this);
@@ -101,7 +101,7 @@ T* GameObject::AddComponent() {
 //return a weak ptr of component instead of raw
 template<class T>
 std::weak_ptr<T> GameObject::AddComponent_weak() {
-	std::shared_ptr<T> component = Factory<T>::Create();
+	std::shared_ptr<T> component = Factory<Component, T>::Create();
 
 	m_components.push_back(component);
 	m_components.back()->SetGameObject(this);

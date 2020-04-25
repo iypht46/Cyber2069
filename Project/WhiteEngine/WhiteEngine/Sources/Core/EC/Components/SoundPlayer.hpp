@@ -1,5 +1,5 @@
 #pragma once
-#include "Component.hpp"
+#include "Core/Factory.h"
 #include <string>
 #include <irrKlang.h>
 

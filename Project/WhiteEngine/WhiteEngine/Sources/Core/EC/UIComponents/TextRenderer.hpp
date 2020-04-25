@@ -50,6 +50,7 @@ public:
 	void LoadFont(string path,float DefautFontSize);
 
 	TextRenderer();
+	~TextRenderer();
 
 //serialization
 public:
