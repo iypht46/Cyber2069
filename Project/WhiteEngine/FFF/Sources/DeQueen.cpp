@@ -44,6 +44,8 @@ void DeQueen::OnUpdate(float dt) {
 				flyer->SetActive(true);
 
 				flyer->m_transform->SetPosition(glm::vec3(spawnPosX, spawnPosY, 1.0f));
+
+				flyer->GetComponent<Enemy>()->SetTarget(GameController::GetInstance()->GetPlayer()->m_transform.get());
 			}
 		}
 		else {
@@ -53,6 +55,8 @@ void DeQueen::OnUpdate(float dt) {
 				bomber->SetActive(true);
 
 				bomber->m_transform->SetPosition(glm::vec3(spawnPosX, spawnPosY, 1.0f));
+
+				bomber->GetComponent<Enemy>()->SetTarget(GameController::GetInstance()->GetPlayer()->m_transform.get());
 			}
 		}
 		

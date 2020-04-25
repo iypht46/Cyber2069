@@ -254,7 +254,7 @@ namespace World
 			Bg2->GetComponent<MeshRenderer>()->SetLayer(-2);
 			Bg2->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 			Bg2->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer2.png");
-			
+
 			Bg1 = Instantiate().get();
 			Bg1->AddComponent<MeshRenderer>();
 			Bg1->GetComponent<MeshRenderer>()->SetLayer(-1);
@@ -315,7 +315,7 @@ namespace World
 			//player
 			{
 				//Rabbit = Instantiate(PrefabPath("Player"));
-				
+
 				Rabbit = Instantiate();
 				Rabbit->Layer = "Player";
 
@@ -346,11 +346,11 @@ namespace World
 				Rabbit->AddComponent<HPsystem>();
 				Rabbit->GetComponent<HPsystem>()->SetMaxHP(10000);
 				Rabbit->AddComponent<PlayerController>();
-				
+
 				//platform->m_transform->SetParent(Rabbit->m_transform);
 
 				Serialization::SaveObject(*Rabbit, PrefabPath("Player"));
-				
+
 			}
 
 
@@ -451,12 +451,12 @@ namespace World
 				flyer->SetActive(false);
 
 				Serialization::SaveObject(*flyer, PrefabPath("Flyer"));
-				
+
 			}
 
 			//bomber anim
 			{
-				
+
 				std::shared_ptr<Animation> BomberIdle = std::make_shared<Animation>();
 
 				BomberIdle->setStartPosition(0, 0);
@@ -488,11 +488,11 @@ namespace World
 				BomberAnimController->AddState(BomberDie, false);
 
 				Serialization::SaveObject(*BomberAnimController, AnimationControllerPath("Bomber"));
-				
+
 			}
 			//bomber
 			{
-				
+
 				GameObject* bomber = Instantiate().get();
 				bomber->Layer = "Enemy";
 				bomber->m_transform->SetScale(glm::vec3(50, 50, 1));
@@ -517,7 +517,7 @@ namespace World
 
 				bomber->SetActive(false);
 				Serialization::SaveObject(*bomber, PrefabPath("Bomber"));
-				
+
 			}
 
 			//Tank anim
@@ -754,6 +754,31 @@ namespace World
 				queen->SetActive(false);
 
 				Serialization::SaveObject(*queen, PrefabPath("Queen"));
+			}
+
+			//Cocoon
+			{
+				GameObject* cocoon = Instantiate().get();
+
+				cocoon->Layer = "Enemy";
+				cocoon->m_transform->SetScale(glm::vec3(100.0f, 100.0f, 1.0f));
+
+				cocoon->AddComponent<MeshRenderer>();
+				cocoon->GetComponent<MeshRenderer>()->SetLayer(1);
+				cocoon->GetComponent<MeshRenderer>()->CreateMesh(5, 4);
+				cocoon->GetComponent<MeshRenderer>()->SetTexture(SpritePath("Characters/Enemy_Cocoon"));
+
+				cocoon->AddComponent<Rigidbody>();
+				cocoon->AddComponent<BoxCollider>()->ReScale(1, 1);
+				cocoon->GetComponent<Rigidbody>()->SetGravityScale(0.00001);
+				cocoon->AddComponent<Enemy>();
+
+				cocoon->AddComponent<HPsystem>();
+				cocoon->GetComponent<HPsystem>()->SetMaxHP(10.0f);
+
+				cocoon->SetActive(false);
+
+				Serialization::SaveObject(*cocoon, PrefabPath("Cocoon"));
 			}
 
 
