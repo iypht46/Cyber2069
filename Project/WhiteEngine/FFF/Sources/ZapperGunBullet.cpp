@@ -182,16 +182,16 @@ void ZapperGunBullet::Zap(float dt) {
 
 		if (e != nullptr) {
 
-			/*Rigidbody* rb = e->GetGameObject()->GetComponent<Rigidbody>();
+			Rigidbody* rb = e->GetGameObject()->GetComponent<Rigidbody>();
 
-			rb->SetVelocity(glm::vec3(0.0f));*/
+			rb->SetVelocity(glm::vec3(0.0f));
 
 			if (zapDurationCount > zapDuration) 
 			{
 				e->TakeDamage(bulletDmg);
 			}
 
-			e->GetGameObject()->m_transform->SetPosition(TargetTranform.at(i)->GetPosition());
+			//e->GetGameObject()->m_transform->SetPosition(TargetTranform.at(i)->GetPosition());
 
 			if (i < (Targets.size() - 1))
 			{
@@ -207,9 +207,6 @@ void ZapperGunBullet::Zap(float dt) {
 		}
 	}
 
-	if (zapRateCount > zapRate) {
-		zapRateCount = 0.0f;
-	}
 }
 
 void ZapperGunBullet::enemRelease() 

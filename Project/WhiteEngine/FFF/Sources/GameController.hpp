@@ -33,7 +33,20 @@ enum POOL_TYPE {
 	ENEMY_CHARGER,
 	ENEMY_SPITTER,
 	ENEMY_QUEEN,
+	ENEMY_COCOON,
 	BULLET_FUME
+};
+
+enum GAME_STATE {
+	MAINMENU = 0,
+	LOADOUT,
+	GAMEPLAY,
+	ENDING
+};
+
+enum GAMEPLAY_STATE {
+	NORMAL = 0,
+	QUEEN
 };
 
 struct EnemyPreset {
@@ -154,6 +167,14 @@ private:
 	PlayerController* playerControl;
 	HPsystem* PlayerHP;
 
+	glm::vec3 PlayerStartPosition;
+
+	GameObject* Current_Queen = nullptr;
+	GameObject* Current_Cocoon = nullptr;
+
+	int CocoonNeed = 5;
+	int CocoonCount = 0;
+
 	map<int, ObjectPool*> Pools; //added while onawake and init manually, hard coding, collect all pool used in game
 
 	//extracted in on awake after created, need to assign since the editor or don't bother create any object
@@ -181,6 +202,17 @@ private:
 	//create enemy spawner and assign to gamecontroller, 
 	//*NOT set the spawn range
 	EnemySpawner* CreateSpawner(int enemyType);
+
+	bool CursedMode = false;
+	
+	int CurrentState = MAINMENU;
+	int CurrentGameplayState = NORMAL;
+
+	int NextState = MAINMENU;
+	int NextGameplayState = NORMAL;
+
+	bool StateChanged = false;
+	bool StateGamplayChanged = false;
 
 public:
 	std::weak_ptr<GameObject> player;
@@ -212,8 +244,23 @@ public:
 	void AddPool(ObjectPool* pool, int type);
 	ObjectPool* GetPool(int type);
 
+	void SetActiveAllObjectInPool(bool active);
+
 	EnemyPreset* GetCurrPreset() { return CurrPreset; }
 	EnemyAmplifier* GetCurrAmplifier() { return CurrAmplifier; }
+
+	bool isCursedMode() { return CursedMode; }
+	void SetCursedMode(bool mode) { this->CursedMode = mode; }
+
+	void AddSpawner(EnemySpawner* spawner);
+	EnemySpawner* GetSpawner(int pooltype);
+	void SetSpawningAllSpawner(bool spawning);
+
+	int GetGameState() { return CurrentState; }
+	int GetGameplayState() { return CurrentGameplayState; }
+
+	void SetGameState(int state) { this->NextState = state; }
+	void SetGameplayState(int state) { this->NextGameplayState = state; }
 
 	virtual void OnAwake() override;
 	virtual void OnStart() override;

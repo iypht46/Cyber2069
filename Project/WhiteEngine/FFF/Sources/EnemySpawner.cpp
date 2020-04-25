@@ -14,23 +14,32 @@ void EnemySpawner::OnUpdate(float dt)
 }
 
 GameObject* EnemySpawner::SpawnEnemy() {
-	float randPosX, randPosY;
+	if (Spawning) {
+		if (SpawnRateCount <= 0)
+		{
+			SpawnRateCount = SpawnRate;
 
-	if (x2 > x1) {
-		randPosX = (rand() % (x2 - x1 + 1)) + x1;
-	}
-	else {
-		randPosX = (rand() % (x1 - x2 + 1)) + x2;
+			float randPosX, randPosY;
+
+			if (x2 > x1) {
+				randPosX = (rand() % (x2 - x1 + 1)) + x1;
+			}
+			else {
+				randPosX = (rand() % (x1 - x2 + 1)) + x2;
+			}
+
+			if (y2 > y1) {
+				randPosY = (rand() % (y2 - y1 + 1)) + y1;
+			}
+			else {
+				randPosY = (rand() % (y1 - y2 + 1)) + y2;
+			}
+
+			return SpawnEnemy(randPosX, randPosY);
+		}
 	}
 
-	if (y2 > y1) {
-		randPosY = (rand() % (y2 - y1 + 1)) + y1;
-	}
-	else {
-		randPosY = (rand() % (y1 - y2 + 1)) + y2;
-	}
-
-	return SpawnEnemy(randPosX, randPosY);
+	return nullptr;
 }
 
 GameObject* EnemySpawner::SpawnEnemy(float posX,float posY)

@@ -28,6 +28,8 @@ protected:
 	//enemy type
 	int SpawnType;
 
+	bool Spawning = false;
+
 	float SpawnRateCount = 0;
 	ObjectPool* EnemyPool;
 
@@ -44,7 +46,10 @@ public:
 	void SetSpawnRate(float value);
 	void SetSpawnRange(float x1, float y1, float x2, float y2);
 	void SetSpawnType(int type);
+	void SetSpawning(bool spawn) { Spawning = spawn; }
+
 	int GetType() { return this->SpawnType; }
+	bool isSpawning() { return Spawning; }
 
 	void updateSpawner();
 

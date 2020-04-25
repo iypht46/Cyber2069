@@ -22,11 +22,16 @@ public:
 	void AddObject(GameObject*);
 	int GetPoolSize();
 
+	void SetActiveAllGameObject(bool active);
+
 	//get gameobject cycling through all object from pool,
 	GameObject* GetGameObject();
 
 	//get inactive gameobject from pool
 	GameObject* GetInactiveObject();
+
+	//get all gameobject from pool
+	std::queue<GameObject*> GetAllGameObject() { return m_objects; }
 
 	//serialization
 public:

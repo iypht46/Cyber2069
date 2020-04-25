@@ -35,6 +35,7 @@
 #include "EnemySpawner.hpp"
 #include "GameController.hpp"
 #include "Weapon.hpp"
+#include "EquipmentManager.hpp"
 
 using SceneManagement::Instantiate;
 
@@ -352,6 +353,39 @@ namespace World
 				
 			}
 
+
+			gamecontroller->AddComponent<GameController>();
+			gamecontroller->GetComponent<GameController>()->player = Rabbit;
+			gamecontroller->GetComponent<GameController>()->ScoreText = ui_ScoreText;
+			gamecontroller->GetComponent<GameController>()->ComboText = ui_ComboText;
+			gamecontroller->GetComponent<GameController>()->HPbar = ui_HPbar;
+			gamecontroller->GetComponent<GameController>()->Staminabar = ui_StaminaBar;
+			gamecontroller->GetComponent<GameController>()->SetGameState(GAME_STATE::GAMEPLAY);
+			gamecontroller->GetComponent<GameController>()->SetGameplayState(GAMEPLAY_STATE::NORMAL);
+
+			std::shared_ptr<GameObject> wp_MachineGun = Instantiate();
+			wp_MachineGun->AddComponent<MeshRenderer>();
+			wp_MachineGun->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
+			wp_MachineGun->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_shoot.png");
+			wp_MachineGun->GetComponent<MeshRenderer>()->SetLayer(3);
+
+
+			wp_MachineGun->AddComponent<MachineGun>();
+
+			wp_MachineGun->m_transform->SetParent(Rabbit->m_transform);
+
+			wp_MachineGun->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
+
+			gamecontroller->AddComponent<EquipmentManager>();
+			gamecontroller->GetComponent<EquipmentManager>()->AssignWeaponToManager(wp_MachineGun);
+			gamecontroller->GetComponent<EquipmentManager>()->AssignPlayer(Rabbit);
+			gamecontroller->GetComponent<EquipmentManager>()->InitData();
+
+			gamecontroller->GetComponent<EquipmentManager>()->Unlock_WEAPON(WEAPON_TYPE::WEAPON_MACHINEGUN);
+			gamecontroller->GetComponent<EquipmentManager>()->AddPlayerWeapon(WEAPON_TYPE::WEAPON_MACHINEGUN);
+
+
+			//platform
 			platform = Instantiate().get();
 			platform->Layer = "Platform";
 			platform->AddComponent<MeshRenderer>();
@@ -360,31 +394,6 @@ namespace World
 			platform->GetComponent<MeshRenderer>()->SetLayer(3);
 			platform->m_transform->SetScale(glm::vec3(800, 20, 1));
 			platform->AddComponent<BoxCollider>()->ReScale(1, 1);
-
-			//for (int i = 0; i < platformNum; i++)
-			//{
-			//	platform[i] = Instantiate().get();
-			//	platform[i]->AddComponent<MeshRenderer>();
-			//	platform[i]->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			//	platform[i]->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
-			//	platform[i]->GetComponent<MeshRenderer>()->SetLayer(3);
-			//	platform[i]->m_transform->SetScale(glm::vec3(400, 20, 1));
-			//	platform[i]->AddComponent<BoxCollider>()->Init(200, 5);
-			//	g_physicScene->Add(platform[i]->GetComponent<BoxCollider>(), "Platform");
-			//}
-
-			//platform[1]->m_transform->SetPosition(glm::vec3(300, 300, 0));
-			//platform[2]->m_transform->SetPosition(glm::vec3(-300, 300, 0));
-			//platform[3]->m_transform->SetPosition(glm::vec3(-300, -300, 0));
-			//platform[4]->m_transform->SetPosition(glm::vec3(300, -300, 0));
-
-			gamecontroller->AddComponent<GameController>();
-			gamecontroller->GetComponent<GameController>()->player = Rabbit;
-			gamecontroller->GetComponent<GameController>()->ScoreText = ui_ScoreText;
-			gamecontroller->GetComponent<GameController>()->ComboText = ui_ComboText;
-			gamecontroller->GetComponent<GameController>()->HPbar = ui_HPbar;
-			gamecontroller->GetComponent<GameController>()->Staminabar = ui_StaminaBar;
-
 
 			ENGINE_INFO("Enemy Creation ==========================================================");
 			//flyer animation

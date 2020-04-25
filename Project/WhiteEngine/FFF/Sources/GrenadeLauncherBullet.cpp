@@ -2,6 +2,7 @@
 #include "Graphic/Camera.hpp"
 #include "Core/Logger.hpp"
 #include "Physic/PhysicScene.hpp"
+#include "Graphic/GLRenderer.h"
 
 #include "Enemy.hpp"
 #include "PlayerController.hpp"
@@ -94,4 +95,6 @@ void GrenadeLauncherBullet::Explode() {
 			}
 		}
 	}
+
+	GLRenderer::GetInstance()->DrawDebug_Circle(m_gameObject->m_transform->GetPosition().x, m_gameObject->m_transform->GetPosition().y, radius, 0.0f, 0.0f, 1.0f);
 }
