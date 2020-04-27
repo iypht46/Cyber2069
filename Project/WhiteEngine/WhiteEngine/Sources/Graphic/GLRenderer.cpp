@@ -7,7 +7,7 @@
 #include "Window.hpp"
 #include <vector>
 #include <glm/glm.hpp>
-#include "Core/EC/Components/TextRenderer.hpp"
+#include "Core/EC/UIComponents/TextRenderer.hpp"
 #include "Core/EC/Components/MeshRenderer.hpp"
 #include "Core/EC/GameObject.hpp"
 #include "Graphic/Camera.hpp"
@@ -204,7 +204,6 @@ void GLRenderer::Render()
 	glm::mat4 camera = glm::mat4(1.0);
 
 	//--------Render Object Here--------
-
 	for (MeshRenderer *obj : MeshSet) {
 
 		if (obj->GetGameObject()->Active())
@@ -265,11 +264,11 @@ void GLRenderer::AssignLayer()
 		{
 			obj->inSet = true;
 
-			if (obj->layer == -1) 
-			{
-				ENGINE_WARN("GameObjectMeshLayer unassigned (set Layer to 0)");
-				obj->SetLayer(0);
-			}
+			//if (obj->layer == -1) 
+			//{
+				//ENGINE_WARN("GameObjectMeshLayer unassigned (set Layer to 0)");
+				//obj->SetLayer(0);
+			//}
 
 			GLRenderer::GetInstance()->AddMeshToSet(obj);
 		}
@@ -439,7 +438,7 @@ void GLRenderer::RenderDebugCollider(BoxCollider* col)
 	GameObject* obj = col->GetGameObject();
 
 	glm::mat4 sMat = glm::scale(glm::mat4(1.0f), glm::vec3(col->GetHw() * 2, col->GetHh() * 2, 1.0f));
-	glm::mat4 tMat = glm::translate(glm::mat4(1.0f), obj->m_transform.GetLocalPosition());
+	glm::mat4 tMat = glm::translate(glm::mat4(1.0f), obj->m_transform->GetLocalPosition());
 	glm::mat4 transformMat = tMat * sMat;
 
 	glm::mat4 projectionMatrix = Graphic::getCamera()->GetProjectionMatrix();

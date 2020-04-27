@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <memory>
 #include <glm/glm.hpp>
 #include "glm/gtc/matrix_transform.hpp"
 //#include <glm/gtc/quaternion.hpp>
@@ -7,22 +8,31 @@
 
 #include "Component.hpp"
 
+//serialization
+#include "Serialization/glmCereal.h"
+#include <cereal/cereal.hpp>
+#include <cereal/types/base_class.hpp>
+#include <cereal/types/polymorphic.hpp>
+#include <cereal/types/vector.hpp>
+#include <cereal/types/memory.hpp>
+
 using namespace std;
 
-class Transform : public Component {
+class Transform : public Component, public std::enable_shared_from_this<Transform> {
 private:
-	Transform* parent;
-	std::vector<Transform*> children;
+	std::weak_ptr<Transform> parent;
+	std::vector<weak_ptr<Transform>> children;
 
 	glm::vec3 m_position;
 	glm::vec3 m_scale;
 	//rotation in degree
-	float m_rotation;
+	float m_rotation = 0.0f;
 
 	glm::vec3 m_localPosition;
 	glm::vec3 m_localScale;
-	float m_localRotation;
+	float m_localRotation = 0.0f;
 
+	//runtime rendering matrix
 	glm::mat4 m_modelMatrix;
 
 	void UpdateWorldPosition();
@@ -45,7 +55,7 @@ public:
 
 	glm::mat4 GetModelMatrix();
 
-	void SetParent(Transform* newParent);
+	void SetParent(std::weak_ptr<Transform> newParent);
 
 	Transform* GetChild(int index);
 
@@ -58,10 +68,22 @@ public:
 	void SetLocalRotation(float localrotation);
 	void Rotate(float rotation);
 
-	virtual void OnAwake();
-	virtual void OnEnable();
-	virtual void OnStart();
-	virtual void OnUpdate(float dt);
-	virtual void OnFixedUpdate(float dt);
-	virtual void OnDisable();
+	//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Component>(this),
+			m_position,
+			m_scale,
+			m_rotation,
+			m_localPosition,
+			m_localScale,
+			m_localRotation,
+			cereal::defer(parent),
+			cereal::defer(children)
+			);
+	}
 };
+
+CEREAL_REGISTER_TYPE(Transform);

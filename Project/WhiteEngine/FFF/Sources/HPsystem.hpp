@@ -2,13 +2,20 @@
 #include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/GameObject.hpp"
 
+#include <cereal/types/base_class.hpp>
+#include <cereal/types/polymorphic.hpp>
+
 class HPsystem : public BehaviourScript {
 protected:
-	float Maxhp;
-	float hp = 1;
+	float Maxhp = 1;
 	bool invincible = false;
+
+	float hp = 1;
 	bool dead = false;
 public:
+	HPsystem() {}
+	~HPsystem() {}
+
 	void SetMaxHP(float hp);
 	void SetHp(float hp);
 	void SetInvincible(bool inv);
@@ -20,6 +27,7 @@ public:
 
 	void TakeDamage(float damage);
 	bool isDead();
+	bool isInvicible();
 
 	void Dead();
 
@@ -29,4 +37,17 @@ public:
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
 	virtual void OnDisable();
+
+	//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<BehaviourScript>(this),
+			Maxhp,
+			invincible
+		);
+	}
 };
+
+CEREAL_REGISTER_TYPE(HPsystem);

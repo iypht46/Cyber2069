@@ -1,7 +1,9 @@
 #include "HPsystem.hpp"
+#include "GameController.hpp"
 
 void HPsystem::SetMaxHP(float hp) {
 	this->Maxhp = hp;
+	this->hp = Maxhp;
 }
 
 void HPsystem::SetHp(float hp) {
@@ -29,12 +31,24 @@ void HPsystem::ResetHP() {
 void HPsystem::TakeDamage(float damage) {
 	if (!this->invincible) 
 	{
-		this->hp -= damage;
+		if (GameController::GetInstance()->isCursedMode() && (m_gameObject->GetComponent<DeQueen>() == nullptr))
+		{
+			hp = 0;
+			Dead();
+		}
+		else 
+		{
+			this->hp -= damage;
+		}
 	}
 }
 
 bool HPsystem::isDead() {
 	return this->dead;
+}
+
+bool HPsystem::isInvicible() {
+	return this->invincible;
 }
 
 void HPsystem::Dead() 
@@ -56,14 +70,15 @@ void HPsystem::OnStart() {
 }
 
 void HPsystem::OnUpdate(float dt) {
-	if (!dead && hp <= 0)
-	{
-		Dead();
-	}
+
 }
 
 void HPsystem::OnFixedUpdate(float dt) {
-
+	if (!dead && hp <= 0)
+	{
+		hp = 0;
+		Dead();
+	}
 }
 
 void HPsystem::OnDisable() {
