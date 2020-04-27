@@ -10,6 +10,7 @@ namespace Graphic
 	struct CameraObject
 	{
 		//Camera Info
+		glm::vec2 m_aspect;
 		glm::vec3 m_position;
 		glm::vec3 m_rotation;
 		float m_zoom;
@@ -25,6 +26,7 @@ namespace Graphic
 		glm::mat4 m_projection;
 
 		CameraObject();
+		CameraObject(float w, float h);
 
 		//Camera Interface
 		void Translate(glm::vec3 translate);

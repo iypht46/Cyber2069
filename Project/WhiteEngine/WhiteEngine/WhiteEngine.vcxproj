@@ -136,7 +136,9 @@
     <ClInclude Include="Sources\Graphic\Camera.hpp" />
     <ClInclude Include="Sources\Graphic\Framebuffer.hpp" />
     <ClInclude Include="Sources\Graphic\Shader.hpp" />
+    <ClInclude Include="Sources\Graphic\Texture.hpp" />
     <ClInclude Include="Sources\Utility\Filesystem.hpp" />
+    <ClInclude Include="Sources\Utility\Macros.hpp" />
     <ClInclude Include="Sources\Utility\Reflection.hpp" />
     <ClInclude Include="Sources\Utility\Serialization.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\TextRenderer.hpp" />

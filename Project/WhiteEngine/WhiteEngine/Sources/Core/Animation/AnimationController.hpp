@@ -33,8 +33,14 @@ public:
 	}
 };
 
+namespace Tools
+{
+	class EditorAC;
+}
+
 class AnimationController
 {
+	friend class Tools::EditorAC;
 protected:
 	glm::vec2 m_spriteSheetFrameSize;
 	std::vector<std::shared_ptr<AnimationState>> m_states;

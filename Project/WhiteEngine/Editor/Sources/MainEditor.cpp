@@ -61,6 +61,7 @@ namespace Tools
 			{
 				m_inspector->SetEditorObject(m_currentEditor->GetSelectedEntity());
 				m_hierarchy->SetEditorObject(m_currentEditor->GetEditorObject());
+
 				//m_hierarchy->SetEditorObject();
 				//m_inspector->SetEntity(m_currentEditor->GetSelectedEntity());
 			}
@@ -97,7 +98,7 @@ namespace Tools
 		
 	}
 
-	void MainEditor::Save()
+	void MainEditor::Save(Editor* editor, Container::wString fileName)
 	{
 		
 	}
@@ -143,6 +144,7 @@ namespace Tools
 						{
 							if (AccessEditor(editor))
 							{
+								editor->New();
 								ENGINE_INFO("Access Editor: " + editor->GetName());
 							}
 							else

@@ -3,7 +3,9 @@
 #include "Graphic/GLRenderer.h"
 #include "Graphic/Camera.hpp"
 #include "Core/EC/GameObject.hpp"
-#include "glm/ext.hpp"
+#include "Graphic/Texture.hpp"
+#include <glm/ext.hpp>
+
 
 
 //bool operator < (const MeshRenderer &m1, const MeshRenderer &m2)
@@ -53,20 +55,26 @@ void MeshRenderer::Init() {
 
 void MeshRenderer::SetTexture(std::string path)
 {
+	if (path == "none")
+		return;
+
+	auto newTexture = GLRenderer::GetInstance()->LoadTextureNew(path);
+
+	if (newTexture.m_textureID != -1)
+	{
+		sr_texturePath = path;
+		m_texture = new Graphic::Texture(newTexture);
+	}
+
 	//save data
-	sr_texturePath = path;
+	//sr_texturePath = path;
+	////ENGINE_INFO("Texture Path: " + sr_texturePath);
+	//m_texture.m_textureID = GLRenderer::GetInstance()->LoadTexture(path);
 
-	texture = GLRenderer::GetInstance()->LoadTexture(path);
-
-	if (texture != -1)
-		m_texLoaded = true;
-	else
-		m_texLoaded = false;
-}
-
-void MeshRenderer::SetTexture(unsigned int tex)
-{
-	texture = tex;
+	//if (m_texture.m_textureID != -1)
+	//	m_texLoaded = true;
+	//else
+	//	m_texLoaded = false;
 }
 
 void MeshRenderer::SetLayer(unsigned int layer)
@@ -87,6 +95,11 @@ int MeshRenderer::GetLayer()
 bool MeshRenderer::IsUI()
 {
 	return m_isUI;
+}
+
+bool MeshRenderer::IsTextureLoaded()
+{
+	return (m_texture);
 }
 
 void  MeshRenderer::CreateMesh(float NumframeX, float NumFrameY)
@@ -111,6 +124,7 @@ void MeshRenderer::RemoveReplaceColor() {
 
 void MeshRenderer::Render(glm::mat4 globalModelTransform)
 {
+	
 	SquareMeshVbo *squareMesh = dynamic_cast<SquareMeshVbo *>(this->mesh);
 
 	GLuint modelMatixId = GLRenderer::GetInstance()->GetModelMatrixAttrId();
@@ -135,6 +149,11 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 	//vector<glm::mat4> matrixStack;
 	glm::mat4 modelMatrix = GetGameObject()->m_transform->GetModelMatrix();
 
+	if (IsTextureLoaded())
+	{
+		modelMatrix *= glm::scale(glm::vec3(m_texture->m_size, 1.0f));
+	}
+
 	glm::mat4 currentMatrix = globalModelTransform * modelMatrix;
 
 	/*
@@ -154,15 +173,24 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 	*/
 	if (squareMesh != nullptr)
 	{
-		if (isReplaceColor) {
-
-			glUniform1i(modeId, 3);
-			glUniform3f(colorId,ReplaceColor.x, ReplaceColor.y, ReplaceColor.z);
-
+		if (this->IsTextureLoaded())
+		{
+			glBindTexture(GL_TEXTURE_2D, m_texture->m_textureID);
+			if (isReplaceColor)
+			{
+				glUniform1i(modeId, RENDER_MODE::REPLACE_COLOR);
+				glUniform3f(colorId, ReplaceColor.x, ReplaceColor.y, ReplaceColor.z);
+			}
+			else
+			{
+				glUniform1i(modeId, RENDER_MODE::NORMAL);
+			}
 		}
-		else {
-			glUniform1i(modeId, 1);
+		else
+		{
+			glUniform1i(modeId, RENDER_MODE::COLOR);
 		}
+		
 
 		glUniformMatrix4fv(modelMatixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
 
@@ -183,12 +211,18 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 		/*glUniform1f(offsetXId, 0);
 		glUniform1f(offsetYId, 0);*/
 		//std::cout << "Render\n";
-		glBindTexture(GL_TEXTURE_2D, this->texture);
+
+		/*if (IsTextureLoaded())
+			glBindTexture(GL_TEXTURE_2D, m_texture->m_textureID);*/
+
 		squareMesh->Render();
 	}
 }
 
 unsigned int MeshRenderer::GetTexture()
 {
-	return texture;
+	if (m_texture)
+		return m_texture->m_textureID;
+	else
+		return -1;
 }

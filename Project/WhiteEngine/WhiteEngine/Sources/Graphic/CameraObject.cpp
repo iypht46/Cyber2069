@@ -7,6 +7,15 @@ namespace Graphic
 
 	CameraObject::CameraObject()
 	{
+		m_aspect.x = Window::GetWidth();
+		m_aspect.y = Window::GetHeight();
+		ResetCam();
+	}
+
+	CameraObject::CameraObject(float w, float h)
+	{
+		m_aspect.x = w;
+		m_aspect.y = h;
 		ResetCam();
 	}
 
@@ -48,7 +57,8 @@ namespace Graphic
 			m_zoom = 0.1f;
 		}
 
-		m_projection = glm::ortho(-(Window::GetWidth() / 2) * m_zoom, (Window::GetWidth() / 2) * m_zoom, -(Window::GetHeight() / 2)* m_zoom, (Window::GetHeight() / 2)* m_zoom);
+		m_projection = glm::ortho(-(m_aspect.x / 2) * zoom, (m_aspect.x / 2) * zoom, -(m_aspect.y / 2) * zoom, (m_aspect.y / 2) * zoom);
+		//m_projection = glm::ortho(-(Window::GetWidth() / 2) * m_zoom, (Window::GetWidth() / 2) * m_zoom, -(Window::GetHeight() / 2)* m_zoom, (Window::GetHeight() / 2)* m_zoom);
 		m_view = glm::lookAt(m_position, m_position + m_dir, m_dirUp);
 	}
 
@@ -62,7 +72,7 @@ namespace Graphic
 		m_dir = glm::vec3(0.0f, 0.0f, -1.0f);
 		m_dirUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
-		m_projection = GLRenderer::GetInstance()->GetprojectionMatrix();
+		m_projection = glm::ortho(-(m_aspect.x / 2), (m_aspect.x / 2), -(m_aspect.y / 2), (m_aspect.y / 2));//GLRenderer::GetInstance()->GetprojectionMatrix();
 		m_view = glm::lookAt(m_position, m_position + m_dir, m_dirUp);
 	}
 

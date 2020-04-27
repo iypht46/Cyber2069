@@ -5,10 +5,13 @@
 using namespace glm;
 
 Transform::Transform() {
-	m_position = vec3(0, 0, 0);
-	m_scale = vec3(1, 1, 1);
-	m_rotation = 0;
-	m_localRotation = 0;
+	//m_position = vec3(0, 0, 0);
+	this->SetLocalPosition(glm::vec3(0.0f));
+	this->SetLocalScale(glm::vec3(1.0f));
+	this->SetLocalRotation(0);
+	//m_scale = vec3(1, 1, 1);
+	/*m_rotation = 0;
+	m_localRotation = 0;*/
 
 	//parent is null
 
@@ -61,8 +64,18 @@ void Transform::SetParent(std::weak_ptr<Transform> newParent) {
 	parent.lock()->children.push_back(weak_from_this());
 }
 
+bool Transform::HasParent()
+{
+	return !parent.expired();
+}
+
 Transform* Transform::GetChild(int index) {
 	return (children.at(index)).lock().get();
+}
+
+unsigned int Transform::GetChildCount()
+{
+	return children.size();
 }
 
 /*

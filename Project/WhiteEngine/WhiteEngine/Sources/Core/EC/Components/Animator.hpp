@@ -13,7 +13,6 @@ class Animator : public Component
 {
 	friend class Tools::AnimatorEC;
 private:
-	//serialized data
 	std::string sr_controllerPath;
 	float framePerSec = 12;
 
@@ -28,6 +27,7 @@ public:
 	Animator();
 
 	virtual void Init();
+	bool SetControllerPath(std::string path);
 	void AssignController(std::shared_ptr <AnimationController> animControl);
 
 	void setCurrentState(int state);

@@ -1,18 +1,17 @@
-//Standard Library
-#include <memory>
-//Tools System
+//Editor
 #include "MainEditor.hpp"
-
-//Engine Systems
+//White Engine
 #include "Core/GameInfo.h"
 #include "Graphic/GraphicCore.hpp"
 #include "Input/Input.hpp"
 #include "Core/Logger.hpp"
-#include "Editor.hpp"
-//ImGUI
-#include "imgui.h"
-#include "examples/imgui_impl_glfw.h"
-#include "examples/imgui_impl_opengl3.h"
+#include "Editor/Editor.hpp"
+//Third Party
+#include <imgui.h>
+#include <examples/imgui_impl_glfw.h>
+#include <examples/imgui_impl_opengl3.h>
+//Standard Library
+#include <memory>
 
 namespace Tools
 {
@@ -34,7 +33,7 @@ namespace Tools
 		Core::Logger::Init();
 		//OpenGL and GLFW
 		Graphic::Init();
-		Graphic::EnableFrameBuffer(FBO_STATE::SUB);
+		//Graphic::EnableFrameBuffer(FBO_STATE::SUB);
 		//Input
 		Input::Init(false);
 

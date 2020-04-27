@@ -11,12 +11,10 @@
 //Forward Declaration
 class Collider;
 class Transform;
-namespace Tools { class RigidbodyEC; }
 
 class Rigidbody : public Component
 {
 	friend class BoxCollider;
-	friend class Tools::RigidbodyEC;
 private:
 	//Body Settings
 	glm::vec3 m_position = glm::vec3(0);

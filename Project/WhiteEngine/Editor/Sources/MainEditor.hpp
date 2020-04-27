@@ -1,13 +1,18 @@
 #pragma once
-
+//Editor
+#include "Editor/Editor.hpp"
+#include "Editor/SceneEditor.hpp"
+#include "Editor/PrefabEditor.hpp"
+#include "EditorWindow/Inspector.hpp"
+#include "EditorWindow/ObjectHierarchy.hpp"
+#include "EngineCore.hpp"
+//White Engine
+#include "Container/String.hpp"
+#include "Utility/Filesystem.hpp"
+//Standard Library
 #include <map> //For pair
 
-#include "Editor.hpp"
-#include "EngineCore.hpp"
-#include "Inspector.hpp"
-#include "ObjectHierarchy.hpp"
-#include "SceneEditor.hpp"
-#include "PrefabEditor.hpp"
+
 
 class GameObject;
 
@@ -45,7 +50,7 @@ namespace Tools
 		void Init();
 		void Update();
 		void Terminate();
-		void Save();
+		void Save(Editor*, Container::wString fileName = "whiteFile");
 		void Load(Editor*, const char*);
 	};
 }

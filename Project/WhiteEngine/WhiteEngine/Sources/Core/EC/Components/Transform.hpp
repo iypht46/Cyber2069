@@ -18,10 +18,8 @@
 
 using namespace std;
 
-namespace Tools { class TransformEC; }
-
-class Transform : public Component, public std::enable_shared_from_this<Transform> {
-	friend class Tools::TransformEC;
+class Transform : public Component, public std::enable_shared_from_this<Transform> 
+{
 private:
 	std::weak_ptr<Transform> parent;
 	std::vector<weak_ptr<Transform>> children;
@@ -59,8 +57,10 @@ public:
 	glm::mat4 GetModelMatrix();
 
 	void SetParent(std::weak_ptr<Transform> newParent);
+	bool HasParent();
 
 	Transform* GetChild(int index);
+	unsigned int GetChildCount();
 
 	void SetPosition(glm::vec3 position);
 	void SetLocalPosition(glm::vec3 localposition);

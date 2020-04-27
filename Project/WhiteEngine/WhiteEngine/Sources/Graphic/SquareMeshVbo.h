@@ -11,4 +11,5 @@ public:
 	virtual string GetMeshName();
 	virtual void Render();
 	virtual void LoadData(float NumframeX, float NumFrameY);
+	void ReloadTextureData(float NumframeX, float NumFrameY);
 };

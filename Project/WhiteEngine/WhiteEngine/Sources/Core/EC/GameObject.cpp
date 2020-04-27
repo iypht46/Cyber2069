@@ -11,6 +11,7 @@ GameObject::GameObject()
 {
 	m_objectID = GameObject::s_IDCounter++;
 	m_transform = make_shared<Transform>();
+	m_transform->SetGameObject(this);
 
 	Factory<GameObject>::Add(this);
 }

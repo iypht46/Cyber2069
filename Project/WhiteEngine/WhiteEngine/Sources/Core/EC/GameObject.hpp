@@ -78,7 +78,7 @@ public:
 	void serialize(Archive& archive) {
 		archive(
 			isActive,
-			Name,
+			m_objectName,
 			Layer,
 			m_transform,
 			m_components,
@@ -120,5 +120,5 @@ T* GameObject::GetComponent() {
 
 LogCustomType_DF(GameObject)
 {
-	return os << "GameObject: " << obj.Name << "\n";
+	return os << "GameObject: " << obj.m_objectName << "\n";
 }

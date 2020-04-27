@@ -20,7 +20,6 @@
 	class Rigidbody;
 	class Transform;
 	namespace Physic { struct AABB; class PhysicScene; }
-	namespace Tools { class BoxColliderEC; }
 
 	class Collider : public Component, public Core::IMessageHandler
 	{
@@ -86,7 +85,6 @@
 	class BoxCollider : public Collider
 	{
 		friend class Rigidbody;
-		friend class Tools::BoxColliderEC;
 	private:
 		float m_halfWidth;
 		float m_halfHeight;

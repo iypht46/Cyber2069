@@ -11,13 +11,13 @@
 
 class Animation
 {
-protected:
+public:
 	std::string stateName;
 	glm::vec2 m_StartPosition;
 	glm::vec2 m_EndPosition;
 	int speedMultiplier;
 
-public:
+
 	Animation();
 	glm::vec2 getStartPosition();
 	glm::vec2 getEndPosition();

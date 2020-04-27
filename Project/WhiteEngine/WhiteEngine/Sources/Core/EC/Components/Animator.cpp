@@ -1,6 +1,7 @@
 #include "Animator.hpp"
 
 #include "Core/Logger.hpp"
+#include "Utility/Filesystem.hpp"
 #include <Serialization/Serialization.h>
 
 Animator::Animator()
@@ -26,6 +27,22 @@ void Animator::Init() {
 
 	m_currentState = m_controller->m_defaultState;
 }
+
+bool Animator::SetControllerPath(std::string path)
+{
+	Utility::fs::path pathToCheck(path);
+	if (pathToCheck.has_filename() && Utility::fs::is_regular_file(pathToCheck))
+	{
+		sr_controllerPath = path;
+		return true;
+	}
+	else
+	{
+		ENGINE_ERROR("ERROR: Controller path is invalid!!");
+		return false;
+	}
+}
+
 
 void Animator::AssignController(std::shared_ptr <AnimationController> animControl) {
 	m_controller = animControl;

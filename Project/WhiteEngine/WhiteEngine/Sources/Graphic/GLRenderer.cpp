@@ -192,6 +192,7 @@ bool GLRenderer::Initialize(string vertexShaderFile, string fragmentShaderFile)
 
 void GLRenderer::Render(Graphic::CameraObject* cam)
 {
+
 	//SetViewPort(0, 0, Graphic::Window::GetWidth(), Graphic::Window::GetHeight());
 	//Bind FBO
 	if (framebuffer)
@@ -214,7 +215,7 @@ void GLRenderer::Render(Graphic::CameraObject* cam)
 	//--------Render Object Here--------
 	for (MeshRenderer* obj : MeshSet) {
 
-		if (obj->GetGameObject()->Active())
+		if (obj->GetGameObject()->Active() && obj->enabled)
 		{
 			if (obj->IsUI())
 				obj->Render(this->GetprojectionMatrix());
@@ -474,6 +475,11 @@ void GLRenderer::SetClearColor(float r, float g, float b, float w)
 	glClearColor(r, g, b, w);
 }
 
+void GLRenderer::SetDefaultViewport()
+{
+	this->SetViewPort(0, 0, Graphic::Window::GetWidth(), Graphic::Window::GetHeight());
+}
+
 void GLRenderer::AddMeshToSet(MeshRenderer* mesh)
 {
 	//MeshSet.erase(mesh);
@@ -546,6 +552,7 @@ GLuint GLRenderer::LoadTexture(string path)
 {
 	glActiveTexture(GL_TEXTURE0);
 	SDL_Surface *image = IMG_Load(path.c_str());
+	
 
 	if (image == NULL)
 	{
@@ -573,6 +580,41 @@ GLuint GLRenderer::LoadTexture(string path)
 	SDL_FreeSurface(image);
 
 	return texture;
+}
+
+Graphic::Texture GLRenderer::LoadTextureNew(std::string path)
+{
+	glActiveTexture(GL_TEXTURE0);
+	SDL_Surface* image = IMG_Load(path.c_str());
+
+
+	if (image == NULL)
+	{
+		cerr << "IMG_Load: " << SDL_GetError() << endl;
+		return Graphic::Texture();
+	}
+
+	GLuint texture;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	Graphic::Texture textureObject(texture, image->w, image->h);
+
+	int Mode = GL_RGB;
+	if (image->format->BytesPerPixel == 4)
+	{
+		Mode = GL_RGBA;
+	}
+
+	glTexImage2D(GL_TEXTURE_2D, 0, Mode, image->w, image->h, 0, Mode, GL_UNSIGNED_BYTE, image->pixels);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	SDL_FreeSurface(image);
+
+	return textureObject;
 }
 
 void GLRenderer::RenderDebugCollider(BoxCollider* col)

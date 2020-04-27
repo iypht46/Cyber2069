@@ -4,6 +4,7 @@
 #include "Graphic/SquareMeshVbo.h"
 #include "Graphic/Framebuffer.hpp"
 #include "Graphic/CameraObject.hpp"
+#include "Graphic/Texture.hpp"
 #include "Core/EC/Components/MeshRenderer.hpp"
 #include "Core/EC/Components/Collider.hpp"
 //Third Party Library
@@ -86,12 +87,13 @@ protected:
 	bool Initialize(string vertexShaderFile, string fragmentShaderFile);
 	bool AsgnLayer = false;
 
-	Shader *vertexShader;
-	Shader *fragmentShader;
-	Graphic::Framebuffer* framebuffer;
+	Shader *vertexShader = nullptr;
+	Shader *fragmentShader = nullptr;
+	Graphic::Framebuffer* framebuffer = nullptr;
 	FBO_STATE fboState;
-	Shader *vertexShaderT;
-	Shader *fragmentShaderT;
+	Shader *vertexShaderT = nullptr;
+	Shader *fragmentShaderT = nullptr;
+	glm::vec4* viewPort = nullptr;
 public:
 	void Render(Graphic::CameraObject* cam);
 	void Render(glm::mat4 globalModelTransform);
@@ -109,6 +111,7 @@ public:
 	void SetViewPort(int x, int y, int w, int h);
 	void SetClearColor(float r, float g, float b);
 	void SetClearColor(float r, float g, float b, float w);
+	void SetDefaultViewport();
 
 	void AssignLayer();
 	void SetAsgnLayer(bool asgn);
@@ -141,6 +144,7 @@ public:
 	GLuint GetProgramId();
 
 	GLuint LoadTexture(string path);
+	Graphic::Texture LoadTextureNew(std::string path);
 
 	//MeshRenderer* test;
 

@@ -49,7 +49,7 @@ void MachineGunBullet::OnDisable() {
 }
 
 void MachineGunBullet::OnTriggerEnter(const Physic::Collision col) {
-	ENGINE_INFO("Bullet Hit " + col.m_otherCollider->GetGameObject()->Name);
+	ENGINE_INFO("Bullet Hit " + col.m_otherCollider->GetGameObject()->GetName());
 
 	GetGameObject()->SetActive(false);
 	Enemy* enemy = col.m_otherCollider->GetGameObject()->GetComponent<Enemy>();

@@ -9,7 +9,6 @@ namespace Graphic
 
 	Framebuffer::Framebuffer(int w, int h)
 	{
-		
 		m_frameW = w;
 		m_frameH = h;
 	}

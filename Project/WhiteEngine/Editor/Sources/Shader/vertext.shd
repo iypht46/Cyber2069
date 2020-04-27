@@ -1,24 +1,56 @@
-#version 330
+#version 330 core
 
-uniform mat4 mMatrix; 
+layout (location = 0) in vec4 vertex; // <vec2 pos, vec2 tex>
+
+layout (location = 1) in vec2 pos2D;
+layout (location = 2) in vec2 inTexCoord;
+
+
+uniform mat4 mMatrix;
 uniform vec3 color = vec3(1.0f,1.0f,0.0f);
-
+uniform int mode = 1;
 uniform float offsetX = 0;
 uniform float offsetY = 1;
 
-in vec2 pos2D;
-in vec2 inTexCoord;
-
+out vec2 TexCoords;
 out vec3 OutColor;
-out vec2 TexCoord;
+flat out int Outmode;
 
 void main()
 {
-   gl_Position = mMatrix * vec4( pos2D.x, pos2D.y, 0, 1 );
-   OutColor = color;
+	OutColor = color;
 
-   TexCoord = inTexCoord;
+	if(mode == 0)
+	{
+		gl_Position = mMatrix * vec4(pos2D.x, pos2D.y, 0, 1);
+		TexCoords = inTexCoord;
 
-   TexCoord.x = TexCoord.x + offsetX;
-   TexCoord.y = 1.0 - (TexCoord.y - offsetY);
-}
+		Outmode = 0;
+	}
+	else if(mode == 1)
+	{
+		gl_Position = mMatrix * vec4(pos2D.x, pos2D.y, 0, 1);
+		TexCoords = inTexCoord;
+
+		TexCoords.x = TexCoords.x + offsetX;
+		TexCoords.y = 1.0 - (TexCoords.y - offsetY);
+
+		Outmode = 1;
+	}
+	else if(mode == 2)
+	{
+		gl_Position = mMatrix * vec4(vertex.xy, 0.0, 1.0);
+		TexCoords = vertex.zw;
+		Outmode = 2;
+	}else if(mode == 3)
+	{
+		gl_Position = mMatrix * vec4(pos2D.x, pos2D.y, 0, 1);
+		TexCoords = inTexCoord;
+
+		TexCoords.x = TexCoords.x + offsetX;
+		TexCoords.y = 1.0 - (TexCoords.y - offsetY);
+
+		Outmode = 3;
+	}
+
+}  

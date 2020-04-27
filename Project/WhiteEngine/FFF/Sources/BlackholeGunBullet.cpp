@@ -70,7 +70,7 @@ void BlackholeGunBullet::OnDisable() {
 }
 
 void BlackholeGunBullet::OnTriggerEnter(const Physic::Collision col) {
-	ENGINE_INFO("Bullet Hit " + col.m_otherCollider->GetGameObject()->Name);
+	ENGINE_INFO("Bullet Hit " + col.m_otherCollider->GetGameObject()->GetName());
 
 	Enemy* enemy = col.m_otherCollider->GetGameObject()->GetComponent<Enemy>();
 	if (enemy != nullptr && (enemy->GetGameObject()->Active())) {
