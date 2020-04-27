@@ -15,7 +15,12 @@ TextRenderer::TextRenderer()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
-	Factory<TextRenderer>::Add(this);
+	Factory<Component, TextRenderer>::Add(this);
+}
+
+TextRenderer::~TextRenderer()
+{
+	Factory<Component, TextRenderer>::Remove(this);
 }
 
 void TextRenderer::Init() {

@@ -2,7 +2,7 @@
 
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
-#include "Component.hpp"
+#include "Core/EC/Components/Component.hpp"
 #include "Graphic/MeshVbo.h"
 #include <iostream>
 #include <map>
@@ -50,6 +50,7 @@ public:
 	void LoadFont(string path,float DefautFontSize);
 
 	TextRenderer();
+	~TextRenderer();
 
 //serialization
 public:

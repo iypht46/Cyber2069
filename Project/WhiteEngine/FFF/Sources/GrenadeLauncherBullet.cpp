@@ -2,6 +2,7 @@
 #include "Graphic/Camera.hpp"
 #include "Core/Logger.hpp"
 #include "Physic/PhysicScene.hpp"
+#include "Graphic/GLRenderer.h"
 
 #include "Enemy.hpp"
 #include "PlayerController.hpp"
@@ -40,28 +41,11 @@ void GrenadeLauncherBullet::OnUpdate(float dt)
 	}
 }
 
-void GrenadeLauncherBullet::OnFixedUpdate(float dt) {
-
-}
-
-void GrenadeLauncherBullet::OnAwake() {
-
-}
-
-void GrenadeLauncherBullet::OnEnable() {
-
-}
-
-void GrenadeLauncherBullet::OnStart()
+void GrenadeLauncherBullet::OnAwake()
 {
 	rb = m_gameObject->GetComponent<Rigidbody>();
 	cam = Graphic::getCamera();
 	scaleX = m_gameObject->m_transform->GetScale().x;
-}
-
-
-void GrenadeLauncherBullet::OnDisable() {
-
 }
 
 void GrenadeLauncherBullet::OnTriggerEnter(const Physic::Collision col) {
@@ -111,4 +95,6 @@ void GrenadeLauncherBullet::Explode() {
 			}
 		}
 	}
+
+	GLRenderer::GetInstance()->DrawDebug_Circle(m_gameObject->m_transform->GetPosition().x, m_gameObject->m_transform->GetPosition().y, radius, 0.0f, 0.0f, 1.0f);
 }

@@ -7,7 +7,7 @@
 #include "Window.hpp"
 #include <vector>
 #include <glm/glm.hpp>
-#include "Core/EC/Components/TextRenderer.hpp"
+#include "Core/EC/UIComponents/TextRenderer.hpp"
 #include "Core/EC/Components/MeshRenderer.hpp"
 #include "Core/EC/GameObject.hpp"
 #include "Graphic/Camera.hpp"
@@ -292,7 +292,7 @@ void GLRenderer::Render(glm::mat4 globalModelTransform)
 	// Clear color buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_BLEND);
-	
+
 	// Update window with OpenGL rendering
 	glUseProgram(gProgramId); //Use gameobject shader program
 
@@ -310,20 +310,20 @@ void GLRenderer::Render(glm::mat4 globalModelTransform)
 		}
 	}
 
-	for (TextRenderer *obj : Factory<TextRenderer>::getCollection()) {
+	for (auto obj : Factory<Component, TextRenderer>::getCollection()) {
 
-		if (obj->GetGameObject()->Active())
+		if (obj.second->GetGameObject()->Active())
 		{
-			obj->Render();
+			obj.second->Render();
 		}
 	}
 
 	if (drawDebug) {
-		for (BoxCollider *obj : Factory<BoxCollider>::getCollection())
+		for (auto obj : Factory<Component, BoxCollider>::getCollection())
 		{
-			if (obj->GetGameObject()->Active())
+			if (obj.second->GetGameObject()->Active())
 			{
-				RenderDebugCollider(obj);
+				RenderDebugCollider(obj.second);
 			}
 		}
 
@@ -383,19 +383,19 @@ void GLRenderer::EnableFBO(FBO_STATE state, int w, int h)
 
 void GLRenderer::AssignLayer()
 {
-	for (MeshRenderer *obj : Factory<MeshRenderer>::getCollection())
+	for (auto obj : Factory<Component, MeshRenderer>::getCollection())
 	{
-		if (obj->inSet == false)
+		if (obj.second->inSet == false) 
 		{
-			obj->inSet = true;
+			obj.second->inSet = true;
 
-			if (obj->layer == -1)
-			{
-				ENGINE_WARN("GameObjectMeshLayer unassigned (set Layer to 0)");
-				obj->SetLayer(0);
-			}
+			//if (obj->layer == -1)
+			//{
+				//ENGINE_WARN("GameObjectMeshLayer unassigned (set Layer to 0)");
+				//obj->SetLayer(0);
+			//}
 
-			GLRenderer::GetInstance()->AddMeshToSet(obj);
+			GLRenderer::GetInstance()->AddMeshToSet(obj.second);
 		}
 	}
 }
@@ -552,7 +552,7 @@ GLuint GLRenderer::LoadTexture(string path)
 {
 	glActiveTexture(GL_TEXTURE0);
 	SDL_Surface *image = IMG_Load(path.c_str());
-	
+
 
 	if (image == NULL)
 	{

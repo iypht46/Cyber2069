@@ -3,9 +3,6 @@
 #include <unordered_map>
 #include <glm/glm.hpp>
 
-//Headers
-#include "../EC/Components/Component.hpp"
-
 #include <Serialization/glmCereal.h>
 #include <cereal/types/string.hpp>
 
@@ -15,7 +12,7 @@ public:
 	std::string stateName;
 	glm::vec2 m_StartPosition;
 	glm::vec2 m_EndPosition;
-	int speedMultiplier;
+	int speedMultiplier = 1;
 
 
 	Animation();

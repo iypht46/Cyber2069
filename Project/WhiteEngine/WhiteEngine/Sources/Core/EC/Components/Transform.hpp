@@ -6,7 +6,7 @@
 //#include <glm/gtc/quaternion.hpp>
 //#include <glm/gtx/quaternion.hpp>
 
-#include "Component.hpp"
+#include "Core/Factory.h"
 
 //serialization
 #include "Serialization/glmCereal.h"
@@ -44,6 +44,7 @@ private:
 	//updatelocalrotation
 public:
 	Transform();
+	~Transform();
 
 	glm::vec3 GetPosition();
 	glm::vec3 GetLocalPosition();

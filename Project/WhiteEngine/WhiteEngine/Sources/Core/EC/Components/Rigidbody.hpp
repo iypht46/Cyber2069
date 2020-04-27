@@ -24,15 +24,16 @@ private:
 
 	bool automass = true;
 	float m_mass = 1.0f;
-	float m_invMass;
-	float m_gravityScale;
-	float m_drag;
+	float m_invMass = 1;
+	float m_gravityScale = 1;
+	float m_drag = 0;
 
 	//Pointers to other components
 	Collider* m_collider;
 	Transform* m_transform;
 public:
 	//Rigidbody Interface
+
 	virtual void Init();
 	void Init(float, float);
 	Collider* GetCollider();
@@ -42,6 +43,7 @@ public:
 	float GetGravityScale();
 	void SetGravityScale(float);
 	void AddForce(glm::vec3);
+	//add force relative to its rotation
 	void AddRelativeForce(glm::vec3);
 	void UpdateTransform(float dt);
 	void SetMass(float);

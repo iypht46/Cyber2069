@@ -18,6 +18,8 @@ namespace Graphic { struct Texture; }
 
 enum RENDER_MODE : int { NORMAL = 1, COLOR, REPLACE_COLOR};
 
+#define SpritePath(path) "Sources/Assets/Sprites/" path ".png"
+
 class MeshRenderer : public Component
 {
 private:
@@ -36,7 +38,7 @@ private:
 
 	Graphic::Texture* m_texture = nullptr;
 public:
-	int layer = -1;
+	int layer = 0; //higher layer is infront
 	bool inSet = false;
 
 	MeshRenderer();
@@ -47,9 +49,10 @@ public:
 
 	void CreateMesh(float NumframeX, float NumFrameY);
 	void SetTexture(std::string path);
-	void SetLayer(unsigned int layer);
+	void SetLayer(unsigned int layer); //higher layer is in front, player is on 0
 	void SetUI(bool ui);
 	void SetReplaceColor(glm::vec3 color);
+	void SetReplaceColor(std::string hexcode);
 	void RemoveReplaceColor();
 
 	int GetLayer();
@@ -70,6 +73,7 @@ public:
 			sr_NumFrameX,
 			sr_NumFrameY,
 			layer,
+			ReplaceColor,
 			inSet
 		);
 	}

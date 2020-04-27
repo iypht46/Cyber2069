@@ -142,8 +142,12 @@
     <ClInclude Include="Sources\Utility\Reflection.hpp" />
     <ClInclude Include="Sources\Utility\Serialization.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\TextRenderer.hpp" />
+    <ClInclude Include="Sources\Core\EC\UIComponents\TextRenderer.hpp" />
+    <ClInclude Include="Sources\Core\EC\UIComponents\Button.hpp" />
+    <ClInclude Include="Sources\Core\FactoryCollection.h" />
     <ClInclude Include="Sources\Core\LogCustomType.hpp" />
     <ClInclude Include="Sources\Core\Message\Observer.hpp" />
+    <ClInclude Include="Sources\Core\Particle\ParticleSystem.h" />
     <ClInclude Include="Sources\Physic\Collision.hpp" />
     <ClInclude Include="Sources\Physic\PhysicScene.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\Collider.hpp" />
@@ -175,6 +179,7 @@
     <ClInclude Include="Sources\Serialization\Serialization.h" />
     <ClInclude Include="Sources\Utility\Event.h" />
     <ClInclude Include="Sources\Utility\ObjectPool.h" />
+    <ClInclude Include="Sources\Utility\WhiteMath.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\Core\EC\Components\BehaviourScript.cpp" />
@@ -182,6 +187,10 @@
     <ClCompile Include="Sources\Graphic\Camera.cpp" />
     <ClCompile Include="Sources\Graphic\Framebuffer.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\TextRenderer.cpp" />
+    <ClCompile Include="Sources\Core\EC\UIComponents\TextRenderer.cpp" />
+    <ClCompile Include="Sources\Core\EC\UIComponents\Button.cpp" />
+    <ClCompile Include="Sources\Core\FactoryCollection.cpp" />
+    <ClCompile Include="Sources\Core\Particle\ParticleSystem.cpp" />
     <ClCompile Include="Sources\Physic\Collision.cpp" />
     <ClCompile Include="Sources\Physic\PhysicScene.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\Collider.cpp" />
@@ -209,6 +218,7 @@
     <ClCompile Include="Sources\SceneManagement\SceneManager.cpp" />
     <ClCompile Include="Sources\Utility\Event.cpp" />
     <ClCompile Include="Sources\Utility\ObjectPool.cpp" />
+    <ClCompile Include="Sources\Utility\WhiteMath.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sources\Graphic\Shader\fbo_frag.shd" />

@@ -4,14 +4,16 @@
 #include "Physic/Collision.hpp"
 
 BehaviourScript::BehaviourScript() {
-	Factory<BehaviourScript>::Add(this);
+	Factory<Component, BehaviourScript>::Add(this);
 }
 
-BehaviourScript::~BehaviourScript() { }
+BehaviourScript::~BehaviourScript() {
+	Factory<Component, BehaviourScript>::Remove(this);
+}
 
 void BehaviourScript::Init() { }
 
-void BehaviourScript::OnAwake() { }
+void BehaviourScript::OnAwake() { /*ENGINE_INFO("raw behav init");*/ }
 void BehaviourScript::OnEnable() { }
 void BehaviourScript::OnDisable() { }
 

@@ -9,6 +9,7 @@
 
 #include "HPsystem.hpp"
 #include "Weapon.hpp"
+#include "Artifact.hpp"
 
 #include "Enemy.hpp"
 #include "Character.hpp"
@@ -22,8 +23,6 @@
 #define PI 3.14159265358979323846
 
 class PlayerController : public Character {
-private://change later
-	Physic::PhysicScene* ps;
 protected:
 	HPsystem* hpSystem = nullptr;
 	Rigidbody* rb = nullptr;
@@ -37,40 +36,41 @@ protected:
 	Transform* weaponTranform = nullptr;
 	
 	//stats===============
-	float max_stamina;
+	float max_stamina = 50000000.0f;
 
-	float dashStamina;
-	float jumpStamina;
-	float staminaRegenRate;
+	float dashStamina = 5.0f;
+	float jumpStamina = 5.0f;
+	float staminaRegenRate = 1.0f;
 
-	float max_move_speed;
-	float move_speed;
-	float dash_speed;
-	float jump_speed;
-	float dashTime;
-	float delay;
+	float max_move_speed = 200.0f;
+	float move_speed = 200.0f;
+	float dash_speed = 750.0f;
+	float jump_speed = 300.0f;
+	float dashTime = 0.35f;
 
-	float camZoomInSpeed;
-	float camZoomOutSpeed;
-	float camZoomInDelay;
-	float camSmall;
-	float camLarge;
 
-	float GunDistance;
+	float camZoomInSpeed = 0.01f;
+	float camZoomOutSpeed = 0.005f;
+	float camZoomInDelay = 0.0f;
+	float camSmall = 1.5f;
+	float camLarge = 0.65f;
+
+	float GunDistance = 0.45f;
 	//======================
 
 	//runtime var===========
 	float stamina;
 	float dashRemainingTime;
 	float camDelay_count;
+	float delay;
 
-	bool inverseGun;
-	bool running;
-	bool jumping;
-	bool falling;
-	bool onGround;
-	bool Dash;
-	bool setDashAnim;
+	bool inverseGun = false;
+	bool running = false;
+	bool jumping = false;
+	bool falling = false;
+	bool onGround = false;
+	bool Dash = false;
+	bool setDashAnim = false;
 	
 	glm::vec2 direction;
 	glm::vec2 dashDirection;
@@ -79,10 +79,9 @@ protected:
 	float angle_deg, angle_rad;
 
 public:
-	void PSSet(Physic::PhysicScene* ps) { this->ps = ps; }
 	PlayerController();
 	~PlayerController() {}
-	
+
 	void DebugInput();
 
 	void mouseAim();
@@ -101,13 +100,21 @@ public:
 	void assignWeapon(Weapon* wp);
 
 	void AddEquipment(Equipment* e);
+	void AddEquipment(GameObject* obj);
+	void RemoveWeapon(int index);
+	void RemoveEquipment(int index);
+
+	void ModifyFromEquipment();
+	void RevertArtifact();
+
+	void MultiplyMoveSpeed(float value);
+
+	vector<Weapon*> GetWeapons() { return Weapons; }
+	vector<Equipment*> GetEquipments() { return Equipments; }
 
 	virtual void OnAwake();
-	virtual void OnEnable();
-	virtual void OnStart();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
-	virtual void OnDisable();
 	virtual void OnCollisionEnter(const Physic::Collision) override;
 	virtual void OnCollisionStay(const Physic::Collision) override;
 	virtual void OnCollisionExit(const Physic::Collision) override;
@@ -120,7 +127,7 @@ public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
-			cereal::base_class<BehaviourScript>(this),
+			cereal::base_class<Character>(this),
 			max_stamina,
 			dashStamina,
 			jumpStamina,
@@ -128,7 +135,6 @@ public:
 			dash_speed,
 			jump_speed,
 			dashTime,
-			delay,
 			camZoomInSpeed,
 			camZoomOutSpeed,
 			camZoomInDelay,

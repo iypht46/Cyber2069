@@ -36,8 +36,8 @@
 		COL_STATE m_collisionState = COL_STATE::NONE;
 		bool m_hasCollided = false;
 	public:
-		Transform* m_transform;
-		Rigidbody* m_rigidbody;
+		//Transform* m_transform;
+		Rigidbody* m_rigidbody = nullptr;
 
 		//Constructor
 		Collider();
@@ -92,10 +92,12 @@
 	public:
 		//Constructor
 		BoxCollider();
+		~BoxCollider();
+
 		virtual void Init();
-		void Init(float, float);
-		void Init(float, float, Rigidbody*);
-		void ReSize(float, float);
+		void Init(float sizeX, float sizeY, Rigidbody*);
+		void ReSize(float sizeX, float sizeY);
+		void ReScale(float scaleX, float scaleY);
 		void ComputeAABB(Physic::AABB&);
 
 		//Box Collider Interface

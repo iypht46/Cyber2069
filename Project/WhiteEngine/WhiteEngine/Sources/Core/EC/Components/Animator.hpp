@@ -2,6 +2,7 @@
 //White Engine
 #include "Core/Animation/Animation.hpp"
 #include "Core/Animation/AnimationController.hpp"
+#include "Core/Factory.h"
 //Third Party
 #include <cereal/types/string.hpp>
 #include <cereal/types/polymorphic.hpp>
@@ -13,7 +14,7 @@ class Animator : public Component
 {
 	friend class Tools::AnimatorEC;
 private:
-	std::string sr_controllerPath;
+	//serialized data
 	float framePerSec = 12;
 
 
@@ -21,15 +22,23 @@ private:
 	float timeElapse;
 	std::shared_ptr<AnimationController> m_controller;
 	std::weak_ptr<AnimationState> m_currentState;
+	std::weak_ptr<AnimationState> m_nextState;
 	glm::vec2 m_currentUVFrames;
 
 public:
+	std::string sr_controllerPath;
+
 	Animator();
 
 	virtual void Init();
 	bool SetControllerPath(std::string path);
 	void AssignController(std::shared_ptr <AnimationController> animControl);
 
+	//queue in next animation to play
+	void setNextState(int state);
+	void setNextState(std::weak_ptr <AnimationState> state);
+
+	//play animation immediately
 	void setCurrentState(int state);
 	void setCurrentState(std::weak_ptr <AnimationState> state);
 

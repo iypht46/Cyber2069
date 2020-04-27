@@ -11,14 +11,14 @@
 class AirFollowing : public BehaviourScript
 {
 private:
-	Enemy* e;
+	Character* e;
 	Rigidbody* rb;
 	Transform* t;
 	Transform* m_target;
 protected:
-	float m_speed;
-	float rotAngle;
-	float rotRate;
+	float m_speed = 300.0f;
+	float rotAngle = 15.0f;
+	float rotRate = 5.0f;
 public:
 	AirFollowing();
 	~AirFollowing() {}
@@ -28,11 +28,6 @@ public:
 	void SetRotRate(float value);
 	void FollowPlayer(float dt);
 	virtual void OnAwake();
-	virtual void OnEnable();
-	virtual void OnStart();
-	virtual void OnUpdate(float dt);
-	virtual void OnFixedUpdate(float dt);
-	virtual void OnDisable();
 
 	//serialization
 public:

@@ -22,37 +22,41 @@ struct EnemyAmplifier;
 class EnemySpawner : public BehaviourScript 
 {
 protected:
-	float SpawnRate;
+	float SpawnRate = 2;
 	//spawn area
 	int x1, x2, y1, y2;
 	//enemy type
 	int SpawnType;
 
-	float SpawnRateCount = -1;
+	bool Spawning = false;
+
+	float SpawnRateCount = 0;
 	ObjectPool* EnemyPool;
-	
-	EnemyPreset* SpawnPreset;
-	EnemyAmplifier* SpawnAmplifier;
+
 
 public:
-	GameObject* SpawnEnemy(float rangeX, float rangeY);
+	GameObject* EnemyTarget = nullptr;
+
+	EnemyPreset* SpawnPreset = nullptr;
+	EnemyAmplifier* SpawnAmplifier = nullptr;
+
+	GameObject* SpawnEnemy();
+	GameObject* SpawnEnemy(float posX, float posY);
 
 	void SetSpawnRate(float value);
 	void SetSpawnRange(float x1, float y1, float x2, float y2);
 	void SetSpawnType(int type);
+	void SetSpawning(bool spawn) { Spawning = spawn; }
+
 	int GetType() { return this->SpawnType; }
+	bool isSpawning() { return Spawning; }
 
 	void updateSpawner();
 
 	EnemySpawner() {}
 	~EnemySpawner() {}
 
-	virtual void OnAwake();
-	virtual void OnEnable();
-	virtual void OnStart();
-	virtual void OnUpdate(float dt);
-	virtual void OnFixedUpdate(float dt);
-	virtual void OnDisable();
+	virtual void OnUpdate(float dt) override;
 	//serialization
 public:
 	template<class Archive>

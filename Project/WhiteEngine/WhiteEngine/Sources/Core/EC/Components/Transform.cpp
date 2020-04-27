@@ -15,7 +15,11 @@ Transform::Transform() {
 
 	//parent is null
 
-	Factory<Transform>::Add(this);
+	Factory<Component, Transform>::Add(this);
+}
+
+Transform::~Transform() {
+	Factory<Component, Transform>::Remove(this);
 }
 
 glm::vec3 Transform::GetPosition() {

@@ -6,6 +6,7 @@
 #include "Core/EC/Components/Animator.hpp"
 #include "Character.hpp"
 
+#include <cereal/types/base_class.hpp>
 #include <cereal/types/polymorphic.hpp>
 
 enum EnemyState
@@ -38,13 +39,12 @@ protected:
 	void OnTakeDamage();
 	void OnDead();
 public:
+	float baseScore = 1.0f;
 	float CollideDamage = 1.0f;
-	float targetDetectionRange = 0;
+	float targetDetectionRange = 1000.0f;
 
-	void Init();
-	virtual void OnStart() = 0;
+	virtual void OnAwake() override;
 	virtual void OnUpdate(float dt) override;
-	virtual void OnFixedUpdate(float dt) = 0;
 
 	void SetTarget(Transform*);
 	void TakeDamage(float);
@@ -61,8 +61,9 @@ public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
-			cereal::base_class<BehaviourScript>(this),
+			cereal::base_class<Character>(this),
 			targetDetectionRange,
+			baseScore,
 			CollideDamage
 		);
 	}

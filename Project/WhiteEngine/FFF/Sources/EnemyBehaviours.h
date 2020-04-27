@@ -8,9 +8,12 @@
 #include "Explosion.hpp"
 #include "GroundPatrol.hpp"
 #include "GroundDash.hpp"
+#include "ObjectShooter.h"
+#include "Core/EC/Components/SoundPlayer.hpp"
 
 #include <memory>
 
+#include <cereal/types/base_class.hpp>
 #include <cereal/types/polymorphic.hpp>
 
 
@@ -19,6 +22,7 @@ private:
 	Rigidbody* rigidbody;
 protected:
 	AirFollowing* airFollow;
+	SoundPlayer* FlyerSound;
 	
 public:
 
@@ -27,12 +31,9 @@ public:
 
 	void SetStats(float Speed, float HP, float Dmg);
 
-	//change this to awake
-	void Init(Transform* player);
-	virtual void OnStart();
+	virtual void OnAwake() override;
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
-
 
 	//serialization
 public:
@@ -43,31 +44,29 @@ public:
 		);
 	}
 };
-
 CEREAL_REGISTER_TYPE(Flyer);
 
 class Bomber :public Enemy {
 private:
-	float DashTriggerRadius;
-	float ExplodeTriggerRadius;
-	Rigidbody* rigidbody;
+	float DashTriggerRadius = 1000.0f;
+	float ExplodeTriggerRadius = 300.0f;
+	Rigidbody* rigidbody = nullptr;
 protected:
-	AirFollowing* airFollow;
-	AirDash* airDash;
+	AirFollowing* airFollow = nullptr;
+	AirDash* airDash = nullptr;
+	Explosion* explosion = nullptr;
+	SoundPlayer* BomberSound;
 
 public:
 	EnemyState state = EnemyState::Idle;
 
-	Bomber() {}
+	Bomber();
 	~Bomber() {}
 
-	Explosion* explosion;
-
 public:
-	void Init(Transform* player);
 	void SetStats(float Speed, float HP, float Dmg, float AimTime, float DashSpeed, float ExplodeDmg, float ExplodeRadius);
 
-	virtual void OnStart();
+	virtual void OnAwake();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
 
@@ -77,17 +76,15 @@ public:
 	void serialize(Archive& archive) {
 		archive(
 			cereal::base_class<Enemy>(this),
-			DashTriggerRadius
+			DashTriggerRadius,
+			ExplodeTriggerRadius
 		);
 	}
 };
-
 CEREAL_REGISTER_TYPE(Bomber);
 
 class DeQueen :public Enemy {
 private:
-	float PosX;
-	float PosY;
 	float SpawnDelay;
 
 	float SpawnDelayCount;
@@ -95,45 +92,106 @@ protected:
 	AirPatrol* airPatrol;
 	ObjectPool* FlyerPool;
 	ObjectPool* BomberPool;
+	SoundPlayer* QueenSound;
 public:
-	
-	DeQueen() {}
-	~DeQueen() {}
 
-	void Init();
-	void assignFlyPool(ObjectPool* pool);
-	void assignBombPool(ObjectPool* pool);
+	void SetStats(float Speed, float HP, float SpawnDelay);
+
+	//void assignFlyPool(ObjectPool* pool);
+	//void assignBombPool(ObjectPool* pool);
 	void SetSpawnDelay(int time);
-	virtual void OnStart();
+	virtual void OnAwake();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
 
-		//serialization
+	DeQueen() {}
+	~DeQueen() {}
+//serialization
 public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
 			cereal::base_class<Enemy>(this),
-			PosX,
-			PosY,
 			SpawnDelay
 		);
 	}
 };
-
 CEREAL_REGISTER_TYPE(DeQueen);
 
+class Tank : public Enemy {
+private:
+	Rigidbody* rigidbody;
+	GroundPatrol* groundPatrol;
+	SoundPlayer* TankSound;
+public:
+	void SetStats(float Speed, float HP);
+
+	virtual void OnAwake();
+	virtual void OnUpdate(float dt);
+	virtual void OnFixedUpdate(float dt);
+
+	//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Enemy>(this)
+			);
+	}
+};
+CEREAL_REGISTER_TYPE(Tank);
 
 class Charger : public Enemy {
 private:
 	Rigidbody* rigidbody;
-protected:
 	GroundPatrol* groundPatrol;
 	GroundDash* groundDash;
-public:
+	SoundPlayer* ChargerSound;
 
-	void Init(Transform* player);
-	virtual void OnStart();
+	bool dashingTmp = false;
+
+public:
+	float DashTriggerRangeY = 150.0f;
+
+	void SetStats(float Speed, float HP, float DashPauseTime, float DashSpeed, float Dmg);
+
+	virtual void OnAwake();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
+
+//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Enemy>(this),
+			DashTriggerRangeY
+			);
+	}
 };
+CEREAL_REGISTER_TYPE(Charger);
+
+class Spitter : public Enemy {
+private:
+	Rigidbody* rigidbody;
+	GroundPatrol* groundPatrol;
+	ObjectShooter* shooting;
+	SoundPlayer* SpitterSound;
+public:
+
+	void SetStats(float Speed, float HP, float FireRate);
+
+	virtual void OnAwake();
+	virtual void OnUpdate(float dt);
+	virtual void OnFixedUpdate(float dt);
+
+	//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Enemy>(this)
+			);
+	}
+};
+CEREAL_REGISTER_TYPE(Spitter);

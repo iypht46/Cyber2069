@@ -1,4 +1,5 @@
 #include "AnimationController.hpp"
+#include "Core/Logger.hpp"
 
 AnimationState::AnimationState() {
 
@@ -17,7 +18,11 @@ AnimationController::AnimationController()
 void AnimationController::AddState(std::shared_ptr<AnimationState> state) {
 	m_states.push_back(state);
 
+	ENGINE_INFO("number of states: {}", m_states.size());
+
+	//if no default state
 	if (m_defaultState.expired()) {
+		ENGINE_INFO("default anim state set");
 		m_defaultState = state;
 	}
 }
@@ -43,7 +48,13 @@ glm::vec2 AnimationController::getSheetSize() {
 
 std::shared_ptr<AnimationState> AnimationController::GetState(int state)
 {
-	return m_states.at(state);
+	if (state >= 0 && state < m_states.size()) {
+		return m_states[state];
+	}
+	else {
+		ENGINE_WARN("Animation state {} not exist", state);
+		return nullptr;
+	}
 }
 
 AnimationController::~AnimationController()

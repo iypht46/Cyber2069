@@ -1,23 +1,25 @@
 #include "EnemyBehaviours.h"
+#include "GameController.hpp"
 #include "Graphic/Camera.hpp"
 #include "Graphic/Window.hpp"
 #include "Core/Logger.hpp"
 
-void DeQueen::Init() {
+void DeQueen::OnAwake() {
 	airPatrol = GetGameObject()->GetComponent<AirPatrol>();
-	PosX = -(Graphic::Window::GetWidth() / 2);
-	PosY = Graphic::Window::GetHeight() / 2;
 	
-	airPatrol->SetPoint(PosX, -PosX);
 	SpawnDelay = 0.2f;
 	SpawnDelayCount = SpawnDelay;
 
-	Enemy::Init();
+	FlyerPool = GameController::GetInstance()->GetPool(POOL_TYPE::ENEMY_FLYER);
+	BomberPool = GameController::GetInstance()->GetPool(POOL_TYPE::ENEMY_BOMBER);
+
+	Enemy::OnAwake();
 }
 
-
-void DeQueen::OnStart() {
-
+void DeQueen::SetStats(float Speed, float HP, float SpawnDelay) {
+	airPatrol->SetSpeed(Speed);
+	hpSystem->SetMaxHP(HP);
+	this->SpawnDelay = SpawnDelay;
 }
 
 void DeQueen::OnUpdate(float dt) {
@@ -62,13 +64,13 @@ void DeQueen::OnFixedUpdate(float dt) {
 
 }
 
-void DeQueen::assignFlyPool(ObjectPool* pool) {
-	this->FlyerPool = pool;
-}
-
-void DeQueen::assignBombPool(ObjectPool* pool) {
-	this->BomberPool = pool;
-}
+//void DeQueen::assignFlyPool(ObjectPool* pool) {
+//	this->FlyerPool = pool;
+//}
+//
+//void DeQueen::assignBombPool(ObjectPool* pool) {
+//	this->BomberPool = pool;
+//}
 
 void DeQueen::SetSpawnDelay(int time) {
 	this->SpawnDelay = time;
