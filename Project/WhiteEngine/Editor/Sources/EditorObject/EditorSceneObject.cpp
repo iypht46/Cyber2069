@@ -14,7 +14,7 @@ namespace Tools
 
 		for (auto gameObj : m_sceneObject->GameObjectsInScene)
 		{
-			EditorEntity* ent = new EditorEntity(gameObj);
+			EditorEntity* ent = new EditorEntity(gameObj.second);
 			m_entityInScene.insert(ent);
 		}
 	}
@@ -42,7 +42,7 @@ namespace Tools
 	void EditorSceneObject::AddObjToScene(GameObject* obj)
 	{
 		std::shared_ptr<GameObject> ptr = std::make_shared<GameObject>(*obj);
-		m_sceneObject->GameObjectsInScene.insert(ptr);
+		m_sceneObject->GameObjectsInScene[ptr->GetID()] = ptr;
 	}
 
 	EditorEntity* EditorSceneObject::AddEntity()
@@ -56,7 +56,7 @@ namespace Tools
 	{
 		ent->SetScene(this);
 		//std::shared_ptr<GameObject> obj = std::make_shared<GameObject>(*ent->GetGameObject());
-		m_sceneObject->GameObjectsInScene.insert(ent->GetGameObjectHandle());
+		m_sceneObject->GameObjectsInScene[ent->GetID()] = ent->GetGameObjectHandle();
 		m_entityInScene.insert(ent);
 	}
 
@@ -84,9 +84,9 @@ namespace Tools
 			for (auto gameObj : m_sceneObject->GameObjectsInScene)
 			{
 				//If gameobject is not a child object
-				if (!gameObj->m_transform->HasParent())
+				if (!gameObj.second->m_transform->HasParent())
 				{
-					EditorEntity* ent = new EditorEntity(gameObj); //Add to scene to be render to hierarchy
+					EditorEntity* ent = new EditorEntity(gameObj.second); //Add to scene to be render to hierarchy
 					ent->SetScene(this);
 					m_entityInScene.insert(ent);
 				}

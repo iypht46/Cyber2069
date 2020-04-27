@@ -141,7 +141,6 @@
     <ClInclude Include="Sources\Utility\Macros.hpp" />
     <ClInclude Include="Sources\Utility\Reflection.hpp" />
     <ClInclude Include="Sources\Utility\Serialization.hpp" />
-    <ClInclude Include="Sources\Core\EC\Components\TextRenderer.hpp" />
     <ClInclude Include="Sources\Core\EC\UIComponents\TextRenderer.hpp" />
     <ClInclude Include="Sources\Core\EC\UIComponents\Button.hpp" />
     <ClInclude Include="Sources\Core\FactoryCollection.h" />
@@ -186,7 +185,6 @@
     <ClCompile Include="Sources\Core\EC\Components\SoundPlayer.cpp" />
     <ClCompile Include="Sources\Graphic\Camera.cpp" />
     <ClCompile Include="Sources\Graphic\Framebuffer.cpp" />
-    <ClCompile Include="Sources\Core\EC\Components\TextRenderer.cpp" />
     <ClCompile Include="Sources\Core\EC\UIComponents\TextRenderer.cpp" />
     <ClCompile Include="Sources\Core\EC\UIComponents\Button.cpp" />
     <ClCompile Include="Sources\Core\FactoryCollection.cpp" />

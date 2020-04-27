@@ -68,12 +68,12 @@ void MeshRenderer::SetTexture(std::string path)
 		m_texture = new Graphic::Texture(newTexture);
 	}
 
-	//save data
+	////save data
 	//sr_texturePath = path;
 	////ENGINE_INFO("Texture Path: " + sr_texturePath);
-	//m_texture.m_textureID = GLRenderer::GetInstance()->LoadTexture(path);
+	//texture = GLRenderer::GetInstance()->LoadTexture(path);
 
-	//if (m_texture.m_textureID != -1)
+	//if (texture != -1)
 	//	m_texLoaded = true;
 	//else
 	//	m_texLoaded = false;
@@ -180,8 +180,10 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 	if (squareMesh != nullptr)
 	{
 		if (this->IsTextureLoaded())
+		//if (m_texLoaded)
 		{
 			glBindTexture(GL_TEXTURE_2D, m_texture->m_textureID);
+			//glBindTexture(GL_TEXTURE_2D, texture);
 			if (isReplaceColor)
 			{
 				glUniform1i(modeId, RENDER_MODE::REPLACE_COLOR);
@@ -189,7 +191,7 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 			}
 			else
 			{
-				glUniform1i(modeId, RENDER_MODE::NORMAL);
+				glUniform1i(modeId, RENDER_MODE::NORM);
 			}
 		}
 		else

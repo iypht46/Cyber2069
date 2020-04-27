@@ -43,6 +43,11 @@ void Rigidbody::Init(float hW, float hH)
 	m_transform = GetGameObject()->m_transform.get();
 }
 
+Collider* Rigidbody::GetCollider()
+{
+	return m_collider;
+}
+
 Rigidbody::~Rigidbody()
 {
 	Factory<Component, Rigidbody>::Remove(this);

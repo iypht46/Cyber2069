@@ -224,20 +224,20 @@ void GLRenderer::Render(Graphic::CameraObject* cam)
 		}
 	}
 
-	for (TextRenderer* obj : Factory<TextRenderer>::getCollection()) {
+	for (auto obj : Factory<Component, TextRenderer>::getCollection()) {
 
-		if (obj->GetGameObject()->Active())
+		if (obj.second->GetGameObject()->Active())
 		{
-			obj->Render();
+			obj.second->Render();
 		}
 	}
 
 	if (drawDebug) {
-		for (BoxCollider* obj : Factory<BoxCollider>::getCollection())
+		for (auto obj : Factory<Component, BoxCollider>::getCollection())
 		{
-			if (obj->GetGameObject()->Active())
+			if (obj.second->GetGameObject()->Active())
 			{
-				RenderDebugCollider(obj);
+				RenderDebugCollider(obj.second);
 			}
 		}
 

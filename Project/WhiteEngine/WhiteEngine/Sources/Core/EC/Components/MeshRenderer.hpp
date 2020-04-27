@@ -16,7 +16,7 @@ class GameObject;
 class Component;
 namespace Graphic { struct Texture; }
 
-enum RENDER_MODE : int { NORMAL = 1, COLOR, REPLACE_COLOR};
+enum RENDER_MODE : int { NORM = 1, COLOR, REPLACE_COLOR};
 
 #define SpritePath(path) "Sources/Assets/Sprites/" path ".png"
 

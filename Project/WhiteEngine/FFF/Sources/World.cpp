@@ -196,7 +196,8 @@ namespace World
 		
 		title->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth(), Graphic::Window::GetHeight(), 1.0f));
 		
-		while (!Input::GetKeyDown(Input::KeyCode::KEY_SPACE))
+		bool start = false;
+		while (!start)
 		{
 			Input::Update();
 		
@@ -205,7 +206,15 @@ namespace World
 			if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE))
 			{
 				title->SetActive(false);
+				start = true;
 			}
+
+			if (Input::GetKeyDown(Input::KeyCode::KEY_ESCAPE))
+			{
+				start = true;
+				g_gameInfo->GameShouldClose();
+			}
+				
 		}
 
 		//Serialization::LoadObject(*SceneManagement::ActiveScene, ScenePath("SerializationTest"));
