@@ -23,6 +23,8 @@ enum ITEM_TYPE {
 	ARTIFACT
 };
 
+typedef std::vector<bool> UnlockData;
+
 class EquipmentManager : public BehaviourScript {
 private:
 	std::shared_ptr<GameObject> playerObj;
@@ -35,13 +37,13 @@ private:
 
 	vector<std::shared_ptr<GameObject>> m_weaponObjs;
 	vector<std::shared_ptr<Artifact>> m_artifacts;
-	
-	vector<bool> Unlock_Weapons;
-	vector<bool> Unlock_Artifacts;
 
 	int weaponCount = 0;
 	int artifactCount = 0;
 public:
+	UnlockData Unlock_Weapons;
+	UnlockData Unlock_Artifacts;
+
 	void OnAwake();
 
 	void AssignPlayer(std::shared_ptr<GameObject> player) { this->playerObj = player; }

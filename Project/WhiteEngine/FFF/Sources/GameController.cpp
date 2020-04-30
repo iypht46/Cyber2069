@@ -22,6 +22,14 @@ GameController* GameController::GetInstance()
 }
 
 void GameController::OnAwake() {
+	this->PlayerHP = player.lock()->GetComponent<HPsystem>();
+	this->playerControl = player.lock()->GetComponent<PlayerController>();
+
+	//if has no data file, create one
+	if (!Serialization::LoadObject(*Data.get(), DataPath)) {
+		Data = std::make_unique<PlayerData>();
+	}
+
 	startHPscaleX = HPbar.lock()->m_transform->GetScale().x;
 	startHPscaleY = HPbar.lock()->m_transform->GetScale().y;
 	startHPposX = HPbar.lock()->m_transform->GetPosition().x;
@@ -32,9 +40,6 @@ void GameController::OnAwake() {
 }
 
 void GameController::OnStart() {
-	this->PlayerHP = player.lock()->GetComponent<HPsystem>();
-	this->playerControl = player.lock()->GetComponent<PlayerController>();
-
 	ENGINE_INFO("GameControl Creating Bullets");
 	ENGINE_INFO("======================================================================");
 	CreatePool(PrefabPath("Bullet_MG"), POOL_TYPE::BULLET_MG, 20);
