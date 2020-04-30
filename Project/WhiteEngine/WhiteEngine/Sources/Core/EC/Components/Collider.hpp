@@ -92,6 +92,8 @@
 	public:
 		//Constructor
 		BoxCollider();
+		~BoxCollider();
+
 		virtual void Init();
 		void Init(float sizeX, float sizeY, Rigidbody*);
 		void ReSize(float sizeX, float sizeY);

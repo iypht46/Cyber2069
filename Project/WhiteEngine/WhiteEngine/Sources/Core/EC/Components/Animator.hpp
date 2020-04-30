@@ -3,6 +3,7 @@
 
 #include "../../Animation/Animation.hpp"
 #include "../../Animation/AnimationController.hpp"
+#include "Core/Factory.h"
 
 #include <cereal/types/string.hpp>
 #include <cereal/types/polymorphic.hpp>
@@ -19,6 +20,7 @@ private:
 	float timeElapse;
 	std::shared_ptr<AnimationController> m_controller;
 	std::weak_ptr<AnimationState> m_currentState;
+	std::weak_ptr<AnimationState> m_nextState;
 	glm::vec2 m_currentUVFrames;
 
 public:
@@ -29,6 +31,11 @@ public:
 	virtual void Init();
 	void AssignController(std::shared_ptr <AnimationController> animControl);
 
+	//queue in next animation to play
+	void setNextState(int state);
+	void setNextState(std::weak_ptr <AnimationState> state);
+
+	//play animation immediately
 	void setCurrentState(int state);
 	void setCurrentState(std::weak_ptr <AnimationState> state);
 

@@ -15,6 +15,8 @@
 class GameObject;
 class Component;
 
+#define SpritePath(path) "Sources/Assets/Sprites/" path ".png" 
+
 class MeshRenderer : public Component
 {
 private:
@@ -24,7 +26,6 @@ private:
 	float sr_NumFrameX = 1;
 	float sr_NumFrameY = 1;
 
-	bool isReplaceColor = false;
 	MeshVbo* mesh;
 
 	Animator* anim;

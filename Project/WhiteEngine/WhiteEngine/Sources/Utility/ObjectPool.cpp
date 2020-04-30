@@ -3,7 +3,9 @@
 void ObjectPool::Init() {
 	if (prefabObjectPath != "") {
 		for (int i = 0; i < objectCount; ++i) {
-			AddObject(SceneManagement::Instantiate(prefabObjectPath).get());
+			GameObject* obj = SceneManagement::Instantiate(prefabObjectPath).get();
+			obj->InitComponents();
+			AddObject(obj);
 		}
 	}
 	else {

@@ -15,33 +15,33 @@ namespace FactoryCollection {
 
 	void FixedUpdateComponents(float dt) {
 		//update animator
-		for (Animator* anim : Factory<Animator>::getCollection()) {
-			if (anim->GetGameObject() != nullptr && anim->GetGameObject()->Active()) {
-				anim->animUpdate(dt);
+		for (std::pair<int, Animator*> anim : Factory<Component, Animator>::getCollection()) {
+			if (anim.second->GetGameObject() != nullptr && anim.second->GetGameObject()->Active()) {
+				anim.second->animUpdate(dt);
 			}
 		}
 
 		//update particle
-		for (ParticleSystem* particlesystem : Factory<ParticleSystem>::getCollection()) {
-			if (particlesystem->GetGameObject() != nullptr && particlesystem->GetGameObject()->Active()) {
-				particlesystem->ConstantEmit(dt);
+		for (std::pair<int, ParticleSystem*> particlesystem : Factory<Component, ParticleSystem>::getCollection()) {
+			if (particlesystem.second->GetGameObject() != nullptr && particlesystem.second->GetGameObject()->Active()) {
+				particlesystem.second->ConstantEmit(dt);
 			}
-			particlesystem->LifeTimeModification(dt);
+			particlesystem.second->LifeTimeModification(dt);
 		}
 
 		//update behaviour script
-		for (BehaviourScript* behaviour : Factory<BehaviourScript>::getCollection()) {
-			if (behaviour->GetGameObject() != nullptr && behaviour->GetGameObject()->Active()) {
-				behaviour->OnFixedUpdate(dt);
+		for (std::pair<int, BehaviourScript*> behaviour : Factory<Component, BehaviourScript>::getCollection()) {
+			if (behaviour.second->GetGameObject() != nullptr && behaviour.second->GetGameObject()->Active()) {
+				behaviour.second->OnFixedUpdate(dt);
 			}
 		}
 	}
 
 	void UpdateComponents(float dt) {
 		//update behaviour script
-		for (BehaviourScript* behaviour : Factory<BehaviourScript>::getCollection()) {
-			if (behaviour->GetGameObject() != nullptr && behaviour->GetGameObject()->Active()) {
-				behaviour->OnUpdate(dt);
+		for (std::pair<int, BehaviourScript*> behaviour : Factory<Component, BehaviourScript>::getCollection()) {
+			if (behaviour.second->GetGameObject() != nullptr && behaviour.second->GetGameObject()->Active()) {
+				behaviour.second->OnUpdate(dt);
 			}
 		}
 	}

@@ -2,6 +2,8 @@
 #include "Equipment.hpp"
 #include <memory>
 
+#include <cereal/types/base_class.hpp>
+#include <cereal/types/polymorphic.hpp>
 
 enum WEAPON_TYPE {
 	WEAPON_MACHINEGUN = 0,
@@ -54,6 +56,7 @@ public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
+			cereal::base_class<Weapon>(this),
 			cereal::base_class<BehaviourScript>(this),
 			bullet_speed,
 			weapon_firerate,
@@ -62,6 +65,8 @@ public:
 	}
 };
 
+
+//Machine Gun ===========================================================================================
 CEREAL_REGISTER_TYPE(Weapon);
 
 class MachineGun : public Weapon {
@@ -79,21 +84,31 @@ protected:
 	Graphic::CameraObject* cam;
 
 	Rigidbody* rb;
-	float bulletDmg;
+	float bulletDmg = 1.0f;
 
 public:
 	void SetDamage(float dmg) { this->bulletDmg = dmg; }
 
 	virtual void OnAwake();
-	virtual void OnEnable();
-	virtual void OnStart();
 	virtual void OnUpdate(float dt);
-	virtual void OnFixedUpdate(float dt);
-	virtual void OnDisable();
 	virtual void OnTriggerEnter(const Physic::Collision col) override;
 	virtual void OnCollisionEnter(const Physic::Collision col) override;
+
+//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<BehaviourScript>(this),
+			bulletDmg
+			);
+	}
 };
 
+CEREAL_REGISTER_TYPE(MachineGunBullet);
+//-------------------------------------------------------------------------------------------------------
+
+//Laser Gun =============================================================================================
 class LaserGun : public Weapon {
 private:
 	std::shared_ptr <GameObject> laserObj = nullptr;
@@ -131,9 +146,11 @@ public:
 		);
 	}
 };
-
 CEREAL_REGISTER_TYPE(LaserGun);
+//-------------------------------------------------------------------------------------------------------
 
+
+//Grenade Launcher ======================================================================================
 class GrenadeLauncher : public Weapon {
 private:
 	float grenade_radius;
@@ -154,7 +171,6 @@ public:
 			);
 	}
 };
-
 CEREAL_REGISTER_TYPE(GrenadeLauncher);
 
 class GrenadeLauncherBullet : public BehaviourScript {
@@ -162,10 +178,10 @@ protected:
 	Graphic::CameraObject* cam;
 
 	Rigidbody* rb;
-	float bulletDmg;
+	float bulletDmg = 1;
 
-	float radius;
-	float scaleX;
+	float radius = 1000.0f;
+	float scaleX = 1.0f;
 
 public:
 	void SetDamage(float dmg) { this->bulletDmg = dmg; }
@@ -173,12 +189,28 @@ public:
 
 	void Explode();
 
-	virtual void OnStart();
+	virtual void OnAwake();
 	virtual void OnUpdate(float dt);
 	virtual void OnTriggerEnter(const Physic::Collision col) override;
 	virtual void OnCollisionEnter(const Physic::Collision col) override;
+
+//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<BehaviourScript>(this),
+			bulletDmg,
+			radius,
+			scaleX
+			);
+	}
 };
 
+CEREAL_REGISTER_TYPE(GrenadeLauncherBullet);
+//-------------------------------------------------------------------------------------------------------
+
+//Zapper Gun ============================================================================================
 class ZapperGun : public Weapon {
 private:
 	int chainNumber;
@@ -213,11 +245,11 @@ protected:
 	Graphic::CameraObject* cam;
 
 	Rigidbody* rb;
-	float bulletDmg;
-	int chainNumber;
-	float zapDistance;
-	float zapDuration;
-	float zapRate;
+	float bulletDmg = 1;
+	int chainNumber = 3;
+	float zapDistance = 150;
+	float zapDuration = 0.5f;
+	float zapRate = 1;
 
 	float zapDurationCount = 0.0f;
 	float zapRateCount = 0.0f;
@@ -242,15 +274,29 @@ public:
 	void enemRelease();
 
 	virtual void OnAwake();
-	virtual void OnEnable();
-	virtual void OnStart();
 	virtual void OnUpdate(float dt);
-	virtual void OnFixedUpdate(float dt);
-	virtual void OnDisable();
 	virtual void OnTriggerEnter(const Physic::Collision col) override;
 	virtual void OnCollisionEnter(const Physic::Collision col) override;
+
+//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<BehaviourScript>(this),
+			bulletDmg,
+			chainNumber,
+			zapDistance,
+			zapDuration,
+			zapRate
+			);
+	}
 };
 
+CEREAL_REGISTER_TYPE(ZapperGunBullet);
+//-------------------------------------------------------------------------------------------------------
+
+//Blackhole Gun =========================================================================================
 class BlackholeGun : public Weapon {
 private:
 	float bullet_Duration;
@@ -283,15 +329,15 @@ protected:
 	Graphic::CameraObject* cam;
 
 	Rigidbody* rb;
-	float bulletDmg;
-	float Duration;
-	float DurationCount = 0;
-	float Radius;
-	float ToCenterSpeed;
+	float bulletDmg = 1.0f;
+	float Duration = 2.0f;
+	float Radius = 200.0f;
+	float ToCenterSpeed = 10.0f;
 
 	float Dot_count = 0.0f;
 
 	bool isTriggerEnemy = false;
+	float DurationCount = 0;
 
 public:
 	void SetDamage(float dmg) { this->bulletDmg = dmg; }
@@ -303,11 +349,22 @@ public:
 	void ReleaseEnemy();
 
 	virtual void OnAwake();
-	virtual void OnEnable();
-	virtual void OnStart();
 	virtual void OnUpdate(float dt);
-	virtual void OnFixedUpdate(float dt);
-	virtual void OnDisable();
 	virtual void OnTriggerEnter(const Physic::Collision col) override;
 	virtual void OnCollisionEnter(const Physic::Collision col) override;
+
+//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<BehaviourScript>(this),
+			bulletDmg,
+			Duration,
+			Radius,
+			ToCenterSpeed
+			);
+	}
 };
+CEREAL_REGISTER_TYPE(BlackholeGunBullet);
+//-------------------------------------------------------------------------------------------------------

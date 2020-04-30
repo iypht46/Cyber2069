@@ -9,6 +9,14 @@ void Charger::OnAwake() {
 	Enemy::OnAwake();
 }
 
+void Charger::SetStats(float Speed, float HP, float DashPauseTime, float DashSpeed, float Dmg) {
+	groundPatrol->SetSpeed(Speed);
+	hpSystem->SetMaxHP(HP);
+	groundDash->SetPauseTime(DashPauseTime);
+	groundDash->SetDashSpeed(DashSpeed);
+	groundDash->dashDamage = Dmg;
+}
+
 void Charger::OnUpdate(float dt) {
 	Enemy::OnUpdate(dt);
 
@@ -16,9 +24,11 @@ void Charger::OnUpdate(float dt) {
 	if (state != EnemyState::Dash && foundTarget && glm::abs(target->GetPosition().y - m_gameObject->m_transform->GetPosition().y) <= DashTriggerRangeY) {
 		groundDash->LockTarget(target);
 		state = EnemyState::Dash;
+		animator->setCurrentState(1);
 	}
 	else if(!foundTarget || glm::abs(target->GetPosition().y - m_gameObject->m_transform->GetPosition().y) >= DashTriggerRangeY){
 		state = EnemyState::Idle;
+		animator->setNextState(0);
 	}
 }
 
@@ -28,12 +38,23 @@ void Charger::OnFixedUpdate(float dt) {
 	case Idle:
 		groundPatrol->Patrol(dt);
 		break;
+
 	case Dash:
+	{
 		groundDash->Dash(dt);
+
+		if (!dashingTmp && groundDash->Dashing()) {
+			animator->setCurrentState(2);
+		}
+
 		if (groundDash->DashEnd()) {
 			state = EnemyState::Idle;
 		}
-		break;
+
+		dashingTmp = groundDash->Dashing();
+	}
+	break;
+
 	default:
 		break;
 	}

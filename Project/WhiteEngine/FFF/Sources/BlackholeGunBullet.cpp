@@ -46,27 +46,10 @@ void BlackholeGunBullet::OnUpdate(float dt)
 
 }
 
-void BlackholeGunBullet::OnFixedUpdate(float dt) {
-
-}
-
-void BlackholeGunBullet::OnAwake() {
-
-}
-
-void BlackholeGunBullet::OnEnable() {
-
-}
-
-void BlackholeGunBullet::OnStart()
+void BlackholeGunBullet::OnAwake()
 {
 	rb = m_gameObject->GetComponent<Rigidbody>();
 	cam = Graphic::getCamera();
-}
-
-
-void BlackholeGunBullet::OnDisable() {
-
 }
 
 void BlackholeGunBullet::OnTriggerEnter(const Physic::Collision col) {

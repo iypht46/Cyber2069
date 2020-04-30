@@ -27,16 +27,22 @@ protected:
 	float m_minDashDistance = 200.0f;
 	float m_pauseTime = 0.25f;
 public:
+	float dashDamage = 1;
+
 	GroundDash();
 	~GroundDash();
+
 	void SetDashSpeed(float val);
 	void SetDashDis(float val);
 	void SetPauseTime(float val);
 	void LockTarget(Transform* target);
+	bool Dashing();
 	bool DashEnd();
 	bool dashEnd;
 	void Dash(float dt);
-	virtual void OnAwake();
+
+	virtual void OnAwake() override;
+	virtual void OnTriggerEnter(const Physic::Collision) override;
 
 	//serialization
 public:
@@ -47,8 +53,10 @@ public:
 			m_dashSpeed,
 			m_exceedingDashDistance,
 			m_minDashDistance,
-			m_pauseTime
+			m_pauseTime,
+			dashDamage
 			);
 	}
 };
 
+CEREAL_REGISTER_TYPE(GroundDash);

@@ -9,7 +9,7 @@ Animator::Animator()
 	timeElapse = 0;
 	m_currentUVFrames = glm::vec2(0);
 
-	Factory<Animator>::Add(this);
+	Factory<Component, Animator>::Add(this);
 }
 
 void Animator::Init() {
@@ -40,6 +40,19 @@ glm::vec2 Animator::GetCurrentUVFrame() {
 	glm::vec2 tmp(m_currentUVFrames.x / m_controller->getSheetSize().x, m_currentUVFrames.y / m_controller->getSheetSize().y);
 
 	return tmp;
+}
+
+void Animator::setNextState(int state) {
+	setNextState(m_controller->GetState(state));
+}
+
+void Animator::setNextState(std::weak_ptr<AnimationState> state) {
+	if (!state.expired()) {
+		m_nextState = state;
+	}
+	else {
+		ENGINE_WARN("State invalid");
+	}
 }
 
 void Animator::setCurrentState(int state) {
@@ -76,15 +89,23 @@ void Animator::animUpdate(float dt)
 				}
 			}
 		}
+		//if loop, start the animation over
 		else if (m_currentState.lock()->loop) {
 			m_currentUVFrames = start;
 		}
+		//if next state is assigned, switch to that state
+		else if (!m_nextState.expired()) {
+			setCurrentState(m_nextState);
+			m_nextState.reset();
+		}
+		//if next state is not assigned, switch to default next state from AnimationState
 		else if (!m_currentState.lock()->nextState.expired()) {
 			setCurrentState(m_currentState.lock()->nextState);
 		}
-	}
-	else {
-		ENGINE_WARN("No current animation state running");
+		//else, no animation will be played next
+		else {
+			m_currentState.reset();
+		}
 	}
 }
 
@@ -94,4 +115,5 @@ void Animator::setFramePerSec(float frame) {
 
 Animator::~Animator()
 {
+	Factory<Component, Animator>::Remove(this);
 }

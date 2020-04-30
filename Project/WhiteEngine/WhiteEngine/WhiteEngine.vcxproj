@@ -129,7 +129,8 @@
   <ItemGroup>
     <ClInclude Include="Sources\Core\EC\Components\BehaviourScript.h" />
     <ClInclude Include="Sources\Core\EC\Components\SoundPlayer.hpp" />
-    <ClInclude Include="Sources\Core\EC\Components\TextRenderer.hpp" />
+    <ClInclude Include="Sources\Core\EC\UIComponents\TextRenderer.hpp" />
+    <ClInclude Include="Sources\Core\EC\UIComponents\Button.hpp" />
     <ClInclude Include="Sources\Core\FactoryCollection.h" />
     <ClInclude Include="Sources\Core\LogCustomType.hpp" />
     <ClInclude Include="Sources\Core\Message\Observer.hpp" />
@@ -170,7 +171,8 @@
   <ItemGroup>
     <ClCompile Include="Sources\Core\EC\Components\BehaviourScript.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\SoundPlayer.cpp" />
-    <ClCompile Include="Sources\Core\EC\Components\TextRenderer.cpp" />
+    <ClCompile Include="Sources\Core\EC\UIComponents\TextRenderer.cpp" />
+    <ClCompile Include="Sources\Core\EC\UIComponents\Button.cpp" />
     <ClCompile Include="Sources\Core\FactoryCollection.cpp" />
     <ClCompile Include="Sources\Core\Particle\ParticleSystem.cpp" />
     <ClCompile Include="Sources\Physic\Collision.cpp" />

@@ -81,7 +81,7 @@ protected:
 public:
 	PlayerController();
 	~PlayerController() {}
-	
+
 	void DebugInput();
 
 	void mouseAim();

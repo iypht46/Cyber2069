@@ -1,6 +1,6 @@
 #include "GroundDash.hpp"
 #include "Core/Logger.hpp"
-
+#include "PlayerController.hpp"
 
 GroundDash::GroundDash()
 {
@@ -53,6 +53,10 @@ void GroundDash::LockTarget(Transform* target) {
 	}
 }
 
+bool GroundDash::Dashing() {
+	return dashing;
+}
+
 bool GroundDash::DashEnd() {
 	return dashEnd;
 }
@@ -80,5 +84,15 @@ void GroundDash::Dash(float dt) {
 			dashEnd = true;
 			targetLocked = false;
 		}
+	}
+}
+
+void GroundDash::OnTriggerEnter(const Physic::Collision collision) {
+	GameObject* obj = collision.m_otherCollider->GetGameObject();
+	PlayerController* player = obj->GetComponent<PlayerController>();
+
+	///damage player
+	if (player != nullptr) {
+		obj->GetComponent<HPsystem>()->TakeDamage(dashDamage);
 	}
 }

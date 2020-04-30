@@ -50,6 +50,7 @@ public:
 
 
 	//===============Unlock System===============
+
 	//reset the vector to false bool with size of total weapon/artifact
 	void InitData();
 
