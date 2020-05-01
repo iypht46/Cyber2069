@@ -393,6 +393,7 @@ namespace World
 			platform->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
 			platform->GetComponent<MeshRenderer>()->SetLayer(3);
 			platform->m_transform->SetScale(glm::vec3(800, 20, 1));
+			platform->m_transform->SetParent(Rabbit->m_transform);
 			platform->AddComponent<BoxCollider>()->ReScale(1, 1);
 
 			ENGINE_INFO("Enemy Creation ==========================================================");

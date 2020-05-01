@@ -155,6 +155,7 @@
     <ClCompile Include="Sources\main.cpp" />
     <ClCompile Include="Sources\ObjectShooter.cpp" />
     <ClCompile Include="Sources\PlayerController.cpp" />
+    <ClCompile Include="Sources\Scripts\Weapons\Bullet.cpp" />
     <ClCompile Include="Sources\Spitter.cpp" />
     <ClCompile Include="Sources\Tank.cpp" />
     <ClCompile Include="Sources\World.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="Sources\EquipmentManager.hpp" />
     <ClInclude Include="Sources\ObjectShooter.h" />
     <ClInclude Include="Sources\PlayerController.hpp" />
+    <ClInclude Include="Sources\Scripts\GameControl\PlayerData.h" />
     <ClInclude Include="Sources\Weapon.hpp" />
     <ClInclude Include="Sources\World.hpp" />
   </ItemGroup>
