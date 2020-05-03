@@ -229,6 +229,8 @@ public:
 	std::weak_ptr<GameObject> ScoreText;
 	std::weak_ptr<GameObject> ComboText;
 
+	std::weak_ptr<GameObject> loadoutUI;
+
 	GameController();
 	~GameController() {}
 

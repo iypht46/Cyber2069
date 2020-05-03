@@ -138,6 +138,8 @@ void GameController::OnStart() {
 	ScoreText.lock()->SetActive(false);
 	ComboText.lock()->SetActive(false);
 
+	loadoutUI.lock()->SetActive(false);
+
 	PlayerStartPosition = playerControl->GetGameObject()->m_transform->GetPosition();
 }
 
@@ -190,12 +192,14 @@ void GameController::OnUpdate(float dt)
 			ScoreText.lock()->SetActive(false);
 			ComboText.lock()->SetActive(false);
 
+			loadoutUI.lock()->SetActive(false);
+
 			StateChanged = false;
 		}
 
 		if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE)) 
 		{
-			SetGameState(GAME_STATE::GAMEPLAY);
+			SetGameState(GAME_STATE::LOADOUT);
 		}
 
 
@@ -204,10 +208,11 @@ void GameController::OnUpdate(float dt)
 		//Do only once after state changed
 		if (StateChanged)
 		{
-			
+			loadoutUI.lock()->SetActive(true);
 
 			StateChanged = false;
 		}
+
 		break;
 	case GAME_STATE::GAMEPLAY:
 		//Do only once after state changed
@@ -221,6 +226,8 @@ void GameController::OnUpdate(float dt)
 			Staminabar.lock()->SetActive(true);
 			ScoreText.lock()->SetActive(true);
 			ComboText.lock()->SetActive(true);
+
+			loadoutUI.lock()->SetActive(false);
 
 			StateChanged = false;
 			StateGamplayChanged = true;

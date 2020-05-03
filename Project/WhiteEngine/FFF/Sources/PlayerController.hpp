@@ -97,6 +97,7 @@ public:
 	void cameraZoom(float dt);
 
 	void assignPool(ObjectPool* pool);
+	void assignWeapon();
 	void assignWeapon(Weapon* wp);
 
 	void AddEquipment(Equipment* e);

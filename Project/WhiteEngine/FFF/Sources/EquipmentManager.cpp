@@ -1,5 +1,7 @@
 #include "EquipmentManager.hpp"
 
+EquipmentManager::EquipmentManager(){}
+
 void EquipmentManager::OnAwake() 
 {
 	//Read from PlayerData
@@ -7,6 +9,12 @@ void EquipmentManager::OnAwake()
 	//if dont have in player data
 	InitData();
 
+	Artifact_Buffer = new int[maxPlayerArtifact];
+
+	for (int i = 0; i < maxPlayerArtifact; i++) 
+	{
+		Artifact_Buffer[i] = -1;
+	}
 }
 
 void EquipmentManager::AssignWeaponToManager(std::shared_ptr<GameObject> weaponObj)
@@ -199,6 +207,10 @@ bool EquipmentManager::AddPlayerWeapon(int type)
 {
 	PlayerController* player = playerObj->GetComponent<PlayerController>();
 
+	if (type == -1) {
+		return false;
+	}
+
 	if (!isWeaponUnlock(type)) 
 	{
 		return false;
@@ -281,6 +293,10 @@ bool EquipmentManager::AddPlayerArtifact(int type)
 {
 	PlayerController* player = playerObj->GetComponent<PlayerController>();
 
+	if (type == -1) {
+		return false;
+	}
+	
 	if (!isArtifactUnlock(type))
 	{
 		return false;
@@ -343,4 +359,50 @@ bool EquipmentManager::RemovePlayerArtifact(int type)
 	}
 
 	return false;
+}
+
+void EquipmentManager::SetWeaponBuffer(int type)
+{
+	Weapon_Buffer = type;
+}
+
+void EquipmentManager::AddArtifactBuffer(int type) 
+{
+	for (int i = 0; i < maxPlayerArtifact; i++) 
+	{
+		if (Artifact_Buffer[i] == type) 
+		{
+			return;
+		}
+	}
+
+	if (Artifact_Buffer[0] == -1) 
+	{
+		Artifact_Buffer[0] = type;
+	}
+	else if (Artifact_Buffer[1] == -1) 
+	{
+		Artifact_Buffer[1] = type;
+	}
+	else {
+		Artifact_Buffer[1] = Artifact_Buffer[0];
+		Artifact_Buffer[0] = type;
+	}
+}
+
+void EquipmentManager::InitPlayerEquipment() 
+{
+	PlayerController* player = playerObj->GetComponent<PlayerController>();
+
+	AddPlayerWeapon(Weapon_Buffer);
+	
+	for (int i = 0; i < maxPlayerArtifact; i++)
+	{
+		if (Artifact_Buffer[i] != -1) 
+		{
+			AddPlayerArtifact(Artifact_Buffer[i]);
+		}
+	}
+
+	player->ModifyFromEquipment();
 }
