@@ -275,6 +275,13 @@ void GameController::OnUpdate(float dt)
 					}
 				}
 			}
+			else {
+				
+				if (CocoonSpawner != nullptr)
+				{
+					Current_Cocoon = CocoonSpawner->SpawnEnemy();
+				}
+			}
 
 			break;
 		case GAMEPLAY_STATE::QUEEN:

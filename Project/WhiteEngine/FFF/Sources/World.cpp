@@ -523,6 +523,16 @@ namespace World
 			platform->m_transform->SetScale(glm::vec3(800, 20, 1));
 			platform->AddComponent<BoxCollider>()->ReScale(1, 1);
 
+			platform = Instantiate().get();
+			platform->Layer = "Platform";
+			platform->AddComponent<MeshRenderer>();
+			platform->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			platform->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
+			platform->GetComponent<MeshRenderer>()->SetLayer(3);
+			platform->m_transform->SetScale(glm::vec3(800, 20, 1));
+			platform->m_transform->SetPosition(glm::vec3(500, 500, 1));
+			platform->AddComponent<BoxCollider>()->ReScale(1, 1);
+
 			ENGINE_INFO("Enemy Creation ==========================================================");
 			//flyer animation
 			{
