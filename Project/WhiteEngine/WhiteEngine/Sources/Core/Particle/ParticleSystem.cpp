@@ -4,7 +4,7 @@
 //Partice System ==============================================================================
 ParticleSystem::ParticleSystem() {
 	//add to factory
-	Factory<ParticleSystem>::Add(this);
+	Factory<Component, ParticleSystem>::Add(this);
 
 	//create standard module, these could get replaced when load from prefab
 	emitter = std::make_shared<ParticleEmitter>();
@@ -15,6 +15,11 @@ ParticleSystem::ParticleSystem() {
 	animation = std::make_shared<ParticleAnimation>();
 
 	emitTimer = 0;
+}
+
+ParticleSystem::~ParticleSystem() {
+	//add to factory
+	Factory<Component, ParticleSystem>::Remove(this);
 }
 
 void ParticleSystem::Init() {

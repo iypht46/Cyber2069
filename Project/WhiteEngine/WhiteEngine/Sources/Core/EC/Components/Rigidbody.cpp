@@ -13,7 +13,7 @@ Rigidbody::Rigidbody()
 	m_mass = 1;
 	m_drag = 0.0f;
 
-	Factory<Rigidbody>::Add(this);
+	Factory<Component, Rigidbody>::Add(this);
 }
 
 //Create BoxCollider
@@ -55,7 +55,7 @@ Collider* Rigidbody::GetCollider()
 
 Rigidbody::~Rigidbody()
 {
-
+	Factory<Component, Rigidbody>::Remove(this);
 }
 
 void Rigidbody::SetVelocity(vec3 velocity)

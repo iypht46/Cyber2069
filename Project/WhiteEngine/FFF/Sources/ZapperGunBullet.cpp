@@ -61,7 +61,14 @@ void ZapperGunBullet::OnTriggerEnter(const Physic::Collision col) {
 			vector <Transform*> transformTmp;
 	
 			Physic::PhysicScene* ps = Physic::PhysicScene::GetInstance();
-			colliders = ps->GetColliderLayer(ps->GetLayerFromString("Enemy"));
+
+			//get all collider in target layers
+			Physic::Colliders colliders;
+			for (std::string target : TargetLayers) {
+				Physic::Colliders layerColliders = ps->GetColliderLayer(target);
+				colliders.insert(colliders.end(), layerColliders.begin(), layerColliders.end());
+			}
+
 			isTriggerEnemy = true;
 			zapDurationCount = 0.0f;
 			zapRateCount = 0.0f;

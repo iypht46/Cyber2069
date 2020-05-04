@@ -3,9 +3,6 @@
 #include <unordered_map>
 #include <glm/glm.hpp>
 
-//Headers
-#include "../EC/Components/Component.hpp"
-
 #include <Serialization/glmCereal.h>
 #include <cereal/types/string.hpp>
 

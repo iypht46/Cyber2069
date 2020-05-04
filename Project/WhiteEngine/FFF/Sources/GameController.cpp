@@ -22,6 +22,9 @@ GameController* GameController::GetInstance()
 }
 
 void GameController::OnAwake() {
+	this->PlayerHP = player.lock()->GetComponent<HPsystem>();
+	this->playerControl = player.lock()->GetComponent<PlayerController>();
+
 	startHPscaleX = HPbar.lock()->m_transform->GetScale().x;
 	startHPscaleY = HPbar.lock()->m_transform->GetScale().y;
 	startHPposX = HPbar.lock()->m_transform->GetPosition().x;
@@ -29,12 +32,11 @@ void GameController::OnAwake() {
 	startStaminascaleX = Staminabar.lock()->m_transform->GetScale().x;
 	startStaminascaleY = Staminabar.lock()->m_transform->GetScale().y;
 	startStaminaposX = Staminabar.lock()->m_transform->GetPosition().x;
+
+	LoadData();
 }
 
 void GameController::OnStart() {
-	this->PlayerHP = player.lock()->GetComponent<HPsystem>();
-	this->playerControl = player.lock()->GetComponent<PlayerController>();
-
 	ENGINE_INFO("GameControl Creating Bullets");
 	ENGINE_INFO("======================================================================");
 	CreatePool(PrefabPath("Bullet_MG"), POOL_TYPE::BULLET_MG, 20);
@@ -109,7 +111,7 @@ void GameController::OnStart() {
 	Amplifiers.push_back(a);
 
 	a = std::make_shared<EnemyAmplifier>();
-	a->EnemySpawnRate = 5.0f;
+	a->EnemySpawnRate = 2.0f;
 	a->FlyerHP = 1.0f;
 	a->FlyerSpeed = 300.0f;
 	a->FlyerDmg = 10.0f;
@@ -202,6 +204,15 @@ void GameController::OnUpdate(float dt)
 			SetGameState(GAME_STATE::LOADOUT);
 		}
 
+		if (Input::GetKeyDown(Input::KeyCode::KEY_S))
+		{
+			SaveData();
+		}
+
+		if (Input::GetKeyDown(Input::KeyCode::KEY_L))
+		{
+			Data->PrintLeaderboard();
+		}
 
 		break;
 	case GAME_STATE::LOADOUT:
@@ -325,6 +336,9 @@ void GameController::OnUpdate(float dt)
 
 			currScoreCheckpoint = 0;
 			
+			//update score
+			Data->AddLeaderboardEntry("whoite", ScoreValue);
+
 			StateChanged = false;
 		}
 
@@ -488,4 +502,22 @@ void GameController::SetActiveAllObjectInPool(bool active)
 	{
 		pool.second->SetActiveAllGameObject(active);
 	}
+}
+
+void GameController::LoadData() {
+	EquipmentManager* equipmentManager = m_gameObject->GetComponent<EquipmentManager>();
+	if (equipmentManager != nullptr) {
+		Data = std::make_unique<PlayerData>();
+		Serialization::LoadObject(*Data.get(), DataPath);
+
+		equipmentManager->SetWeaponUnlockData(Data->Weapons);
+		equipmentManager->SetArtifactUnlockData(Data->Artifacts);
+	}
+	else {
+		ENGINE_ERROR("No Equipment Mannager Found In GameController");
+	}
+}
+
+void GameController::SaveData() {
+	Serialization::SaveObject(*Data, DataPath);
 }

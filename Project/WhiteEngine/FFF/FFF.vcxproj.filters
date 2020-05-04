@@ -123,7 +123,14 @@
     <ClCompile Include="Sources\EquipmentManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Sources\LoadoutUI.cpp">
+=======
+    <ClCompile Include="Sources\Scripts\Weapons\Bullet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Scripts\GameControl\PlayerData.cpp">
+>>>>>>> 8d2b22e984b7bed19af321460eda3e124c1318bb
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -194,7 +201,11 @@
     <ClInclude Include="Sources\EquipmentManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Sources\LoadoutUI.hpp">
+=======
+    <ClInclude Include="Sources\Scripts\GameControl\PlayerData.hpp">
+>>>>>>> 8d2b22e984b7bed19af321460eda3e124c1318bb
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

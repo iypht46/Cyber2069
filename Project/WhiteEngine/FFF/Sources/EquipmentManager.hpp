@@ -23,30 +23,32 @@ enum ITEM_TYPE {
 	ARTIFACT
 };
 
+
 class EquipmentManager : public BehaviourScript {
 private:
 	std::shared_ptr<GameObject> playerObj;
 
-	int totalWeapon = 5;
-	int totalArtifact = 7;
-
-	int maxPlayerWeapon = 1;
-	int maxPlayerArtifact = 2;
-
 	vector<std::shared_ptr<GameObject>> m_weaponObjs;
 	vector<std::shared_ptr<Artifact>> m_artifacts;
-	
-	vector<bool> Unlock_Weapons;
-	vector<bool> Unlock_Artifacts;
 
 	int Weapon_Buffer = -1;
 	int* Artifact_Buffer;
 
-	int weaponCount = 0;
-	int artifactCount = 0;
+	int weaponCount = 0;		//number of equipped weapon
+	int artifactCount = 0;		//number of equipped artifacts
 public:
 
+	static int totalWeapon;
+	static int totalArtifact;
+
+	static int maxPlayerWeapon;
+	static int maxPlayerArtifact;
+
+	std::vector<bool> Unlock_Weapons;
+	std::vector<bool> Unlock_Artifacts;
+
 	EquipmentManager();
+
 	void OnAwake();
 
 	void AssignPlayer(std::shared_ptr<GameObject> player) { this->playerObj = player; }
@@ -118,12 +120,12 @@ public:
 	void serialize(Archive& archive) {
 		archive(
 			cereal::base_class<BehaviourScript>(this),
-			playerObj,
+			cereal::defer(playerObj),
 			totalWeapon,
 			totalArtifact,
 			maxPlayerWeapon,
 			maxPlayerArtifact,
-			m_weaponObjs,
+			cereal::defer(m_weaponObjs),
 			m_artifacts
 		);
 	}

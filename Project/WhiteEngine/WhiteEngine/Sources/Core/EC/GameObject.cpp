@@ -12,7 +12,7 @@ GameObject::GameObject()
 	m_objectID = GameObject::s_IDCounter++;
 	m_transform = make_shared<Transform>();
 
-	Factory<GameObject>::Add(this);
+	Factory<void, GameObject>::Add(this);
 }
 
 void GameObject::SetActive(bool activestate) {

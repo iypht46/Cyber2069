@@ -78,6 +78,7 @@ public:
 public:
 	template<class Archive>
 	void serialize(Archive& archive) {
+		ENGINE_INFO("saving/writing {}", *this);
 		archive(
 			isActive,
 			Name,
@@ -90,7 +91,7 @@ public:
 
 template<class T>
 T* GameObject::AddComponent() {
-	std::shared_ptr<T> component = Factory<T>::Create();
+	std::shared_ptr<T> component = Factory<Component, T>::Create();
 
 	m_components.push_back(component);
 	m_components.back()->SetGameObject(this);
@@ -101,7 +102,7 @@ T* GameObject::AddComponent() {
 //return a weak ptr of component instead of raw
 template<class T>
 std::weak_ptr<T> GameObject::AddComponent_weak() {
-	std::shared_ptr<T> component = Factory<T>::Create();
+	std::shared_ptr<T> component = Factory<Component, T>::Create();
 
 	m_components.push_back(component);
 	m_components.back()->SetGameObject(this);
@@ -140,5 +141,5 @@ std::weak_ptr<T> GameObject::GetComponent_weak() {
 
 LogCustomType_DF(GameObject)
 {
-	return os << "GameObject: " << obj.Name << "\n";
+	return os << "GameObject: " << obj.Name << " ID: " << obj.m_objectID << "\n";
 }

@@ -75,7 +75,14 @@ void BlackholeGunBullet::DragEnemy(float dt)
 	Rigidbody* enemRb;
 
 	Physic::PhysicScene* ps = Physic::PhysicScene::GetInstance();
-	Physic::Colliders colliders = ps->GetColliderLayer(ps->GetLayerFromString("Enemy"));
+
+	//get all collider in target layers
+	Physic::Colliders colliders;
+	for (std::string target : TargetLayers) {
+		Physic::Colliders layerColliders = ps->GetColliderLayer(target);
+		colliders.insert(colliders.end(), layerColliders.begin(), layerColliders.end());
+	}
+
 	Physic::Colliders collide;
 
 
@@ -119,7 +126,14 @@ void BlackholeGunBullet::DragEnemy(float dt)
 
 void BlackholeGunBullet::ReleaseEnemy() {
 	Physic::PhysicScene* ps = Physic::PhysicScene::GetInstance();
-	Physic::Colliders colliders = ps->GetColliderLayer(ps->GetLayerFromString("Enemy"));
+
+	//get all collider in target layers
+	Physic::Colliders colliders;
+	for (std::string target : TargetLayers) {
+		Physic::Colliders layerColliders = ps->GetColliderLayer(target);
+		colliders.insert(colliders.end(), layerColliders.begin(), layerColliders.end());
+	}
+
 	Physic::Colliders collide;
 
 	for (Collider* c : colliders) {

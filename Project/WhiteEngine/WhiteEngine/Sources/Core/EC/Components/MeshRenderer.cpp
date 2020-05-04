@@ -15,11 +15,12 @@ MeshRenderer::MeshRenderer()
 {
 	ReplaceColor = glm::vec3(1, 1, 1);
 
-	Factory<MeshRenderer>::Add(this);
+	Factory<Component, MeshRenderer>::Add(this);
 }
 
 MeshRenderer::~MeshRenderer()
 {
+	Factory<Component, MeshRenderer>::Remove(this);
 }
 
 
