@@ -78,6 +78,7 @@ public:
 public:
 	template<class Archive>
 	void serialize(Archive& archive) {
+		ENGINE_INFO("saving/writing {}", *this);
 		archive(
 			isActive,
 			Name,
@@ -140,5 +141,5 @@ std::weak_ptr<T> GameObject::GetComponent_weak() {
 
 LogCustomType_DF(GameObject)
 {
-	return os << "GameObject: " << obj.Name << "\n";
+	return os << "GameObject: " << obj.Name << " ID: " << obj.m_objectID << "\n";
 }

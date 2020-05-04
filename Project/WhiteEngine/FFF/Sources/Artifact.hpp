@@ -1,6 +1,9 @@
 #pragma once
 #include "Equipment.hpp"
 
+#include <cereal/types/base_class.hpp>
+#include <cereal/types/polymorphic.hpp>
+
 enum ARTIFACT_TYPE {
 	ARTF_BULLETAMP = 0,
 	ARTF_FIRERATEUP,
@@ -17,7 +20,18 @@ public:
 	virtual void Modify() = 0;
 	virtual void Revert() = 0;
 	virtual void GameTimeBehaviour(float dt) = 0;
+
+//serialize
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Equipment>(this)
+			);
+	}
 };
+
+CEREAL_REGISTER_TYPE(Artifact);
 
 class BulletAmplifier : public Artifact 
 {
@@ -30,7 +44,19 @@ public:
 	void Modify();
 	void Revert();
 	void GameTimeBehaviour(float dt) {}
+
+//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Artifact>(this),
+			multiplier_weapon,
+			multiplier_speedDecrease
+			);
+	}
 };
+CEREAL_REGISTER_TYPE(BulletAmplifier);
 
 class FireRateUP : public Artifact 
 {
@@ -42,7 +68,19 @@ public:
 	void Modify();
 	void Revert();
 	void GameTimeBehaviour(float dt) {}
+
+//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Artifact>(this),
+			multiplier_firerate
+			);
+	}
 };
+CEREAL_REGISTER_TYPE(FireRateUP);
+
 
 class AttackUP : public Artifact 
 {
@@ -54,7 +92,19 @@ public:
 	void Modify();
 	void Revert();
 	void GameTimeBehaviour(float dt) {}
+
+//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Artifact>(this),
+			multiplier_attack
+			);
+	}
 };
+CEREAL_REGISTER_TYPE(AttackUP);
+
 
 class LowGravity : public Artifact 
 {
@@ -66,7 +116,19 @@ public:
 	void Modify();
 	void Revert();
 	void GameTimeBehaviour(float dt) {}
+
+//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Artifact>(this),
+			multiplier_GravityScale
+			);
+	}
 };
+CEREAL_REGISTER_TYPE(LowGravity);
+
 
 class SpeedRunner : public Artifact {
 private:
@@ -77,7 +139,19 @@ public:
 	void Modify();
 	void Revert();
 	void GameTimeBehaviour(float dt) {}
+
+//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Artifact>(this),
+			multiplier_moveSpeed
+			);
+	}
 };
+CEREAL_REGISTER_TYPE(SpeedRunner);
+
 
 class ArtifactAmplifier : public Artifact 
 {
@@ -87,7 +161,18 @@ public:
 	void Modify();
 	void Revert();
 	void GameTimeBehaviour(float dt) {}
+
+//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Artifact>(this)
+			);
+	}
 };
+CEREAL_REGISTER_TYPE(ArtifactAmplifier);
+
 
 class CursedPendant : public Artifact {
 public:
@@ -96,4 +181,14 @@ public:
 	void Modify();
 	void Revert();
 	void GameTimeBehaviour(float dt) {}
+
+//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Artifact>(this)
+			);
+	}
 };
+CEREAL_REGISTER_TYPE(CursedPendant);

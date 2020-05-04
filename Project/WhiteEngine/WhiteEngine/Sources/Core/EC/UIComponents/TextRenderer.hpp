@@ -11,6 +11,7 @@
 #include "ft2build.h"
 #include FT_FREETYPE_H
 
+#include "Serialization/glmCereal.h"
 #include <cereal/types/string.hpp>
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/base_class.hpp>

@@ -4,6 +4,8 @@
 #include <set>
 #include <string>
 
+#include <cereal/types/string.hpp>
+#include <cereal/types/set.hpp>
 #include <cereal/types/base_class.hpp>
 #include <cereal/types/polymorphic.hpp>
 
@@ -62,7 +64,7 @@ public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
-			cereal::base_class<Weapon>(this),
+			cereal::base_class<Equipment>(this),
 			cereal::base_class<BehaviourScript>(this),
 			TargetLayers,
 			bullet_speed,
@@ -103,7 +105,17 @@ public:
 	void MultiplyWeaponAmplifier(float value);
 
 	virtual void OnAwake();
+
+//serialization
+public:
+	template <class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Weapon>(this)
+			);
+	}
 };
+CEREAL_REGISTER_TYPE(MachineGun);
 
 class MachineGunBullet : public Bullet {
 protected:

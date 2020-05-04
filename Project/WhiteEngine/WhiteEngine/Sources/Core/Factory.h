@@ -110,7 +110,10 @@ void Factory<Component, T>::Add(T* element) {
 template <class T>
 void Factory<Component, T>::Remove(T* element) {
 	Component* comp = dynamic_cast<Component*>(element);
-	m_Collection.erase(m_Collection.find(comp->getComponentID()));
+	auto it = m_Collection.find(comp->getComponentID());
+	if (it != m_Collection.end()) {
+		m_Collection.erase(it);
+	}
 }
 
 template <class T>

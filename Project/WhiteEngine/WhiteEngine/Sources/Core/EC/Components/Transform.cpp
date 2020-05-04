@@ -5,8 +5,10 @@
 using namespace glm;
 
 Transform::Transform() {
-	m_position = vec3(0, 0, 0);
-	m_scale = vec3(1, 1, 1);
+	m_position = vec3(0);
+	m_localPosition = vec3(0);
+	m_scale = vec3(1);
+	m_localScale = vec3(1);
 	m_rotation = 0;
 	m_localRotation = 0;
 

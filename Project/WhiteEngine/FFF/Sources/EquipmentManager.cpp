@@ -1,5 +1,12 @@
 #include "EquipmentManager.hpp"
 
+
+int EquipmentManager::totalWeapon = 5;
+int EquipmentManager::totalArtifact = 7;
+
+int EquipmentManager::maxPlayerWeapon = 1;
+int EquipmentManager::maxPlayerArtifact = 2;
+
 void EquipmentManager::OnAwake() 
 {
 	//Read from PlayerData

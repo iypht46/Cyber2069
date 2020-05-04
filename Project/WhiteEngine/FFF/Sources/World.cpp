@@ -12,9 +12,9 @@
 #include "SceneManagement/SceneManager.h"
 
 #include "Physic/PhysicScene.hpp"
-#include "Physic/Collision.hpp"
+//#include "Physic/Collision.hpp"
 
-#include "Core/Factory.h"
+//#include "Core/Factory.h"
 #include "Core/FactoryCollection.h"
 #include "Core/EC/GameObject.hpp"
 
@@ -262,10 +262,11 @@ namespace World
 			Bg1->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer1.png");
 
 			Bg2->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
+			//Bg2->m_transform->SetLocalScale(glm::vec3(2.0f, 2.0f, 1));
 			Bg1->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
 
-			Bg1->m_transform->SetPosition(glm::vec3(0, -300, 0));
 			Bg2->m_transform->SetPosition(glm::vec3(0, -300, 0));
+			Bg1->m_transform->SetPosition(glm::vec3(0, -300, 0));
 
 			//Player animation controller
 			{
@@ -344,10 +345,8 @@ namespace World
 
 				//Behavior Script
 				Rabbit->AddComponent<HPsystem>();
-				Rabbit->GetComponent<HPsystem>()->SetMaxHP(10000);
+				Rabbit->GetComponent<HPsystem>()->SetMaxHP(100);
 				Rabbit->AddComponent<PlayerController>();
-				
-				//platform->m_transform->SetParent(Rabbit->m_transform);
 
 				Serialization::SaveObject(*Rabbit, PrefabPath("Player"));
 				
@@ -369,12 +368,11 @@ namespace World
 			wp_MachineGun->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_shoot.png");
 			wp_MachineGun->GetComponent<MeshRenderer>()->SetLayer(3);
 
-
-			wp_MachineGun->AddComponent<MachineGun>();
-
+			wp_MachineGun->AddComponent<MachineGun>()->SetWeaponFireRate(3.0f);
 			wp_MachineGun->m_transform->SetParent(Rabbit->m_transform);
-
 			wp_MachineGun->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
+			
+			Serialization::SaveObject(*wp_MachineGun, PrefabPath("Weapons/MachineGun"));
 
 			gamecontroller->AddComponent<EquipmentManager>();
 			gamecontroller->GetComponent<EquipmentManager>()->AssignWeaponToManager(wp_MachineGun);
@@ -384,6 +382,8 @@ namespace World
 			gamecontroller->GetComponent<EquipmentManager>()->Unlock_WEAPON(WEAPON_TYPE::WEAPON_MACHINEGUN);
 			gamecontroller->GetComponent<EquipmentManager>()->AddPlayerWeapon(WEAPON_TYPE::WEAPON_MACHINEGUN);
 
+			//test parent/child------------------------------------------------
+			//Bg2->m_transform->SetParent(Rabbit->m_transform);
 
 			//platform
 			platform = Instantiate().get();
@@ -393,7 +393,7 @@ namespace World
 			platform->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
 			platform->GetComponent<MeshRenderer>()->SetLayer(3);
 			platform->m_transform->SetScale(glm::vec3(800, 20, 1));
-			platform->m_transform->SetParent(Rabbit->m_transform);
+			//platform->m_transform->SetParent(Rabbit->m_transform);
 			platform->AddComponent<BoxCollider>()->ReScale(1, 1);
 
 			ENGINE_INFO("Enemy Creation ==========================================================");
@@ -932,7 +932,7 @@ namespace World
 
 			GAME_INFO(*Rabbit);
 			
-			//Serialization::SaveObject(*(SceneManagement::ActiveScene), ScenePath("SerializationTest"));
+			Serialization::SaveObject(*(SceneManagement::ActiveScene), ScenePath("SerializationTest"));
 			//this point is where it all ends =========================================
 		}
 
