@@ -35,7 +35,7 @@ namespace Tools
 	EditorEntity::EditorEntity(GameObject* obj)
 	{
 		m_gameObject.reset(obj);
-		this->LoadGameObject();
+		LoadGameObject();
 	}
 
 	//Use when loading from prefab or scene
@@ -43,7 +43,7 @@ namespace Tools
 	{
 		//Create gameobject from parameter
 		m_gameObject = gameObject;
-		this->LoadGameObject();
+		LoadGameObject();
 	}
 
 	void EditorEntity::AddObject(GameObjectHandle obj)
@@ -94,6 +94,7 @@ namespace Tools
 		if (m_gameObject.get())
 		{
 			LoadGameObject();
+			m_gameObject->SetAllComponents();
 		}
 
 		return (m_gameObject.get());
@@ -242,6 +243,7 @@ namespace Tools
 		this->AddComponentToEntity(m_transformEC.get());
 		this->LoadChildObject();
 		this->LoadComponents();
+		this->GetGameObject()->SetAllComponents();
 	}
 
 	void EditorEntity::SetParent(EditorEntity* ent)
@@ -365,11 +367,16 @@ namespace Tools
 
 	bool EditorEntity::RemoveComponent(std::string name)
 	{
-		if (m_componentsMap.find(name) == m_componentsMap.end())
+		auto it = m_componentsMap.find(name);
+		if (it == m_componentsMap.end())
 			return false;
+		
 
 		m_components.erase(std::remove(m_components.begin(), m_components.end(), m_componentsMap[name]), m_components.end());
 		m_componentsMap.erase(name);
+
+		auto component = (*it).second;
+
 		return true;
 	}
 

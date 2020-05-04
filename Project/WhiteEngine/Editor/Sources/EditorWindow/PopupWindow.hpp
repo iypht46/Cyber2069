@@ -8,6 +8,7 @@ namespace Tools
 
 	struct PopupData
 	{
+		
 		wString m_title;
 		wString m_message;
 		bool m_isConfirmBox = false;
@@ -19,6 +20,7 @@ namespace Tools
 	class PopupWindow
 	{
 	private:
+		const float c_button_x = 80.0f;
 		std::queue<PopupData> m_popupQueue;
 	protected:
 		void DisplayPopup(PopupData& popup);

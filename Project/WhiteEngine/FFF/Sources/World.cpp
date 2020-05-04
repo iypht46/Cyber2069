@@ -329,7 +329,7 @@ namespace World
 				Rabbit->Layer = "Player";
 
 				//Set Transform
-				Rabbit->m_transform->SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
+				Rabbit->m_transform->SetScale(glm::vec3(1, 1, 1));
 				Rabbit->m_transform->SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
 
 				Rabbit->AddComponent<MeshRenderer>();

@@ -26,12 +26,12 @@ namespace Tools
 	protected:
 		Container::wString m_editorName = "Default";
 		bool m_dirtyFlag = false;
-		bool* m_open;
+		bool* m_open = nullptr;
 		EditorEntity* m_selectedEntity = nullptr;
-		UIWindow* m_mainWindow;
+		UIWindow* m_mainWindow = nullptr; //Main window that will show save/unsaved symbol in title
 		PathHandle m_path;
-		ImGui::FileBrowser* m_fileDialog;
-		EDITOR_ACTION m_action;
+		ImGui::FileBrowser* m_fileDialog = nullptr;
+		EDITOR_ACTION m_action = EDITOR_ACTION::EDITOR_NONE;
 		PopupWindow m_popup;
 	protected:
 		virtual void Init(void) = 0;

@@ -110,12 +110,23 @@ void  MeshRenderer::CreateMesh(float NumframeX, float NumFrameY)
 	sr_NumFrameX = NumframeX;
 	sr_NumFrameY = NumFrameY;
 
-	this->mesh = new SquareMeshVbo();
-	this->mesh->LoadData(NumframeX, NumFrameY);
+	if (!mesh)
+	{
+		this->mesh = new SquareMeshVbo();
+		this->mesh->LoadData(NumframeX, NumFrameY);
+	}
+	else
+	{
+		SquareMeshVbo* sm = dynamic_cast<SquareMeshVbo*>(mesh);
+		if (sm)
+			sm->ReloadTextureData(NumframeX, NumFrameY);
+	}
+	
 	GLRenderer::GetInstance()->SetMeshAttribId(mesh);
 }
 
 void MeshRenderer::SetReplaceColor(glm::vec3 color) {
+	isReplaceColor = true;
 	this->ReplaceColor = color;
 }
 
@@ -124,12 +135,29 @@ void MeshRenderer::SetReplaceColor(std::string hexcode) {
 	//SetReplaceColor(smthing);
 }
 
+void MeshRenderer::SetReplaceColorBool(bool i)
+{
+	isReplaceColor = i;
+}
+
+glm::vec3 MeshRenderer::GetReplaceColor()
+{
+	return ReplaceColor;
+}
+
+bool MeshRenderer::IsReplaceColor()
+{
+	return isReplaceColor;
+}
+
 void MeshRenderer::RemoveReplaceColor() {
 	ReplaceColor = glm::vec3(1);
 }
 
 void MeshRenderer::Render(glm::mat4 globalModelTransform)
 {
+	if (!m_gameObject->Active())
+		return;
 
 	SquareMeshVbo *squareMesh = dynamic_cast<SquareMeshVbo *>(this->mesh);
 
@@ -154,13 +182,6 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 
 	//vector<glm::mat4> matrixStack;
 	glm::mat4 modelMatrix = GetGameObject()->m_transform->GetModelMatrix();
-
-	if (IsTextureLoaded())
-	{
-		modelMatrix *= glm::scale(glm::vec3(m_texture->m_size, 1.0f));
-	}
-
-	glm::mat4 currentMatrix = globalModelTransform * modelMatrix;
 
 	/*
 	if (!isUI){
@@ -199,22 +220,40 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 			glUniform1i(modeId, RENDER_MODE::COLOR);
 		}
 
+		glm::vec2 textureScale;
 
-		glUniformMatrix4fv(modelMatixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
-
-		//-------Animation--------
-
-		if (GetGameObject()->GetComponent<Animator>() != nullptr)
+		if (IsTextureLoaded())
 		{
-			glUniform1f(offsetXId, GetGameObject()->GetComponent<Animator>()->GetCurrentUVFrame().x);
-			glUniform1f(offsetYId, GetGameObject()->GetComponent<Animator>()->GetCurrentUVFrame().y);
-
+			textureScale = m_texture->m_size;
+			
 		}
-		else {
+		//-------Animation--------
+		auto animation = GetGameObject()->GetComponent<Animator>();
+
+		if (animation && animation->GetController().get())
+		{
+			auto uv = animation->GetCurrentUVFrame();
+			textureScale = textureScale / animation->GetController()->getSheetSize(); //Divide by frame size to get the unit texture size
+			glUniform1f(offsetXId, uv.x);
+			glUniform1f(offsetYId, uv.y);
+			//glUniform1f(offsetXId, 0.0f);
+			//glUniform1f(offsetYId, 0.0f);
+		}
+		else 
+		{
 			glUniform1f(offsetXId, 0.0f);
 			glUniform1f(offsetYId, 0.0f);
 
 		}
+
+		if (IsTextureLoaded())
+		{
+			modelMatrix *= glm::scale(glm::vec3(textureScale, 1.0f));
+		}
+
+		glm::mat4 currentMatrix = globalModelTransform * modelMatrix;
+
+		glUniformMatrix4fv(modelMatixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
 
 		/*glUniform1f(offsetXId, 0);
 		glUniform1f(offsetYId, 0);*/

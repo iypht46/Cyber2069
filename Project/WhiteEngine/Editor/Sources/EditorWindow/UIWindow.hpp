@@ -22,14 +22,14 @@ namespace Tools
 		ImGuiWindowFlags m_windowFlags;
 		WindowCondition m_windowCondition = ImGuiCond_FirstUseEver;
 		virtual void OnRender(void) = 0;
-		
+		inline virtual void PreRender(void) {}
+		inline virtual void PostRender(void) {}
 		virtual void Init(void) {}
 		virtual void Terminate(void) {}
 	public:
 		UIWindow(string name = "Window", int width = 500, int height = 500, bool* open = NULL, bool closable = true);
 		~UIWindow();
-		inline virtual void PreRender(void) {}
-		inline virtual void PostRender(void) {}
+		
 		void Render();
 		bool GetBool();
 		void SetBool(bool show);

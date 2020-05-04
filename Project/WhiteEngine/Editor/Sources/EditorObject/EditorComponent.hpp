@@ -35,6 +35,7 @@ namespace Tools
 		std::string GetName();
 		int GetID();
 		bool dirty = false;
+		Component* GetComponentPtr();
 
 		static EditorComponent* makeComponent(std::string name);
 		static EditorComponent* addComponent(std::string type, EditorComponent* comp);

@@ -21,9 +21,12 @@ namespace Tools
 		//Set Docking Space
 		m_editorMap[EDITOR_TYPE::PREFAB_EDITOR] = std::make_unique<PrefabEditor>();
 		m_editorMap[EDITOR_TYPE::SCENE_EDITOR] = std::make_unique<SceneEditor>();
+		m_acEditor = std::make_unique<ACEditor>(&m_acBool);
+		m_particleEditor = std::make_unique<ParticleEditor>(&m_particleBool);
 		m_inspector = std::make_unique<Inspector>();
 		m_hierarchy = std::make_unique<ObjectHierarchy>();
 	}
+
 	void MainEditor::Update()
 	{
 		MainMenuBar();
@@ -90,7 +93,11 @@ namespace Tools
 		if (m_hierarchy->GetBool())
 			m_hierarchy->Render();
 
-		
+		if (m_acBool)
+			m_acEditor->Update();
+
+		if (m_particleBool)
+			m_particleEditor->Update();
 	}
 
 	void MainEditor::Terminate()
@@ -214,6 +221,10 @@ namespace Tools
 						}
 					}
 				}
+
+				ImGui::MenuItem(m_acEditor->GetName().c_str(), NULL, &m_acBool, true);
+
+				ImGui::MenuItem(m_particleEditor->GetName().c_str(), NULL, &m_particleBool, true);
 				/*ImGui::MenuItem("Prefab Editor", NULL, &m_prefabBool);
 				ImGui::MenuItem("Scene Editor", NULL, &m_sceneBool);*/
 				ImGui::EndMenu();
@@ -221,6 +232,12 @@ namespace Tools
 
 			if (m_currentEditor)
 				m_currentEditor->RenderMenu();
+
+			if (m_acBool || m_acEditor->IsFocused())
+				m_acEditor->RenderMenu();
+
+			if (m_particleBool)
+				m_particleEditor->RenderMenu();
 
 			ImGui::EndMainMenuBar();
 		}

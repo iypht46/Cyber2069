@@ -53,6 +53,9 @@ public:
 	void SetUI(bool ui);
 	void SetReplaceColor(glm::vec3 color);
 	void SetReplaceColor(std::string hexcode);
+	void SetReplaceColorBool(bool i);
+	glm::vec3 GetReplaceColor();
+	bool IsReplaceColor();
 	void RemoveReplaceColor();
 
 	int GetLayer();

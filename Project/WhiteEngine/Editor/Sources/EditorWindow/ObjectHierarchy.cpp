@@ -8,7 +8,7 @@ namespace Tools
 	{
 		ImVec2 main_window_size = ImVec2(static_cast<float>(Graphic::Window::GetWidth()), static_cast<float>(Graphic::Window::GetHeight()));
 		ImVec2 main_window_pos = ImGui::GetMainViewport()->Pos;
-		std::cout << "Viewport Pos " << main_window_pos.x << " ," << main_window_pos.y << std::endl;
+		//std::cout << "Viewport Pos " << main_window_pos.x << " ," << main_window_pos.y << std::endl;
 		m_width = static_cast<int>(main_window_size.x / 4);
 		m_height = static_cast<int>(main_window_size.y - 20);
 		m_position.x = 0;

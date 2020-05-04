@@ -41,6 +41,11 @@ namespace Tools
 		return m_id;
 	}
 
+	Component* EditorComponent::GetComponentPtr()
+	{
+		return m_component;
+	}
+
 	EditorComponent* EditorComponent::makeComponent(std::string type)
 	{
 		auto componentEC = m_componentTable.find(type);

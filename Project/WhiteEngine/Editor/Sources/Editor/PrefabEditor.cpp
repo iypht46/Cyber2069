@@ -23,7 +23,7 @@ namespace Tools
 	void PrefabEditor::Init(void)
 	{
 		//Window Setup
-		m_previewWindow = make_unique<PreviewWindow>(&m_previewBool);
+		m_previewWindow = make_unique<PreviewWindow>(&m_previewBool, "Prefab Preview");
 		m_mainWindow = m_previewWindow.get();
 
 		//File Dialog Setup
@@ -39,7 +39,7 @@ namespace Tools
 
 	void PrefabEditor::OnUpdate(void)
 	{
-		if (!m_open)
+		if (!*m_open)
 			return;
 
 		m_selectedEntity = dynamic_cast<EditorEntity*>(m_entityObject->GetSelected());
@@ -62,7 +62,7 @@ namespace Tools
 		/*auto mesh = m_editorEntitiy->GetComponent("MeshRendererEC");
 		if (mesh)
 			m_previewWindow->SetMesh(mesh);*/
-
+		m_previewWindow->SetEntity(m_entityObject.get());
 		m_previewWindow->Render();
 	}
 
@@ -129,7 +129,7 @@ namespace Tools
 		else
 		{
 			m_entityObject = make_unique<EditorEntity>();
-			m_previewWindow->SetEntity(m_entityObject.get());
+			//m_previewWindow->SetEntity(m_entityObject.get());
 			return true;
 		}
 		

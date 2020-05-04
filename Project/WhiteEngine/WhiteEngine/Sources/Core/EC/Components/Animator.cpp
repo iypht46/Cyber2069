@@ -48,9 +48,20 @@ bool Animator::SetControllerPath(std::string path)
 	}
 }
 
+std::string Animator::GetControllerPath()
+{
+	return sr_controllerPath;
+}
+
 
 void Animator::AssignController(std::shared_ptr <AnimationController> animControl) {
 	m_controller = animControl;
+	m_currentState = m_controller->m_defaultState;
+}
+
+std::shared_ptr<AnimationController> Animator::GetController()
+{
+	return m_controller;
 }
 
 glm::vec2 Animator::GetCurrentUVFrame() {
@@ -128,6 +139,11 @@ void Animator::animUpdate(float dt)
 
 void Animator::setFramePerSec(float frame) {
 	framePerSec = frame;
+}
+
+float Animator::GetFramePerSec()
+{
+	return framePerSec;
 }
 
 Animator::~Animator()

@@ -30,6 +30,8 @@ namespace Tools
 		//TODO: Add pointer to members of each component
 		bool m_isLoaded = false;
 		bool m_isUI = false;
+		bool m_isReplaceColor = false;
+		glm::vec3 m_replaceColor = glm::vec3(1.0f, 1.0f, 1.0f);
 		std::string m_textureName;
 		Utility::fs::path m_texturePath;
 		ImGui::FileBrowser m_textureFileDialog;
@@ -81,16 +83,18 @@ namespace Tools
 	{
 	private:
 		INIT_COMPONENT(Animator)
-		float* m_framerate;
+		float m_framerate;
+		Utility::fs::path m_controllerPath;
+		std::shared_ptr<AnimationController> m_controller;
+		ImGui::FileBrowser m_acFileDialog;
 	protected:
 		virtual void OnRender() override;
 		IMPLEMENT_CLONE(AnimatorEC);
 	public:
 		AnimatorEC() : EditorComponent("AnimatorEC") {}
 		virtual void Init(Component* animatorComponent) override;
-		void RenderAnimation(Animation* anim);
-		void RenderAnimationController();
-		
+		void SetController(std::shared_ptr<AnimationController> controller);
+		void SetCurrentState(int index);
 
 	};
 

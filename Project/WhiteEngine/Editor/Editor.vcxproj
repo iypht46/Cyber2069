@@ -141,6 +141,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\EditorObject\EditorAC.hpp" />
+    <ClInclude Include="Sources\EditorObject\EditorParticleObject.hpp" />
+    <ClInclude Include="Sources\EditorObject\ParticleComponentEC.hpp" />
+    <ClInclude Include="Sources\EditorWindow\AnimationWindow.hpp" />
+    <ClInclude Include="Sources\EditorWindow\ParticleSystemWindow.hpp" />
     <ClInclude Include="Sources\Editor\ACEditor.hpp" />
     <ClInclude Include="Sources\EditorWindow\SceneWindow.hpp" />
     <ClInclude Include="Sources\EditorWindow\PopupWindow.hpp" />
@@ -149,6 +153,7 @@
     <ClInclude Include="Sources\EditorObject\EditorSceneObject.hpp" />
     <ClInclude Include="Sources\EditorWindow\ObjectHierarchy.hpp" />
     <ClInclude Include="Sources\EditorObject\CoreComponentEC.hpp" />
+    <ClInclude Include="Sources\Editor\ParticleEditor.hpp" />
     <ClInclude Include="Sources\EngineCore.hpp" />
     <ClInclude Include="Sources\ImUtility.h" />
     <ClInclude Include="Sources\MainEditor.hpp" />
@@ -166,6 +171,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\EditorObject\EditorAC.cpp" />
+    <ClCompile Include="Sources\EditorObject\ParticleComponentEC.cpp" />
+    <ClCompile Include="Sources\EditorWindow\AnimationWindow.cpp" />
+    <ClCompile Include="Sources\EditorWindow\ParticleSystemWindow.cpp" />
     <ClCompile Include="Sources\Editor\ACEditor.cpp" />
     <ClCompile Include="Sources\EditorWindow\SceneWindow.cpp" />
     <ClCompile Include="Sources\EditorWindow\PopupWindow.cpp" />
@@ -173,6 +181,7 @@
     <ClCompile Include="Sources\EditorWindow\ObjectHierarchy.cpp" />
     <ClCompile Include="Sources\EditorObject\CoreComponentEC.cpp" />
     <ClCompile Include="Sources\Editor\Editor.cpp" />
+    <ClCompile Include="Sources\Editor\ParticleEditor.cpp" />
     <ClCompile Include="Sources\MainEditor.cpp" />
     <ClCompile Include="Sources\EditorWindow\Inspector.cpp" />
     <ClCompile Include="Sources\EditorWindow\PreviewWindow.cpp" />

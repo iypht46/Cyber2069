@@ -52,8 +52,8 @@ int GameObject::GetID() {
 	return m_objectID;
 }
 
-void GameObject::InitComponents() {
-
+void GameObject::SetAllComponents()
+{
 	for (std::shared_ptr<Component> component : m_components) {
 		component->SetGameObject(this);
 		component->Init();
@@ -64,6 +64,11 @@ void GameObject::InitComponents() {
 			m_scripts.push_back(behaviour);
 		}
 	}
+}
+
+void GameObject::InitComponents() {
+
+	SetAllComponents();
 
 	for (std::shared_ptr<BehaviourScript> behaviour : m_scripts) {
 		behaviour->OnAwake();

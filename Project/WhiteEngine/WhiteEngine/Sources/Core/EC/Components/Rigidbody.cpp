@@ -50,6 +50,7 @@ Collider* Rigidbody::GetCollider()
 
 Rigidbody::~Rigidbody()
 {
+	Physic::PhysicScene::GetInstance()->Remove(this);
 	Factory<Component, Rigidbody>::Remove(this);
 }
 

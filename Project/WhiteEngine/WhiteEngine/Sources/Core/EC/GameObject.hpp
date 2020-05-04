@@ -61,6 +61,7 @@ public:
 	int GetID();
 
 	//init all member component
+	void SetAllComponents();
 	void InitComponents();
 
 	//start all member behaviour script

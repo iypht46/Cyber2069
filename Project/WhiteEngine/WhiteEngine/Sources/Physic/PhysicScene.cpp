@@ -157,9 +157,12 @@ namespace Physic
 
 	void PhysicScene::UpdateTransform(float dt)
 	{
-		for (auto body = m_bodies.begin(); body != m_bodies.end(); ++body)
+		for (auto it = m_bodies.begin(); it != m_bodies.end(); ++it)
 		{
-			(*body)->UpdateTransform(dt);
+			Rigidbody* body = (*it);
+			
+			if (body)
+				body->UpdateTransform(dt);
 		}
 	}
 	
@@ -168,7 +171,8 @@ namespace Physic
 		for (auto it = m_bodies.begin(); it != m_bodies.end(); ++it)
 		{
 			Rigidbody* body = (*it);
-			body->AddForce(m_gravity * body->GetGravityScale() * body->GetMass() * GRAVITY_MUL);
+			if (body)
+				body->AddForce(m_gravity * body->GetGravityScale() * body->GetMass() * GRAVITY_MUL);
 		}
 	}
 	
@@ -400,6 +404,19 @@ namespace Physic
 		Remove(col, layer);
 	}
 
+	void PhysicScene::Remove(Rigidbody* body)
+	{
+		auto it = std::find(m_bodies.begin(), m_bodies.end(), body);
+
+		if (it != m_bodies.end())
+		{
+			m_bodies.erase(it);
+			return;
+		}
+
+
+	}
+
 	void PhysicScene::SetLayerCollisions(Layer layer, Layer layerToCollide, RESOLVE_TYPE type)
 	{
 		uint32_t lay = LayerToNum(layerToCollide);
@@ -516,13 +533,17 @@ namespace Physic
 
 	PhysicScene* PhysicScene::GetInstance() 
 	{
-		if (instance != nullptr) 
+		if (!instance)
+			instance = new PhysicScene();
+
+		return instance;
+		/*if (instance != nullptr) 
 		{
 			return instance;
 		}
 		else {
 			return nullptr;
-		}
+		}*/
 	}
 
 	PhysicScene::PhysicScene()

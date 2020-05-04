@@ -26,7 +26,7 @@ namespace Tools
 
 	void SceneEditor::OnUpdate(void)
 	{
-		if (!m_open)
+		if (!*m_open)
 			return;
 
 		//If user attempt to close window

@@ -6,7 +6,7 @@ namespace Tools
 
 	Editor::Editor(Container::wString editor_name, bool* isOpen) : m_editorName(editor_name), m_open(isOpen)
 	{
-
+		//m_fileDialog->SetPwd(s_editorBasePath);
 	}
 
 	Container::wString Editor::GetName()

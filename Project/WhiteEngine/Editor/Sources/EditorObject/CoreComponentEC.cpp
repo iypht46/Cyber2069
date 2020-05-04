@@ -1,5 +1,6 @@
 //Editor
 #include "EditorObject/CoreComponentEC.hpp"
+#include "EditorObject/ParticleComponentEC.hpp"
 //White Engine
 #include "Core/Logger.hpp"
 #include "Utility/Filesystem.hpp"
@@ -18,6 +19,7 @@ namespace Tools
 	MAKE_COMPONENT(RigidbodyEC);
 	MAKE_COMPONENT(AnimatorEC);
 	MAKE_COMPONENT(SoundPlayerEC);
+	MAKE_COMPONENT(ParticleComponentEC);
 	//*****          END            *****//
 
 	void TransformEC::Init(Component* engineComponent)
@@ -47,7 +49,7 @@ namespace Tools
 			dirty = true;
 		}
 		ImGui::AlignTextToFramePadding(); ImGui::Text("Scale"); ImGui::SameLine(); 
-		if (ImGui::DragFloat3("##Scale", &m_scale.x, 1.0f, 0.0f, 1000.0f, "%.1f", 1.0f))
+		if (ImGui::DragFloat3("##Scale", &m_scale.x, 0.1f, 0.0f, 1000.0f, "%.1f", 1.0f))
 		{
 			m_typeComponent->SetLocalScale(m_scale);
 			dirty = true;
@@ -74,9 +76,13 @@ namespace Tools
 		if (m_typeComponent)
 		{
 			m_isLoaded = m_typeComponent->IsTextureLoaded();
+			m_isReplaceColor = m_typeComponent->IsReplaceColor();
 
 			if (m_isLoaded)
 				m_typeComponent->Init();
+
+			if (m_isReplaceColor)
+				m_replaceColor = m_typeComponent->GetReplaceColor();
 			
 			//m_isUI = m_typeComponent->IsUI();
 			m_textureFileDialog.SetTitle("Choose texture");
@@ -115,42 +121,64 @@ namespace Tools
 		else
 			ImGui::TextDisabled(m_textureName.c_str());
 		ImGui::SameLine();
-
 		//Button: Add texture button
 		if (ImGui::Button("..##AddTextureButton"))
 		{
 			m_textureFileDialog.Open();
 		}
+
+
+		ImGui::AlignTextToFramePadding(); ImGui::Text("Replace Color"); ImGui::SameLine(); 
+		
+		if (ImGui::Checkbox("##rcBool", &m_isReplaceColor))
+		{
+			m_typeComponent->SetReplaceColorBool(m_isReplaceColor);
+		}
+
+		if (m_isReplaceColor)
+		{
+			if (ImGui::ColorEdit3("##ReplaceColor", &m_replaceColor[0]))
+				m_typeComponent->SetReplaceColor(m_replaceColor);
+		}
+			
+
 		ImGui::PopItemWidth();
 
-		m_textureFileDialog.Display();
+		
 
-		if (m_textureFileDialog.HasSelected())
+		//File Dialog Section
 		{
-			m_texturePath = Utility::File::GetRelativePath(m_textureFileDialog.GetSelected(), Utility::File::s_projectPath);
+			m_textureFileDialog.Display();
 
-			m_isLoaded = this->AddTexture(m_texturePath.generic_string());
+			if (m_textureFileDialog.HasSelected())
+			{
+				m_texturePath = Utility::File::GetRelativePath(m_textureFileDialog.GetSelected(), Utility::File::s_projectPath);
 
-			if (m_isLoaded)
-			{
-				m_typeComponent->CreateMesh(1.0f, 1.0f);
-				m_textureName = m_texturePath.filename().generic_string();
-				ENGINE_INFO("Load texture: " + m_textureName + " success.");
-				dirty = true;
+				m_isLoaded = this->AddTexture(m_texturePath.generic_string());
+
+				if (m_isLoaded)
+				{
+					m_typeComponent->CreateMesh(1.0f, 1.0f);
+					//m_typeComponent->
+					m_textureName = m_texturePath.filename().generic_string();
+					ENGINE_INFO("Load texture: " + m_textureName + " success.");
+					dirty = true;
+				}
+				else
+				{
+					//Toggle Pop Up
+					ENGINE_ERROR("ERROR: Failed loading texture file: " + m_textureName);
+				}
+				//std::cout << "Texture File Path: " << m_texturePath.generic_string() << std::endl;
+				/*std::cout << "Texture Absolute Path: " << m_textureFileDialog.GetSelected().string() << std::endl;
+				std::cout << "Texture Relative Path: " << m_textureFileDialog.GetSelected().relative_path().string() << std::endl;*/
+				//meshRenderer->SetTexture(m_textureName);
+				//meshRenderer->SetTexture("Assets/rabbit.png");
+
+				m_textureFileDialog.ClearSelected();
 			}
-			else
-			{
-				//Toggle Pop Up
-				ENGINE_ERROR("ERROR: Failed loading texture file: " + m_textureName);
-			}
-			//std::cout << "Texture File Path: " << m_texturePath.generic_string() << std::endl;
-			/*std::cout << "Texture Absolute Path: " << m_textureFileDialog.GetSelected().string() << std::endl;
-			std::cout << "Texture Relative Path: " << m_textureFileDialog.GetSelected().relative_path().string() << std::endl;*/
-			//meshRenderer->SetTexture(m_textureName);
-			//meshRenderer->SetTexture("Assets/rabbit.png");
-			
-			m_textureFileDialog.ClearSelected();
 		}
+		
 	}
 
 	bool MeshRendererEC::AddTexture(std::string path)
@@ -246,21 +274,139 @@ namespace Tools
 		
 		if (m_typeComponent)
 		{
-			m_framerate = &m_typeComponent->framePerSec;
+			m_controllerPath = m_typeComponent->GetControllerPath();
 
-			if (!m_typeComponent->m_controller)
+			if (Utility::fs::exists(m_controllerPath) && Utility::fs::is_regular_file(m_controllerPath))
 			{
-				//m_typeComponent->m_controller = new AnimationController();
+				m_typeComponent->Init();
+				m_controller = m_typeComponent->GetController();
 			}
+			/* //Make Animation Editor Failed
+			else
+			{
+				m_controller = std::make_shared<AnimationController>();
+				m_typeComponent->AssignController(m_controller);
+			}*/
 
-			//m_animationController = m_typeComponent->m_controller;
+			m_framerate = m_typeComponent->GetFramePerSec();
+
+			m_acFileDialog.SetTitle("Choose Animation Controller File");
+			m_acFileDialog.SetTypeFilters({ ".animcon" });
 		}
 		
 	}
 
+	void AnimatorEC::SetController(std::shared_ptr<AnimationController> controller)
+	{
+		if (!controller.get())
+			return;
+
+		m_controller = controller;
+		m_typeComponent->AssignController(m_controller);
+	}
+
+	void AnimatorEC::SetCurrentState(int index)
+	{
+		if (m_controller.get())
+		{
+			m_typeComponent->setCurrentState(index);
+		}
+	}
+
+	void RenderAnimation(Animation* anim);
+
+	void RenderAnimationState(AnimationState* state);
+
 	void AnimatorEC::OnRender()
 	{
-		ImGui::DragFloat("Animation Framerate", m_framerate, 0.1f, 1.0f, 60.0f, "%.1f");
+		ImGui::PushItemWidth(-1);
+		if (ImGui::DragFloat("Animation Framerate", &m_framerate, 0.1f, 1.0f, 60.0f, "%.1f"))
+		{
+			m_typeComponent->setFramePerSec(m_framerate);
+		}
+
+		ImGui::TextDisabled(m_typeComponent->GetControllerPath().c_str());
+		ImGui::SameLine();
+
+		//Button: Add texture button
+		if (ImGui::Button("..##AddACButton"))
+		{
+			m_acFileDialog.Open();
+		}
+
+		if (m_controller.get())
+		{
+			int  i = 0;
+			for (auto it = m_controller->m_states.begin(); it != m_controller->m_states.end(); ++it)
+			{
+				std::string name = "State " + std::to_string((i + 1));
+				if (ImGui::TreeNodeEx(name.c_str()))
+				{
+					if (ImGui::IsItemClicked())
+						m_typeComponent->setCurrentState(i);
+					RenderAnimationState(it->get());
+
+					ImGui::TreePop();
+				}
+				i++;
+			}
+		}
+
+		ImGui::PopItemWidth();
+
+		m_acFileDialog.Display();
+
+		if (m_acFileDialog.HasSelected())
+		{
+			bool result = true;
+			auto path = Utility::File::GetRelativePath(m_acFileDialog.GetSelected(), Utility::File::s_projectPath);
+			
+			if (!path.has_filename() || !Utility::fs::is_regular_file(path))
+			{
+				m_acFileDialog.ClearSelected();
+				return;
+			}
+			
+			/*if (m_controller)
+			{
+				m_controller.reset();
+				m_controller = std::make_shared<AnimationController>();
+			}*/
+			std::shared_ptr<AnimationController> controllerToLoad = std::make_shared<AnimationController>();
+			try
+			{
+				//Serialization::LoadObject(*m_controller, path.generic_string());
+				Serialization::LoadObject(*controllerToLoad, path.generic_string());
+			}
+			catch (const std::exception&)
+			{
+				ENGINE_WARN("Failed Loading Animation Controller!");
+				result = false;
+			}
+
+			if (controllerToLoad.get())
+			{
+				m_controller.reset();
+				m_controller = controllerToLoad;
+				m_typeComponent->SetControllerPath(path.generic_string());
+				m_typeComponent->Init();
+				m_typeComponent->GetGameObject()->GetComponent<MeshRenderer>()->CreateMesh(m_controller->getSheetSize().x, m_controller->getSheetSize().y);
+			}
+			////Load Success
+			//if (result)//(m_controller->getSheetSize() != glm::vec2(0.0f, 0.0f))
+			//{
+			//	m_typeComponent->SetControllerPath(path.generic_string());
+			//	m_typeComponent->Init();
+			//	//m_typeComponent->AssignController(m_controller);
+			//	m_typeComponent->GetGameObject()->GetComponent<MeshRenderer>()->CreateMesh(m_controller->getSheetSize().x, m_controller->getSheetSize().y);
+			//}
+			//else
+			//{
+			//	m_controller = m_typeComponent->GetController();
+			//}
+
+			m_acFileDialog.ClearSelected();
+		}
 	}
 
 	void SoundPlayerEC::Init(Component * soundPlayerComponent)

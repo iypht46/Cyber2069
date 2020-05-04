@@ -26,13 +26,15 @@ private:
 	glm::vec2 m_currentUVFrames;
 
 public:
-	std::string sr_controllerPath;
+	std::string sr_controllerPath = "none";
 
 	Animator();
 
 	virtual void Init();
 	bool SetControllerPath(std::string path);
+	std::string GetControllerPath();
 	void AssignController(std::shared_ptr <AnimationController> animControl);
+	std::shared_ptr <AnimationController> GetController();
 
 	//queue in next animation to play
 	void setNextState(int state);
@@ -45,6 +47,7 @@ public:
 	void animUpdate(float dt);
 
 	void setFramePerSec(float frame);
+	float GetFramePerSec();
 
 	glm::vec2 GetCurrentUVFrame();
 	~Animator();

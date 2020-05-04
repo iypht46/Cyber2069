@@ -98,6 +98,7 @@ namespace Physic
 		//Remove collider from layer
 		void Remove(Collider*, Layer);
 		void Remove(Collider*, std::string);
+		void Remove(Rigidbody*);
 		//Send Collision Message to Collider in list
 		void SendCollisionMsg(void);
 

@@ -20,7 +20,7 @@
 
 class ParticleSystem :public Component {
 public:
-	enum class DirectionType
+	enum class DirectionType : int
 	{
 		AwayFromcenter = 0,
 		ToCenter,
@@ -85,10 +85,10 @@ public:
 		//=================================
 		//bool randomSize;
 		//random---------------------------
-		float minXSize = 10.0f;
-		float maxXSize = 10.0f;
-		float minYSize = 10.0f;
-		float maxYSize = 10.0f;
+		float minXSize = 0.1f;
+		float maxXSize = 0.1f;
+		float minYSize = 0.1f;
+		float maxYSize = 0.1f;
 		//not random-----------------------
 		//float defaultSize;
 		//lifetime modifier----------------
@@ -214,6 +214,7 @@ public:
 		float minSpeed = 50.0f;
 		float maxSpeed = 50.0f;
 		void SetDirectiontype(DirectionType type) { directionType = type; sr_directionTypeAsInt = static_cast<int>(type); };
+		DirectionType GetDirectionType() { return directionType; }
 		//custom direction-----------------
 		glm::vec2 customDirection;
 		//=================================
@@ -260,7 +261,7 @@ public:
 
 	class ParticleAnimation :public ParticleModule {
 	public:
-		std::string controllerPath = "";
+		std::string controllerPath = "none";
 
 		//serialization
 	public:
@@ -287,12 +288,15 @@ public:
 	virtual void Init();
 
 	void SpawnParticle(GameObject*);
+	void UpdateMesh();
+	void UpdateRigidbody();
 
 	void TriggerBurstEmission(); //only works when set to burst mode
 	void ConstantEmit(float dt); //constantly called from update loop
 
 	void LifeTimeModification(float dt); ///+++++++++++ call thi in fac cl too
-
+	std::set<GameObject*>& GetSpawnedParticles();
+	void Reset();
 	ParticleSystem();
 	~ParticleSystem();
 

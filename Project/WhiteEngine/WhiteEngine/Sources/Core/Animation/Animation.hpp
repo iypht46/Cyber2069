@@ -6,8 +6,11 @@
 #include <Serialization/glmCereal.h>
 #include <cereal/types/string.hpp>
 
+namespace Tools { class EditorAC; }
+
 class Animation
 {
+	friend class Tools::EditorAC;
 public:
 	std::string stateName;
 	glm::vec2 m_StartPosition;

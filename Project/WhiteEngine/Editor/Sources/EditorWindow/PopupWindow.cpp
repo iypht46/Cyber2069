@@ -16,9 +16,10 @@ namespace Tools
 		{
 			
 			ImVec2 pos = ImGui::GetCursorScreenPos();
-			ImVec2 size = ImGui::GetWindowSize();
-			float indent_size = size.x / 12.0f;
-			float wrap_width = size.x - indent_size;
+			ImVec2 size = ImGui::GetItemRectSize();
+			float mid_pos = size.x / 2;
+			//float indent_size = size.x / 12.0f;
+			float wrap_width = 250.0f;//size.x - indent_size;
 			//ImGui::Indent(indent_size);
 			ImGui::PushTextWrapPos(wrap_width);
 			ImGui::Text(popup.m_message.c_str(), wrap_width);
@@ -43,7 +44,10 @@ namespace Tools
 			}
 			else
 			{
-				if (ImGui::Button("Ok", ImVec2(80, 0)))
+				
+				//float indent_size = (size.x/2) - 40.0f;
+				ImGui::Indent(mid_pos - (c_button_x / 2));
+				if (ImGui::Button("Ok", ImVec2(c_button_x, 0)))
 				{
 					ImGui::CloseCurrentPopup();
 					m_popupQueue.pop();
