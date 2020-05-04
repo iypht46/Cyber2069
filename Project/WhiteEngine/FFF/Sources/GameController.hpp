@@ -8,6 +8,7 @@
 #include "HPsystem.hpp"
 #include "EnemySpawner.hpp"
 #include "PlayerController.hpp"
+#include "Scripts/GameControl/PlayerData.h"
 #include <memory>
 #include <string>
 
@@ -154,6 +155,8 @@ private:
 	static GameController* instance;
 	float ScoreValue = 0;
 	float ComboValue = 1;
+
+	std::unique_ptr<PlayerData> Data;
 
 	float startHPscaleX;
 	float startHPscaleY;

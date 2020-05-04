@@ -123,6 +123,9 @@
     <ClCompile Include="Sources\EquipmentManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Scripts\Weapons\Bullet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\EnemySpawner.hpp">
@@ -189,6 +192,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sources\EquipmentManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Scripts\GameControl\PlayerData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
