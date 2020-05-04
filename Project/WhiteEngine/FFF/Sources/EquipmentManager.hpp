@@ -126,6 +126,7 @@ public:
 	int* GetArtifactBuffer() { return Artifact_Buffer; }
 
 	void InitPlayerEquipment();
+	void ResetPlayerEquipment();
 
 public:
 	template<class Archive>

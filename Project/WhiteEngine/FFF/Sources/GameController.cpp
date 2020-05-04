@@ -325,6 +325,8 @@ void GameController::OnUpdate(float dt)
 
 		if (playerControl->GetGameObject()->GetComponent<HPsystem>()->isDead()) 
 		{
+			this->GetGameObject()->GetComponent<EquipmentManager>()->ResetPlayerEquipment();
+			
 			SetGameState(GAME_STATE::ENDING);
 		}
 

@@ -473,3 +473,20 @@ void EquipmentManager::InitPlayerEquipment()
 
 	player->ModifyFromEquipment();
 }
+
+void EquipmentManager::ResetPlayerEquipment() 
+{
+	PlayerController* player = playerObj->GetComponent<PlayerController>();
+
+	player->RevertEquipment();
+
+	for (int i = 0; i < maxPlayerArtifact; i++)
+	{
+		Artifact_Buffer[i] = -1;
+	}
+
+	Weapon_Buffer = -1;
+
+	artifactCount = 0;
+	weaponCount = 0;
+}
