@@ -47,6 +47,7 @@ void ParticleSystem::Init() {
 		
 		/*its components remains in the system and gets updated still*/
 		
+		//creating particle object, apply some property and store it in object pool
 		std::shared_ptr<GameObject> particle = std::make_shared<GameObject>();
 		Particles.push_back(particle);
 

@@ -10,6 +10,7 @@
 #define AnimationControllerPath(path) "Sources/Assets/AnimationControllers/" path ".animcon"
 #define PrefabPath(path) "Sources/Assets/Prefabs/" path ".prefab"
 #define ParticlePath(path) "Sources/Assets/ParticleConfigs/" path ".ptcl"
+#define TexturePath(path) "Sources/Assets/Sprites/" path ".png" 
 #define DataPath "PlayerData.dat"
 
 namespace Serialization {

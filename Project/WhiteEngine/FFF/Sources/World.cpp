@@ -37,6 +37,7 @@
 #include "Weapon.hpp"
 #include "EquipmentManager.hpp"
 #include "LoadoutUI.hpp"
+#include "Scripts/GameControl/UIController.h"
 
 using SceneManagement::Instantiate;
 
@@ -269,6 +270,8 @@ namespace World
 			Bg2->m_transform->SetPosition(glm::vec3(0, -300, 0));
 			Bg1->m_transform->SetPosition(glm::vec3(0, -300, 0));
 
+
+
 			//Player animation controller
 			{
 				//Add Animator
@@ -388,6 +391,15 @@ namespace World
 
 			//gamecontroller->GetComponent<EquipmentManager>()->AddPlayerWeapon(WEAPON_TYPE::WEAPON_MACHINEGUN);
 
+			std::shared_ptr<GameObject> logo = Instantiate();
+			logo->AddComponent<MeshRenderer>();
+			logo->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/WhiteLogo"));
+			logo->GetComponent<MeshRenderer>()->SetUI(true);
+			logo->GetComponent<MeshRenderer>()->SetLayer(10);
+			logo->m_transform->SetScale(glm::vec3(68*3, 55*3, 1));
+
+			gamecontroller->AddComponent<UIController>();
+			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::MainMenu].push_back(logo);
 
 			std::shared_ptr<GameObject> ui_LoadOut = Instantiate();
 			std::shared_ptr<GameObject> ui_button = Instantiate();
@@ -560,7 +572,7 @@ namespace World
 				flyer->AddComponent<MeshRenderer>();
 				flyer->GetComponent<MeshRenderer>()->SetLayer(1);
 				flyer->GetComponent<MeshRenderer>()->CreateMesh(6, 3);
-				flyer->GetComponent<MeshRenderer>()->SetTexture(SpritePath("Characters/Enemy_Flyer"));
+				flyer->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Characters/Enemy_Flyer"));
 
 				flyer->AddComponent<Rigidbody>();
 				flyer->GetComponent<Rigidbody>()->Init(15, 15);
@@ -680,7 +692,7 @@ namespace World
 				flyer->AddComponent<MeshRenderer>();
 				flyer->GetComponent<MeshRenderer>()->SetLayer(1);
 				flyer->GetComponent<MeshRenderer>()->CreateMesh(7, 2);
-				flyer->GetComponent<MeshRenderer>()->SetTexture(SpritePath("Characters/Enemy_Tank"));
+				flyer->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Characters/Enemy_Tank"));
 
 				flyer->AddComponent<Rigidbody>();
 				flyer->AddComponent<BoxCollider>()->ReScale(0.5, 0.5);
@@ -747,7 +759,7 @@ namespace World
 				flyer->AddComponent<MeshRenderer>();
 				flyer->GetComponent<MeshRenderer>()->SetLayer(1);
 				flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 3);
-				flyer->GetComponent<MeshRenderer>()->SetTexture(SpritePath("Characters/Enemy_Charger"));
+				flyer->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Characters/Enemy_Charger"));
 
 				flyer->AddComponent<Rigidbody>();
 				flyer->AddComponent<BoxCollider>()->ReScale(1, 1);
@@ -808,7 +820,7 @@ namespace World
 				flyer->AddComponent<MeshRenderer>();
 				flyer->GetComponent<MeshRenderer>()->SetLayer(1);
 				flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 8);
-				flyer->GetComponent<MeshRenderer>()->SetTexture(SpritePath("Characters/Enemy_Spitter"));
+				flyer->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Characters/Enemy_Spitter"));
 
 				flyer->AddComponent<Rigidbody>();
 				flyer->AddComponent<BoxCollider>()->ReScale(0.5, 0.5);
@@ -865,7 +877,7 @@ namespace World
 
 				queen->AddComponent<MeshRenderer>();
 				queen->GetComponent<MeshRenderer>()->CreateMesh(7, 2);
-				queen->GetComponent<MeshRenderer>()->SetTexture(SpritePath("Characters/Enemy_Queen"));
+				queen->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Characters/Enemy_Queen"));
 
 				queen->AddComponent<Animator>();
 				queen->GetComponent<Animator>()->sr_controllerPath = AnimationControllerPath("Queen");
@@ -895,7 +907,7 @@ namespace World
 				cocoon->AddComponent<MeshRenderer>();
 				cocoon->GetComponent<MeshRenderer>()->SetLayer(1);
 				cocoon->GetComponent<MeshRenderer>()->CreateMesh(5, 4);
-				cocoon->GetComponent<MeshRenderer>()->SetTexture(SpritePath("Characters/Enemy_Cocoon"));
+				cocoon->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Characters/Enemy_Cocoon"));
 
 				cocoon->AddComponent<Rigidbody>();
 				cocoon->AddComponent<BoxCollider>()->ReScale(1, 1);

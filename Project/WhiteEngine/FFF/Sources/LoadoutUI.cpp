@@ -112,7 +112,7 @@ void LoadoutUI::StartGameplay()
 
 void LoadoutUI::OnDisable()
 {
-	GAME_INFO("onDisable");
+	//GAME_INFO("onDisable");
 
 	if (WeaponDisplaySlot != nullptr)
 	{

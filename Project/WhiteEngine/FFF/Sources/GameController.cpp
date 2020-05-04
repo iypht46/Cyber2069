@@ -1,4 +1,5 @@
 #include "GameController.hpp"
+#include "Scripts/GameControl/UIController.h"
 #include "Input/Input.hpp"
 
 GameController* GameController::instance = nullptr;
@@ -188,6 +189,8 @@ void GameController::OnUpdate(float dt)
 		//Do only once after state changed
 		if (StateChanged) 
 		{
+			UIController::GetInstance()->ToggleUI(UI_GROUP::MainMenu);
+
 			playerControl->GetGameObject()->SetActive(false);
 			HPbar.lock()->SetActive(false);
 			Staminabar.lock()->SetActive(false);
@@ -219,6 +222,8 @@ void GameController::OnUpdate(float dt)
 		//Do only once after state changed
 		if (StateChanged)
 		{
+			UIController::GetInstance()->ToggleUI(UI_GROUP::Loadout);
+
 			loadoutUI.lock()->SetActive(true);
 
 			StateChanged = false;
@@ -229,6 +234,8 @@ void GameController::OnUpdate(float dt)
 		//Do only once after state changed
 		if (StateChanged) 
 		{
+			UIController::GetInstance()->ToggleUI(UI_GROUP::Gameplay);
+
 			ScoreValue = 0;
 			playerControl->GetGameObject()->SetActive(true);
 			playerControl->GetGameObject()->m_transform->SetPosition(PlayerStartPosition);
@@ -279,6 +286,7 @@ void GameController::OnUpdate(float dt)
 					{
 						CocoonCount = 0;
 						SetGameplayState(GAMEPLAY_STATE::QUEEN);
+						StateGamplayChanged = true;
 					}
 					else 
 					{
@@ -292,11 +300,7 @@ void GameController::OnUpdate(float dt)
 			//Do only once after gameplaystate changed
 			if (StateGamplayChanged) 
 			{
-				//Spawn Queen
-				if (QueenSpawner != nullptr)
-				{
-					Current_Queen = QueenSpawner->SpawnEnemy();
-				}
+				SpawnQueen();
 
 				StateGamplayChanged = false;
 			}
@@ -326,6 +330,8 @@ void GameController::OnUpdate(float dt)
 		//Do only once after state changed
 		if (StateChanged) 
 		{
+			UIController::GetInstance()->ToggleUI(UI_GROUP::GameOver);
+
 			SetSpawningAllSpawner(false);
 			SetActiveAllObjectInPool(false);
 			playerControl->GetGameObject()->SetActive(false);
