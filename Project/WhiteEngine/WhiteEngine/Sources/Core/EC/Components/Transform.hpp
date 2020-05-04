@@ -81,7 +81,7 @@ public:
 			m_localPosition,
 			m_localScale,
 			m_localRotation,
-			parent,
+			cereal::defer(parent),
 			cereal::defer(children)
 			);
 	}

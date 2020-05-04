@@ -30,7 +30,7 @@ LaserGun::LaserGun()
 void LaserGun::OnAwake() {
 
 	weapon_damage = 10.0f;
-	weapon_firerate = 1.0f;
+	//weapon_firerate = 1.0f;
 
 	laser_size = 25.0f;
 	laser_duration = 1.0f;
@@ -57,7 +57,7 @@ void LaserGun::GameTimeBehaviour(float dt)
 		Physic::PhysicScene* PhySc = Physic::PhysicScene::GetInstance();
 
 		weapon_delay_count += dt;
-		if (weapon_delay_count > weapon_firerate) {
+		if (weapon_delay_count >= (1.0f / weapon_firerate)) {
 			
 			laser_duration_count += dt;
 			if (laser_duration_count > laser_duration) 
