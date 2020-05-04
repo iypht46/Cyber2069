@@ -54,6 +54,7 @@ struct EnemyPreset {
 	float FlyerRatio = 0.4f;
 	float BomberRatio = 0.2f;
 	float QueenRatio = 0.0f;
+	float CocoonRatio = 0.0f;
 	float TankRatio = 0.1f;
 	float ChargerRatio = 0.15f;
 	float SpitterRatio = 0.15f;
@@ -66,6 +67,7 @@ public:
 			FlyerRatio,
 			BomberRatio,
 			QueenRatio,
+			CocoonRatio,
 			TankRatio,
 			ChargerRatio,
 			SpitterRatio
@@ -92,6 +94,9 @@ struct EnemyAmplifier {
 	float QueenHP = 500;
 	float QueenSpeed = 75;
 	float QueenSpawnDelay = 0.1;
+
+	//cocoon
+	float CocoonHP = 10;
 
 	//tank
 	float TankSpeed = 50;
@@ -131,6 +136,8 @@ public:
 			QueenHP,
 			QueenSpeed,
 			QueenSpawnDelay,
+
+			CocoonHP,
 
 			TankSpeed,
 			TankHP,
@@ -183,6 +190,7 @@ private:
 	//extracted in on awake after created, need to assign since the editor or don't bother create any object
 	vector<EnemySpawner*> Spawners;
 	EnemySpawner* QueenSpawner;
+	EnemySpawner* CocoonSpawner;
 
 	vector<std::shared_ptr<EnemyPreset>> Presets;
 	vector<std::shared_ptr<EnemyAmplifier>> Amplifiers;
@@ -228,6 +236,8 @@ public:
 	std::weak_ptr<GameObject> ScoreText;
 	std::weak_ptr<GameObject> ComboText;
 
+	std::weak_ptr<GameObject> loadoutUI;
+
 	GameController();
 	~GameController() {}
 
@@ -244,7 +254,8 @@ public:
 
 	void ResetScore();
 
-	void SpawnQueen();
+	GameObject* SpawnQueen();
+	GameObject* SpawnCocoon();
 
 	void AssignPlayer(std::weak_ptr<GameObject> player);
 
@@ -268,6 +279,8 @@ public:
 
 	void SetGameState(int state) { this->NextState = state; }
 	void SetGameplayState(int state) { this->NextGameplayState = state; }
+
+	GameObject* GetPlayer() { return playerControl->GetGameObject(); }
 
 	virtual void OnAwake() override;
 	virtual void OnStart() override;

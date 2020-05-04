@@ -91,7 +91,7 @@ public:
 	void Render();
 	static GLRenderer* GetInstance();
 	bool InitGL(string vertexShaderFile, string fragmentShaderFile);
-	bool drawDebug = true;
+	bool drawDebug = false;
 
 
 	~GLRenderer();
