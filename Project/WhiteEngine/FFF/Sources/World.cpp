@@ -36,6 +36,7 @@
 #include "GameController.hpp"
 #include "Weapon.hpp"
 #include "EquipmentManager.hpp"
+#include "LoadoutUI.hpp"
 
 using SceneManagement::Instantiate;
 
@@ -254,7 +255,7 @@ namespace World
 			Bg2->GetComponent<MeshRenderer>()->SetLayer(-2);
 			Bg2->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 			Bg2->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer2.png");
-			
+
 			Bg1 = Instantiate().get();
 			Bg1->AddComponent<MeshRenderer>();
 			Bg1->GetComponent<MeshRenderer>()->SetLayer(-1);
@@ -316,7 +317,7 @@ namespace World
 			//player
 			{
 				//Rabbit = Instantiate(PrefabPath("Player"));
-				
+
 				Rabbit = Instantiate();
 				Rabbit->Layer = "Player";
 
@@ -348,8 +349,10 @@ namespace World
 				Rabbit->GetComponent<HPsystem>()->SetMaxHP(100);
 				Rabbit->AddComponent<PlayerController>();
 
+				//platform->m_transform->SetParent(Rabbit->m_transform);
+
 				Serialization::SaveObject(*Rabbit, PrefabPath("Player"));
-				
+
 			}
 
 
@@ -359,7 +362,7 @@ namespace World
 			gamecontroller->GetComponent<GameController>()->ComboText = ui_ComboText;
 			gamecontroller->GetComponent<GameController>()->HPbar = ui_HPbar;
 			gamecontroller->GetComponent<GameController>()->Staminabar = ui_StaminaBar;
-			gamecontroller->GetComponent<GameController>()->SetGameState(GAME_STATE::GAMEPLAY);
+			gamecontroller->GetComponent<GameController>()->SetGameState(GAME_STATE::MAINMENU);
 			gamecontroller->GetComponent<GameController>()->SetGameplayState(GAMEPLAY_STATE::NORMAL);
 
 			std::shared_ptr<GameObject> wp_MachineGun = Instantiate();
@@ -376,11 +379,138 @@ namespace World
 
 			gamecontroller->AddComponent<EquipmentManager>();
 			gamecontroller->GetComponent<EquipmentManager>()->AssignWeaponToManager(wp_MachineGun);
+
+			gamecontroller->GetComponent<EquipmentManager>()->AssignArtifactToManager(std::make_shared<BulletAmplifier>());
+			gamecontroller->GetComponent<EquipmentManager>()->AssignArtifactToManager(std::make_shared<FireRateUP>());
+			gamecontroller->GetComponent<EquipmentManager>()->AssignArtifactToManager(std::make_shared<SpeedRunner>());
+			gamecontroller->GetComponent<EquipmentManager>()->AssignArtifactToManager(std::make_shared<AttackUP>());
+
 			gamecontroller->GetComponent<EquipmentManager>()->AssignPlayer(Rabbit);
 			gamecontroller->GetComponent<EquipmentManager>()->InitData();
 
-			gamecontroller->GetComponent<EquipmentManager>()->Unlock_WEAPON(WEAPON_TYPE::WEAPON_MACHINEGUN);
-			gamecontroller->GetComponent<EquipmentManager>()->AddPlayerWeapon(WEAPON_TYPE::WEAPON_MACHINEGUN);
+			//gamecontroller->GetComponent<EquipmentManager>()->AddPlayerWeapon(WEAPON_TYPE::WEAPON_MACHINEGUN);
+
+
+			std::shared_ptr<GameObject> ui_LoadOut = Instantiate();
+			std::shared_ptr<GameObject> ui_button = Instantiate();
+
+			ui_LoadOut->AddComponent<LoadoutUI>();
+			ui_LoadOut->AddComponent<MeshRenderer>();
+			ui_LoadOut->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			ui_LoadOut->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/black.png");
+			ui_LoadOut->GetComponent<MeshRenderer>()->SetUI(true);
+			ui_LoadOut->GetComponent<MeshRenderer>()->SetLayer(5);
+
+			ui_LoadOut->m_transform->SetScale(glm::vec3(800.0f, 600.0f, 1.0f));
+
+			ui_button->AddComponent<MeshRenderer>();
+			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			ui_button->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/White.jpg");
+			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
+			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<LoadoutSelectButton>();
+
+			ui_button->m_transform->SetScale(glm::vec3(100.0f,100.0f,1.0f));
+			ui_button->m_transform->SetPosition(glm::vec3(-300.0f, -100.0f, 1.0f));
+			
+			ui_LoadOut->GetComponent<LoadoutUI>()->AssignArtifactDisplaySlot(ui_button);
+
+			ui_button = Instantiate();
+
+			ui_button->AddComponent<MeshRenderer>();
+			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			ui_button->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/White.jpg");
+			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
+			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<LoadoutSelectButton>();
+
+			ui_button->m_transform->SetScale(glm::vec3(100.0f, 100.0f, 1.0f));
+			ui_button->m_transform->SetPosition(glm::vec3(-100.0f, -100.0f, 1.0f));
+
+			ui_LoadOut->GetComponent<LoadoutUI>()->AssignArtifactDisplaySlot(ui_button);
+
+			ui_button = Instantiate();
+
+			ui_button->AddComponent<MeshRenderer>();
+			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			ui_button->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/White.jpg");
+			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
+			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<LoadoutSelectButton>();
+
+			ui_button->m_transform->SetScale(glm::vec3(200.0f, 100.0f, 1.0f));
+			ui_button->m_transform->SetPosition(glm::vec3(-200.0f, 100.0f, 1.0f));
+
+			ui_LoadOut->GetComponent<LoadoutUI>()->AssignWeaponDisplaySlot(ui_button);
+
+			ui_button = Instantiate();
+
+			ui_button->AddComponent<MeshRenderer>();
+			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			ui_button->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/red.jpg");
+			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
+			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<LoadoutSelectButton>();
+			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
+			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(ARTIFACT_TYPE::ARTF_BULLETAMP);
+
+			ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
+			ui_button->m_transform->SetPosition(glm::vec3(100.0f, 20.0f, 1.0f));
+
+			ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
+
+			ui_button = Instantiate();
+
+			ui_button->AddComponent<MeshRenderer>();
+			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			ui_button->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/blue.jpg");
+			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
+			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<LoadoutSelectButton>();
+			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
+			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(1);
+
+			ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
+			ui_button->m_transform->SetPosition(glm::vec3(200.0f, 20.0f, 1.0f));
+
+			ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
+
+			ui_button = Instantiate();
+
+			ui_button->AddComponent<MeshRenderer>();
+			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			ui_button->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/green.jpg");
+			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
+			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<LoadoutSelectButton>();
+			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
+			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(2);
+
+			ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
+			ui_button->m_transform->SetPosition(glm::vec3(300.0f, 20.0f, 1.0f));
+
+			ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
+
+			ui_button = Instantiate();
+
+			ui_button->AddComponent<MeshRenderer>();
+			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			ui_button->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/MachineGun.png");
+			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
+			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<LoadoutSelectButton>();
+			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::WEAPON);
+			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(0);
+
+			ui_button->m_transform->SetScale(glm::vec3(140.0f, 70.0f, 1.0f));
+			ui_button->m_transform->SetPosition(glm::vec3(100.0f, 100.0f, 1.0f));
+
+			ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
+
+
+			gamecontroller->GetComponent<GameController>()->loadoutUI = ui_LoadOut;
+
+			
 
 			//test parent/child------------------------------------------------
 			//Bg2->m_transform->SetParent(Rabbit->m_transform);
@@ -394,6 +524,16 @@ namespace World
 			platform->GetComponent<MeshRenderer>()->SetLayer(3);
 			platform->m_transform->SetScale(glm::vec3(800, 20, 1));
 			//platform->m_transform->SetParent(Rabbit->m_transform);
+			platform->AddComponent<BoxCollider>()->ReScale(1, 1);
+
+			platform = Instantiate().get();
+			platform->Layer = "Platform";
+			platform->AddComponent<MeshRenderer>();
+			platform->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			platform->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
+			platform->GetComponent<MeshRenderer>()->SetLayer(3);
+			platform->m_transform->SetScale(glm::vec3(800, 20, 1));
+			platform->m_transform->SetPosition(glm::vec3(500, 500, 1));
 			platform->AddComponent<BoxCollider>()->ReScale(1, 1);
 
 			ENGINE_INFO("Enemy Creation ==========================================================");
@@ -452,12 +592,12 @@ namespace World
 				flyer->SetActive(false);
 
 				Serialization::SaveObject(*flyer, PrefabPath("Flyer"));
-				
+
 			}
 
 			//bomber anim
 			{
-				
+
 				std::shared_ptr<Animation> BomberIdle = std::make_shared<Animation>();
 
 				BomberIdle->setStartPosition(0, 0);
@@ -489,11 +629,11 @@ namespace World
 				BomberAnimController->AddState(BomberDie, false);
 
 				Serialization::SaveObject(*BomberAnimController, AnimationControllerPath("Bomber"));
-				
+
 			}
 			//bomber
 			{
-				
+
 				GameObject* bomber = Instantiate().get();
 				bomber->Layer = "Enemy";
 				bomber->m_transform->SetScale(glm::vec3(50, 50, 1));
@@ -518,7 +658,7 @@ namespace World
 
 				bomber->SetActive(false);
 				Serialization::SaveObject(*bomber, PrefabPath("Bomber"));
-				
+
 			}
 
 			//Tank anim
@@ -757,6 +897,31 @@ namespace World
 				Serialization::SaveObject(*queen, PrefabPath("Queen"));
 			}
 
+			//Cocoon
+			{
+				GameObject* cocoon = Instantiate().get();
+
+				cocoon->Layer = "Enemy";
+				cocoon->m_transform->SetScale(glm::vec3(100.0f, 100.0f, 1.0f));
+
+				cocoon->AddComponent<MeshRenderer>();
+				cocoon->GetComponent<MeshRenderer>()->SetLayer(1);
+				cocoon->GetComponent<MeshRenderer>()->CreateMesh(5, 4);
+				cocoon->GetComponent<MeshRenderer>()->SetTexture(SpritePath("Characters/Enemy_Cocoon"));
+
+				cocoon->AddComponent<Rigidbody>();
+				cocoon->AddComponent<BoxCollider>()->ReScale(1, 1);
+				cocoon->GetComponent<Rigidbody>()->SetGravityScale(0.00001);
+				cocoon->AddComponent<Enemy>();
+
+				cocoon->AddComponent<HPsystem>();
+				cocoon->GetComponent<HPsystem>()->SetMaxHP(10.0f);
+
+				cocoon->SetActive(false);
+
+				Serialization::SaveObject(*cocoon, PrefabPath("Cocoon"));
+			}
+
 
 			ENGINE_INFO("Example Particle Creation ===============================================");
 			//Bullet Hit Example
@@ -937,6 +1102,14 @@ namespace World
 		}
 
 		SceneManagement::ActiveScene->Init();
+
+
+		gamecontroller->GetComponent<EquipmentManager>()->Unlock_WEAPON(WEAPON_TYPE::WEAPON_MACHINEGUN);
+
+		gamecontroller->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_BULLETAMP);
+		gamecontroller->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_FIRERATEUP);
+		gamecontroller->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_SPEEDRUNNER);
+		gamecontroller->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_ATKUP);
 	}
 
 	void FixedUpdate(float dt)
@@ -973,7 +1146,7 @@ namespace World
 		//Update Input
 		Input::Update();
 		//Core
-		DebugInput(dt);
+		//DebugInput(dt);
 
 		FactoryCollection::UpdateComponents(dt);
 

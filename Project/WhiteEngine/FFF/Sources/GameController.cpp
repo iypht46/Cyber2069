@@ -51,33 +51,47 @@ void GameController::OnStart() {
 	//flyer spawner
 	ENGINE_INFO("GameControl Creating Flyer");
 	CreatePool(PrefabPath("Flyer"), POOL_TYPE::ENEMY_FLYER, 50);
-	CreateSpawner(POOL_TYPE::ENEMY_FLYER)->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() / -2);
+	//CreateSpawner(POOL_TYPE::ENEMY_FLYER)->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() / -2);
+	CreateSpawner(POOL_TYPE::ENEMY_FLYER)->SetSpawnMode(SPAWN_MODE::EDGE);
 
 	//bomber spawner
 	ENGINE_INFO("GameControl Creating Bomber");
 	CreatePool(PrefabPath("Bomber"), POOL_TYPE::ENEMY_BOMBER, 50);
-	CreateSpawner(POOL_TYPE::ENEMY_BOMBER)->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() / -2);
+	//CreateSpawner(POOL_TYPE::ENEMY_BOMBER)->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() / -2);
+	CreateSpawner(POOL_TYPE::ENEMY_BOMBER)->SetSpawnMode(SPAWN_MODE::EDGE);
 
 	//Tank
 	ENGINE_INFO("GameControl Creating Tank");
 	CreatePool(PrefabPath("Tank"), POOL_TYPE::ENEMY_TANK, 10);
-	CreateSpawner(POOL_TYPE::ENEMY_TANK)->SetSpawnRange(0, 100, 0, 100);
+	//CreateSpawner(POOL_TYPE::ENEMY_TANK)->SetSpawnRange(0, 100, 0, 100);
+	CreateSpawner(POOL_TYPE::ENEMY_TANK)->SetSpawnMode(SPAWN_MODE::PLATFORM);
 
 	//Charger
 	ENGINE_INFO("GameControl Creating Charger");
 	CreatePool(PrefabPath("Charger"), POOL_TYPE::ENEMY_CHARGER, 10);
-	CreateSpawner(POOL_TYPE::ENEMY_CHARGER)->SetSpawnRange(0, 100, 0, 100);
+	//CreateSpawner(POOL_TYPE::ENEMY_CHARGER)->SetSpawnRange(0, 100, 0, 100);
+	CreateSpawner(POOL_TYPE::ENEMY_CHARGER)->SetSpawnMode(SPAWN_MODE::PLATFORM);
 
 	//Spitter
 	ENGINE_INFO("GameControl Creating Spitter");
 	CreatePool(PrefabPath("Spitter"), POOL_TYPE::ENEMY_SPITTER, 10);
-	CreateSpawner(POOL_TYPE::ENEMY_SPITTER)->SetSpawnRange(-400, 100, 400, 100);
+	//CreateSpawner(POOL_TYPE::ENEMY_SPITTER)->SetSpawnRange(-400, 100, 400, 100);
+	CreateSpawner(POOL_TYPE::ENEMY_SPITTER)->SetSpawnMode(SPAWN_MODE::PLATFORM);
 
 	//Queen spawner
 	ENGINE_INFO("GameControl Creating Queen");
 	CreatePool(PrefabPath("Queen"), POOL_TYPE::ENEMY_QUEEN, 1);
 	QueenSpawner = CreateSpawner(POOL_TYPE::ENEMY_QUEEN);
+	QueenSpawner->SetSpawnMode(SPAWN_MODE::RANGE);
 	QueenSpawner->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() / -2);
+
+	//Cocoon spawner
+	ENGINE_INFO("GameControl Creating Queen");
+	CreatePool(PrefabPath("Cocoon"), POOL_TYPE::ENEMY_COCOON, 1);
+	CocoonSpawner = CreateSpawner(POOL_TYPE::ENEMY_COCOON);
+	CocoonSpawner->SetSpawnMode(SPAWN_MODE::PLATFORM);
+
+
 
 	//difficulty ting needs to go out side---------------------------
 	shared_ptr<EnemyAmplifier> a = std::make_shared<EnemyAmplifier>();
@@ -126,6 +140,8 @@ void GameController::OnStart() {
 	ScoreText.lock()->SetActive(false);
 	ComboText.lock()->SetActive(false);
 
+	loadoutUI.lock()->SetActive(false);
+
 	PlayerStartPosition = playerControl->GetGameObject()->m_transform->GetPosition();
 }
 
@@ -148,6 +164,7 @@ EnemySpawner* GameController::CreateSpawner(int enemyType) {
 
 void GameController::OnUpdate(float dt)
 {
+
 	//update enemy spawner, since they're not created in system
 	for (EnemySpawner* sp: Spawners) {
 		sp->OnUpdate(dt);
@@ -177,12 +194,14 @@ void GameController::OnUpdate(float dt)
 			ScoreText.lock()->SetActive(false);
 			ComboText.lock()->SetActive(false);
 
+			loadoutUI.lock()->SetActive(false);
+
 			StateChanged = false;
 		}
 
 		if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE)) 
 		{
-			SetGameState(GAME_STATE::GAMEPLAY);
+			SetGameState(GAME_STATE::LOADOUT);
 		}
 
 		if (Input::GetKeyDown(Input::KeyCode::KEY_S))
@@ -200,10 +219,11 @@ void GameController::OnUpdate(float dt)
 		//Do only once after state changed
 		if (StateChanged)
 		{
-			
+			loadoutUI.lock()->SetActive(true);
 
 			StateChanged = false;
 		}
+
 		break;
 	case GAME_STATE::GAMEPLAY:
 		//Do only once after state changed
@@ -218,7 +238,10 @@ void GameController::OnUpdate(float dt)
 			ScoreText.lock()->SetActive(true);
 			ComboText.lock()->SetActive(true);
 
+			loadoutUI.lock()->SetActive(false);
+
 			StateChanged = false;
+			StateGamplayChanged = true;
 		}
 
 		this->ScoreText.lock()->GetComponent<TextRenderer>()->SetText("Score: " + to_string((int)ScoreValue));
@@ -237,10 +260,9 @@ void GameController::OnUpdate(float dt)
 			if (StateGamplayChanged) 
 			{
 				//Spawn Cocoon
-				if (GetSpawner(POOL_TYPE::ENEMY_COCOON) != nullptr)
+				if (CocoonSpawner != nullptr)
 				{
-					//Gonna write manual random Spawn func for cocoon later
-					//Current_Cocoon = GetSpawner(POOL_TYPE::ENEMY_COCOON)->SpawnEnemy();
+					Current_Cocoon = CocoonSpawner->SpawnEnemy();
 				}
 
 				StateGamplayChanged = false;
@@ -249,7 +271,7 @@ void GameController::OnUpdate(float dt)
 			if (Current_Cocoon != nullptr) 
 			{
 				//if cocoon dead plus score and spawn a new one
-				if (Current_Cocoon->GetComponent<HPsystem>()->isDead())
+				if (!Current_Cocoon->Active())
 				{
 					CocoonCount++;
 
@@ -258,10 +280,17 @@ void GameController::OnUpdate(float dt)
 						CocoonCount = 0;
 						SetGameplayState(GAMEPLAY_STATE::QUEEN);
 					}
-					else {
-						//Gonna write manual random Spawn func for cocoon later
-						//Current_Cocoon = GetSpawner(POOL_TYPE::ENEMY_COCOON)->SpawnEnemy();
+					else 
+					{
+						Current_Cocoon = CocoonSpawner->SpawnEnemy();
 					}
+				}
+			}
+			else {
+				
+				if (CocoonSpawner != nullptr)
+				{
+					Current_Cocoon = CocoonSpawner->SpawnEnemy();
 				}
 			}
 
@@ -271,10 +300,9 @@ void GameController::OnUpdate(float dt)
 			if (StateGamplayChanged) 
 			{
 				//Spawn Queen
-				if (GetSpawner(POOL_TYPE::ENEMY_QUEEN) != nullptr)
+				if (QueenSpawner != nullptr)
 				{
-					//manualSpawn func for queen
-					//Current_Queen = GetSpawner(POOL_TYPE::ENEMY_Queen)->SpawnEnemy();
+					Current_Queen = QueenSpawner->SpawnEnemy();
 				}
 
 				StateGamplayChanged = false;
@@ -283,9 +311,9 @@ void GameController::OnUpdate(float dt)
 			if (Current_Queen != nullptr) 
 			{
 				//if Queen Dead go back to normal state
-				if (Current_Queen->GetComponent<HPsystem>()->isDead()) 
+				if (!Current_Queen->Active()) 
 				{
-					SetGameplayState(GAMEPLAY_STATE::QUEEN);
+					SetGameplayState(GAMEPLAY_STATE::NORMAL);
 				}
 			}
 
@@ -312,6 +340,8 @@ void GameController::OnUpdate(float dt)
 			Staminabar.lock()->SetActive(false);
 			ScoreText.lock()->SetActive(false);
 			ComboText.lock()->SetActive(false);
+
+			currScoreCheckpoint = 0;
 			
 			//update score
 			Data->AddLeaderboardEntry("whoite", ScoreValue);
@@ -330,10 +360,20 @@ void GameController::OnUpdate(float dt)
 	}
 }
 
-void GameController::SpawnQueen() {
+GameObject* GameController::SpawnQueen() {
 	if (QueenSpawner != nullptr) {
-		QueenSpawner->SpawnEnemy();
+		return QueenSpawner->SpawnEnemy();
 	}
+
+	return nullptr;
+}
+
+GameObject* GameController::SpawnCocoon() {
+	if (CocoonSpawner != nullptr) {
+		return CocoonSpawner->SpawnEnemy();
+	}
+
+	return nullptr;
 }
 
 float GameController::GetScore() {

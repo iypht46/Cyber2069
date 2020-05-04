@@ -53,6 +53,8 @@ public:
 	void SetReplaceColor(std::string hexcode);
 	void RemoveReplaceColor();
 
+	unsigned int GetTexture() { return texture; }
+
 	int GetLayer();
 
 	void Render(glm::mat4 globalModelTransform);

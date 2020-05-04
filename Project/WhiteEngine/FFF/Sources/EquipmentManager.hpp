@@ -44,11 +44,22 @@ public:
 	std::vector<bool> Unlock_Weapons;
 	std::vector<bool> Unlock_Artifacts;
 
+
+	int Weapon_Buffer = -1;
+	int* Artifact_Buffer;
+
+	EquipmentManager();
+
 	void OnAwake();
 
 	void AssignPlayer(std::shared_ptr<GameObject> player) { this->playerObj = player; }
 	void AssignWeaponToManager(std::shared_ptr<GameObject> weaponObj);
 	void AssignArtifactToManager(std::shared_ptr<Artifact> artifact);
+
+	int GetMaxWeapon() { return maxPlayerWeapon; }
+	int GetMaxArtifact() { return maxPlayerArtifact; }
+	int GetTotalWeapon() { return totalWeapon; }
+	int GetTotalArtifact() { return totalArtifact; }
 
 
 	//===============Unlock System===============
@@ -94,6 +105,16 @@ public:
 
 	bool RemovePlayerWeapon(int type);
 	bool RemovePlayerArtifact(int type);
+
+	void SetWeaponBuffer(int type);
+	void SetArtifactBuffer(int index, int type) { Artifact_Buffer[index] = type; }
+	
+	void AddArtifactBuffer(int type);
+
+	int GetWeaponBuffer() { return Weapon_Buffer; }
+	int* GetArtifactBuffer() { return Artifact_Buffer; }
+
+	void InitPlayerEquipment();
 
 public:
 	template<class Archive>
