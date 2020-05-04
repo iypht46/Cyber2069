@@ -1,6 +1,4 @@
 #pragma once
-#include <memory>
-
 #include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/GameObject.hpp"
 #include "Core/EC/UIComponents/TextRenderer.hpp"
@@ -8,10 +6,12 @@
 #include "HPsystem.hpp"
 #include "EnemySpawner.hpp"
 #include "PlayerController.hpp"
-#include "Scripts/GameControl/PlayerData.h"
+#include "Scripts/GameControl/PlayerData.hpp"
+#include "EquipmentManager.hpp"
+#include "Core/Logger.hpp"
+
 #include <memory>
 #include <string>
-
 #include <map>
 #include <vector>
 
@@ -198,16 +198,16 @@ private:
 	void updateStaminaUI();
 
 	void updateSpawner();
-	
+
 	//create on runtime, it will generate objects and init them
-	void CreatePool(std::string prefabPath, int poolType,int poolSize);
+	void CreatePool(std::string prefabPath, int poolType, int poolSize);
 
 	//create enemy spawner and assign to gamecontroller, 
 	//*NOT set the spawn range
 	EnemySpawner* CreateSpawner(int enemyType);
 
 	bool CursedMode = false;
-	
+
 	int CurrentState = MAINMENU;
 	int CurrentGameplayState = NORMAL;
 
@@ -216,6 +216,10 @@ private:
 
 	bool StateChanged = false;
 	bool StateGamplayChanged = false;
+
+	//player data manager
+	void LoadData();
+	void SaveData();
 
 public:
 	std::weak_ptr<GameObject> player;
@@ -269,16 +273,17 @@ public:
 	virtual void OnStart() override;
 	virtual void OnUpdate(float dt) override;
 
-//serialization
+	//serialization
 public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
 			cereal::base_class<BehaviourScript>(this),
-			player,
-			HPbar,
-			Staminabar,
-			ScoreText,
+			cereal::defer(player),
+			cereal::defer(HPbar),
+			cereal::defer(Staminabar),
+			cereal::defer(ScoreText),
+			cereal::defer(ComboText),
 			Presets,
 			Amplifiers,
 			ScoreValue,
@@ -287,6 +292,8 @@ public:
 			startHPscaleY,
 			startHPposX
 			);
+
+		ENGINE_INFO("Finished");
 	}
 };
 

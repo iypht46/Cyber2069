@@ -2,6 +2,8 @@
 
 #include <string>
 #include <fstream>
+#include "Core/Logger.hpp"
+
 #include <cereal/archives/binary.hpp>
 
 #define ScenePath(path) "Sources/Assets/Scenes/" path ".scene"
@@ -14,6 +16,8 @@ namespace Serialization {
 
 	template <class T>
 	void SaveObject(T& object, std::string path) {
+		ENGINE_INFO("writing {}", path);
+
 		std::ofstream file(path, std::ios::binary);
 
 		cereal::BinaryOutputArchive oarchive(file);
@@ -23,6 +27,8 @@ namespace Serialization {
 
 	template <class T>
 	bool LoadObject(T& object, std::string path) {
+		ENGINE_INFO("loading {}", path);
+
 		std::ifstream file(path, std::ios::binary);
 		
 		if (file.is_open()) {

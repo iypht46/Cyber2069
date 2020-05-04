@@ -19,7 +19,7 @@ MachineGun::MachineGun()
 void MachineGun::OnAwake() {
 
 	weapon_damage = 1.0f;
-	weapon_firerate = 0.3f;
+	//weapon_firerate = 0.3f;
 	bullet_speed = 400.0f;
 	
 	m_gameObject->SetActive(false);
@@ -69,7 +69,8 @@ void MachineGun::GameTimeBehaviour(float dt) {
 		Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT))
 	{
 		weapon_delay_count += dt;
-		if (weapon_delay_count > weapon_firerate)
+		//ENGINE_INFO("MG: {}/{}", weapon_delay_count, (1.0f / weapon_firerate));
+		if (weapon_delay_count >= (1.0f / weapon_firerate))
 		{
 			GameObject* bullet = BulletPool->GetInactiveObject();
 

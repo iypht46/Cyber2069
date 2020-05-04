@@ -23,26 +23,26 @@ enum ITEM_TYPE {
 	ARTIFACT
 };
 
-typedef std::vector<bool> UnlockData;
 
 class EquipmentManager : public BehaviourScript {
 private:
 	std::shared_ptr<GameObject> playerObj;
 
-	int totalWeapon = 5;
-	int totalArtifact = 7;
-
-	int maxPlayerWeapon = 1;
-	int maxPlayerArtifact = 2;
-
 	vector<std::shared_ptr<GameObject>> m_weaponObjs;
 	vector<std::shared_ptr<Artifact>> m_artifacts;
 
-	int weaponCount = 0;
-	int artifactCount = 0;
+	int weaponCount = 0;		//number of equipped weapon
+	int artifactCount = 0;		//number of equipped artifacts
 public:
-	UnlockData Unlock_Weapons;
-	UnlockData Unlock_Artifacts;
+
+	static int totalWeapon;
+	static int totalArtifact;
+
+	static int maxPlayerWeapon;
+	static int maxPlayerArtifact;
+
+	std::vector<bool> Unlock_Weapons;
+	std::vector<bool> Unlock_Artifacts;
 
 	void OnAwake();
 
@@ -100,7 +100,7 @@ public:
 	void serialize(Archive& archive) {
 		archive(
 			cereal::base_class<BehaviourScript>(this),
-			playerObj,
+			cereal::defer(playerObj),
 			totalWeapon,
 			totalArtifact,
 			maxPlayerWeapon,
@@ -110,3 +110,5 @@ public:
 		);
 	}
 };
+
+CEREAL_REGISTER_TYPE(EquipmentManager);
