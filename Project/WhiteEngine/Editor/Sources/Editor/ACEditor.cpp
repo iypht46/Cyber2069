@@ -164,7 +164,7 @@ namespace Tools
 			if (this->IsDirty())
 			{
 				//Send to close queue
-
+				returnMessage = "Animation controller is not saved";
 			}
 			else
 			{
@@ -174,6 +174,7 @@ namespace Tools
 					this->New();
 
 				result = m_acObject->Load(path.generic_string());
+				m_animatorEC->SetController(m_acObject->GetAnimController());
 				returnMessage = (result) ? (returnMessage + "Success") : (returnMessage + "Failed");
 			}
 		}

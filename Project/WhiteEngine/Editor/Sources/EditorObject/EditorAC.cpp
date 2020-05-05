@@ -2,6 +2,7 @@
 #include "Serialization/Serialization.h"
 #include <imgui.h>
 #include "misc/cpp/imgui_stdlib.h"
+#include "Core/Logger.hpp"
 
 namespace Tools
 {
@@ -114,10 +115,24 @@ namespace Tools
 			m_animationController = std::make_unique<AnimationController>();
 		}
 
-		Serialization::LoadObject(*m_animationController, path);
+		bool result = true;
+		try
+		{
+			Serialization::LoadObject(*m_animationController, path);
+		}
+		catch (const std::exception&)
+		{
+			ENGINE_WARN("Load animation controller failed");
+			result = false;
+		}
 
+		if (result)
+		{
+			m_frameSize = m_animationController->getSheetSize();
+			shouldUpdateMesh = true;
+		}
 
-		return true;
+		return result;
 	}
 
 	bool EditorAC::Save(Container::wString path)
