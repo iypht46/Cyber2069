@@ -1089,21 +1089,26 @@ namespace World
 				Serialization::SaveObject(*Bullet, PrefabPath("Bullet_Fume"));
 			}
 
-			GameObject* Item = Instantiate().get();
+			{
+				GameObject* Item = Instantiate().get();
 
-			Item->Layer = "Item";
-			Item->m_transform->SetScale(glm::vec3(50, 50, 1));
-			Item->m_transform->SetPosition(glm::vec3(100, 200, 1));
+				Item->Layer = "Item";
+				Item->m_transform->SetScale(glm::vec3(50, 50, 1));
 
-			Item->AddComponent<MeshRenderer>();
-			Item->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			Item->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/White.jpg");
+				Item->AddComponent<MeshRenderer>();
+				Item->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+				Item->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/White.jpg");
 
-			Item->AddComponent<Rigidbody>();
-			//Item->GetComponent<Rigidbody>()->SetGravityScale(0.0000001f);
-			Item->AddComponent<BoxCollider>()->ReScale(1, 1);
+				Item->AddComponent<Rigidbody>();
+				Item->GetComponent<Rigidbody>()->SetGravityScale(0.25f);
+				Item->AddComponent<BoxCollider>()->ReScale(1, 1);
 
-			Item->AddComponent<ItemDrop>();
+				Item->AddComponent<ItemDrop>();
+
+				Item->SetActive(false);
+
+				Serialization::SaveObject(*Item, PrefabPath("ItemDrop"));
+			}
 
 
 			//Add Sound

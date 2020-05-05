@@ -22,6 +22,20 @@ void EquipmentManager::OnAwake()
 	{
 		Artifact_Buffer[i] = -1;
 	}
+
+	weaponItemTex = new int[totalWeapon];
+	artifactItemTex = new int[totalArtifact];
+
+	for (int i = 0; i < totalWeapon; i++)
+	{
+		weaponItemTex[i] = -1;
+	}
+
+	for (int i = 0; i < totalArtifact; i++)
+	{
+		artifactItemTex[i] = -1;
+	}
+
 }
 
 void EquipmentManager::OnUpdate(float dt) 

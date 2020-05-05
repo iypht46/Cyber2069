@@ -6,17 +6,27 @@
 #include "EquipmentManager.hpp"
 #include "PlayerController.hpp"
 
+
+#include "Graphic/Camera.hpp"
+
 class ItemDrop : public BehaviourScript 
 {
 private:
+	Graphic::CameraObject* cam;
+	Rigidbody* rb;
+
 	EquipmentManager* eqManager = nullptr;
 	PlayerController* player = nullptr;
 
 	pair<int, int> itemtype;
+
+	unsigned int defaultTex;
 public:
+	virtual void OnAwake(); 
 	virtual void OnStart();
 	virtual void OnEnable();
-	virtual void OnTriggerEnter(const Physic::Collision) override;
+	virtual void OnUpdate(float dt);
+	virtual void OnTriggerEnter(const Physic::Collision);
 
 public:
 	template<class Archive>

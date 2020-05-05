@@ -242,7 +242,7 @@ glm::vec2 EnemySpawner::GetRandomPos_Platform() {
 
 		if (Platforms.size() == 0) 
 		{
-			GAME_INFO("NO PLATFORM DETECTED!");
+			//GAME_INFO("NO PLATFORM DETECTED!");
 
 			return tmp;
 		}
@@ -252,7 +252,7 @@ glm::vec2 EnemySpawner::GetRandomPos_Platform() {
 		}
 	}
 
-	GAME_INFO("Spawing on Platform!");
+	//GAME_INFO("Spawing on Platform!");
 
 	if (SpawnType != POOL_TYPE::ENEMY_COCOON)
 	{

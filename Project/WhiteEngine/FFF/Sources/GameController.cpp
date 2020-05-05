@@ -44,6 +44,10 @@ void GameController::OnStart() {
 	CreatePool(PrefabPath("Bullet_ZP"), POOL_TYPE::BULLET_ZP, 20);
 	CreatePool(PrefabPath("Bullet_BH"), POOL_TYPE::BULLET_BH, 20);
 	CreatePool(PrefabPath("Bullet_Fume"), POOL_TYPE::BULLET_FUME, 20);
+	
+	ENGINE_INFO("GameControl Creating Item");
+	ENGINE_INFO("======================================================================");
+	CreatePool(PrefabPath("ItemDrop"), POOL_TYPE::ITEM_DROP, 1);
 
 	ENGINE_INFO("GameControl Creating Enemy");
 	ENGINE_INFO("======================================================================");
@@ -83,7 +87,7 @@ void GameController::OnStart() {
 	CreatePool(PrefabPath("Queen"), POOL_TYPE::ENEMY_QUEEN, 1);
 	QueenSpawner = CreateSpawner(POOL_TYPE::ENEMY_QUEEN);
 	QueenSpawner->SetSpawnMode(SPAWN_MODE::RANGE);
-	QueenSpawner->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() / -2);
+	QueenSpawner->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() * 0.75, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() * 0.75);
 
 	//Cocoon spawner
 	ENGINE_INFO("GameControl Creating Queen");
@@ -335,6 +339,8 @@ void GameController::OnUpdate(float dt)
 		{
 			this->GetGameObject()->GetComponent<EquipmentManager>()->ResetPlayerEquipment();
 			
+			CocoonCount = 0;
+			SetGameplayState(GAMEPLAY_STATE::NORMAL);
 			SetGameState(GAME_STATE::ENDING);
 		}
 

@@ -73,6 +73,23 @@ void LoadoutUI::OnAwake()
 void LoadoutUI::OnStart() {
 	defaultWeaponDisplayTex = WeaponDisplaySlot->GetComponent<MeshRenderer>()->GetTexture();
 	defaultArtfDisplayTex = ArtifactDisplaySlot[0]->GetComponent<MeshRenderer>()->GetTexture();
+
+	for (int i = 0; i < EquipmentManager::totalWeapon; i++) 
+	{
+		if (WeaponSelectButtons[i] != nullptr) 
+		{
+			eqManager->weaponItemTex[i] = WeaponSelectButtons[i]->GetComponent<MeshRenderer>()->GetTexture();
+		}
+	}
+
+	for (int i = 0; i < EquipmentManager::totalArtifact; i++)
+	{
+		if (ArtifactSelectButtons[i] != nullptr)
+		{
+			eqManager->artifactItemTex[i] = ArtifactSelectButtons[i]->GetComponent<MeshRenderer>()->GetTexture();
+		}
+	}
+
 }
 
 void LoadoutUI::OnEnable() 
@@ -276,10 +293,16 @@ void LoadoutSelectButton::AddEquipment()
 	switch (type)
 	{
 	case ITEM_TYPE::WEAPON:
-		eqManager->SetWeaponBuffer(equipment_type);
+		if (eqManager->isWeaponUnlock(equipment_type)) 
+		{
+			eqManager->SetWeaponBuffer(equipment_type);
+		}
 		break;
 	case ITEM_TYPE::ARTIFACT:
-		eqManager->AddArtifactBuffer(equipment_type);
+		if (eqManager->isArtifactUnlock(equipment_type))
+		{
+			eqManager->AddArtifactBuffer(equipment_type);
+		}
 		break;
 	default:
 		break;

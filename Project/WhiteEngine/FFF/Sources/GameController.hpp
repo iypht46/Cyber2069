@@ -35,7 +35,8 @@ enum POOL_TYPE {
 	ENEMY_SPITTER,
 	ENEMY_QUEEN,
 	ENEMY_COCOON,
-	BULLET_FUME
+	BULLET_FUME,
+	ITEM_DROP
 };
 
 enum GAME_STATE {
@@ -91,7 +92,8 @@ struct EnemyAmplifier {
 	float BomberExplodeRadius = 200;
 
 	//queen
-	float QueenHP = 500;
+	//float QueenHP = 500;
+	float QueenHP = 1;
 	float QueenSpeed = 75;
 	float QueenSpawnDelay = 0.1;
 
@@ -182,7 +184,7 @@ private:
 	GameObject* Current_Queen = nullptr;
 	GameObject* Current_Cocoon = nullptr;
 
-	int CocoonNeed = 5;
+	int CocoonNeed = 1;
 	int CocoonCount = 0;
 
 	map<int, ObjectPool*> Pools; //added while onawake and init manually, hard coding, collect all pool used in game
