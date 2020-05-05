@@ -138,7 +138,7 @@ public:
 			totalArtifact,
 			maxPlayerWeapon,
 			maxPlayerArtifact,
-			m_weaponObjs,
+			cereal::defer(m_weaponObjs),
 			m_artifacts
 		);
 	}

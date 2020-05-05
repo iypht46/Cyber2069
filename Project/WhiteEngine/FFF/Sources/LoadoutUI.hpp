@@ -26,6 +26,7 @@ private:
 
 	unsigned int defaultWeaponDisplayTex;
 	unsigned int defaultArtfDisplayTex;
+
 public:
 	LoadoutUI();
 
@@ -39,6 +40,7 @@ public:
 	void UpdateDisplaySlotTexture();
 
 	virtual void OnAwake();
+	virtual void OnStart();
 
 	virtual void OnEnable();
 	virtual void OnDisable();

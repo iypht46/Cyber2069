@@ -4,22 +4,19 @@
 
 LoadoutUI::LoadoutUI() 
 {
-	gameControl = GameController::GetInstance();
-	eqManager = gameControl->GetGameObject()->GetComponent<EquipmentManager>();
-
 	WeaponDisplaySlot = nullptr;
 
-	for (int i = 0; i < eqManager->GetTotalWeapon(); i++)
+	for (int i = 0; i < EquipmentManager::totalWeapon; i++)
 	{
 		WeaponSelectButtons.push_back(nullptr);
 	}
 
-	for (int i = 0; i < eqManager->GetTotalArtifact(); i++)
+	for (int i = 0; i < EquipmentManager::totalArtifact; i++)
 	{
 		ArtifactSelectButtons.push_back(nullptr);
 	}
 
-	for (int i = 0; i < eqManager->GetMaxArtifact(); i++)
+	for (int i = 0; i < EquipmentManager::maxPlayerArtifact; i++)
 	{
 		ArtifactDisplaySlot.push_back(nullptr);
 	}
@@ -27,6 +24,55 @@ LoadoutUI::LoadoutUI()
 
 void LoadoutUI::OnAwake() 
 {
+	gameControl = GameController::GetInstance();
+	eqManager = gameControl->GetGameObject()->GetComponent<EquipmentManager>();
+
+	for (int i = 0; i < EquipmentManager::totalWeapon; i++)
+	{
+		if (WeaponSelectButtons[i] == nullptr) {
+			continue;
+		}
+
+		LoadoutSelectButton* lsb = WeaponSelectButtons[i]->GetComponent<LoadoutSelectButton>();
+
+		if (lsb != nullptr) 
+		{
+			lsb->SetEquipmentManager(eqManager);
+		}
+	}
+
+	for (int i = 0; i < EquipmentManager::totalArtifact; i++)
+	{
+		if (ArtifactSelectButtons[i] == nullptr) {
+			continue;
+		}
+
+		LoadoutSelectButton* lsb = ArtifactSelectButtons[i]->GetComponent<LoadoutSelectButton>();
+
+		if (lsb != nullptr)
+		{
+			lsb->SetEquipmentManager(eqManager);
+		}
+	}
+
+	for (int i = 0; i < EquipmentManager::maxPlayerArtifact; i++)
+	{
+		if (ArtifactDisplaySlot[i] == nullptr) {
+			continue;
+		}
+
+		LoadoutSelectButton* lsb = ArtifactDisplaySlot[i]->GetComponent<LoadoutSelectButton>();
+
+		if (lsb != nullptr)
+		{
+			lsb->SetEquipmentManager(eqManager);
+		}
+	}
+}
+
+void LoadoutUI::OnStart() {
+	defaultWeaponDisplayTex = WeaponDisplaySlot->GetComponent<MeshRenderer>()->GetTexture();
+	defaultArtfDisplayTex = ArtifactDisplaySlot[0]->GetComponent<MeshRenderer>()->GetTexture();
 }
 
 void LoadoutUI::OnEnable() 
@@ -112,8 +158,6 @@ void LoadoutUI::StartGameplay()
 
 void LoadoutUI::OnDisable()
 {
-	GAME_INFO("onDisable");
-
 	if (WeaponDisplaySlot != nullptr)
 	{
 		WeaponDisplaySlot->SetActive(false);
@@ -151,7 +195,7 @@ void LoadoutUI::AssignSelectButton(std::shared_ptr<GameObject> selectButton)
 	if (lsb != nullptr) 
 	{
 		lsb->SetLoadoutUI(this);
-		lsb->SetEquipmentManager(eqManager);
+		//lsb->SetEquipmentManager(eqManager);
 
 		switch (lsb->type)
 		{
@@ -174,11 +218,9 @@ void LoadoutUI::AssignWeaponDisplaySlot(std::shared_ptr<GameObject> WeaponDispla
 	if (lsb != nullptr)
 	{
 		lsb->SetLoadoutUI(this);
-		lsb->SetEquipmentManager(eqManager);
+		//lsb->SetEquipmentManager(eqManager);
 
 		this->WeaponDisplaySlot = WeaponDisplaySlot;
-
-		defaultWeaponDisplayTex = WeaponDisplaySlot->GetComponent<MeshRenderer>()->GetTexture();
 	}
 }
 
@@ -189,7 +231,7 @@ void LoadoutUI::AssignArtifactDisplaySlot(std::shared_ptr<GameObject> ArtifactDi
 	if (lsb != nullptr)
 	{
 		lsb->SetLoadoutUI(this);
-		lsb->SetEquipmentManager(eqManager);
+		//lsb->SetEquipmentManager(eqManager);
 
 		if (this->ArtifactDisplaySlot[0] == nullptr) {
 			this->ArtifactDisplaySlot[0] = ArtifactDisplaySlot;
@@ -197,8 +239,6 @@ void LoadoutUI::AssignArtifactDisplaySlot(std::shared_ptr<GameObject> ArtifactDi
 		else {
 			this->ArtifactDisplaySlot[1] = ArtifactDisplaySlot;
 		}
-
-		defaultArtfDisplayTex = ArtifactDisplaySlot->GetComponent<MeshRenderer>()->GetTexture();
 	}
 	
 }

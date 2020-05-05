@@ -297,6 +297,7 @@ public:
 			cereal::defer(Staminabar),
 			cereal::defer(ScoreText),
 			cereal::defer(ComboText),
+			cereal::defer(loadoutUI),
 			Presets,
 			Amplifiers,
 			ScoreValue,
