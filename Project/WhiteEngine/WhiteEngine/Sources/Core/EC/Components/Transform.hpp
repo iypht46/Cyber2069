@@ -32,6 +32,8 @@ private:
 	glm::vec3 m_localScale;
 	float m_localRotation = 0.0f;
 
+	static float maxParallaxDistance;
+
 	//runtime rendering matrix
 	glm::mat4 m_modelMatrix;
 
@@ -54,6 +56,7 @@ public:
 	glm::vec3 Up();
 	glm::vec3 Right();
 
+	float GetParallaxValue();
 	glm::mat4 GetModelMatrix();
 
 	void SetParent(std::weak_ptr<Transform> newParent);

@@ -124,15 +124,28 @@ namespace World
 			Rabbit->m_transform->Rotate(-1.0f);
 		}
 
-		if (Input::GetKeyHold(Input::KeyCode::KEY_Z))
+		if (Input::GetKeyHold(Input::KeyCode::KEY_Y))
 		{
-			Rabbit->m_transform->SetScale(Rabbit->m_transform->GetScale() + glm::vec3(1, 0, 0));
+			Bg1->m_transform->SetPosition(Bg1->m_transform->GetPosition() + glm::vec3(0, 0, 5));
+			ENGINE_INFO("Increased 1Zpos to {}", Bg1->m_transform->GetPosition().z);
 		}
 
-		if (Input::GetKeyHold(Input::KeyCode::KEY_C))
+		if (Input::GetKeyHold(Input::KeyCode::KEY_U))
 		{
-			Rabbit->m_transform->SetScale(Rabbit->m_transform->GetScale() + glm::vec3(-1, 0, 0));
+			Bg1->m_transform->SetPosition(Bg1->m_transform->GetPosition() + glm::vec3(0, 0, -5));
+			ENGINE_INFO("Decreased 1Zpos to {}", Bg1->m_transform->GetPosition().z);
+		}
 
+		if (Input::GetKeyHold(Input::KeyCode::KEY_H))
+		{
+			Bg2->m_transform->SetPosition(Bg2->m_transform->GetPosition() + glm::vec3(0, 0, 5));
+			ENGINE_INFO("Increased 2Zpos to {}", Bg2->m_transform->GetPosition().z);
+		}
+
+		if (Input::GetKeyHold(Input::KeyCode::KEY_J))
+		{
+			Bg2->m_transform->SetPosition(Bg2->m_transform->GetPosition() + glm::vec3(0, 0, -5));
+			ENGINE_INFO("Decreased 2Zpos to {}", Bg2->m_transform->GetPosition().z);
 		}
 
 		//if (Input::GetKeyHold(Input::KeyCode::KEY_N))
@@ -253,23 +266,38 @@ namespace World
 
 			Bg2 = Instantiate().get();
 			Bg2->AddComponent<MeshRenderer>();
-			Bg2->GetComponent<MeshRenderer>()->SetLayer(-2);
+			Bg2->GetComponent<MeshRenderer>()->SetLayer(-5);
 			Bg2->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 			Bg2->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer2.png");
+			Bg2->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
+			Bg2->m_transform->SetPosition(glm::vec3(0, -300, 3000));
+
 
 			Bg1 = Instantiate().get();
 			Bg1->AddComponent<MeshRenderer>();
-			Bg1->GetComponent<MeshRenderer>()->SetLayer(-1);
+			Bg1->GetComponent<MeshRenderer>()->SetLayer(-4);
 			Bg1->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 			Bg1->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer1.png");
-
-			Bg2->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
-			//Bg2->m_transform->SetLocalScale(glm::vec3(2.0f, 2.0f, 1));
 			Bg1->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
+			Bg1->m_transform->SetPosition(glm::vec3(0, -300, 2000));
 
-			Bg2->m_transform->SetPosition(glm::vec3(0, -300, 0));
-			Bg1->m_transform->SetPosition(glm::vec3(0, -300, 0));
+			std::shared_ptr<GameObject> Bg0 = Instantiate();
+			Bg0->AddComponent<MeshRenderer>();
+			Bg0->GetComponent<MeshRenderer>()->SetLayer(-3);
+			Bg0->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			Bg0->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer1.png");
+			Bg0->GetComponent<MeshRenderer>()->SetReplaceColor(glm::vec3(0.2, 0.2, 0.8));
+			Bg0->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * -2.0f, Graphic::Window::GetHeight() * 1.5f, 1));
+			Bg0->m_transform->SetPosition(glm::vec3(0, -500, 1000));
 
+			std::shared_ptr<GameObject> Bg00 = Instantiate();
+			Bg00->AddComponent<MeshRenderer>();
+			Bg00->GetComponent<MeshRenderer>()->SetLayer(-2);
+			Bg00->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			Bg00->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer1.png");
+			Bg00->GetComponent<MeshRenderer>()->SetReplaceColor(glm::vec3(0.8, 0.8, 0.8));
+			Bg00->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 1.0f, 1));
+			Bg00->m_transform->SetPosition(glm::vec3(0, -700, 50));
 
 
 			//Player animation controller
@@ -1145,7 +1173,8 @@ namespace World
 		//Update All Systems
 		//Update Input
 		Input::Update();
-		//Core
+
+		//Test Only
 		//DebugInput(dt);
 
 		FactoryCollection::UpdateComponents(dt);
