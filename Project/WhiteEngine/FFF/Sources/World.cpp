@@ -37,6 +37,7 @@
 #include "Weapon.hpp"
 #include "EquipmentManager.hpp"
 #include "LoadoutUI.hpp"
+#include "ItemDrop.hpp"
 
 using SceneManagement::Instantiate;
 
@@ -178,15 +179,18 @@ namespace World
 		Physic::PhysicScene::GetInstance()->SetLayerName("GroundEnemy", Physic::Layer::PHYSIC_LAYER_5);
 		Physic::PhysicScene::GetInstance()->SetLayerName("EnemyBullet", Physic::Layer::PHYSIC_LAYER_6);
 		Physic::PhysicScene::GetInstance()->SetLayerName("Default", Physic::Layer::PHYSIC_LAYER_7);
+		Physic::PhysicScene::GetInstance()->SetLayerName("Item", Physic::Layer::PHYSIC_LAYER_8);
 		//Set collision between layer
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Player", "Platform", Physic::RESOLVE_TYPE::COLLISION);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("GroundEnemy", "Platform", Physic::RESOLVE_TYPE::COLLISION);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Bullet", "Platform", Physic::RESOLVE_TYPE::COLLISION);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("EnemyBullet", "Platform", Physic::RESOLVE_TYPE::COLLISION);
+		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Item", "Platform", Physic::RESOLVE_TYPE::COLLISION);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Player", "Enemy", Physic::RESOLVE_TYPE::TRIGGER);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Bullet", "Enemy", Physic::RESOLVE_TYPE::TRIGGER);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Bullet", "GroundEnemy", Physic::RESOLVE_TYPE::TRIGGER);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("EnemyBullet", "Player", Physic::RESOLVE_TYPE::TRIGGER);
+		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Item", "Player", Physic::RESOLVE_TYPE::TRIGGER);
 
 		
 		title = new GameObject();
@@ -1084,6 +1088,22 @@ namespace World
 
 				Serialization::SaveObject(*Bullet, PrefabPath("Bullet_Fume"));
 			}
+
+			GameObject* Item = Instantiate().get();
+
+			Item->Layer = "Item";
+			Item->m_transform->SetScale(glm::vec3(50, 50, 1));
+			Item->m_transform->SetPosition(glm::vec3(100, 200, 1));
+
+			Item->AddComponent<MeshRenderer>();
+			Item->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			Item->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/White.jpg");
+
+			Item->AddComponent<Rigidbody>();
+			//Item->GetComponent<Rigidbody>()->SetGravityScale(0.0000001f);
+			Item->AddComponent<BoxCollider>()->ReScale(1, 1);
+
+			Item->AddComponent<ItemDrop>();
 
 
 			//Add Sound

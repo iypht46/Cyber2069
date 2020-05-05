@@ -183,7 +183,7 @@ bool GLRenderer::Initialize(string vertexShaderFile, string fragmentShaderFile)
 
 	//Create VBO
 	glBindBuffer(GL_ARRAY_BUFFER, this->cirVBO);
-	glBufferData(GL_ARRAY_BUFFER, circleVertexData.size() * 2 * sizeof(GLfloat), &circleVertexData.front(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, circleVertexData.size() * sizeof(GLfloat), &circleVertexData.front(), GL_STATIC_DRAW);
 
 	return true;
 
