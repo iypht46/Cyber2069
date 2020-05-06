@@ -360,7 +360,6 @@ namespace World
 				Rabbit->GetComponent<MeshRenderer>()->CreateMesh(7, 5);
 				Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_PlayerBody_Vversion03.png");
 				Rabbit->GetComponent<MeshRenderer>()->SetLayer(0);
-				Rabbit->GetComponent<MeshRenderer>()->SetReplaceColor(glm::vec3(1.0f, 1.0f, 1.0f));
 
 				Rabbit->AddComponent<Animator>();
 				Rabbit->GetComponent<Animator>()->sr_controllerPath = AnimationControllerPath("Player");
@@ -400,7 +399,7 @@ namespace World
 			wp_MachineGun->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_shoot.png");
 			wp_MachineGun->GetComponent<MeshRenderer>()->SetLayer(3);
 
-			wp_MachineGun->AddComponent<MachineGun>()->SetWeaponFireRate(3.0f);
+			wp_MachineGun->AddComponent<MachineGun>()->SetWeaponFireRate(7.0f);
 			wp_MachineGun->m_transform->SetParent(Rabbit->m_transform);
 			wp_MachineGun->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
 			
@@ -973,6 +972,10 @@ namespace World
 				particle->shape->maxXSize = 4.5f;
 				particle->shape->minYSize = 4.5f;
 				particle->shape->maxYSize = 4.5f;
+				particle->color->usingLifeTimeModifier = true;
+				particle->color->InterpolationEnd = 0.5f;
+				particle->color->Color_Start = glm::vec3(1, 0, 0);
+				particle->color->Color_End = glm::vec3(1, 1, 1);
 
 				Serialization::SaveObject(*particle, ParticlePath("Bullet_Hit_Example"));
 			}
@@ -986,7 +989,7 @@ namespace World
 				particle->emitter->particleSamples = 10;
 				particle->emitter->particleRate = 0.0f;
 				particle->color->Color = glm::vec3(0.1f, 1.0f, 0.0f);
-				particle->velocity->SetDirectiontype(ParticleSystem::DirectionType::AwayFromcenter);
+				particle->velocity->SetDirectiontype(ParticleSystem::DirectionType::AwayFromSpawn);
 				particle->velocity->minSpeed = 10;
 				particle->velocity->maxSpeed = 30;
 

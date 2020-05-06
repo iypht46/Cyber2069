@@ -22,9 +22,15 @@ class ParticleSystem :public Component {
 public:
 	enum class DirectionType
 	{
-		AwayFromcenter = 0,
-		ToCenter,
+		AwayFromSpawn = 0,
+		ToSpawn,
 		Custom
+	};
+
+	enum class EmitterShape
+	{
+		Circle = 0,
+		Line
 	};
 
 	class ParticleBehaviour : public BehaviourScript {
@@ -61,6 +67,127 @@ public:
 		}
 	};
 
+	class ParticleEmitter :public ParticleModule {
+	public:
+
+		//spawn setting
+		//=================================
+		int particleSamples = 20;
+		bool constantParticle = true;
+		//burst particle spawning----------
+		int burstParticleNumber = 5;
+		//constant particle spawning-------
+		float particleRate = 1.5f;
+		//=================================
+
+		//spawn shape setting
+		//=================================
+		//Circle emittor setting-----------
+		bool spawnOnEdge = true;
+		float spawnRadius = 100.0f;
+		float minEmissionAngle = 0.0f;
+		float maxEmissionAngle = 360.0f;
+		//Line emittor setting-------------
+		float lineLength = 100.0f;
+		float lineAngleOffset = 0.0f;
+		//=================================
+
+		void SetEmitterShape(EmitterShape shape) {
+			emitterShape = shape;
+			sr_EmissionShapeAsInt = (int)emitterShape;
+		}
+
+	private:
+		friend class ParticleSystem;
+		EmitterShape emitterShape;
+		int sr_EmissionShapeAsInt = 0;
+
+		std::shared_ptr<ObjectPool> particlePool;
+		int particleInstanceCount;	//total number of particle object in pool
+
+	//serialization
+	public:
+		template<class Archive>
+		void serialize(Archive& archive) {
+			archive(
+				cereal::base_class<ParticleModule>(this),
+				particleSamples,
+				constantParticle,
+				burstParticleNumber,
+				particleRate,
+				sr_EmissionShapeAsInt,
+				spawnOnEdge,
+				spawnRadius,
+				minEmissionAngle,
+				maxEmissionAngle,
+				lineLength,
+				lineAngleOffset
+				);
+		}
+	};
+
+	class ParticleShape :public ParticleModule {
+	public:
+
+		//particle shape setting
+		//=================================
+		bool fixedScale = true;	//randomized size will keep the scale of the object, will use X size to determin the whole scale
+		//random---------------------------
+		float minXSize = 1.0f;
+		float maxXSize = 1.0f;
+		float minYSize = 1.0f;
+		float maxYSize = 1.0f;
+		//lifetime modifier----------------
+		bool usingLifetimeScaleModifier = false;
+		float scale_ModStart = 0.0f; //at what point will modifier take effect
+		float scaleModifierPerFrame = 0.95f;
+		//=================================
+
+		//particle rotation setting
+		//=================================
+		//random---------------------------
+		float minRotation = 0.0f;
+		float maxRotaion = 360.0f;
+		//lifetime modifier----------------
+		bool usingLifetimeRotationModifier = false;
+		float rotation_ModStart = 0.0f; //at what point will modifier take effect
+		float rotationSpeed = 90.0f;
+		//=================================
+
+		void SetRotationType(DirectionType rotationType) {
+			this->rotationType = rotationType;
+			sr_rotationTypeAsInt = (int)rotationType;
+		}
+
+	private:
+		friend class ParticleSystem;
+		DirectionType rotationType;
+
+		//serialization
+	public:
+		int sr_rotationTypeAsInt = 2;
+
+		template<class Archive>
+		void serialize(Archive& archive) {
+			archive(
+				cereal::base_class<ParticleModule>(this),
+				minXSize,
+				maxXSize,
+				minYSize,
+				maxYSize,
+				usingLifetimeScaleModifier,
+				scale_ModStart,
+				scaleModifierPerFrame,
+				sr_rotationTypeAsInt,
+				minRotation,
+				maxRotaion,
+				usingLifetimeRotationModifier,
+				rotation_ModStart,
+				rotationSpeed
+				);
+		}
+	};
+
 	class ParticleLifeTime :public ParticleModule {
 	public:
 		float minLifeTime = 1.5f;
@@ -78,118 +205,22 @@ public:
 		}
 	};
 
-	class ParticleShape :public ParticleModule {
-	public:
-
-		//particle shape setting
-		//=================================
-		//bool randomSize;
-		//random---------------------------
-		float minXSize = 10.0f;
-		float maxXSize = 10.0f;
-		float minYSize = 10.0f;
-		float maxYSize = 10.0f;
-		//not random-----------------------
-		//float defaultSize;
-		//lifetime modifier----------------
-		bool usingLifetimeModifier = false;
-		float shape_ModStart = 0.0f; //at what point will modifier take effect
-		float sizeXModifierbyLifeTime = 0.95f;
-		float sizeYModifierbyLifeTime = 0.95f;
-		//=================================
-
-		//particle rotation setting
-		//=================================
-		//bool randomSize;
-		DirectionType rotationType;
-		//random---------------------------
-		float minRotation = 0.0f;
-		float maxRotaion = 360.0f;
-		//lifetime modifier----------------
-		bool usingLifetimeRotModifier = false;
-		float rotationModifier = 0.0f;
-		//=================================
-
-		//serialization
-	public:
-		int sr_rotationTypeAsInt = 2;
-
-		template<class Archive>
-		void serialize(Archive& archive) {
-			archive(
-				cereal::base_class<ParticleModule>(this),
-				minXSize,
-				maxXSize,
-				minYSize,
-				maxYSize,
-				usingLifetimeModifier,
-				shape_ModStart,
-				sizeXModifierbyLifeTime,
-				sizeYModifierbyLifeTime,
-				sr_rotationTypeAsInt,
-				minRotation,
-				maxRotaion
-				);
-		}
-	};
-
-	class ParticleEmitter :public ParticleModule {
-	public:
-
-		//spawn setting
-		//=================================
-		int particleSamples = 20;
-		bool constantParticle = true;
-		//burst particle spawning----------
-		int burstParticleNumber = 5;
-		//constant particle spawning-------
-		float particleRate = 1.5f;
-		//=================================
-
-		//spawn shape setting
-		//=================================
-		bool spawnOnEdge = true;
-		float spawnRadius = 100.0f;
-		float minEmissionAngle = 0.0f;
-		float maxEmissionAngle = 360.0f;
-		//=================================
-
-	private:
-		friend class ParticleSystem;
-		std::shared_ptr<ObjectPool> particlePool;
-		int particleInstanceCount;	//total number of particle object in pool
-
-	//serialization
-	public:
-		template<class Archive>
-		void serialize(Archive& archive) {
-			archive(
-				cereal::base_class<ParticleModule>(this),
-				particleSamples,
-				constantParticle,
-				burstParticleNumber,
-				particleRate,
-				spawnOnEdge,
-				spawnRadius,
-				minEmissionAngle,
-				maxEmissionAngle
-				);
-		}
-	};
-
 	class ParticleColor :public ParticleModule {
 	public:
 
 		//particle color setting
 		//=================================
-		glm::vec3 Color;
+		//random between these two color
+		glm::vec3 Color;	//this is the default starting color
 		//lifetime modifier----------------
-		bool useLifeTimeMod;
+		bool usingLifeTimeModifier = false;
+		float InterpolationStart = 0.0f; //[range 0.0,1.0] at what point in lifetime will the interpolation start to take effect
+		float InterpolationEnd = 1.0f; //[range 0.0,1.0] at what point in lifetime will the interpolation finish interpolation
+		glm::vec3 Color_Start;	//this is the default starting color
+		glm::vec3 Color_End;
 		//=================================
 
-		//void SetColor(std::string colorHex);
-
-		ParticleColor() { Color = glm::vec3(1); }
+		ParticleColor() { Color = glm::vec3(1); Color_Start = glm::vec3(1); Color_End = glm::vec3(1);}
 
 	private:
 		friend class ParticleSystem;
@@ -201,7 +232,12 @@ public:
 		void serialize(Archive& archive) {
 			archive(
 				cereal::base_class<ParticleModule>(this),
-				Color
+				Color,
+				usingLifeTimeModifier,
+				InterpolationStart,
+				InterpolationEnd,
+				Color_Start,
+				Color_End
 				);
 		}
 	};
@@ -321,10 +357,3 @@ private:
 };
 
 CEREAL_REGISTER_TYPE(ParticleSystem);
-
-//CEREAL_REGISTER_TYPE(ParticleSystem::ParticleEmitter);
-//CEREAL_REGISTER_TYPE(ParticleSystem::ParticleLifeTime);
-//CEREAL_REGISTER_TYPE(ParticleSystem::ParticleShape);
-//CEREAL_REGISTER_TYPE(ParticleSystem::ParticleColor);
-//CEREAL_REGISTER_TYPE(ParticleSystem::ParticleVelocity);
-//CEREAL_REGISTER_TYPE(ParticleSystem::ParticleAnimation);
