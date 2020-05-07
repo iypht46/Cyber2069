@@ -21,6 +21,11 @@ LaserGun::LaserGun()
 	laser->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/laser_bullet2.png");
 	laser->SetActive(false);
 
+	weaponObj->AddComponent<SoundPlayer>();
+	weaponObj->GetComponent<SoundPlayer>()->CreateSoundPlayer();
+	weaponObj->GetComponent<SoundPlayer>()->SetSound(SoundPath("SFX_Laser_Shoot"));
+	weaponObj->GetComponent<SoundPlayer>()->SetLoop(false);
+
 	weapon_damage = 10.0f;
 
 	weapon_scale.x = 70.0f;
@@ -35,6 +40,10 @@ void LaserGun::Modify(GameObject* obj)
 void LaserGun::GameTimeBehaviour(float dt) 
 {
 	laser->SetActive(false);
+
+	if (Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT)) {
+		weaponObj->GetComponent<SoundPlayer>()->PlaySound();
+	}
 
 	if (Input::GetMouseHold(Input::MouseKeyCode::MOUSE_LEFT) ||
 		Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT))

@@ -7,7 +7,10 @@ ZapperGun::ZapperGun() {
 	weaponObj->AddComponent<MeshRenderer>();
 	weaponObj->GetComponent<MeshRenderer>()->CreateMesh(12, 1);
 	weaponObj->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/zapper_spritesheet.png");
-
+	weaponObj->AddComponent<SoundPlayer>();
+	weaponObj->GetComponent<SoundPlayer>()->CreateSoundPlayer();
+	weaponObj->GetComponent<SoundPlayer>()->SetSound(SoundPath("SFX_Zapper_Shoot"));
+	weaponObj->GetComponent<SoundPlayer>()->SetLoop(false);
 	weaponObj->SetActive(false);
 
 	weapon_damage = 1.0f;
@@ -20,6 +23,9 @@ ZapperGun::ZapperGun() {
 
 	weapon_scale.x = 70.0f;
 	weapon_scale.y = 70.0f;
+
+	SoundTimer = 0.20f;
+	SoundCounter = SoundTimer;
 }
 
 void ZapperGun::Modify(GameObject* obj) {
@@ -32,6 +38,12 @@ void ZapperGun::GameTimeBehaviour(float dt) {
 	if (Input::GetMouseHold(Input::MouseKeyCode::MOUSE_LEFT) ||
 		Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT))
 	{
+		SoundCounter -= dt;
+		if (SoundCounter <= 0) {
+			weaponObj->GetComponent<SoundPlayer>()->PlaySound();
+			SoundCounter = SoundTimer;
+		}
+
 		weapon_delay_count += dt;
 		if (weapon_delay_count > weapon_firerate)
 		{

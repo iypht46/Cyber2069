@@ -11,6 +11,7 @@
 #include "Graphic/Camera.hpp"
 #include "Graphic/Window.hpp"
 #include "Enemy.hpp"
+#include "Core/EC/Components/SoundPlayer.hpp"
 
 #include <cereal/types/base_class.hpp>
 #include <cereal/types/polymorphic.hpp>
@@ -53,6 +54,9 @@ public:
 
 //Machine Gun ===========================================================================================
 class MachineGun : public Weapon {
+protected:
+	float SoundCounter;
+	float SoundTimer;
 public:
 	MachineGun();
 	void Modify(GameObject* obj);
@@ -94,6 +98,8 @@ class LaserGun : public Weapon {
 private:
 	GameObject* laser;
 	float laser_length;
+	float SoundCounter;
+	float SoundTimer;
 public:
 	LaserGun();
 	void Modify(GameObject* obj);
@@ -106,6 +112,8 @@ public:
 class GrenadeLauncher : public Weapon {
 private:
 	float grenade_radius;
+	float SoundCounter;
+	float SoundTimer;
 public:
 	GrenadeLauncher();
 	void Modify(GameObject* obj);
@@ -122,6 +130,8 @@ protected:
 
 	float radius = 1000.0f;
 	float scaleX = 1.0f;
+
+	SoundPlayer* ExplodeSound;
 
 public:
 	void SetDamage(float dmg) { this->bulletDmg = dmg; }
@@ -157,6 +167,8 @@ private:
 	float zapDistance;
 	float zapDuration;
 	float zapRate;
+	float SoundCounter;
+	float SoundTimer;
 public:
 	ZapperGun();
 	void Modify(GameObject* obj);
@@ -185,6 +197,8 @@ protected:
 	vector <Enemy*> Targets;
 	vector <Transform*> TargetTranform;
 	Physic::Colliders colliders;
+
+	SoundPlayer* ZappingSound;
 
 public:
 	void SetDamage(float dmg) { this->bulletDmg = dmg; }
@@ -226,6 +240,8 @@ private:
 	float bullet_Duration;
 	float bullet_Radius;
 	float bullet_ToCenterSpeed;
+	float SoundCounter;
+	float SoundTimer;
 public:
 	BlackholeGun();
 	void Modify(GameObject* obj);
@@ -238,6 +254,7 @@ protected:
 	Graphic::CameraObject* cam;
 
 	Rigidbody* rb;
+	SoundPlayer* BhSound;
 	float bulletDmg = 1.0f;
 	float Duration = 2.0f;
 	float Radius = 200.0f;

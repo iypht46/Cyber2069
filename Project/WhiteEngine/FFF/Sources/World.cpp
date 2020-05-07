@@ -25,7 +25,6 @@
 #include "Core/EC/Components/Rigidbody.hpp"
 #include "Core/EC/Components/Animator.hpp"
 #include "Core/EC/Components/MeshRenderer.hpp"
-#include "Core/EC/Components/SoundPlayer.hpp"
 #include "Core/EC/Components/TextRenderer.hpp"
 #include "Core/Particle/ParticleSystem.h"
 
@@ -187,13 +186,13 @@ namespace World
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("EnemyBullet", "Player", Physic::RESOLVE_TYPE::TRIGGER);
 
 		
-		//title = Instantiate().get();
-		//title->AddComponent<MeshRenderer>();
-		//title->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-		//title->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/mockup_title.jpg");
-		//title->GetComponent<MeshRenderer>()->SetLayer(-1);
-		//
-		//title->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth(), Graphic::Window::GetHeight(), 1.0f));
+		title = Instantiate().get();
+		title->AddComponent<MeshRenderer>();
+		title->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+		title->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/mockup_title.jpg");
+		title->GetComponent<MeshRenderer>()->SetLayer(-1);
+		
+		title->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth(), Graphic::Window::GetHeight(), 1.0f));
 		
 		while (!Input::GetKeyDown(Input::KeyCode::KEY_SPACE))
 		{
@@ -203,723 +202,731 @@ namespace World
 		
 			if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE))
 			{
-				//title->SetActive(false);
+				title->SetActive(false);
 			}
 		}
 
-		Serialization::LoadObject(*SceneManagement::ActiveScene, ScenePath("SerializationTest"));
+		//Serialization::LoadObject(*SceneManagement::ActiveScene, ScenePath("SerializationTest"));
 
 		//700 lines is in here
 		{
-			////this point is where it all start =========================================
+			//this point is where it all start =========================================
 
-			////GameObject
-			//gamecontroller = Instantiate().get();
-			//ui_ScoreText = Instantiate();
-			//ui_HPbar = Instantiate();
-			//ui_StaminaBar = Instantiate();
+			//GameObject
+			gamecontroller = Instantiate().get();
+			ui_ScoreText = Instantiate();
+			ui_HPbar = Instantiate();
+			ui_StaminaBar = Instantiate();
 
-			//ui_ScoreText->AddComponent<TextRenderer>();
-			//ui_ScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 50);
-			//ui_ScoreText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-			//ui_ScoreText->m_transform->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
-			//ui_ScoreText->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 50.0f, (Graphic::Window::GetHeight() / -2) + 50.0f, 1.0f));
+			ui_ScoreText->AddComponent<TextRenderer>();
+			ui_ScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 50);
+			ui_ScoreText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+			ui_ScoreText->m_transform->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
+			ui_ScoreText->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 50.0f, (Graphic::Window::GetHeight() / -2) + 50.0f, 1.0f));
 
-			//ui_HPbar->AddComponent<MeshRenderer>();
-			//ui_HPbar->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			//ui_HPbar->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Red.jpg");
-			//ui_HPbar->GetComponent<MeshRenderer>()->SetUI(true);
-			//ui_HPbar->GetComponent<MeshRenderer>()->SetLayer(10);
-			//ui_HPbar->m_transform->SetScale(glm::vec3(500.0f, 40.0f, 1.0f));
-			//ui_HPbar->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 280.0f, (Graphic::Window::GetHeight() / 2) - 40.0f, 1.0f));
+			ui_HPbar->AddComponent<MeshRenderer>();
+			ui_HPbar->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			ui_HPbar->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Red.jpg");
+			ui_HPbar->GetComponent<MeshRenderer>()->SetUI(true);
+			ui_HPbar->GetComponent<MeshRenderer>()->SetLayer(10);
+			ui_HPbar->m_transform->SetScale(glm::vec3(500.0f, 40.0f, 1.0f));
+			ui_HPbar->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 280.0f, (Graphic::Window::GetHeight() / 2) - 40.0f, 1.0f));
 
-			//ui_StaminaBar->AddComponent<MeshRenderer>();
-			//ui_StaminaBar->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			//ui_StaminaBar->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Blue.jpg");
-			//ui_StaminaBar->GetComponent<MeshRenderer>()->SetUI(true);
-			//ui_StaminaBar->GetComponent<MeshRenderer>()->SetLayer(10);
-			//ui_StaminaBar->m_transform->SetScale(glm::vec3(500.0f, 20.0f, 1.0f));
-			//ui_StaminaBar->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 280.0f, (Graphic::Window::GetHeight() / 2) - 80.0f, 1.0f));
+			ui_StaminaBar->AddComponent<MeshRenderer>();
+			ui_StaminaBar->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			ui_StaminaBar->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Blue.jpg");
+			ui_StaminaBar->GetComponent<MeshRenderer>()->SetUI(true);
+			ui_StaminaBar->GetComponent<MeshRenderer>()->SetLayer(10);
+			ui_StaminaBar->m_transform->SetScale(glm::vec3(500.0f, 20.0f, 1.0f));
+			ui_StaminaBar->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 280.0f, (Graphic::Window::GetHeight() / 2) - 80.0f, 1.0f));
 
-			//Bg2 = Instantiate().get();
-			//Bg2->AddComponent<MeshRenderer>();
-			//Bg2->GetComponent<MeshRenderer>()->SetLayer(-2);
-			//Bg2->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			//Bg2->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer2.png");
-			//
-			//Bg1 = Instantiate().get();
-			//Bg1->AddComponent<MeshRenderer>();
-			//Bg1->GetComponent<MeshRenderer>()->SetLayer(-1);
-			//Bg1->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			//Bg1->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer1.png");
+			Bg2 = Instantiate().get();
+			Bg2->AddComponent<MeshRenderer>();
+			Bg2->GetComponent<MeshRenderer>()->SetLayer(-2);
+			Bg2->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			Bg2->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer2.png");
+			
+			Bg1 = Instantiate().get();
+			Bg1->AddComponent<MeshRenderer>();
+			Bg1->GetComponent<MeshRenderer>()->SetLayer(-1);
+			Bg1->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			Bg1->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer1.png");
 
-			//Bg2->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
-			//Bg1->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
+			Bg2->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
+			Bg1->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
 
-			//Bg1->m_transform->SetPosition(glm::vec3(0, -300, 0));
-			//Bg2->m_transform->SetPosition(glm::vec3(0, -300, 0));
+			Bg1->m_transform->SetPosition(glm::vec3(0, -300, 0));
+			Bg2->m_transform->SetPosition(glm::vec3(0, -300, 0));
 
-			////Player animation controller
+			//Player animation controller
+			{
+				//Add Animator
+				std::shared_ptr<Animation> Idle = std::make_shared<Animation>();
+
+				Idle->setStartPosition(0, 0);
+				Idle->setEndPosition(6, 0);
+				Idle->setSpeedMultiplier(1);
+
+				std::shared_ptr<Animation> Running = std::make_shared<Animation>();
+
+				Running->setStartPosition(0, 1);
+				Running->setEndPosition(4, 1);
+				Running->setSpeedMultiplier(2);
+
+				std::shared_ptr<Animation> Dashing = std::make_shared<Animation>();
+
+				Dashing->setStartPosition(0, 4);
+				Dashing->setEndPosition(2, 4);
+				Dashing->setSpeedMultiplier(1);
+
+				std::shared_ptr<Animation> Jumping = std::make_shared<Animation>();
+
+				Jumping->setStartPosition(0, 3);
+				Jumping->setEndPosition(3, 3);
+				Jumping->setSpeedMultiplier(1);
+
+				std::shared_ptr<Animation> falling = std::make_shared<Animation>();
+
+				falling->setStartPosition(3, 3);
+				falling->setEndPosition(3, 3);
+				falling->setSpeedMultiplier(1);
+
+				RabbitController = std::make_shared<AnimationController>();
+				RabbitController->setSheetSize(glm::vec2(7, 5));
+
+				ENGINE_INFO("making rabbbit animcon");
+				RabbitController->AddState(Idle, true);
+				RabbitController->AddState(Running, true);
+				RabbitController->AddState(Dashing, false);
+				RabbitController->AddState(Jumping, false);
+				RabbitController->AddState(falling, false);
+
+				Serialization::SaveObject(*RabbitController, AnimationControllerPath("Player"));
+			}
+			//player
+			{
+				Rabbit = Instantiate(PrefabPath("Player"));
+				/*
+				Rabbit = Instantiate();
+				Rabbit->Layer = "Player";
+
+				//Set Transform
+				Rabbit->m_transform->SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
+				Rabbit->m_transform->SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
+
+				Rabbit->AddComponent<MeshRenderer>();
+				Rabbit->GetComponent<MeshRenderer>()->CreateMesh(7, 5);
+				Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_PlayerBody_Vversion03.png");
+				Rabbit->GetComponent<MeshRenderer>()->SetLayer(0);
+				Rabbit->GetComponent<MeshRenderer>()->SetReplaceColor(glm::vec3(1.0f, 1.0f, 1.0f));
+
+				Rabbit->AddComponent<Animator>();
+				Rabbit->GetComponent<Animator>()->sr_controllerPath = AnimationControllerPath("Player");
+				Rabbit->GetComponent<Animator>()->setFramePerSec(12);
+
+				Rabbit->AddComponent<BoxCollider>();
+
+				//Add Rigidbody
+				Rabbit->AddComponent<Rigidbody>();
+				Rabbit->GetComponent<Rigidbody>()->SetDrag(0.01f);
+
+				Rabbit->GetComponent<BoxCollider>()->m_rigidbody = Rabbit->GetComponent<Rigidbody>();
+				Rabbit->GetComponent<BoxCollider>()->ReSize(25, 25);
+
+				//Behavior Script
+				Rabbit->AddComponent<HPsystem>();
+				Rabbit->GetComponent<HPsystem>()->SetMaxHP(10000);
+				Rabbit->AddComponent<PlayerController>();
+				
+				Serialization::SaveObject(*Rabbit, PrefabPath("Player"));
+				*/
+			}
+
+			platform = Instantiate().get();
+			platform->Layer = "Platform";
+			platform->AddComponent<MeshRenderer>();
+			platform->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			platform->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
+			platform->GetComponent<MeshRenderer>()->SetLayer(3);
+			platform->m_transform->SetScale(glm::vec3(800, 20, 1));
+			platform->AddComponent<BoxCollider>()->ReScale(1, 1);
+
+			//for (int i = 0; i < platformNum; i++)
 			//{
-			//	//Add Animator
-			//	std::shared_ptr<Animation> Idle = std::make_shared<Animation>();
-
-			//	Idle->setStartPosition(0, 0);
-			//	Idle->setEndPosition(6, 0);
-			//	Idle->setSpeedMultiplier(1);
-
-			//	std::shared_ptr<Animation> Running = std::make_shared<Animation>();
-
-			//	Running->setStartPosition(0, 1);
-			//	Running->setEndPosition(4, 1);
-			//	Running->setSpeedMultiplier(2);
-
-			//	std::shared_ptr<Animation> Dashing = std::make_shared<Animation>();
-
-			//	Dashing->setStartPosition(0, 4);
-			//	Dashing->setEndPosition(2, 4);
-			//	Dashing->setSpeedMultiplier(1);
-
-			//	std::shared_ptr<Animation> Jumping = std::make_shared<Animation>();
-
-			//	Jumping->setStartPosition(0, 3);
-			//	Jumping->setEndPosition(3, 3);
-			//	Jumping->setSpeedMultiplier(1);
-
-			//	std::shared_ptr<Animation> falling = std::make_shared<Animation>();
-
-			//	falling->setStartPosition(3, 3);
-			//	falling->setEndPosition(3, 3);
-			//	falling->setSpeedMultiplier(1);
-
-			//	RabbitController = std::make_shared<AnimationController>();
-			//	RabbitController->setSheetSize(glm::vec2(7, 5));
-
-			//	ENGINE_INFO("making rabbbit animcon");
-			//	RabbitController->AddState(Idle, true);
-			//	RabbitController->AddState(Running, true);
-			//	RabbitController->AddState(Dashing, false);
-			//	RabbitController->AddState(Jumping, false);
-			//	RabbitController->AddState(falling, false);
-
-			//	Serialization::SaveObject(*RabbitController, AnimationControllerPath("Player"));
-			//}
-			////player
-			//{
-			//	Rabbit = Instantiate(PrefabPath("Player"));
-			//	/*
-			//	Rabbit = Instantiate();
-			//	Rabbit->Layer = "Player";
-
-			//	//Set Transform
-			//	Rabbit->m_transform->SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
-			//	Rabbit->m_transform->SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
-
-			//	Rabbit->AddComponent<MeshRenderer>();
-			//	Rabbit->GetComponent<MeshRenderer>()->CreateMesh(7, 5);
-			//	Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_PlayerBody_Vversion03.png");
-			//	Rabbit->GetComponent<MeshRenderer>()->SetLayer(0);
-			//	Rabbit->GetComponent<MeshRenderer>()->SetReplaceColor(glm::vec3(1.0f, 1.0f, 1.0f));
-
-			//	Rabbit->AddComponent<Animator>();
-			//	Rabbit->GetComponent<Animator>()->sr_controllerPath = AnimationControllerPath("Player");
-			//	Rabbit->GetComponent<Animator>()->setFramePerSec(12);
-
-			//	Rabbit->AddComponent<BoxCollider>();
-
-			//	//Add Rigidbody
-			//	Rabbit->AddComponent<Rigidbody>();
-			//	Rabbit->GetComponent<Rigidbody>()->SetDrag(0.01f);
-
-			//	Rabbit->GetComponent<BoxCollider>()->m_rigidbody = Rabbit->GetComponent<Rigidbody>();
-			//	Rabbit->GetComponent<BoxCollider>()->ReSize(25, 25);
-
-			//	//Behavior Script
-			//	Rabbit->AddComponent<HPsystem>();
-			//	Rabbit->GetComponent<HPsystem>()->SetMaxHP(10000);
-			//	Rabbit->AddComponent<PlayerController>();
-			//	
-			//	Serialization::SaveObject(*Rabbit, PrefabPath("Player"));
-			//	*/
+			//	platform[i] = Instantiate().get();
+			//	platform[i]->AddComponent<MeshRenderer>();
+			//	platform[i]->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			//	platform[i]->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
+			//	platform[i]->GetComponent<MeshRenderer>()->SetLayer(3);
+			//	platform[i]->m_transform->SetScale(glm::vec3(400, 20, 1));
+			//	platform[i]->AddComponent<BoxCollider>()->Init(200, 5);
+			//	g_physicScene->Add(platform[i]->GetComponent<BoxCollider>(), "Platform");
 			//}
 
-			//platform = Instantiate().get();
-			//platform->Layer = "Platform";
-			//platform->AddComponent<MeshRenderer>();
-			//platform->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			//platform->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
-			//platform->GetComponent<MeshRenderer>()->SetLayer(3);
-			//platform->m_transform->SetScale(glm::vec3(800, 20, 1));
-			//platform->AddComponent<BoxCollider>()->ReScale(1, 1);
-
-			////for (int i = 0; i < platformNum; i++)
-			////{
-			////	platform[i] = Instantiate().get();
-			////	platform[i]->AddComponent<MeshRenderer>();
-			////	platform[i]->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			////	platform[i]->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
-			////	platform[i]->GetComponent<MeshRenderer>()->SetLayer(3);
-			////	platform[i]->m_transform->SetScale(glm::vec3(400, 20, 1));
-			////	platform[i]->AddComponent<BoxCollider>()->Init(200, 5);
-			////	g_physicScene->Add(platform[i]->GetComponent<BoxCollider>(), "Platform");
-			////}
-
-			////platform[1]->m_transform->SetPosition(glm::vec3(300, 300, 0));
-			////platform[2]->m_transform->SetPosition(glm::vec3(-300, 300, 0));
-			////platform[3]->m_transform->SetPosition(glm::vec3(-300, -300, 0));
-			////platform[4]->m_transform->SetPosition(glm::vec3(300, -300, 0));
-
-			//gamecontroller->AddComponent<GameController>();
-			//gamecontroller->GetComponent<GameController>()->player = Rabbit;
-			//gamecontroller->GetComponent<GameController>()->ScoreText = ui_ScoreText;
-			//gamecontroller->GetComponent<GameController>()->HPbar = ui_HPbar;
-			//gamecontroller->GetComponent<GameController>()->Staminabar = ui_StaminaBar;
-
-
-			//ENGINE_INFO("Enemy Creation ==========================================================");
-			////flyer animation
-			//{
-			//	EnemCon = std::make_shared<AnimationController>();
-
-			//	std::shared_ptr<Animation> Fly = std::make_shared<Animation>();
-			//	Fly->setStartPosition(0, 2);
-			//	Fly->setEndPosition(5, 2);
-			//	Fly->setSpeedMultiplier(3);
-
-			//	std::shared_ptr<Animation> Dash = std::make_shared<Animation>();
-			//	Dash->setStartPosition(0, 0);
-			//	Dash->setEndPosition(3, 0);
-
-			//	std::shared_ptr<Animation> Die = std::make_shared<Animation>();
-			//	Die->setStartPosition(0, 1);
-			//	Die->setEndPosition(4, 1);
-
-			//	EnemCon->setSheetSize(glm::vec2(6, 3));
-
-			//	EnemCon->AddState(Fly, true);
-			//	EnemCon->AddState(Dash, false);
-			//	EnemCon->AddState(Die, false);
-
-			//	Serialization::SaveObject(*EnemCon, AnimationControllerPath("Flyer"));
-
-			//}
-			////flyer
-			//{
-			//	GameObject* flyer = Instantiate().get();
-			//	flyer->Layer = "Enemy";
-			//	flyer->m_transform->SetScale(glm::vec3(50, 50, 1));
-
-			//	flyer->AddComponent<MeshRenderer>();
-			//	flyer->GetComponent<MeshRenderer>()->SetLayer(1);
-			//	flyer->GetComponent<MeshRenderer>()->CreateMesh(6, 3);
-			//	flyer->GetComponent<MeshRenderer>()->SetTexture(SpritePath("Characters/Enemy_Flyer"));
-
-			//	flyer->AddComponent<Rigidbody>();
-			//	flyer->GetComponent<Rigidbody>()->Init(15, 15);
-
-			//	flyer->AddComponent<HPsystem>();
-
-			//	//og flyer
-			//	flyer->AddComponent<AirFollowing>();
-			//	flyer->AddComponent<Flyer>();
-			//	flyer->GetComponent<Rigidbody>()->SetGravityScale(0.00000001f);
-
-			//	flyer->AddComponent<Animator>();
-			//	flyer->GetComponent<Animator>()->setFramePerSec(12);
-
-			//	flyer->GetComponent<Animator>()->sr_controllerPath = AnimationControllerPath("Flyer");
-
-			//	flyer->SetActive(false);
-
-			//	Serialization::SaveObject(*flyer, PrefabPath("Flyer"));
-			//	
-			//}
-
-			////bomber anim
-			//{
-			//	
-			//	std::shared_ptr<Animation> BomberIdle = std::make_shared<Animation>();
-
-			//	BomberIdle->setStartPosition(0, 0);
-			//	BomberIdle->setEndPosition(2, 0);
-
-			//	std::shared_ptr<Animation> BomberCharging = std::make_shared<Animation>();
-			//	BomberCharging->setStartPosition(0, 1);
-			//	BomberCharging->setEndPosition(1, 1);
-
-			//	std::shared_ptr<Animation> BomberDashing = std::make_shared<Animation>();
-			//	BomberDashing->setStartPosition(2, 1);
-			//	BomberDashing->setEndPosition(3, 1);
-
-			//	std::shared_ptr<Animation> BomberExplode = std::make_shared<Animation>();
-			//	BomberExplode->setStartPosition(0, 3);
-			//	BomberExplode->setEndPosition(11, 3);
-
-			//	std::shared_ptr<Animation> BomberDie = std::make_shared<Animation>();
-			//	BomberDie->setStartPosition(0, 2);
-			//	BomberDie->setEndPosition(4, 2);
-
-			//	std::shared_ptr<AnimationController> BomberAnimController = std::make_shared<AnimationController>();
-
-			//	BomberAnimController->setSheetSize(glm::vec2(12, 4));
-			//	BomberAnimController->AddState(BomberIdle, true);
-			//	BomberAnimController->AddState(BomberCharging, false);
-			//	BomberAnimController->AddState(BomberDashing, true);
-			//	BomberAnimController->AddState(BomberExplode, false);
-			//	BomberAnimController->AddState(BomberDie, false);
-
-			//	Serialization::SaveObject(*BomberAnimController, AnimationControllerPath("Bomber"));
-			//	
-			//}
-			////bomber
-			//{
-			//	
-			//	GameObject* bomber = Instantiate().get();
-			//	bomber->Layer = "Enemy";
-			//	bomber->m_transform->SetScale(glm::vec3(50, 50, 1));
-
-			//	bomber->AddComponent<MeshRenderer>();
-			//	bomber->GetComponent<MeshRenderer>()->CreateMesh(12, 4);
-			//	bomber->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Bomber_V[version01].png");
-
-			//	bomber->AddComponent<Animator>();
-			//	bomber->GetComponent<Animator>()->sr_controllerPath = AnimationControllerPath("Bomber");
-			//	bomber->GetComponent<Animator>()->setFramePerSec(12);
-
-			//	bomber->AddComponent<Rigidbody>();
-			//	bomber->GetComponent<Rigidbody>()->Init(15, 15);
-			//	bomber->GetComponent<Rigidbody>()->SetGravityScale(0.000001);
-
-			//	bomber->AddComponent<HPsystem>();
-			//	bomber->AddComponent<AirFollowing>();
-			//	bomber->AddComponent<AirDash>()->dashDamage = 0;
-			//	bomber->AddComponent<Explosion>();
-			//	bomber->AddComponent<Bomber>();
-
-			//	bomber->SetActive(false);
-			//	Serialization::SaveObject(*bomber, PrefabPath("Bomber"));
-			//	
-			//}
-
-			////Tank anim
-			//{
-			//	std::shared_ptr<AnimationController> EnemCon = std::make_shared<AnimationController>();
-
-			//	std::shared_ptr<Animation> Patrol = std::make_shared<Animation>();
-			//	Patrol->setStartPosition(0, 0);
-			//	Patrol->setEndPosition(6, 0);
-			//	Patrol->setSpeedMultiplier(3);
-
-			//	std::shared_ptr<Animation> Die = std::make_shared<Animation>();
-			//	Die->setStartPosition(0, 1);
-			//	Die->setEndPosition(3, 1);
-			//	Die->setSpeedMultiplier(1);
-
-			//	EnemCon->setSheetSize(glm::vec2(7, 2));
-
-			//	EnemCon->AddState(Patrol, true);
-			//	EnemCon->AddState(Die, false);
+			//platform[1]->m_transform->SetPosition(glm::vec3(300, 300, 0));
+			//platform[2]->m_transform->SetPosition(glm::vec3(-300, 300, 0));
+			//platform[3]->m_transform->SetPosition(glm::vec3(-300, -300, 0));
+			//platform[4]->m_transform->SetPosition(glm::vec3(300, -300, 0));
 
-			//	Serialization::SaveObject(*EnemCon, AnimationControllerPath("Tank"));
-			//}
-			////Tank
-			//{
+			gamecontroller->AddComponent<GameController>();
+			gamecontroller->GetComponent<GameController>()->player = Rabbit;
+			gamecontroller->GetComponent<GameController>()->ScoreText = ui_ScoreText;
+			gamecontroller->GetComponent<GameController>()->HPbar = ui_HPbar;
+			gamecontroller->GetComponent<GameController>()->Staminabar = ui_StaminaBar;
+
+
+			ENGINE_INFO("Enemy Creation ==========================================================");
+			//flyer animation
+			{
+				EnemCon = std::make_shared<AnimationController>();
+
+				std::shared_ptr<Animation> Fly = std::make_shared<Animation>();
+				Fly->setStartPosition(0, 2);
+				Fly->setEndPosition(5, 2);
+				Fly->setSpeedMultiplier(3);
+
+				std::shared_ptr<Animation> Dash = std::make_shared<Animation>();
+				Dash->setStartPosition(0, 0);
+				Dash->setEndPosition(3, 0);
+
+				std::shared_ptr<Animation> Die = std::make_shared<Animation>();
+				Die->setStartPosition(0, 1);
+				Die->setEndPosition(4, 1);
+
+				EnemCon->setSheetSize(glm::vec2(6, 3));
+
+				EnemCon->AddState(Fly, true);
+				EnemCon->AddState(Dash, false);
+				EnemCon->AddState(Die, false);
+
+				Serialization::SaveObject(*EnemCon, AnimationControllerPath("Flyer"));
+
+			}
+			//flyer
+			{
+				GameObject* flyer = Instantiate().get();
+				flyer->Layer = "Enemy";
+				flyer->m_transform->SetScale(glm::vec3(50, 50, 1));
+
+				flyer->AddComponent<MeshRenderer>();
+				flyer->GetComponent<MeshRenderer>()->SetLayer(1);
+				flyer->GetComponent<MeshRenderer>()->CreateMesh(6, 3);
+				flyer->GetComponent<MeshRenderer>()->SetTexture(SpritePath("Characters/Enemy_Flyer"));
+
+				flyer->AddComponent<Rigidbody>();
+				flyer->GetComponent<Rigidbody>()->Init(15, 15);
+
+				flyer->AddComponent<HPsystem>();
+				flyer->AddComponent<SoundPlayer>();
+
+				//og flyer
+				flyer->AddComponent<AirFollowing>();
+				flyer->AddComponent<Flyer>();
+				flyer->GetComponent<Rigidbody>()->SetGravityScale(0.00000001f);
+
+				flyer->AddComponent<Animator>();
+				flyer->GetComponent<Animator>()->setFramePerSec(12);
+
+				flyer->GetComponent<Animator>()->sr_controllerPath = AnimationControllerPath("Flyer");
+
+				flyer->SetActive(false);
+
+				Serialization::SaveObject(*flyer, PrefabPath("Flyer"));
+				
+			}
+
+			//bomber anim
+			{
+				
+				std::shared_ptr<Animation> BomberIdle = std::make_shared<Animation>();
+
+				BomberIdle->setStartPosition(0, 0);
+				BomberIdle->setEndPosition(2, 0);
+
+				std::shared_ptr<Animation> BomberCharging = std::make_shared<Animation>();
+				BomberCharging->setStartPosition(0, 1);
+				BomberCharging->setEndPosition(1, 1);
+
+				std::shared_ptr<Animation> BomberDashing = std::make_shared<Animation>();
+				BomberDashing->setStartPosition(2, 1);
+				BomberDashing->setEndPosition(3, 1);
+
+				std::shared_ptr<Animation> BomberExplode = std::make_shared<Animation>();
+				BomberExplode->setStartPosition(0, 3);
+				BomberExplode->setEndPosition(11, 3);
 
-			//	GameObject* flyer = Instantiate().get();
-			//	flyer->Layer = "GroundEnemy";
-			//	flyer->m_transform->SetScale(glm::vec3(200, 200, 1));
+				std::shared_ptr<Animation> BomberDie = std::make_shared<Animation>();
+				BomberDie->setStartPosition(0, 2);
+				BomberDie->setEndPosition(4, 2);
 
-			//	flyer->AddComponent<MeshRenderer>();
-			//	flyer->GetComponent<MeshRenderer>()->SetLayer(1);
-			//	flyer->GetComponent<MeshRenderer>()->CreateMesh(7, 2);
-			//	flyer->GetComponent<MeshRenderer>()->SetTexture(SpritePath("Characters/Enemy_Tank"));
+				std::shared_ptr<AnimationController> BomberAnimController = std::make_shared<AnimationController>();
 
-			//	flyer->AddComponent<Rigidbody>();
-			//	flyer->AddComponent<BoxCollider>()->ReScale(0.5, 0.5);
-
-			//	flyer->AddComponent<HPsystem>();
+				BomberAnimController->setSheetSize(glm::vec2(12, 4));
+				BomberAnimController->AddState(BomberIdle, true);
+				BomberAnimController->AddState(BomberCharging, false);
+				BomberAnimController->AddState(BomberDashing, true);
+				BomberAnimController->AddState(BomberExplode, false);
+				BomberAnimController->AddState(BomberDie, false);
+
+				Serialization::SaveObject(*BomberAnimController, AnimationControllerPath("Bomber"));
+				
+			}
+			//bomber
+			{
+				
+				GameObject* bomber = Instantiate().get();
+				bomber->Layer = "Enemy";
+				bomber->m_transform->SetScale(glm::vec3(50, 50, 1));
+
+				bomber->AddComponent<MeshRenderer>();
+				bomber->GetComponent<MeshRenderer>()->CreateMesh(12, 4);
+				bomber->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Bomber_V[version01].png");
+
+				bomber->AddComponent<Animator>();
+				bomber->GetComponent<Animator>()->sr_controllerPath = AnimationControllerPath("Bomber");
+				bomber->GetComponent<Animator>()->setFramePerSec(12);
+
+				bomber->AddComponent<Rigidbody>();
+				bomber->GetComponent<Rigidbody>()->Init(15, 15);
+				bomber->GetComponent<Rigidbody>()->SetGravityScale(0.000001);
+
+				bomber->AddComponent<HPsystem>();
+				bomber->AddComponent<AirFollowing>();
+				bomber->AddComponent<AirDash>()->dashDamage = 0;
+				bomber->AddComponent<Explosion>();
+				bomber->AddComponent<Bomber>();
+
+				bomber->SetActive(false);
+				Serialization::SaveObject(*bomber, PrefabPath("Bomber"));
+				
+			}
+
+			//Tank anim
+			{
+				std::shared_ptr<AnimationController> EnemCon = std::make_shared<AnimationController>();
+
+				std::shared_ptr<Animation> Patrol = std::make_shared<Animation>();
+				Patrol->setStartPosition(0, 0);
+				Patrol->setEndPosition(6, 0);
+				Patrol->setSpeedMultiplier(3);
+
+				std::shared_ptr<Animation> Die = std::make_shared<Animation>();
+				Die->setStartPosition(0, 1);
+				Die->setEndPosition(3, 1);
+				Die->setSpeedMultiplier(1);
+
+				EnemCon->setSheetSize(glm::vec2(7, 2));
+
+				EnemCon->AddState(Patrol, true);
+				EnemCon->AddState(Die, false);
 
-			//	//tank
-			//	flyer->AddComponent<GroundPatrol>()->SetSpeed(50.0f);
-			//	flyer->AddComponent<Tank>();
-			//	flyer->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
-			//	flyer->GetComponent<HPsystem>()->SetMaxHP(50.0);
+				Serialization::SaveObject(*EnemCon, AnimationControllerPath("Tank"));
+			}
+			//Tank
+			{
 
-			//	flyer->AddComponent<Animator>();
-			//	flyer->GetComponent<Animator>()->setFramePerSec(12);
+				GameObject* flyer = Instantiate().get();
+				flyer->Layer = "GroundEnemy";
+				flyer->m_transform->SetScale(glm::vec3(200, 200, 1));
 
-			//	flyer->GetComponent<Animator>()->sr_controllerPath = AnimationControllerPath("Tank");
+				flyer->AddComponent<MeshRenderer>();
+				flyer->GetComponent<MeshRenderer>()->SetLayer(1);
+				flyer->GetComponent<MeshRenderer>()->CreateMesh(7, 2);
+				flyer->GetComponent<MeshRenderer>()->SetTexture(SpritePath("Characters/Enemy_Tank"));
 
-			//	flyer->SetActive(false);
+				flyer->AddComponent<Rigidbody>();
+				flyer->AddComponent<BoxCollider>()->ReScale(0.5, 0.5);
+
+				flyer->AddComponent<HPsystem>();
 
-			//	Serialization::SaveObject(*flyer, PrefabPath("Tank"));
+				//tank
+				flyer->AddComponent<GroundPatrol>()->SetSpeed(50.0f);
+				flyer->AddComponent<Tank>();
+				flyer->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
+				flyer->GetComponent<HPsystem>()->SetMaxHP(50.0);
 
-			//}
+				flyer->AddComponent<Animator>();
+				flyer->GetComponent<Animator>()->setFramePerSec(12);
 
-			////charger anim
-			//{
-			//	std::shared_ptr<AnimationController> EnemCon = std::make_shared<AnimationController>();
+				flyer->GetComponent<Animator>()->sr_controllerPath = AnimationControllerPath("Tank");
 
-			//	std::shared_ptr<Animation> Patrol = std::make_shared<Animation>();
-			//	Patrol->setStartPosition(0, 0);
-			//	Patrol->setEndPosition(3, 0);
-			//	Patrol->setSpeedMultiplier(1);
-
-			//	std::shared_ptr<Animation> Charge = std::make_shared<Animation>();
-			//	Charge->setStartPosition(0, 1);
-			//	Charge->setEndPosition(1, 1);
-			//	Charge->setSpeedMultiplier(1);
+				flyer->SetActive(false);
 
-			//	std::shared_ptr<Animation> Dash = std::make_shared<Animation>();
-			//	Dash->setStartPosition(0, 1);
-			//	Dash->setEndPosition(3, 1);
-			//	Dash->setSpeedMultiplier(1);
-
-			//	std::shared_ptr<Animation> Die = std::make_shared<Animation>();
-			//	Die->setStartPosition(0, 2);
-			//	Die->setEndPosition(4, 2);
-			//	Die->setSpeedMultiplier(1);
+				Serialization::SaveObject(*flyer, PrefabPath("Tank"));
 
-			//	EnemCon->setSheetSize(glm::vec2(5, 3));
+			}
 
-			//	EnemCon->AddState(Patrol, true);
-			//	EnemCon->AddState(Charge, false);
-			//	EnemCon->AddState(Dash, true);
-			//	EnemCon->AddState(Die, false);
+			//charger anim
+			{
+				std::shared_ptr<AnimationController> EnemCon = std::make_shared<AnimationController>();
 
-			//	Serialization::SaveObject(*EnemCon, AnimationControllerPath("Charger"));
-			//}
-			////Charger
-			//{
+				std::shared_ptr<Animation> Patrol = std::make_shared<Animation>();
+				Patrol->setStartPosition(0, 0);
+				Patrol->setEndPosition(3, 0);
+				Patrol->setSpeedMultiplier(1);
+
+				std::shared_ptr<Animation> Charge = std::make_shared<Animation>();
+				Charge->setStartPosition(0, 1);
+				Charge->setEndPosition(1, 1);
+				Charge->setSpeedMultiplier(1);
 
-			//	GameObject* flyer = Instantiate().get();
-			//	flyer->Layer = "GroundEnemy";
-			//	flyer->m_transform->SetScale(glm::vec3(50, 50, 1));
+				std::shared_ptr<Animation> Dash = std::make_shared<Animation>();
+				Dash->setStartPosition(0, 1);
+				Dash->setEndPosition(3, 1);
+				Dash->setSpeedMultiplier(1);
+
+				std::shared_ptr<Animation> Die = std::make_shared<Animation>();
+				Die->setStartPosition(0, 2);
+				Die->setEndPosition(4, 2);
+				Die->setSpeedMultiplier(1);
 
-			//	flyer->AddComponent<MeshRenderer>();
-			//	flyer->GetComponent<MeshRenderer>()->SetLayer(1);
-			//	flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 3);
-			//	flyer->GetComponent<MeshRenderer>()->SetTexture(SpritePath("Characters/Enemy_Charger"));
+				EnemCon->setSheetSize(glm::vec2(5, 3));
 
-			//	flyer->AddComponent<Rigidbody>();
-			//	flyer->AddComponent<BoxCollider>()->ReScale(1, 1);
+				EnemCon->AddState(Patrol, true);
+				EnemCon->AddState(Charge, false);
+				EnemCon->AddState(Dash, true);
+				EnemCon->AddState(Die, false);
 
-			//	flyer->AddComponent<HPsystem>();
+				Serialization::SaveObject(*EnemCon, AnimationControllerPath("Charger"));
+			}
+			//Charger
+			{
 
-			//	//charger
-			//	flyer->AddComponent<GroundPatrol>();
-			//	flyer->AddComponent<GroundDash>();
-			//	flyer->AddComponent<Charger>()->targetDetectionRange = 300.0f;
-			//	flyer->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
+				GameObject* flyer = Instantiate().get();
+				flyer->Layer = "GroundEnemy";
+				flyer->m_transform->SetScale(glm::vec3(50, 50, 1));
 
-			//	flyer->AddComponent<Animator>();
-			//	flyer->GetComponent<Animator>()->setFramePerSec(12);
+				flyer->AddComponent<MeshRenderer>();
+				flyer->GetComponent<MeshRenderer>()->SetLayer(1);
+				flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 3);
+				flyer->GetComponent<MeshRenderer>()->SetTexture(SpritePath("Characters/Enemy_Charger"));
 
-			//	flyer->GetComponent<Animator>()->sr_controllerPath = AnimationControllerPath("Charger");
+				flyer->AddComponent<Rigidbody>();
+				flyer->AddComponent<BoxCollider>()->ReScale(1, 1);
 
-			//	flyer->SetActive(false);
+				flyer->AddComponent<HPsystem>();
 
-			//	Serialization::SaveObject(*flyer, PrefabPath("Charger"));
+				//charger
+				flyer->AddComponent<GroundPatrol>();
+				flyer->AddComponent<GroundDash>();
+				flyer->AddComponent<Charger>()->targetDetectionRange = 300.0f;
+				flyer->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
 
-			//}
+				flyer->AddComponent<Animator>();
+				flyer->GetComponent<Animator>()->setFramePerSec(12);
 
-			////Spitter anim
-			//{
-			//	std::shared_ptr<AnimationController> EnemCon = std::make_shared<AnimationController>();
+				flyer->GetComponent<Animator>()->sr_controllerPath = AnimationControllerPath("Charger");
 
-			//	std::shared_ptr<Animation> Idle = std::make_shared<Animation>();
-			//	Idle->setStartPosition(0, 1);
-			//	Idle->setEndPosition(5, 1);
-			//	Idle->setSpeedMultiplier(1);
+				flyer->SetActive(false);
 
-			//	std::shared_ptr<Animation> Shoot = std::make_shared<Animation>();
-			//	Shoot->setStartPosition(0, 2);
-			//	Shoot->setEndPosition(4, 2);
-			//	Shoot->setSpeedMultiplier(1);
+				Serialization::SaveObject(*flyer, PrefabPath("Charger"));
 
-			//	std::shared_ptr<Animation> Die = std::make_shared<Animation>();
-			//	Die->setStartPosition(0, 0);
-			//	Die->setEndPosition(3, 0);
-			//	Die->setSpeedMultiplier(1);
+			}
 
-			//	EnemCon->setSheetSize(glm::vec2(5, 8));
+			//Spitter anim
+			{
+				std::shared_ptr<AnimationController> EnemCon = std::make_shared<AnimationController>();
 
-			//	EnemCon->AddState(Idle, true);
-			//	EnemCon->AddState(Shoot, false);
-			//	EnemCon->AddState(Die, false);
+				std::shared_ptr<Animation> Idle = std::make_shared<Animation>();
+				Idle->setStartPosition(0, 1);
+				Idle->setEndPosition(5, 1);
+				Idle->setSpeedMultiplier(1);
 
-			//	Serialization::SaveObject(*EnemCon, AnimationControllerPath("Spitter"));
-			//}
-			////Spitter
-			//{
-
-			//	GameObject* flyer = Instantiate().get();
-			//	flyer->Layer = "GroundEnemy";
-			//	flyer->m_transform->SetScale(glm::vec3(100, 100, 1));
-
-			//	flyer->AddComponent<MeshRenderer>();
-			//	flyer->GetComponent<MeshRenderer>()->SetLayer(1);
-			//	flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 8);
-			//	flyer->GetComponent<MeshRenderer>()->SetTexture(SpritePath("Characters/Enemy_Spitter"));
-
-			//	flyer->AddComponent<Rigidbody>();
-			//	flyer->AddComponent<BoxCollider>()->ReScale(0.5, 0.5);
-
-			//	flyer->AddComponent<HPsystem>();
-
-			//	//spitter
-			//	flyer->AddComponent<GroundPatrol>();
-			//	flyer->AddComponent<ObjectShooter>();
-			//	flyer->GetComponent<ObjectShooter>()->BulletObjectTypeAsInt = POOL_TYPE::BULLET_FUME;
-			//	flyer->GetComponent<ObjectShooter>()->bullet_speed = 500;
-			//	flyer->AddComponent<Spitter>()->targetDetectionRange = 1000.0f;
-			//	flyer->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
-
-			//	flyer->AddComponent<Animator>();
-			//	flyer->GetComponent<Animator>()->setFramePerSec(12);
-
-			//	flyer->GetComponent<Animator>()->sr_controllerPath = AnimationControllerPath("Spitter");
-
-			//	flyer->SetActive(false);
-
-			//	Serialization::SaveObject(*flyer, PrefabPath("Spitter"));
-
-			//}
-
-			////Queen anim
-			//{
-			//	std::shared_ptr<Animation> queenIdle = std::make_shared<Animation>();
-
-			//	queenIdle->setStartPosition(0, 0);
-			//	queenIdle->setEndPosition(7, 0);
-			//	queenIdle->setSpeedMultiplier(1);
-
-			//	std::shared_ptr<Animation> queenSpawning = std::make_shared<Animation>();
-
-			//	queenSpawning->setStartPosition(0, 1);
-			//	queenSpawning->setEndPosition(3, 1);
-			//	queenSpawning->setSpeedMultiplier(1);
-
-			//	queenAnimControl = std::make_shared<AnimationController>();
-			//	queenAnimControl->setSheetSize(glm::vec2(7, 2));
-			//	queenAnimControl->AddState(queenIdle, true);
-			//	queenAnimControl->AddState(queenSpawning, false);
-
-			//	Serialization::SaveObject(*queenAnimControl, AnimationControllerPath("Queen"));
-			//}
-			////Queen
-			//{
-			//	queen = Instantiate().get();
-			//	queen->Layer = "Enemy";
-
-			//	queen->m_transform->SetScale(glm::vec3(CHAR_SIZE * 10, CHAR_SIZE * 10, 1.0f));
-			//	queen->m_transform->SetPosition(glm::vec3(-(Graphic::Window::GetWidth()), (Graphic::Window::GetHeight() * 2 / 3) + 700.0f, 1.0f));
-
-			//	queen->AddComponent<MeshRenderer>();
-			//	queen->GetComponent<MeshRenderer>()->CreateMesh(7, 2);
-			//	queen->GetComponent<MeshRenderer>()->SetTexture(SpritePath("Characters/Enemy_Queen"));
-
-			//	queen->AddComponent<Animator>();
-			//	queen->GetComponent<Animator>()->sr_controllerPath = AnimationControllerPath("Queen");
-			//	queen->GetComponent<Animator>()->setFramePerSec(3);
-
-			//	queen->AddComponent<Rigidbody>();
-			//	queen->GetComponent<Rigidbody>()->Init(400, 300);
-			//	queen->GetComponent<Rigidbody>()->SetGravityScale(0.00001);
-
-			//	queen->AddComponent<HPsystem>();
-			//	queen->AddComponent<AirPatrol>();
-			//	queen->GetComponent<AirPatrol>()->SetPoint(-(Graphic::Window::GetWidth() * 2), Graphic::Window::GetWidth() * 2);
-			//	queen->AddComponent<DeQueen>();
-
-			//	queen->SetActive(false);
-
-			//	Serialization::SaveObject(*queen, PrefabPath("Queen"));
-			//}
-
-
-			//ENGINE_INFO("Example Particle Creation ===============================================");
-			////Bullet Hit Example
-			//{
-			//	ParticleSystem* particle = new ParticleSystem();
-			//	particle->texturePath = "Sources/Assets/yellow_square.png";
-			//	particle->emitter->isEnabled = true;
-			//	particle->emitter->constantParticle = false;
-			//	particle->emitter->burstParticleNumber = 3;
-			//	particle->emitter->particleSamples = 3;
-			//	particle->emitter->minEmissionAngle = 135;
-			//	particle->emitter->maxEmissionAngle = 225;
-			//	particle->emitter->spawnRadius = 0.1f;
-			//	particle->velocity->minSpeed = 300.0f;
-			//	particle->velocity->maxSpeed = 300.0f;
-			//	particle->velocity->sr_directionTypeAsInt = 0;
-			//	particle->velocity->gravityScale = 2;
-			//	particle->lifetime->minLifeTime = 0.2f;
-			//	particle->lifetime->maxLifeTime = 0.2f;
-			//	particle->shape->minXSize = 4.5f;
-			//	particle->shape->maxXSize = 4.5f;
-			//	particle->shape->minYSize = 4.5f;
-			//	particle->shape->maxYSize = 4.5f;
-
-			//	Serialization::SaveObject(*particle, ParticlePath("Bullet_Hit_Example"));
-			//}
-
-			////Bullet Fume
-			//{
-			//	ParticleSystem* particle = new ParticleSystem();
-			//	particle->texturePath = "Sources/Assets/white_square.png";
-			//	particle->emitter->isEnabled = true;
-			//	particle->emitter->spawnRadius = 50;
-			//	particle->emitter->particleSamples = 10;
-			//	particle->emitter->particleRate = 0.0f;
-			//	particle->color->Color = glm::vec3(0.1f, 1.0f, 0.0f);
-			//	particle->velocity->SetDirectiontype(ParticleSystem::DirectionType::AwayFromcenter);
-			//	particle->velocity->minSpeed = 10;
-			//	particle->velocity->maxSpeed = 30;
-
-			//	Serialization::SaveObject(*particle, ParticlePath("Bullet_Fume_Traverse"));
-			//}
+				std::shared_ptr<Animation> Shoot = std::make_shared<Animation>();
+				Shoot->setStartPosition(0, 2);
+				Shoot->setEndPosition(4, 2);
+				Shoot->setSpeedMultiplier(1);
 
-			//ENGINE_INFO("Bullet Creation =========================================================");
-			////machinegun bullet
-			//{
-			//	GameObject* Bullet = Instantiate().get();
-			//	Bullet->Layer = "Bullet";
-			//	Bullet->AddComponent<MeshRenderer>();
-			//	Bullet->GetComponent<MeshRenderer>()->SetLayer(2);
-			//	Bullet->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
-			//	Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_bullet.png");
+				std::shared_ptr<Animation> Die = std::make_shared<Animation>();
+				Die->setStartPosition(0, 0);
+				Die->setEndPosition(3, 0);
+				Die->setSpeedMultiplier(1);
 
-			//	Bullet->AddComponent<Rigidbody>();
-			//	Bullet->GetComponent<Rigidbody>()->Init(7, 7);
-			//	Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0000001f);
+				EnemCon->setSheetSize(glm::vec2(5, 8));
 
-			//	Bullet->AddComponent<ParticleSystem>();
-			//	Serialization::LoadObject(*Bullet->GetComponent<ParticleSystem>(), ParticlePath("Bullet_Hit_Example"));
+				EnemCon->AddState(Idle, true);
+				EnemCon->AddState(Shoot, false);
+				EnemCon->AddState(Die, false);
 
-			//	Bullet->AddComponent<MachineGunBullet>();
+				Serialization::SaveObject(*EnemCon, AnimationControllerPath("Spitter"));
+			}
+			//Spitter
+			{
+
+				GameObject* flyer = Instantiate().get();
+				flyer->Layer = "GroundEnemy";
+				flyer->m_transform->SetScale(glm::vec3(100, 100, 1));
+
+				flyer->AddComponent<MeshRenderer>();
+				flyer->GetComponent<MeshRenderer>()->SetLayer(1);
+				flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 8);
+				flyer->GetComponent<MeshRenderer>()->SetTexture(SpritePath("Characters/Enemy_Spitter"));
+
+				flyer->AddComponent<Rigidbody>();
+				flyer->AddComponent<BoxCollider>()->ReScale(0.5, 0.5);
+
+				flyer->AddComponent<HPsystem>();
+
+				//spitter
+				flyer->AddComponent<GroundPatrol>();
+				flyer->AddComponent<ObjectShooter>();
+				flyer->GetComponent<ObjectShooter>()->BulletObjectTypeAsInt = POOL_TYPE::BULLET_FUME;
+				flyer->GetComponent<ObjectShooter>()->bullet_speed = 500;
+				flyer->AddComponent<Spitter>()->targetDetectionRange = 1000.0f;
+				flyer->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
+
+				flyer->AddComponent<Animator>();
+				flyer->GetComponent<Animator>()->setFramePerSec(12);
+
+				flyer->GetComponent<Animator>()->sr_controllerPath = AnimationControllerPath("Spitter");
+
+				flyer->SetActive(false);
+
+				Serialization::SaveObject(*flyer, PrefabPath("Spitter"));
+
+			}
+
+			//Queen anim
+			{
+				std::shared_ptr<Animation> queenIdle = std::make_shared<Animation>();
+
+				queenIdle->setStartPosition(0, 0);
+				queenIdle->setEndPosition(7, 0);
+				queenIdle->setSpeedMultiplier(1);
+
+				std::shared_ptr<Animation> queenSpawning = std::make_shared<Animation>();
+
+				queenSpawning->setStartPosition(0, 1);
+				queenSpawning->setEndPosition(3, 1);
+				queenSpawning->setSpeedMultiplier(1);
+
+				queenAnimControl = std::make_shared<AnimationController>();
+				queenAnimControl->setSheetSize(glm::vec2(7, 2));
+				queenAnimControl->AddState(queenIdle, true);
+				queenAnimControl->AddState(queenSpawning, false);
+
+				Serialization::SaveObject(*queenAnimControl, AnimationControllerPath("Queen"));
+			}
+			//Queen
+			{
+				queen = Instantiate().get();
+				queen->Layer = "Enemy";
+
+				queen->m_transform->SetScale(glm::vec3(CHAR_SIZE * 10, CHAR_SIZE * 10, 1.0f));
+				queen->m_transform->SetPosition(glm::vec3(-(Graphic::Window::GetWidth()), (Graphic::Window::GetHeight() * 2 / 3) + 700.0f, 1.0f));
+
+				queen->AddComponent<MeshRenderer>();
+				queen->GetComponent<MeshRenderer>()->CreateMesh(7, 2);
+				queen->GetComponent<MeshRenderer>()->SetTexture(SpritePath("Characters/Enemy_Queen"));
+
+				queen->AddComponent<Animator>();
+				queen->GetComponent<Animator>()->sr_controllerPath = AnimationControllerPath("Queen");
+				queen->GetComponent<Animator>()->setFramePerSec(3);
+
+				queen->AddComponent<Rigidbody>();
+				queen->GetComponent<Rigidbody>()->Init(400, 300);
+				queen->GetComponent<Rigidbody>()->SetGravityScale(0.00001);
+
+				queen->AddComponent<HPsystem>();
+				queen->AddComponent<SoundPlayer>();
+				queen->AddComponent<AirPatrol>();
+				queen->GetComponent<AirPatrol>()->SetPoint(-(Graphic::Window::GetWidth() * 2), Graphic::Window::GetWidth() * 2);
+				queen->AddComponent<DeQueen>();
+
+				queen->SetActive(false);
+
+				Serialization::SaveObject(*queen, PrefabPath("Queen"));
+			}
+
+
+			ENGINE_INFO("Example Particle Creation ===============================================");
+			//Bullet Hit Example
+			{
+				ParticleSystem* particle = new ParticleSystem();
+				particle->texturePath = "Sources/Assets/yellow_square.png";
+				particle->emitter->isEnabled = true;
+				particle->emitter->constantParticle = false;
+				particle->emitter->burstParticleNumber = 3;
+				particle->emitter->particleSamples = 3;
+				particle->emitter->minEmissionAngle = 135;
+				particle->emitter->maxEmissionAngle = 225;
+				particle->emitter->spawnRadius = 0.1f;
+				particle->velocity->minSpeed = 300.0f;
+				particle->velocity->maxSpeed = 300.0f;
+				particle->velocity->sr_directionTypeAsInt = 0;
+				particle->velocity->gravityScale = 2;
+				particle->lifetime->minLifeTime = 0.2f;
+				particle->lifetime->maxLifeTime = 0.2f;
+				particle->shape->minXSize = 4.5f;
+				particle->shape->maxXSize = 4.5f;
+				particle->shape->minYSize = 4.5f;
+				particle->shape->maxYSize = 4.5f;
+
+				Serialization::SaveObject(*particle, ParticlePath("Bullet_Hit_Example"));
+			}
+
+			//Bullet Fume
+			{
+				ParticleSystem* particle = new ParticleSystem();
+				particle->texturePath = "Sources/Assets/white_square.png";
+				particle->emitter->isEnabled = true;
+				particle->emitter->spawnRadius = 50;
+				particle->emitter->particleSamples = 10;
+				particle->emitter->particleRate = 0.0f;
+				particle->color->Color = glm::vec3(0.1f, 1.0f, 0.0f);
+				particle->velocity->SetDirectiontype(ParticleSystem::DirectionType::AwayFromcenter);
+				particle->velocity->minSpeed = 10;
+				particle->velocity->maxSpeed = 30;
+
+				Serialization::SaveObject(*particle, ParticlePath("Bullet_Fume_Traverse"));
+			}
+
+			ENGINE_INFO("Bullet Creation =========================================================");
+			//machinegun bullet
+			{
+				GameObject* Bullet = Instantiate().get();
+				Bullet->Layer = "Bullet";
+				Bullet->AddComponent<MeshRenderer>();
+				Bullet->GetComponent<MeshRenderer>()->SetLayer(2);
+				Bullet->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
+				Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_bullet.png");
 
-			//	Bullet->m_transform->SetScale(glm::vec3(10, 10, 1));
+				Bullet->AddComponent<Rigidbody>();
+				Bullet->GetComponent<Rigidbody>()->Init(7, 7);
+				Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0000001f);
 
-			//	Bullet->SetActive(false);
+				Bullet->AddComponent<ParticleSystem>();
+				Serialization::LoadObject(*Bullet->GetComponent<ParticleSystem>(), ParticlePath("Bullet_Hit_Example"));
 
-			//	Serialization::SaveObject(*Bullet, PrefabPath("Bullet_MG"));
-			//}
+				Bullet->AddComponent<MachineGunBullet>();
 
-			////grenade bullet
-			//{
-			//	GameObject* Bullet = Instantiate().get();
-			//	Bullet->Layer = "Bullet";
-			//	Bullet->AddComponent<MeshRenderer>();
-			//	Bullet->GetComponent<MeshRenderer>()->CreateMesh(2, 1);
-			//	Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/grenadeL_bullet.png");
+				Bullet->m_transform->SetScale(glm::vec3(10, 10, 1));
 
-			//	Bullet->AddComponent<Rigidbody>();
-			//	Bullet->GetComponent<Rigidbody>()->Init(7, 7);
-			//	Bullet->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
+				Bullet->SetActive(false);
 
-			//	Bullet->m_transform->SetScale(glm::vec3(30, 30, 1));
+				Serialization::SaveObject(*Bullet, PrefabPath("Bullet_MG"));
+			}
 
-			//	Bullet->AddComponent<GrenadeLauncherBullet>();
+			//grenade bullet
+			{
+				GameObject* Bullet = Instantiate().get();
+				Bullet->Layer = "Bullet";
+				Bullet->AddComponent<MeshRenderer>();
+				Bullet->GetComponent<MeshRenderer>()->CreateMesh(2, 1);
+				Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/grenadeL_bullet.png");
 
-			//	Bullet->SetActive(false);
+				Bullet->AddComponent<Rigidbody>();
+				Bullet->GetComponent<Rigidbody>()->Init(7, 7);
+				Bullet->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
 
-			//	Serialization::SaveObject(*Bullet, PrefabPath("Bullet_GL"));
-			//}
+				Bullet->AddComponent<SoundPlayer>();
 
-			////zapper bullet
-			//{
-			//	GameObject* Bullet = Instantiate().get();
-			//	Bullet->Layer = "Bullet";
-			//	Bullet->AddComponent<MeshRenderer>();
-			//	Bullet->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			//	Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/blue.jpg");
+				Bullet->m_transform->SetScale(glm::vec3(30, 30, 1));
 
-			//	Bullet->AddComponent<Rigidbody>();
-			//	Bullet->GetComponent<Rigidbody>()->Init(7, 7);
-			//	Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0f);
+				Bullet->AddComponent<GrenadeLauncherBullet>();
 
-			//	Bullet->m_transform->SetScale(glm::vec3(10, 10, 1));
+				Bullet->SetActive(false);
 
-			//	Bullet->AddComponent<ZapperGunBullet>();
+				Serialization::SaveObject(*Bullet, PrefabPath("Bullet_GL"));
+			}
 
-			//	Bullet->SetActive(false);
+			//zapper bullet
+			{
+				GameObject* Bullet = Instantiate().get();
+				Bullet->Layer = "Bullet";
+				Bullet->AddComponent<MeshRenderer>();
+				Bullet->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+				Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/blue.jpg");
 
-			//	Serialization::SaveObject(*Bullet, PrefabPath("Bullet_ZP"));
-			//}
+				Bullet->AddComponent<Rigidbody>();
+				Bullet->GetComponent<Rigidbody>()->Init(7, 7);
+				Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0f);
 
-			////blackhole bullet
-			//{
-			//	GameObject* Bullet = Instantiate().get();
-			//	Bullet->Layer = "Bullet";
-			//	Bullet->AddComponent<MeshRenderer>();
-			//	Bullet->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
-			//	Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/blackhole_bullet.png");
+				Bullet->AddComponent<SoundPlayer>();
 
-			//	Bullet->AddComponent<Rigidbody>();
-			//	Bullet->GetComponent<Rigidbody>()->Init(7, 7);
-			//	Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0000001f);
+				Bullet->m_transform->SetScale(glm::vec3(10, 10, 1));
 
-			//	Bullet->AddComponent<ParticleSystem>();
-			//	Bullet->GetComponent<ParticleSystem>()->emitter->isEnabled = true;
+				Bullet->AddComponent<ZapperGunBullet>();
 
-			//	Bullet->m_transform->SetScale(glm::vec3(30, 30, 1));
+				Bullet->SetActive(false);
 
-			//	Bullet->AddComponent<BlackholeGunBullet>();
+				Serialization::SaveObject(*Bullet, PrefabPath("Bullet_ZP"));
+			}
 
-			//	Bullet->SetActive(false);
+			//blackhole bullet
+			{
+				GameObject* Bullet = Instantiate().get();
+				Bullet->Layer = "Bullet";
+				Bullet->AddComponent<MeshRenderer>();
+				Bullet->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
+				Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/blackhole_bullet.png");
 
-			//	Serialization::SaveObject(*Bullet, PrefabPath("Bullet_BH"));
-			//}
+				Bullet->AddComponent<Rigidbody>();
+				Bullet->GetComponent<Rigidbody>()->Init(7, 7);
+				Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0000001f);
 
-			////fume bullet
-			//{
-			//	GameObject* Bullet = Instantiate().get();
-			//	Bullet->Layer = "EnemyBullet";
+				Bullet->AddComponent<ParticleSystem>();
+				Bullet->GetComponent<ParticleSystem>()->emitter->isEnabled = true;
+				
+				Bullet->AddComponent<SoundPlayer>();
 
-			//	Bullet->m_transform->SetScale(glm::vec3(10, 10, 1));
+				Bullet->m_transform->SetScale(glm::vec3(30, 30, 1));
 
+				Bullet->AddComponent<BlackholeGunBullet>();
 
-			//	Bullet->AddComponent<MeshRenderer>();
-			//	Bullet->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
-			//	Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/blackhole_bullet.png");
-			//	Bullet->GetComponent<MeshRenderer>()->SetReplaceColor(glm::vec3(50.0 / 255.0, 168.0 / 255.0, 82.0 / 255.0));
+				Bullet->SetActive(false);
 
-			//	Bullet->AddComponent<Rigidbody>();
-			//	//Bullet->GetComponent<Rigidbody>()->Init(7, 7);
-			//	Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0000001f);
+				Serialization::SaveObject(*Bullet, PrefabPath("Bullet_BH"));
+			}
 
-			//	Bullet->AddComponent<BoxCollider>()->ReScale(1, 1);
-			//	//add fume bullet component
+			//fume bullet
+			{
+				GameObject* Bullet = Instantiate().get();
+				Bullet->Layer = "EnemyBullet";
 
-			//	Bullet->AddComponent<ParticleSystem>();
-			//	Serialization::LoadObject(*Bullet->GetComponent<ParticleSystem>(), ParticlePath("Bullet_Fume_Traverse"));
+				Bullet->m_transform->SetScale(glm::vec3(10, 10, 1));
 
-			//	Bullet->SetActive(false);
 
-			//	Serialization::SaveObject(*Bullet, PrefabPath("Bullet_Fume"));
-			//}
+				Bullet->AddComponent<MeshRenderer>();
+				Bullet->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
+				Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/blackhole_bullet.png");
+				Bullet->GetComponent<MeshRenderer>()->SetReplaceColor(glm::vec3(50.0 / 255.0, 168.0 / 255.0, 82.0 / 255.0));
 
+				Bullet->AddComponent<Rigidbody>();
+				//Bullet->GetComponent<Rigidbody>()->Init(7, 7);
+				Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0000001f);
 
-			////Add Sound
-			//Bg2->AddComponent<SoundPlayer>();
-			//Bg2->GetComponent<SoundPlayer>()->CreateSoundPlayer();
-			//Bg2->GetComponent<SoundPlayer>()->SetSound("Sources/Assets/BGMPrototype.mp3");
-			//Bg2->GetComponent<SoundPlayer>()->SetLoop(true);
-			//Bg2->GetComponent<SoundPlayer>()->SetVolume(0.5);
-			////Bg2->GetComponent<SoundPlayer>()->PlaySound();
+				Bullet->AddComponent<BoxCollider>()->ReScale(1, 1);
+				//add fume bullet component
 
+				Bullet->AddComponent<ParticleSystem>();
+				Serialization::LoadObject(*Bullet->GetComponent<ParticleSystem>(), ParticlePath("Bullet_Fume_Traverse"));
 
-			//GAME_INFO(*Rabbit);
-			//
-			//Serialization::SaveObject(*(SceneManagement::ActiveScene), ScenePath("SerializationTest"));
-			////this point is where it all ends =========================================
+				Bullet->SetActive(false);
 
-			//ENGINE_INFO("mesh count {}", Factory<MeshRenderer>::getCollection().size());
-			//ENGINE_INFO("GO Active {}", SceneManagement::ActiveScene->GameObjectsInScene.size());
-			//for (MeshRenderer* mr : Factory<MeshRenderer>::getCollection()) {
-			//	ENGINE_INFO("MR active {}", mr->enabled);
-			//}
+				Serialization::SaveObject(*Bullet, PrefabPath("Bullet_Fume"));
+			}
+
+
+			//Add Sound
+			Bg2->AddComponent<SoundPlayer>();
+			Bg2->GetComponent<SoundPlayer>()->CreateSoundPlayer();
+			Bg2->GetComponent<SoundPlayer>()->SetSound("Sources/Assets/BGMPrototype.mp3");
+			Bg2->GetComponent<SoundPlayer>()->SetLoop(true);
+			Bg2->GetComponent<SoundPlayer>()->SetVolume(0.5);
+			//Bg2->GetComponent<SoundPlayer>()->PlaySound();
+
+
+			GAME_INFO(*Rabbit);
+			
+			Serialization::SaveObject(*(SceneManagement::ActiveScene), ScenePath("SerializationTest"));
+			//this point is where it all ends =========================================
+
+			ENGINE_INFO("mesh count {}", Factory<MeshRenderer>::getCollection().size());
+			ENGINE_INFO("GO Active {}", SceneManagement::ActiveScene->GameObjectsInScene.size());
+			for (MeshRenderer* mr : Factory<MeshRenderer>::getCollection()) {
+				ENGINE_INFO("MR active {}", mr->enabled);
+			}
 		}
 
 		SceneManagement::ActiveScene->Init();

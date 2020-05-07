@@ -13,6 +13,14 @@ void DeQueen::OnAwake() {
 	FlyerPool = GameController::GetInstance()->GetPool(POOL_TYPE::ENEMY_FLYER);
 	BomberPool = GameController::GetInstance()->GetPool(POOL_TYPE::ENEMY_BOMBER);
 
+	QueenSound = GetGameObject()->GetComponent<SoundPlayer>();
+
+	SoundCounter = 0.30f;
+
+	QueenSound->CreateSoundPlayer();
+	QueenSound->SetSound(SoundPath("SFX_Queen_SpawningEnemy"));
+	QueenSound->SetLoop(false);
+
 	Enemy::OnAwake();
 }
 
@@ -54,6 +62,12 @@ void DeQueen::OnUpdate(float dt) {
 
 				bomber->m_transform->SetPosition(glm::vec3(spawnPosX, spawnPosY, 1.0f));
 			}
+		}
+
+		SoundCounter -= dt;
+		if (SoundCounter <= 0.0f) {
+			QueenSound->PlaySound();
+			SoundCounter = 0.30f;
 		}
 		
 	}

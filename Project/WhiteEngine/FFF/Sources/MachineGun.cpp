@@ -9,6 +9,10 @@ MachineGun::MachineGun()
 	weaponObj->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
 	weaponObj->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_shoot.png");
 	weaponObj->GetComponent<MeshRenderer>()->SetLayer(3);
+	weaponObj->AddComponent<SoundPlayer>();
+	weaponObj->GetComponent<SoundPlayer>()->CreateSoundPlayer();
+	weaponObj->GetComponent<SoundPlayer>()->SetSound(SoundPath("SFX_MachineGun_Shoot"));
+	weaponObj->GetComponent<SoundPlayer>()->SetLoop(false);
 
 	weaponObj->SetActive(false);
 
@@ -18,6 +22,8 @@ MachineGun::MachineGun()
 
 	weapon_scale.x = 70.0f;
 	weapon_scale.y = 70.0f;
+	SoundTimer = 0.10f;
+	SoundCounter = SoundTimer;
 }
 
 void MachineGun::Modify(GameObject* obj) 
@@ -32,6 +38,12 @@ void MachineGun::GameTimeBehaviour(float dt) {
 	if (Input::GetMouseHold(Input::MouseKeyCode::MOUSE_LEFT) ||
 		Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT))
 	{
+		SoundCounter -= dt;
+		if (SoundCounter <= 0) {
+			weaponObj->GetComponent<SoundPlayer>()->PlaySound();
+			SoundCounter = SoundTimer;
+		}
+
 		weapon_delay_count += dt;
 		if (weapon_delay_count > weapon_firerate)
 		{

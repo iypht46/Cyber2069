@@ -7,6 +7,10 @@ GrenadeLauncher::GrenadeLauncher() {
 	weaponObj->AddComponent<MeshRenderer>();
 	weaponObj->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
 	weaponObj->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/grenadeL_spritesheet.png");
+	weaponObj->AddComponent<SoundPlayer>();
+	weaponObj->GetComponent<SoundPlayer>()->CreateSoundPlayer();
+	weaponObj->GetComponent<SoundPlayer>()->SetSound(SoundPath("SFX_GrenadeLauncher_Shoot"));
+	weaponObj->GetComponent<SoundPlayer>()->SetLoop(false);
 
 	weaponObj->SetActive(false);
 
@@ -18,6 +22,9 @@ GrenadeLauncher::GrenadeLauncher() {
 
 	weapon_scale.x = 50.0f;
 	weapon_scale.y = 50.0f;
+
+	SoundTimer = 0.30f;
+	SoundCounter = SoundTimer;
 }
 
 void GrenadeLauncher::Modify(GameObject* obj) {
@@ -30,6 +37,12 @@ void GrenadeLauncher::GameTimeBehaviour(float dt) {
 	if (Input::GetMouseHold(Input::MouseKeyCode::MOUSE_LEFT) ||
 		Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT))
 	{
+		SoundCounter -= dt;
+		if (SoundCounter <= 0) {
+			weaponObj->GetComponent<SoundPlayer>()->PlaySound();
+			SoundCounter = SoundTimer;
+		}
+
 		weapon_delay_count += dt;
 		if (weapon_delay_count > weapon_firerate)
 		{

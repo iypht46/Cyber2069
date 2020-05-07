@@ -23,7 +23,7 @@ private:
 protected:
 	AirFollowing* airFollow;
 	SoundPlayer* FlyerSound;
-	
+	int SoundCounter;
 public:
 
 	Flyer() {}
@@ -55,6 +55,7 @@ protected:
 	AirFollowing* airFollow = nullptr;
 	AirDash* airDash = nullptr;
 	SoundPlayer* BomberSound;
+	int SoundCounter;
 
 public:
 	EnemyState state = EnemyState::Idle;
@@ -89,6 +90,7 @@ private:
 	float SpawnDelay;
 
 	float SpawnDelayCount;
+	float SoundCounter;
 protected:
 	AirPatrol* airPatrol;
 	ObjectPool* FlyerPool;
@@ -124,6 +126,7 @@ private:
 	Rigidbody* rigidbody;
 	GroundPatrol* groundPatrol;
 	SoundPlayer* TankSound;
+	int SoundCounter;
 public:
 	void SetStats(float Speed, float HP);
 
@@ -149,6 +152,7 @@ private:
 	GroundDash* groundDash;
 	SoundPlayer* ChargerSound;
 
+	int SoundCounter;
 	bool dashingTmp = false;
 
 public:
@@ -178,6 +182,8 @@ private:
 	GroundPatrol* groundPatrol;
 	ObjectShooter* shooting;
 	SoundPlayer* SpitterSound;
+
+	int SoundCounter;
 public:
 
 	void SetStats(float Speed, float HP, float FireRate);

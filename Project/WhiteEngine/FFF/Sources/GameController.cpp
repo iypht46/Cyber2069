@@ -47,27 +47,27 @@ void GameController::OnStart() {
 
 	//flyer spawner
 	ENGINE_INFO("GameControl Creating Flyer");
-	CreatePool(PrefabPath("Flyer"), POOL_TYPE::ENEMY_FLYER, 50);
+	CreatePool(PrefabPath("Flyer"), POOL_TYPE::ENEMY_FLYER, 0);
 	CreateSpawner(POOL_TYPE::ENEMY_FLYER)->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() / -2);
 
 	//bomber spawner
 	ENGINE_INFO("GameControl Creating Bomber");
-	CreatePool(PrefabPath("Bomber"), POOL_TYPE::ENEMY_BOMBER, 50);
+	CreatePool(PrefabPath("Bomber"), POOL_TYPE::ENEMY_BOMBER, 0);
 	CreateSpawner(POOL_TYPE::ENEMY_BOMBER)->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() / -2);
 
 	//Tank
 	ENGINE_INFO("GameControl Creating Tank");
-	CreatePool(PrefabPath("Tank"), POOL_TYPE::ENEMY_TANK, 10);
+	CreatePool(PrefabPath("Tank"), POOL_TYPE::ENEMY_TANK, 0);
 	CreateSpawner(POOL_TYPE::ENEMY_TANK)->SetSpawnRange(0, 100, 0, 100);
 
 	//Charger
 	ENGINE_INFO("GameControl Creating Charger");
-	CreatePool(PrefabPath("Charger"), POOL_TYPE::ENEMY_CHARGER, 10);
+	CreatePool(PrefabPath("Charger"), POOL_TYPE::ENEMY_CHARGER, 0);
 	CreateSpawner(POOL_TYPE::ENEMY_CHARGER)->SetSpawnRange(0, 100, 0, 100);
 
 	//Spitter
 	ENGINE_INFO("GameControl Creating Spitter");
-	CreatePool(PrefabPath("Spitter"), POOL_TYPE::ENEMY_SPITTER, 10);
+	CreatePool(PrefabPath("Spitter"), POOL_TYPE::ENEMY_SPITTER, 0);
 	CreateSpawner(POOL_TYPE::ENEMY_SPITTER)->SetSpawnRange(-400, 100, 400, 100);
 
 	//Queen spawner
