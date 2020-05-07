@@ -2,6 +2,7 @@
 
 #include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/UIComponents/TextRenderer.hpp"
+#include "Core/EC/UIComponents/Button.hpp"
 
 #include "Graphic/GLRenderer.h"
 
@@ -9,6 +10,11 @@
 #include "EquipmentManager.hpp"
 
 #include <vector>
+
+enum ONCLICK_TYPE {
+	ONCLICK_ADD = 0,
+	ONCLICK_REMOVE
+};
 
 class LoadoutUI : public BehaviourScript 
 {
@@ -70,7 +76,12 @@ private:
 public:
 	int type = 0;
 	int equipment_type = 0;
+	int currIndex = 0;
+	int OnclickType = 0;
+
 	string description = "";
+
+	virtual void OnUpdate(float dt);
 
 	void SetLoadoutUI(LoadoutUI* ui) { this->loadoutUI = ui; }
 	void SetEquipmentManager(EquipmentManager* eq) { this->eqManager = eq; }

@@ -68,6 +68,8 @@ void LoadoutUI::OnAwake()
 			lsb->SetEquipmentManager(eqManager);
 		}
 	}
+
+	WeaponDisplaySlot->GetComponent<LoadoutSelectButton>()->SetEquipmentManager(eqManager);
 }
 
 void LoadoutUI::OnStart() {
@@ -213,6 +215,7 @@ void LoadoutUI::AssignSelectButton(std::shared_ptr<GameObject> selectButton)
 	{
 		lsb->SetLoadoutUI(this);
 		//lsb->SetEquipmentManager(eqManager);
+		lsb->OnclickType = ONCLICK_TYPE::ONCLICK_ADD;
 
 		switch (lsb->type)
 		{
@@ -236,7 +239,8 @@ void LoadoutUI::AssignWeaponDisplaySlot(std::shared_ptr<GameObject> WeaponDispla
 	{
 		lsb->SetLoadoutUI(this);
 		//lsb->SetEquipmentManager(eqManager);
-
+		lsb->type = ITEM_TYPE::WEAPON;		
+		lsb->OnclickType = ONCLICK_TYPE::ONCLICK_REMOVE;
 		this->WeaponDisplaySlot = WeaponDisplaySlot;
 	}
 }
@@ -249,12 +253,17 @@ void LoadoutUI::AssignArtifactDisplaySlot(std::shared_ptr<GameObject> ArtifactDi
 	{
 		lsb->SetLoadoutUI(this);
 		//lsb->SetEquipmentManager(eqManager);
+		lsb->type = ITEM_TYPE::ARTIFACT;
+		lsb->OnclickType = ONCLICK_TYPE::ONCLICK_REMOVE;
+		//lsb->SetEquipmentManager(eqManager);
 
 		if (this->ArtifactDisplaySlot[0] == nullptr) {
 			this->ArtifactDisplaySlot[0] = ArtifactDisplaySlot;
+			lsb->currIndex = 0;
 		}
 		else {
 			this->ArtifactDisplaySlot[1] = ArtifactDisplaySlot;
+			lsb->currIndex = 1;
 		}
 	}
 	
@@ -286,6 +295,10 @@ void LoadoutUI::UpdateDisplaySlotTexture()
 			ArtifactDisplaySlot[i]->GetComponent<MeshRenderer>()->SetTexture(defaultArtfDisplayTex);
 		}
 	}
+}
+
+void LoadoutSelectButton::OnUpdate(float dt) 
+{
 }
 
 void LoadoutSelectButton::AddEquipment() 

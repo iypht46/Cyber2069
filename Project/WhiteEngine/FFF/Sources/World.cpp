@@ -27,6 +27,7 @@
 #include "Core/EC/Components/MeshRenderer.hpp"
 #include "Core/EC/Components/SoundPlayer.hpp"
 #include "Core/EC/UIComponents/TextRenderer.hpp"
+#include "Core/EC/UIComponents/Button.hpp"
 #include "Core/Particle/ParticleSystem.h"
 
 #include "Enemy.hpp"
@@ -413,6 +414,9 @@ namespace World
 			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
 			ui_button->AddComponent<LoadoutSelectButton>();
+			ui_button->AddComponent<Button>();
+			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
+			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
 			ui_button->m_transform->SetScale(glm::vec3(100.0f,100.0f,1.0f));
 			ui_button->m_transform->SetPosition(glm::vec3(-300.0f, -100.0f, 1.0f));
@@ -427,6 +431,9 @@ namespace World
 			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
 			ui_button->AddComponent<LoadoutSelectButton>();
+			ui_button->AddComponent<Button>();
+			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
+			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
 			ui_button->m_transform->SetScale(glm::vec3(100.0f, 100.0f, 1.0f));
 			ui_button->m_transform->SetPosition(glm::vec3(-100.0f, -100.0f, 1.0f));
@@ -441,6 +448,9 @@ namespace World
 			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
 			ui_button->AddComponent<LoadoutSelectButton>();
+			ui_button->AddComponent<Button>();
+			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
+			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
 			ui_button->m_transform->SetScale(glm::vec3(200.0f, 100.0f, 1.0f));
 			ui_button->m_transform->SetPosition(glm::vec3(-200.0f, 100.0f, 1.0f));
@@ -457,6 +467,9 @@ namespace World
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
 			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(ARTIFACT_TYPE::ARTF_BULLETAMP);
+			ui_button->AddComponent<Button>();
+			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
+			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
 			ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
 			ui_button->m_transform->SetPosition(glm::vec3(100.0f, 20.0f, 1.0f));
@@ -473,6 +486,9 @@ namespace World
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
 			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(1);
+			ui_button->AddComponent<Button>();
+			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
+			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
 			ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
 			ui_button->m_transform->SetPosition(glm::vec3(200.0f, 20.0f, 1.0f));
@@ -489,6 +505,9 @@ namespace World
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
 			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(2);
+			ui_button->AddComponent<Button>();
+			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
+			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
 			ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
 			ui_button->m_transform->SetPosition(glm::vec3(300.0f, 20.0f, 1.0f));
@@ -505,6 +524,9 @@ namespace World
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::WEAPON);
 			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(0);
+			ui_button->AddComponent<Button>();
+			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
+			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
 			ui_button->m_transform->SetScale(glm::vec3(140.0f, 70.0f, 1.0f));
 			ui_button->m_transform->SetPosition(glm::vec3(100.0f, 100.0f, 1.0f));

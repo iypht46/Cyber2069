@@ -47,6 +47,7 @@ public:
 	void Render();
 
 	void SetText(string text);
+	string GetText() { return this->text; }
 	void SetColor(glm::vec3 color);
 	void LoadFont(string path,float DefautFontSize);
 
