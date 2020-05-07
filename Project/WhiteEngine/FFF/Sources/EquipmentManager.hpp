@@ -31,9 +31,6 @@ private:
 	vector<std::shared_ptr<GameObject>> m_weaponObjs;
 	vector<std::shared_ptr<Artifact>> m_artifacts;
 
-	int Weapon_Buffer = -1;
-	int* Artifact_Buffer;
-
 	int weaponCount = 0;		//number of equipped weapon
 	int artifactCount = 0;		//number of equipped artifacts
 public:
@@ -46,10 +43,17 @@ public:
 
 	std::vector<bool> Unlock_Weapons;
 	std::vector<bool> Unlock_Artifacts;
+	
+	int* weaponItemTex;
+	int* artifactItemTex;
+
+	int Weapon_Buffer = -1;
+	int* Artifact_Buffer;
 
 	EquipmentManager();
 
 	void OnAwake();
+	void OnUpdate(float dt);
 
 	void AssignPlayer(std::shared_ptr<GameObject> player) { this->playerObj = player; }
 	void AssignWeaponToManager(std::shared_ptr<GameObject> weaponObj);
@@ -72,8 +76,18 @@ public:
 	bool Unlock_RandomArtifact();
 
 	//Unlock Specific Type
+	void Unlock(int itemtype, int type);
 	void Unlock_WEAPON(int type);
 	void Unlock_ARTIFACT(int type);
+
+	//Random Type return -1 if all is unlock
+	int GetRandomType_Artifact();
+	int GetRandomType_Weapon();
+
+	//Random both artifact and weapon and return in pair
+	//pair.first is itemtype 1 = Weapon ,2 = Artfact
+	//pair.second return the type
+	pair<int, int> GetRandomType();
 
 	//Check all
 	bool isAllWeaponUnlock();
@@ -114,6 +128,7 @@ public:
 	int* GetArtifactBuffer() { return Artifact_Buffer; }
 
 	void InitPlayerEquipment();
+	void ResetPlayerEquipment();
 
 public:
 	template<class Archive>

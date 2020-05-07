@@ -18,7 +18,6 @@ class Component;
 class MeshRenderer : public Component
 {
 private:
-	bool isUI = false;
 	
 	std::string sr_texturePath;
 	float sr_NumFrameX = 1;
@@ -33,6 +32,8 @@ private:
 
 public:
 	int layer = 0; //higher layer is infront
+
+	bool isUI = false;
 	bool inSet = false;
 
 	MeshRenderer();

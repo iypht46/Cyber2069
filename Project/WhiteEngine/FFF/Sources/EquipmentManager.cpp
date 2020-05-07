@@ -1,12 +1,12 @@
 #include "EquipmentManager.hpp"
 
-EquipmentManager::EquipmentManager(){}
-
 int EquipmentManager::totalWeapon = 5;
 int EquipmentManager::totalArtifact = 7;
 
 int EquipmentManager::maxPlayerWeapon = 1;
 int EquipmentManager::maxPlayerArtifact = 2;
+
+EquipmentManager::EquipmentManager(){}
 
 void EquipmentManager::OnAwake() 
 {
@@ -21,6 +21,24 @@ void EquipmentManager::OnAwake()
 	{
 		Artifact_Buffer[i] = -1;
 	}
+
+	weaponItemTex = new int[totalWeapon];
+	artifactItemTex = new int[totalArtifact];
+
+	for (int i = 0; i < totalWeapon; i++)
+	{
+		weaponItemTex[i] = -1;
+	}
+
+	for (int i = 0; i < totalArtifact; i++)
+	{
+		artifactItemTex[i] = -1;
+	}
+
+}
+
+void EquipmentManager::OnUpdate(float dt) 
+{
 }
 
 void EquipmentManager::AssignWeaponToManager(std::shared_ptr<GameObject> weaponObj)
@@ -55,27 +73,10 @@ void EquipmentManager::Unlock_RandomAll()
 	{
 		return;
 	}
+	
+	pair<int, int> item = GetRandomType();
 
-	int randEqType = rand() % 2;
-
-	switch (randEqType)
-	{
-	case 1:
-		if (!Unlock_RandomWeapon()) 
-		{
-			Unlock_RandomArtifact();
-		}
-		break;
-	case 2:
-		if (!Unlock_RandomArtifact())
-		{
-			Unlock_RandomWeapon();
-		}
-		break;
-	default:
-		break;
-	}
-
+	Unlock(item.first, item.second);
 }
 
 bool EquipmentManager::Unlock_RandomWeapon() 
@@ -85,15 +86,8 @@ bool EquipmentManager::Unlock_RandomWeapon()
 		return false;
 	}
 
-	int randType = rand() % totalWeapon;
-
-	while (isWeaponUnlock(randType)) 
-	{
-		randType = rand() % totalWeapon;
-	}
-
-	Unlock_WEAPON(randType);
-
+	Unlock_WEAPON(GetRandomType_Weapon());
+	
 	return true;
 }
 
@@ -104,6 +98,56 @@ bool EquipmentManager::Unlock_RandomArtifact()
 		return false;
 	}
 
+	Unlock_ARTIFACT(GetRandomType_Artifact());
+	
+	return false;
+}
+
+pair<int, int> EquipmentManager::GetRandomType() 
+{
+	if (isAllUnlock())
+	{
+		return pair<int, int>(-1, -1);
+	}
+
+	int itemType = (rand() % 2) + 1;
+
+	int type;
+
+	switch (itemType)
+	{
+	case 1:
+		type = GetRandomType_Weapon();
+
+		if (type == -1)
+		{
+			itemType = 2;
+			type = GetRandomType_Artifact();
+		}
+		break;
+	case 2:
+		type = GetRandomType_Artifact();
+
+		if (type == -1)
+		{
+			itemType = 1;
+			type = GetRandomType_Weapon();
+		}
+		break;
+	default:
+		break;
+	}
+
+	return pair<int, int>(itemType, type);
+}
+
+int EquipmentManager::GetRandomType_Artifact() {
+	
+	if (isAllArtifactUnlock())
+	{
+		return -1;
+	}
+
 	int randType = rand() % totalArtifact;
 
 	while (isArtifactUnlock(randType))
@@ -111,9 +155,39 @@ bool EquipmentManager::Unlock_RandomArtifact()
 		randType = rand() % totalArtifact;
 	}
 
-	Unlock_ARTIFACT(randType);
+	return randType;
+}
 
-	return true;
+int EquipmentManager::GetRandomType_Weapon() 
+{
+	if (isAllWeaponUnlock())
+	{
+		return -1;
+	}
+
+	int randType = rand() % totalWeapon;
+
+	while (isWeaponUnlock(randType))
+	{
+		randType = rand() % totalWeapon;
+	}
+
+	return randType;
+}
+
+void EquipmentManager::Unlock(int itemtype, int type) 
+{
+	switch (itemtype)
+	{
+	case ITEM_TYPE::WEAPON:
+		Unlock_WEAPON(type);
+		break;
+	case ITEM_TYPE::ARTIFACT:
+		Unlock_ARTIFACT(type);
+		break;
+	default:
+		break;
+	}
 }
 
 void EquipmentManager::Unlock_WEAPON(int type) 
@@ -400,7 +474,10 @@ void EquipmentManager::InitPlayerEquipment()
 {
 	PlayerController* player = playerObj->GetComponent<PlayerController>();
 
-	AddPlayerWeapon(Weapon_Buffer);
+	if (Weapon_Buffer != -1) {
+		AddPlayerWeapon(Weapon_Buffer);
+		playerObj->GetComponent<PlayerController>()->assignWeapon();
+	}
 	
 	for (int i = 0; i < maxPlayerArtifact; i++)
 	{
@@ -411,4 +488,21 @@ void EquipmentManager::InitPlayerEquipment()
 	}
 
 	player->ModifyFromEquipment();
+}
+
+void EquipmentManager::ResetPlayerEquipment() 
+{
+	PlayerController* player = playerObj->GetComponent<PlayerController>();
+
+	player->RevertEquipment();
+
+	for (int i = 0; i < maxPlayerArtifact; i++)
+	{
+		Artifact_Buffer[i] = -1;
+	}
+
+	Weapon_Buffer = -1;
+
+	artifactCount = 0;
+	weaponCount = 0;
 }

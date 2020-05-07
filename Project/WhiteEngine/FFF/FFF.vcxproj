@@ -150,6 +150,7 @@
     <ClCompile Include="Sources\GameController.cpp" />
     <ClCompile Include="Sources\HPsystem.cpp" />
     <ClCompile Include="Sources\EquipmentManager.cpp" />
+    <ClCompile Include="Sources\ItemDrop.cpp" />
     <ClCompile Include="Sources\LaserGun.cpp" />
     <ClCompile Include="Sources\LoadoutUI.cpp" />
     <ClCompile Include="Sources\MachineGun.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="Sources\GameController.hpp" />
     <ClInclude Include="Sources\HPsystem.hpp" />
     <ClInclude Include="Sources\EquipmentManager.hpp" />
+    <ClInclude Include="Sources\ItemDrop.hpp" />
     <ClInclude Include="Sources\LoadoutUI.hpp" />
     <ClInclude Include="Sources\ObjectShooter.h" />
     <ClInclude Include="Sources\PlayerController.hpp" />

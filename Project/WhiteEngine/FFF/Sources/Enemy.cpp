@@ -18,6 +18,12 @@ void Enemy::OnDead() {
 	state = EnemyState::Idle;
 	affectedByWeapon = false;
 	GotZap = false;
+
+	DeQueen* queen = m_gameObject->GetComponent<DeQueen>();
+
+	if (queen != nullptr) {
+		queen->SpawnItem();
+	}
 }
 
 //check if target in range

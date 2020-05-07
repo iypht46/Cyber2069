@@ -2,6 +2,7 @@
 
 #include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/UIComponents/TextRenderer.hpp"
+#include "Core/EC/UIComponents/Button.hpp"
 
 #include "Graphic/GLRenderer.h"
 
@@ -9,6 +10,12 @@
 #include "EquipmentManager.hpp"
 
 #include <vector>
+
+enum LOADOUTONCLICK_TYPE {
+	ADD = 0,
+	REMOVE,
+	START
+};
 
 class LoadoutUI : public BehaviourScript 
 {
@@ -26,10 +33,9 @@ private:
 
 	unsigned int defaultWeaponDisplayTex;
 	unsigned int defaultArtfDisplayTex;
+
 public:
 	LoadoutUI();
-
-	void StartGameplay();
 
 	void AssignSelectButton(std::shared_ptr<GameObject> selectButton);
 
@@ -39,6 +45,7 @@ public:
 	void UpdateDisplaySlotTexture();
 
 	virtual void OnAwake();
+	virtual void OnStart();
 
 	virtual void OnEnable();
 	virtual void OnDisable();
@@ -68,7 +75,12 @@ private:
 public:
 	int type = 0;
 	int equipment_type = 0;
+	int currIndex = 0;
+	int OnclickType = 0;
+
 	string description = "";
+
+	virtual void OnUpdate(float dt);
 
 	void SetLoadoutUI(LoadoutUI* ui) { this->loadoutUI = ui; }
 	void SetEquipmentManager(EquipmentManager* eq) { this->eqManager = eq; }

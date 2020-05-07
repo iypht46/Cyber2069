@@ -38,7 +38,12 @@ GameObject* EnemySpawner::SpawnEnemy() {
 			break;
 		}
 
-		return SpawnEnemy(SpawnPos.x, SpawnPos.y);
+
+		if (SpawnPos.x != -1 && SpawnPos.y != -1) 
+		{
+
+			return SpawnEnemy(SpawnPos.x, SpawnPos.y);
+		}
 	}
 
 	return nullptr;
@@ -210,20 +215,50 @@ glm::vec2 EnemySpawner::GetRandomPos_Edge() {
 }
 
 glm::vec2 EnemySpawner::GetRandomPos_Platform() {
+	int winWidth;
+	int winHeight;
+
+	cam = Graphic::getCamera();
+	glm::vec3 camPos = cam->GetCampos();
+
+	winWidth = Graphic::Window::GetWidth() * cam->GetZoom();
+	winHeight = Graphic::Window::GetHeight() * cam->GetZoom();
 
 	Physic::PhysicScene* ps = Physic::PhysicScene::GetInstance();
 	Platforms = ps->GetColliderLayer(ps->GetLayerFromString("Platform"));
+	
 	int randPlatform = rand() % Platforms.size();
 	
 	Transform* pf = Platforms.at(randPlatform)->GetGameObject()->m_transform.get();
 
-	glm::vec2 tmp;
+	glm::vec2 tmp(-1, -1);
 
-	if (SpawnType != POOL_TYPE::ENEMY_COCOON) 
+	while(camPos.x - (winWidth / 2) < (pf->GetPosition().x + pf->GetScale().x) &&
+		  (camPos.x - (winWidth / 2) + winWidth) > pf->GetPosition().x &&
+		  camPos.y - (winHeight / 2) < (pf->GetPosition().y + pf->GetScale().y) &&
+		  (camPos.y - (winHeight / 2) + winHeight) >  pf->GetPosition().y)
+	{
+		Platforms.erase(Platforms.begin() + randPlatform);
+
+		if (Platforms.size() == 0) 
+		{
+			//GAME_INFO("NO PLATFORM DETECTED!");
+
+			return tmp;
+		}
+		else {
+			randPlatform = rand() % Platforms.size();
+			pf = Platforms.at(randPlatform)->GetGameObject()->m_transform.get();
+		}
+	}
+
+	//GAME_INFO("Spawing on Platform!");
+
+	if (SpawnType != POOL_TYPE::ENEMY_COCOON)
 	{
 		tmp = GetRandomPos_Range(pf->GetPosition().x + (pf->GetScale().x / 2), pf->GetPosition().y + 100.0f, pf->GetPosition().x - (pf->GetScale().x / 2), pf->GetPosition().y + 100.0f);
 	}
-	else 
+	else
 	{
 		tmp = GetRandomPos_Range(pf->GetPosition().x + (pf->GetScale().x / 2), pf->GetPosition().y - 60.0f, pf->GetPosition().x - (pf->GetScale().x / 2), pf->GetPosition().y - 60.0f);
 	}

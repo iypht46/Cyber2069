@@ -27,6 +27,7 @@
 #include "Core/EC/Components/MeshRenderer.hpp"
 #include "Core/EC/Components/SoundPlayer.hpp"
 #include "Core/EC/UIComponents/TextRenderer.hpp"
+#include "Core/EC/UIComponents/Button.hpp"
 #include "Core/Particle/ParticleSystem.h"
 
 #include "Enemy.hpp"
@@ -37,6 +38,7 @@
 #include "Weapon.hpp"
 #include "EquipmentManager.hpp"
 #include "LoadoutUI.hpp"
+#include "ItemDrop.hpp"
 #include "Scripts/GameControl/UIController.h"
 
 using SceneManagement::Instantiate;
@@ -201,15 +203,18 @@ namespace World
 		Physic::PhysicScene::GetInstance()->SetLayerName("GroundEnemy", Physic::Layer::PHYSIC_LAYER_5);
 		Physic::PhysicScene::GetInstance()->SetLayerName("EnemyBullet", Physic::Layer::PHYSIC_LAYER_6);
 		Physic::PhysicScene::GetInstance()->SetLayerName("Default", Physic::Layer::PHYSIC_LAYER_7);
+		Physic::PhysicScene::GetInstance()->SetLayerName("Item", Physic::Layer::PHYSIC_LAYER_8);
 		//Set collision between layer
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Player", "Platform", Physic::RESOLVE_TYPE::COLLISION);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("GroundEnemy", "Platform", Physic::RESOLVE_TYPE::COLLISION);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Bullet", "Platform", Physic::RESOLVE_TYPE::COLLISION);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("EnemyBullet", "Platform", Physic::RESOLVE_TYPE::COLLISION);
+		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Item", "Platform", Physic::RESOLVE_TYPE::COLLISION);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Player", "Enemy", Physic::RESOLVE_TYPE::TRIGGER);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Bullet", "Enemy", Physic::RESOLVE_TYPE::TRIGGER);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Bullet", "GroundEnemy", Physic::RESOLVE_TYPE::TRIGGER);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("EnemyBullet", "Player", Physic::RESOLVE_TYPE::TRIGGER);
+		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Item", "Player", Physic::RESOLVE_TYPE::TRIGGER);
 
 		
 		title = new GameObject();
@@ -388,6 +393,8 @@ namespace World
 				Rabbit->GetComponent<HPsystem>()->SetMaxHP(100);
 				Rabbit->AddComponent<PlayerController>();
 
+				//platform->m_transform->SetParent(Rabbit->m_transform);
+
 				Serialization::SaveObject(*Rabbit, PrefabPath("Player"));
 
 			}
@@ -433,9 +440,26 @@ namespace World
 			logo->GetComponent<MeshRenderer>()->SetUI(true);
 			logo->GetComponent<MeshRenderer>()->SetLayer(10);
 			logo->m_transform->SetScale(glm::vec3(68*3, 55*3, 1));
+			logo->AddComponent<Button>();
+			logo->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::STATECONTROL, GAME_STATE::LOADOUT);
+			logo->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
 			gamecontroller->AddComponent<UIController>();
 			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::MainMenu].push_back(logo);
+
+			logo = Instantiate();
+			logo->AddComponent<MeshRenderer>();
+			logo->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/WhiteLogo"));
+			logo->GetComponent<MeshRenderer>()->SetUI(true);
+			logo->GetComponent<MeshRenderer>()->SetLayer(10);
+			logo->m_transform->SetScale(glm::vec3(68 * 3, 55 * 3, 1));
+			logo->m_transform->SetPosition(glm::vec3(300.0f, -100.0f, 1.0f));
+			logo->AddComponent<Button>();
+			logo->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::STATECONTROL, GAME_STATE::GAMEPLAY);
+			logo->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
+			logo->SetActive(false);
+
+			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Loadout].push_back(logo);
 
 			std::shared_ptr<GameObject> ui_LoadOut = Instantiate();
 			std::shared_ptr<GameObject> ui_button = Instantiate();
@@ -455,6 +479,9 @@ namespace World
 			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
 			ui_button->AddComponent<LoadoutSelectButton>();
+			ui_button->AddComponent<Button>();
+			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
+			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
 			ui_button->m_transform->SetScale(glm::vec3(100.0f,100.0f,1.0f));
 			ui_button->m_transform->SetPosition(glm::vec3(-300.0f, -100.0f, 1.0f));
@@ -469,6 +496,9 @@ namespace World
 			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
 			ui_button->AddComponent<LoadoutSelectButton>();
+			ui_button->AddComponent<Button>();
+			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
+			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
 			ui_button->m_transform->SetScale(glm::vec3(100.0f, 100.0f, 1.0f));
 			ui_button->m_transform->SetPosition(glm::vec3(-100.0f, -100.0f, 1.0f));
@@ -483,6 +513,9 @@ namespace World
 			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
 			ui_button->AddComponent<LoadoutSelectButton>();
+			ui_button->AddComponent<Button>();
+			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
+			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
 			ui_button->m_transform->SetScale(glm::vec3(200.0f, 100.0f, 1.0f));
 			ui_button->m_transform->SetPosition(glm::vec3(-200.0f, 100.0f, 1.0f));
@@ -499,6 +532,9 @@ namespace World
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
 			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(ARTIFACT_TYPE::ARTF_BULLETAMP);
+			ui_button->AddComponent<Button>();
+			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
+			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
 			ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
 			ui_button->m_transform->SetPosition(glm::vec3(100.0f, 20.0f, 1.0f));
@@ -515,6 +551,9 @@ namespace World
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
 			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(1);
+			ui_button->AddComponent<Button>();
+			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
+			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
 			ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
 			ui_button->m_transform->SetPosition(glm::vec3(200.0f, 20.0f, 1.0f));
@@ -531,6 +570,9 @@ namespace World
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
 			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(2);
+			ui_button->AddComponent<Button>();
+			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
+			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
 			ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
 			ui_button->m_transform->SetPosition(glm::vec3(300.0f, 20.0f, 1.0f));
@@ -547,6 +589,9 @@ namespace World
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::WEAPON);
 			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(0);
+			ui_button->AddComponent<Button>();
+			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
+			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
 			ui_button->m_transform->SetScale(glm::vec3(140.0f, 70.0f, 1.0f));
 			ui_button->m_transform->SetPosition(glm::vec3(100.0f, 100.0f, 1.0f));
@@ -570,6 +615,16 @@ namespace World
 			platform->GetComponent<MeshRenderer>()->SetLayer(3);
 			platform->m_transform->SetScale(glm::vec3(800, 20, 1));
 			//platform->m_transform->SetParent(Rabbit->m_transform);
+			platform->AddComponent<BoxCollider>()->ReScale(1, 1);
+
+			platform = Instantiate().get();
+			platform->Layer = "Platform";
+			platform->AddComponent<MeshRenderer>();
+			platform->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			platform->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
+			platform->GetComponent<MeshRenderer>()->SetLayer(3);
+			platform->m_transform->SetScale(glm::vec3(800, 20, 1));
+			platform->m_transform->SetPosition(glm::vec3(500, 500, 1));
 			platform->AddComponent<BoxCollider>()->ReScale(1, 1);
 
 			ENGINE_INFO("Enemy Creation ==========================================================");
@@ -1125,6 +1180,27 @@ namespace World
 				Serialization::SaveObject(*Bullet, PrefabPath("Bullet_Fume"));
 			}
 
+			{
+				GameObject* Item = Instantiate().get();
+
+				Item->Layer = "Item";
+				Item->m_transform->SetScale(glm::vec3(50, 50, 1));
+
+				Item->AddComponent<MeshRenderer>();
+				Item->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+				Item->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/White.jpg");
+
+				Item->AddComponent<Rigidbody>();
+				Item->GetComponent<Rigidbody>()->SetGravityScale(0.25f);
+				Item->AddComponent<BoxCollider>()->ReScale(1, 1);
+
+				Item->AddComponent<ItemDrop>();
+
+				Item->SetActive(false);
+
+				Serialization::SaveObject(*Item, PrefabPath("ItemDrop"));
+			}
+
 
 			//Add Sound
 			Bg2->AddComponent<SoundPlayer>();
@@ -1143,13 +1219,6 @@ namespace World
 
 		SceneManagement::ActiveScene->Init();
 
-
-		gamecontroller->GetComponent<EquipmentManager>()->Unlock_WEAPON(WEAPON_TYPE::WEAPON_MACHINEGUN);
-
-		gamecontroller->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_BULLETAMP);
-		gamecontroller->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_FIRERATEUP);
-		gamecontroller->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_SPEEDRUNNER);
-		gamecontroller->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_ATKUP);
 	}
 
 	void FixedUpdate(float dt)
