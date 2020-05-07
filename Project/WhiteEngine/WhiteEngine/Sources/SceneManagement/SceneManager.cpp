@@ -1,4 +1,5 @@
 #include "SceneManager.h"
+#include "Core/Logger.hpp"
 
 namespace SceneManagement {
 
@@ -21,6 +22,7 @@ namespace SceneManagement {
 	std::shared_ptr<GameObject> Instantiate() {
 		std::shared_ptr<GameObject> newObj = Factory<void, GameObject>::Create();
 		SceneManagement::ActiveScene->GameObjectsInScene[newObj->GetID()] = newObj;
+		ENGINE_INFO("Scene Size {}", SceneManagement::ActiveScene->GameObjectsInScene.size());
 
 		return newObj;
 	}
@@ -28,6 +30,7 @@ namespace SceneManagement {
 	std::shared_ptr<GameObject> Instantiate(std::string prefabPath) {
 		std::shared_ptr<GameObject> newObj = Factory<void, GameObject>::Create(prefabPath);
 		SceneManagement::ActiveScene->GameObjectsInScene[newObj->GetID()] = newObj;
+		ENGINE_INFO("Scene Size {}", SceneManagement::ActiveScene->GameObjectsInScene.size());
 
 		return newObj;
 	}

@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <map>
+#include <vector>
 #include <string>
 
 #include "Core/EC/GameObject.hpp"
@@ -18,6 +19,7 @@ namespace SceneManagement {
 	{
 	public:
 		std::map<int, std::shared_ptr<GameObject>> GameObjectsInScene;
+		//std::vector<std::shared_ptr<GameObject>> GameObjectsInScene;
 
 		//call init/awake/start on component assign gameobject assing collider/rigid body to physics scene
 		void Init();

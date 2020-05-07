@@ -12,9 +12,9 @@
 #include "SceneManagement/SceneManager.h"
 
 #include "Physic/PhysicScene.hpp"
-#include "Physic/Collision.hpp"
+//#include "Physic/Collision.hpp"
 
-#include "Core/Factory.h"
+//#include "Core/Factory.h"
 #include "Core/FactoryCollection.h"
 #include "Core/EC/GameObject.hpp"
 
@@ -36,6 +36,8 @@
 #include "GameController.hpp"
 #include "Weapon.hpp"
 #include "EquipmentManager.hpp"
+#include "LoadoutUI.hpp"
+#include "Scripts/GameControl/UIController.h"
 
 using SceneManagement::Instantiate;
 
@@ -122,15 +124,28 @@ namespace World
 			Rabbit->m_transform->Rotate(-1.0f);
 		}
 
-		if (Input::GetKeyHold(Input::KeyCode::KEY_Z))
+		if (Input::GetKeyHold(Input::KeyCode::KEY_Y))
 		{
-			Rabbit->m_transform->SetScale(Rabbit->m_transform->GetScale() + glm::vec3(1, 0, 0));
+			Bg1->m_transform->SetPosition(Bg1->m_transform->GetPosition() + glm::vec3(0, 0, 5));
+			ENGINE_INFO("Increased 1Zpos to {}", Bg1->m_transform->GetPosition().z);
 		}
 
-		if (Input::GetKeyHold(Input::KeyCode::KEY_C))
+		if (Input::GetKeyHold(Input::KeyCode::KEY_U))
 		{
-			Rabbit->m_transform->SetScale(Rabbit->m_transform->GetScale() + glm::vec3(-1, 0, 0));
+			Bg1->m_transform->SetPosition(Bg1->m_transform->GetPosition() + glm::vec3(0, 0, -5));
+			ENGINE_INFO("Decreased 1Zpos to {}", Bg1->m_transform->GetPosition().z);
+		}
 
+		if (Input::GetKeyHold(Input::KeyCode::KEY_H))
+		{
+			Bg2->m_transform->SetPosition(Bg2->m_transform->GetPosition() + glm::vec3(0, 0, 5));
+			ENGINE_INFO("Increased 2Zpos to {}", Bg2->m_transform->GetPosition().z);
+		}
+
+		if (Input::GetKeyHold(Input::KeyCode::KEY_J))
+		{
+			Bg2->m_transform->SetPosition(Bg2->m_transform->GetPosition() + glm::vec3(0, 0, -5));
+			ENGINE_INFO("Decreased 2Zpos to {}", Bg2->m_transform->GetPosition().z);
 		}
 
 		//if (Input::GetKeyHold(Input::KeyCode::KEY_N))
@@ -260,21 +275,39 @@ namespace World
 
 			Bg2 = Instantiate().get();
 			Bg2->AddComponent<MeshRenderer>();
-			Bg2->GetComponent<MeshRenderer>()->SetLayer(-2);
+			Bg2->GetComponent<MeshRenderer>()->SetLayer(-5);
 			Bg2->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 			Bg2->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer2.png");
-			
+			Bg2->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
+			Bg2->m_transform->SetPosition(glm::vec3(0, -300, 3000));
+
+
 			Bg1 = Instantiate().get();
 			Bg1->AddComponent<MeshRenderer>();
-			Bg1->GetComponent<MeshRenderer>()->SetLayer(-1);
+			Bg1->GetComponent<MeshRenderer>()->SetLayer(-4);
 			Bg1->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 			Bg1->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer1.png");
-
-			Bg2->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
 			Bg1->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
+			Bg1->m_transform->SetPosition(glm::vec3(0, -300, 2000));
 
-			Bg1->m_transform->SetPosition(glm::vec3(0, -300, 0));
-			Bg2->m_transform->SetPosition(glm::vec3(0, -300, 0));
+			std::shared_ptr<GameObject> Bg0 = Instantiate();
+			Bg0->AddComponent<MeshRenderer>();
+			Bg0->GetComponent<MeshRenderer>()->SetLayer(-3);
+			Bg0->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			Bg0->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer1.png");
+			Bg0->GetComponent<MeshRenderer>()->SetReplaceColor(glm::vec3(0.2, 0.2, 0.8));
+			Bg0->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * -2.0f, Graphic::Window::GetHeight() * 1.5f, 1));
+			Bg0->m_transform->SetPosition(glm::vec3(0, -500, 1000));
+
+			std::shared_ptr<GameObject> Bg00 = Instantiate();
+			Bg00->AddComponent<MeshRenderer>();
+			Bg00->GetComponent<MeshRenderer>()->SetLayer(-2);
+			Bg00->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			Bg00->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer1.png");
+			Bg00->GetComponent<MeshRenderer>()->SetReplaceColor(glm::vec3(0.8, 0.8, 0.8));
+			Bg00->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 1.0f, 1));
+			Bg00->m_transform->SetPosition(glm::vec3(0, -700, 50));
+
 
 			//Player animation controller
 			{
@@ -324,7 +357,7 @@ namespace World
 			//player
 			{
 				//Rabbit = Instantiate(PrefabPath("Player"));
-				
+
 				Rabbit = Instantiate();
 				Rabbit->Layer = "Player";
 
@@ -336,7 +369,6 @@ namespace World
 				Rabbit->GetComponent<MeshRenderer>()->CreateMesh(7, 5);
 				Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_PlayerBody_Vversion03.png");
 				Rabbit->GetComponent<MeshRenderer>()->SetLayer(0);
-				Rabbit->GetComponent<MeshRenderer>()->SetReplaceColor(glm::vec3(1.0f, 1.0f, 1.0f));
 
 				Rabbit->AddComponent<Animator>();
 				Rabbit->GetComponent<Animator>()->sr_controllerPath = AnimationControllerPath("Player");
@@ -353,13 +385,11 @@ namespace World
 
 				//Behavior Script
 				Rabbit->AddComponent<HPsystem>();
-				Rabbit->GetComponent<HPsystem>()->SetMaxHP(10000);
+				Rabbit->GetComponent<HPsystem>()->SetMaxHP(100);
 				Rabbit->AddComponent<PlayerController>();
-				
-				//platform->m_transform->SetParent(Rabbit->m_transform);
 
 				Serialization::SaveObject(*Rabbit, PrefabPath("Player"));
-				
+
 			}
 
 
@@ -369,7 +399,7 @@ namespace World
 			gamecontroller->GetComponent<GameController>()->ComboText = ui_ComboText;
 			gamecontroller->GetComponent<GameController>()->HPbar = ui_HPbar;
 			gamecontroller->GetComponent<GameController>()->Staminabar = ui_StaminaBar;
-			gamecontroller->GetComponent<GameController>()->SetGameState(GAME_STATE::GAMEPLAY);
+			gamecontroller->GetComponent<GameController>()->SetGameState(GAME_STATE::MAINMENU);
 			gamecontroller->GetComponent<GameController>()->SetGameplayState(GAMEPLAY_STATE::NORMAL);
 
 			std::shared_ptr<GameObject> wp_MachineGun = Instantiate();
@@ -378,21 +408,158 @@ namespace World
 			wp_MachineGun->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_shoot.png");
 			wp_MachineGun->GetComponent<MeshRenderer>()->SetLayer(3);
 
-
-			wp_MachineGun->AddComponent<MachineGun>();
-
+			wp_MachineGun->AddComponent<MachineGun>()->SetWeaponFireRate(7.0f);
 			wp_MachineGun->m_transform->SetParent(Rabbit->m_transform);
-
 			wp_MachineGun->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
+			
+			Serialization::SaveObject(*wp_MachineGun, PrefabPath("Weapons/MachineGun"));
 
 			gamecontroller->AddComponent<EquipmentManager>();
 			gamecontroller->GetComponent<EquipmentManager>()->AssignWeaponToManager(wp_MachineGun);
+
+			gamecontroller->GetComponent<EquipmentManager>()->AssignArtifactToManager(std::make_shared<BulletAmplifier>());
+			gamecontroller->GetComponent<EquipmentManager>()->AssignArtifactToManager(std::make_shared<FireRateUP>());
+			gamecontroller->GetComponent<EquipmentManager>()->AssignArtifactToManager(std::make_shared<SpeedRunner>());
+			gamecontroller->GetComponent<EquipmentManager>()->AssignArtifactToManager(std::make_shared<AttackUP>());
+
 			gamecontroller->GetComponent<EquipmentManager>()->AssignPlayer(Rabbit);
 			gamecontroller->GetComponent<EquipmentManager>()->InitData();
 
-			gamecontroller->GetComponent<EquipmentManager>()->Unlock_WEAPON(WEAPON_TYPE::WEAPON_MACHINEGUN);
-			gamecontroller->GetComponent<EquipmentManager>()->AddPlayerWeapon(WEAPON_TYPE::WEAPON_MACHINEGUN);
+			//gamecontroller->GetComponent<EquipmentManager>()->AddPlayerWeapon(WEAPON_TYPE::WEAPON_MACHINEGUN);
 
+			std::shared_ptr<GameObject> logo = Instantiate();
+			logo->AddComponent<MeshRenderer>();
+			logo->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/WhiteLogo"));
+			logo->GetComponent<MeshRenderer>()->SetUI(true);
+			logo->GetComponent<MeshRenderer>()->SetLayer(10);
+			logo->m_transform->SetScale(glm::vec3(68*3, 55*3, 1));
+
+			gamecontroller->AddComponent<UIController>();
+			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::MainMenu].push_back(logo);
+
+			std::shared_ptr<GameObject> ui_LoadOut = Instantiate();
+			std::shared_ptr<GameObject> ui_button = Instantiate();
+
+			ui_LoadOut->AddComponent<LoadoutUI>();
+			ui_LoadOut->AddComponent<MeshRenderer>();
+			ui_LoadOut->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			ui_LoadOut->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/black.png");
+			ui_LoadOut->GetComponent<MeshRenderer>()->SetUI(true);
+			ui_LoadOut->GetComponent<MeshRenderer>()->SetLayer(5);
+
+			ui_LoadOut->m_transform->SetScale(glm::vec3(800.0f, 600.0f, 1.0f));
+
+			ui_button->AddComponent<MeshRenderer>();
+			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			ui_button->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/White.jpg");
+			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
+			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<LoadoutSelectButton>();
+
+			ui_button->m_transform->SetScale(glm::vec3(100.0f,100.0f,1.0f));
+			ui_button->m_transform->SetPosition(glm::vec3(-300.0f, -100.0f, 1.0f));
+			
+			ui_LoadOut->GetComponent<LoadoutUI>()->AssignArtifactDisplaySlot(ui_button);
+
+			ui_button = Instantiate();
+
+			ui_button->AddComponent<MeshRenderer>();
+			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			ui_button->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/White.jpg");
+			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
+			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<LoadoutSelectButton>();
+
+			ui_button->m_transform->SetScale(glm::vec3(100.0f, 100.0f, 1.0f));
+			ui_button->m_transform->SetPosition(glm::vec3(-100.0f, -100.0f, 1.0f));
+
+			ui_LoadOut->GetComponent<LoadoutUI>()->AssignArtifactDisplaySlot(ui_button);
+
+			ui_button = Instantiate();
+
+			ui_button->AddComponent<MeshRenderer>();
+			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			ui_button->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/White.jpg");
+			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
+			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<LoadoutSelectButton>();
+
+			ui_button->m_transform->SetScale(glm::vec3(200.0f, 100.0f, 1.0f));
+			ui_button->m_transform->SetPosition(glm::vec3(-200.0f, 100.0f, 1.0f));
+
+			ui_LoadOut->GetComponent<LoadoutUI>()->AssignWeaponDisplaySlot(ui_button);
+
+			ui_button = Instantiate();
+
+			ui_button->AddComponent<MeshRenderer>();
+			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			ui_button->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/red.jpg");
+			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
+			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<LoadoutSelectButton>();
+			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
+			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(ARTIFACT_TYPE::ARTF_BULLETAMP);
+
+			ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
+			ui_button->m_transform->SetPosition(glm::vec3(100.0f, 20.0f, 1.0f));
+
+			ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
+
+			ui_button = Instantiate();
+
+			ui_button->AddComponent<MeshRenderer>();
+			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			ui_button->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/blue.jpg");
+			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
+			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<LoadoutSelectButton>();
+			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
+			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(1);
+
+			ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
+			ui_button->m_transform->SetPosition(glm::vec3(200.0f, 20.0f, 1.0f));
+
+			ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
+
+			ui_button = Instantiate();
+
+			ui_button->AddComponent<MeshRenderer>();
+			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			ui_button->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/green.jpg");
+			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
+			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<LoadoutSelectButton>();
+			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
+			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(2);
+
+			ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
+			ui_button->m_transform->SetPosition(glm::vec3(300.0f, 20.0f, 1.0f));
+
+			ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
+
+			ui_button = Instantiate();
+
+			ui_button->AddComponent<MeshRenderer>();
+			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			ui_button->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/MachineGun.png");
+			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
+			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<LoadoutSelectButton>();
+			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::WEAPON);
+			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(0);
+
+			ui_button->m_transform->SetScale(glm::vec3(140.0f, 70.0f, 1.0f));
+			ui_button->m_transform->SetPosition(glm::vec3(100.0f, 100.0f, 1.0f));
+
+			ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
+
+
+			gamecontroller->GetComponent<GameController>()->loadoutUI = ui_LoadOut;
+
+			
+
+			//test parent/child------------------------------------------------
+			//Bg2->m_transform->SetParent(Rabbit->m_transform);
 
 			//platform
 			platform = Instantiate().get();
@@ -402,6 +569,7 @@ namespace World
 			platform->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
 			platform->GetComponent<MeshRenderer>()->SetLayer(3);
 			platform->m_transform->SetScale(glm::vec3(800, 20, 1));
+			//platform->m_transform->SetParent(Rabbit->m_transform);
 			platform->AddComponent<BoxCollider>()->ReScale(1, 1);
 
 			ENGINE_INFO("Enemy Creation ==========================================================");
@@ -440,7 +608,7 @@ namespace World
 				flyer->AddComponent<MeshRenderer>();
 				flyer->GetComponent<MeshRenderer>()->SetLayer(1);
 				flyer->GetComponent<MeshRenderer>()->CreateMesh(6, 3);
-				flyer->GetComponent<MeshRenderer>()->SetTexture(SpritePath("Characters/Enemy_Flyer"));
+				flyer->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Characters/Enemy_Flyer"));
 
 				flyer->AddComponent<Rigidbody>();
 				flyer->GetComponent<Rigidbody>()->Init(15, 15);
@@ -460,12 +628,12 @@ namespace World
 				flyer->SetActive(false);
 
 				Serialization::SaveObject(*flyer, PrefabPath("Flyer"));
-				
+
 			}
 
 			//bomber anim
 			{
-				
+
 				std::shared_ptr<Animation> BomberIdle = std::make_shared<Animation>();
 
 				BomberIdle->setStartPosition(0, 0);
@@ -497,11 +665,11 @@ namespace World
 				BomberAnimController->AddState(BomberDie, false);
 
 				Serialization::SaveObject(*BomberAnimController, AnimationControllerPath("Bomber"));
-				
+
 			}
 			//bomber
 			{
-				
+
 				GameObject* bomber = Instantiate().get();
 				bomber->Layer = "Enemy";
 				bomber->m_transform->SetScale(glm::vec3(50, 50, 1));
@@ -526,7 +694,7 @@ namespace World
 
 				bomber->SetActive(false);
 				Serialization::SaveObject(*bomber, PrefabPath("Bomber"));
-				
+
 			}
 
 			//Tank anim
@@ -560,7 +728,7 @@ namespace World
 				flyer->AddComponent<MeshRenderer>();
 				flyer->GetComponent<MeshRenderer>()->SetLayer(1);
 				flyer->GetComponent<MeshRenderer>()->CreateMesh(7, 2);
-				flyer->GetComponent<MeshRenderer>()->SetTexture(SpritePath("Characters/Enemy_Tank"));
+				flyer->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Characters/Enemy_Tank"));
 
 				flyer->AddComponent<Rigidbody>();
 				flyer->AddComponent<BoxCollider>()->ReScale(0.5, 0.5);
@@ -627,7 +795,7 @@ namespace World
 				flyer->AddComponent<MeshRenderer>();
 				flyer->GetComponent<MeshRenderer>()->SetLayer(1);
 				flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 3);
-				flyer->GetComponent<MeshRenderer>()->SetTexture(SpritePath("Characters/Enemy_Charger"));
+				flyer->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Characters/Enemy_Charger"));
 
 				flyer->AddComponent<Rigidbody>();
 				flyer->AddComponent<BoxCollider>()->ReScale(1, 1);
@@ -688,7 +856,7 @@ namespace World
 				flyer->AddComponent<MeshRenderer>();
 				flyer->GetComponent<MeshRenderer>()->SetLayer(1);
 				flyer->GetComponent<MeshRenderer>()->CreateMesh(5, 8);
-				flyer->GetComponent<MeshRenderer>()->SetTexture(SpritePath("Characters/Enemy_Spitter"));
+				flyer->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Characters/Enemy_Spitter"));
 
 				flyer->AddComponent<Rigidbody>();
 				flyer->AddComponent<BoxCollider>()->ReScale(0.5, 0.5);
@@ -745,7 +913,7 @@ namespace World
 
 				queen->AddComponent<MeshRenderer>();
 				queen->GetComponent<MeshRenderer>()->CreateMesh(7, 2);
-				queen->GetComponent<MeshRenderer>()->SetTexture(SpritePath("Characters/Enemy_Queen"));
+				queen->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Characters/Enemy_Queen"));
 
 				queen->AddComponent<Animator>();
 				queen->GetComponent<Animator>()->sr_controllerPath = AnimationControllerPath("Queen");
@@ -763,6 +931,31 @@ namespace World
 				queen->SetActive(false);
 
 				Serialization::SaveObject(*queen, PrefabPath("Queen"));
+			}
+
+			//Cocoon
+			{
+				GameObject* cocoon = Instantiate().get();
+
+				cocoon->Layer = "Enemy";
+				cocoon->m_transform->SetScale(glm::vec3(100.0f, 100.0f, 1.0f));
+
+				cocoon->AddComponent<MeshRenderer>();
+				cocoon->GetComponent<MeshRenderer>()->SetLayer(1);
+				cocoon->GetComponent<MeshRenderer>()->CreateMesh(5, 4);
+				cocoon->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Characters/Enemy_Cocoon"));
+
+				cocoon->AddComponent<Rigidbody>();
+				cocoon->AddComponent<BoxCollider>()->ReScale(1, 1);
+				cocoon->GetComponent<Rigidbody>()->SetGravityScale(0.00001);
+				cocoon->AddComponent<Enemy>();
+
+				cocoon->AddComponent<HPsystem>();
+				cocoon->GetComponent<HPsystem>()->SetMaxHP(10.0f);
+
+				cocoon->SetActive(false);
+
+				Serialization::SaveObject(*cocoon, PrefabPath("Cocoon"));
 			}
 
 
@@ -788,6 +981,10 @@ namespace World
 				particle->shape->maxXSize = 4.5f;
 				particle->shape->minYSize = 4.5f;
 				particle->shape->maxYSize = 4.5f;
+				particle->color->usingLifeTimeModifier = true;
+				particle->color->InterpolationEnd = 0.5f;
+				particle->color->Color_Start = glm::vec3(1, 0, 0);
+				particle->color->Color_End = glm::vec3(1, 1, 1);
 
 				Serialization::SaveObject(*particle, ParticlePath("Bullet_Hit_Example"));
 			}
@@ -801,7 +998,7 @@ namespace World
 				particle->emitter->particleSamples = 10;
 				particle->emitter->particleRate = 0.0f;
 				particle->color->Color = glm::vec3(0.1f, 1.0f, 0.0f);
-				particle->velocity->SetDirectiontype(ParticleSystem::DirectionType::AwayFromcenter);
+				particle->velocity->SetDirectiontype(ParticleSystem::DirectionType::AwayFromSpawn);
 				particle->velocity->minSpeed = 10;
 				particle->velocity->maxSpeed = 30;
 
@@ -940,11 +1137,19 @@ namespace World
 
 			GAME_INFO(*Rabbit);
 			
-			//Serialization::SaveObject(*(SceneManagement::ActiveScene), ScenePath("SerializationTest"));
+			Serialization::SaveObject(*(SceneManagement::ActiveScene), ScenePath("SerializationTest"));
 			//this point is where it all ends =========================================
 		}
 
 		SceneManagement::ActiveScene->Init();
+
+
+		gamecontroller->GetComponent<EquipmentManager>()->Unlock_WEAPON(WEAPON_TYPE::WEAPON_MACHINEGUN);
+
+		gamecontroller->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_BULLETAMP);
+		gamecontroller->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_FIRERATEUP);
+		gamecontroller->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_SPEEDRUNNER);
+		gamecontroller->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_ATKUP);
 	}
 
 	void FixedUpdate(float dt)
@@ -980,8 +1185,9 @@ namespace World
 		//Update All Systems
 		//Update Input
 		Input::Update();
-		//Core
-		DebugInput(dt);
+
+		//Test Only
+		//DebugInput(dt);
 
 		FactoryCollection::UpdateComponents(dt);
 

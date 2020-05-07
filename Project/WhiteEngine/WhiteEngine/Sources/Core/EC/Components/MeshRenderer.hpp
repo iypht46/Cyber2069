@@ -58,6 +58,8 @@ public:
 	bool IsReplaceColor();
 	void RemoveReplaceColor();
 
+	unsigned int GetTexture() { return texture; }
+
 	int GetLayer();
 	bool IsUI();
 	bool IsTextureLoaded();

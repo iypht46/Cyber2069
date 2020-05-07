@@ -33,9 +33,11 @@ void MachineGunBullet::OnAwake() {
 void MachineGunBullet::OnTriggerEnter(const Physic::Collision col) {
 	//ENGINE_INFO("Bullet Hit " + col.m_otherCollider->GetGameObject()->Name);
 
-	Enemy* enemy = col.m_otherCollider->GetGameObject()->GetComponent<Enemy>();
-	if (enemy != nullptr) {
-		enemy->TakeDamage(bulletDmg);
+	if (isTarget(col.m_otherCollider->GetGameObject()->Layer)) {
+		Enemy* enemy = col.m_otherCollider->GetGameObject()->GetComponent<Enemy>();
+		if (enemy != nullptr) {
+			enemy->TakeDamage(bulletDmg);
+		}
 	}
 
 	GetGameObject()->SetActive(false);

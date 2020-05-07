@@ -23,30 +23,42 @@ enum ITEM_TYPE {
 	ARTIFACT
 };
 
+
 class EquipmentManager : public BehaviourScript {
 private:
 	std::shared_ptr<GameObject> playerObj;
 
-	int totalWeapon = 5;
-	int totalArtifact = 7;
-
-	int maxPlayerWeapon = 1;
-	int maxPlayerArtifact = 2;
-
 	vector<std::shared_ptr<GameObject>> m_weaponObjs;
 	vector<std::shared_ptr<Artifact>> m_artifacts;
-	
-	vector<bool> Unlock_Weapons;
-	vector<bool> Unlock_Artifacts;
 
-	int weaponCount = 0;
-	int artifactCount = 0;
+	int Weapon_Buffer = -1;
+	int* Artifact_Buffer;
+
+	int weaponCount = 0;		//number of equipped weapon
+	int artifactCount = 0;		//number of equipped artifacts
 public:
+
+	static int totalWeapon;
+	static int totalArtifact;
+
+	static int maxPlayerWeapon;
+	static int maxPlayerArtifact;
+
+	std::vector<bool> Unlock_Weapons;
+	std::vector<bool> Unlock_Artifacts;
+
+	EquipmentManager();
+
 	void OnAwake();
 
 	void AssignPlayer(std::shared_ptr<GameObject> player) { this->playerObj = player; }
 	void AssignWeaponToManager(std::shared_ptr<GameObject> weaponObj);
 	void AssignArtifactToManager(std::shared_ptr<Artifact> artifact);
+
+	int GetMaxWeapon() { return maxPlayerWeapon; }
+	int GetMaxArtifact() { return maxPlayerArtifact; }
+	int GetTotalWeapon() { return totalWeapon; }
+	int GetTotalArtifact() { return totalArtifact; }
 
 
 	//===============Unlock System===============
@@ -93,18 +105,30 @@ public:
 	bool RemovePlayerWeapon(int type);
 	bool RemovePlayerArtifact(int type);
 
+	void SetWeaponBuffer(int type);
+	void SetArtifactBuffer(int index, int type) { Artifact_Buffer[index] = type; }
+	
+	void AddArtifactBuffer(int type);
+
+	int GetWeaponBuffer() { return Weapon_Buffer; }
+	int* GetArtifactBuffer() { return Artifact_Buffer; }
+
+	void InitPlayerEquipment();
+
 public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
 			cereal::base_class<BehaviourScript>(this),
-			playerObj,
+			cereal::defer(playerObj),
 			totalWeapon,
 			totalArtifact,
 			maxPlayerWeapon,
 			maxPlayerArtifact,
-			m_weaponObjs,
+			cereal::defer(m_weaponObjs),
 			m_artifacts
 		);
 	}
 };
+
+CEREAL_REGISTER_TYPE(EquipmentManager);

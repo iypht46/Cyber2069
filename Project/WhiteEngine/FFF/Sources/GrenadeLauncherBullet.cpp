@@ -66,32 +66,24 @@ void GrenadeLauncherBullet::OnCollisionEnter(const Physic::Collision col) {
 
 void GrenadeLauncherBullet::Explode() {
 	Physic::PhysicScene* ps = Physic::PhysicScene::GetInstance();
-	Physic::Layer enem = ps->GetLayerFromString("Enemy");
 
-	Physic::Colliders colliders = ps->GetColliderLayer(enem);
-	for (Collider* c : colliders) {
+	//get all collider in target layers
+	Physic::Colliders targetColliders;
+	for (std::string target : TargetLayers) {
+		Physic::Colliders layerColliders = ps->GetColliderLayer(target);
+		targetColliders.insert(targetColliders.end(), layerColliders.begin(), layerColliders.end());
+	}
+
+	for (Collider* c : targetColliders) {
 
 		float distance = glm::length(c->GetGameObject()->m_transform->GetPosition() - m_gameObject->m_transform->GetPosition());
 		
 		if (distance <= radius) {
 			
+			//check for enemy anyway
 			Enemy* enemy = c->GetGameObject()->GetComponent<Enemy>();
 			if (enemy != nullptr) {
 				enemy->TakeDamage(bulletDmg);
-			}
-		}
-	}
-	
-	colliders = ps->GetColliderLayer(ps->GetLayerFromString("Player"));
-	for (Collider* c : colliders) {
-
-		float distance = glm::length(c->GetGameObject()->m_transform->GetPosition() - m_gameObject->m_transform->GetPosition());
-
-		if (distance <= radius) {
-
-			HPsystem* playerhp = c->GetGameObject()->GetComponent<HPsystem>();
-			if (playerhp != nullptr) {
-				playerhp->TakeDamage(bulletDmg);
 			}
 		}
 	}

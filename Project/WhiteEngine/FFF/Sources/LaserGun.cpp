@@ -30,7 +30,7 @@ LaserGun::LaserGun()
 void LaserGun::OnAwake() {
 
 	weapon_damage = 10.0f;
-	weapon_firerate = 1.0f;
+	//weapon_firerate = 1.0f;
 
 	laser_size = 25.0f;
 	laser_duration = 1.0f;
@@ -57,7 +57,7 @@ void LaserGun::GameTimeBehaviour(float dt)
 		Physic::PhysicScene* PhySc = Physic::PhysicScene::GetInstance();
 
 		weapon_delay_count += dt;
-		if (weapon_delay_count > weapon_firerate) {
+		if (weapon_delay_count >= (1.0f / weapon_firerate)) {
 			
 			laser_duration_count += dt;
 			if (laser_duration_count > laser_duration) 
@@ -99,7 +99,13 @@ void LaserGun::GameTimeBehaviour(float dt)
 			//DamageEnemyInRange();
 
 			//GLRenderer::GetInstance()->DrawDebug_Line(gun_x, gun_y, end_x, end_y, 1.0f, 0.0f, 0.0f);
-			Physic::RayHits Hits = PhySc->RaycastAll(Physic::Ray(gun_x, gun_y, end_x, end_y), PhySc->GetLayerFromString("Enemy"));
+
+			//get all collider in target layers
+			Physic::RayHits Hits;
+			for (std::string target : TargetLayers) {
+				Physic::RayHits thislayerHit = PhySc->RaycastAll(Physic::Ray(gun_x, gun_y, end_x, end_y), PhySc->GetLayerFromString(target));
+				Hits.insert(Hits.end(), thislayerHit.begin(), thislayerHit.end());
+			}
 
 			for (Physic::RayHit h : Hits)
 			{

@@ -520,6 +520,10 @@ namespace Physic
 		return layerName;
 	}
 
+	Colliders PhysicScene::GetColliderLayer(std::string layer) {
+		return m_colliders[GetLayerFromString(layer)];
+	}
+
 	Colliders PhysicScene::GetColliderLayer(Layer layer) {
 		return m_colliders[layer];
 	}

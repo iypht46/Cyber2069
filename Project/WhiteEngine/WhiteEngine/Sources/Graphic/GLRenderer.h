@@ -99,7 +99,7 @@ public:
 	void Render(glm::mat4 globalModelTransform);
 	static GLRenderer* GetInstance();
 	bool InitGL(string vertexShaderFile, string fragmentShaderFile);
-	bool drawDebug = true;
+	bool drawDebug = false;
 
 
 	~GLRenderer();

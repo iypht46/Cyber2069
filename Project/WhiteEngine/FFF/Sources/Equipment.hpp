@@ -27,4 +27,12 @@ public:
 	void SetmodifyObject(GameObject* obj) { this->modifyObject = obj; }
 	GameObject* GetmodifyObject(){ return modifyObject; }
 	int GetType() { return type; }
+
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			type
+			);
+	}
 };

@@ -1,7 +1,11 @@
 #pragma once
 #include "Equipment.hpp"
 #include <memory>
+#include <set>
+#include <string>
 
+#include <cereal/types/string.hpp>
+#include <cereal/types/set.hpp>
 #include <cereal/types/base_class.hpp>
 #include <cereal/types/polymorphic.hpp>
 
@@ -20,8 +24,6 @@ protected:
 	float weapon_firerate;
 	float weapon_damage;
 
-	float weapon_delay_count = 0.0f;
-
 	GameObject* weaponObj = nullptr;
 	ObjectPool* BulletPool = nullptr;
 	
@@ -32,7 +34,13 @@ protected:
 
 	glm::vec2 weapon_scale;
 	glm::vec2 bullet_scale;
+
+	float weapon_delay_count = 0.0f;
+
+
 public:
+	std::set<std::string> TargetLayers;
+
 	virtual void Modify() = 0;
 	virtual void GameTimeBehaviour(float dt) = 0;
 
@@ -56,19 +64,39 @@ public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
-			cereal::base_class<Weapon>(this),
+			cereal::base_class<Equipment>(this),
 			cereal::base_class<BehaviourScript>(this),
+			TargetLayers,
 			bullet_speed,
 			weapon_firerate,
 			weapon_damage
 		);	
 	}
 };
-
-
-//Machine Gun ===========================================================================================
 CEREAL_REGISTER_TYPE(Weapon);
 
+class Bullet :public BehaviourScript {
+public:
+	std::set<std::string> TargetLayers;
+
+	bool isTarget(Physic::Layer);
+	bool isTarget(std::string);
+
+	Bullet();
+	~Bullet();
+
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<BehaviourScript>(this),
+			TargetLayers
+			);
+	}
+};
+CEREAL_REGISTER_TYPE(Bullet);
+
+//Machine Gun ===========================================================================================
 class MachineGun : public Weapon {
 public:
 	MachineGun();
@@ -77,9 +105,19 @@ public:
 	void MultiplyWeaponAmplifier(float value);
 
 	virtual void OnAwake();
-};
 
-class MachineGunBullet : public BehaviourScript {
+//serialization
+public:
+	template <class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Weapon>(this)
+			);
+	}
+};
+CEREAL_REGISTER_TYPE(MachineGun);
+
+class MachineGunBullet : public Bullet {
 protected:
 	Graphic::CameraObject* cam;
 
@@ -99,7 +137,7 @@ public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
-			cereal::base_class<BehaviourScript>(this),
+			cereal::base_class<Bullet>(this),
 			bulletDmg
 			);
 	}
@@ -173,7 +211,7 @@ public:
 };
 CEREAL_REGISTER_TYPE(GrenadeLauncher);
 
-class GrenadeLauncherBullet : public BehaviourScript {
+class GrenadeLauncherBullet : public Bullet {
 protected:
 	Graphic::CameraObject* cam;
 
@@ -199,7 +237,7 @@ public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
-			cereal::base_class<BehaviourScript>(this),
+			cereal::base_class<Bullet>(this),
 			bulletDmg,
 			radius,
 			scaleX
@@ -240,7 +278,7 @@ public:
 
 CEREAL_REGISTER_TYPE(ZapperGun);
 
-class ZapperGunBullet : public BehaviourScript {
+class ZapperGunBullet : public Bullet {
 protected:
 	Graphic::CameraObject* cam;
 
@@ -283,7 +321,7 @@ public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
-			cereal::base_class<BehaviourScript>(this),
+			cereal::base_class<Bullet>(this),
 			bulletDmg,
 			chainNumber,
 			zapDistance,
@@ -324,7 +362,7 @@ public:
 
 CEREAL_REGISTER_TYPE(BlackholeGun);
 
-class BlackholeGunBullet : public BehaviourScript {
+class BlackholeGunBullet : public Bullet {
 protected:
 	Graphic::CameraObject* cam;
 
@@ -358,7 +396,7 @@ public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
-			cereal::base_class<BehaviourScript>(this),
+			cereal::base_class<Bullet>(this),
 			bulletDmg,
 			Duration,
 			Radius,

@@ -471,6 +471,11 @@ void PlayerController::assignPool(ObjectPool* pool)
 	this->MGbulletPool = pool;
 }
 
+void PlayerController::assignWeapon() 
+{
+	assignWeapon(Weapons[0]);
+}
+
 void PlayerController::assignWeapon(Weapon* wp) 
 {
 	if (this->weapon != nullptr)

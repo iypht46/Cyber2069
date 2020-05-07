@@ -9,6 +9,7 @@
 
 #include <string.h>
 
+#include <glm/gtx/matrix_interpolation.hpp>
 //bool operator < (const MeshRenderer &m1, const MeshRenderer &m2)
 //{
 //	return m1.layer < m2.layer;
@@ -189,7 +190,7 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 		glm::mat4 projectionMatrix = Graphic::getCamera()->GetProjectionMatrix();
 		glm::mat4 viewMatrix = Graphic::getCamera()->GetViewMatrix();
 
-		currentMatrix = projectionMatrix * viewMatrix * modelMatrix;
+		currentMatrix = projectionMatrix * glm::interpolate(viewMatrix, glm::mat4(1.0), GetGameObject()->m_transform->GetParallaxValue()) * modelMatrix;
 	}
 	else {
 		glm::mat4 modelMatrix = GetGameObject()->m_transform->GetModelMatrix();

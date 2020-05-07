@@ -116,6 +116,7 @@ namespace Physic
 		static uint32_t LayerToNum(Layer);
 		//Get Colliders of specified Layer
 		Colliders GetColliderLayer(Layer);
+		Colliders GetColliderLayer(std::string);
 
 		RayHits RaycastAll(Ray, Layer);
 		RayHit Raycast(Ray, Layer);
