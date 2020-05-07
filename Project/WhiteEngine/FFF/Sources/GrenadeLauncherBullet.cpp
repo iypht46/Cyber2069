@@ -44,6 +44,9 @@ void GrenadeLauncherBullet::OnUpdate(float dt)
 void GrenadeLauncherBullet::OnAwake()
 {
 	rb = m_gameObject->GetComponent<Rigidbody>();
+	ExplodeSound = m_gameObject->GetComponent<SoundPlayer>();
+	ExplodeSound->CreateSoundPlayer();
+	ExplodeSound->SetSound(SoundPath("SFX_Grenade_Explode"));
 	cam = Graphic::getCamera();
 	scaleX = m_gameObject->m_transform->GetScale().x;
 }
@@ -87,6 +90,8 @@ void GrenadeLauncherBullet::Explode() {
 			}
 		}
 	}
+
+	ExplodeSound->PlaySound();
 
 	GLRenderer::GetInstance()->DrawDebug_Circle(m_gameObject->m_transform->GetPosition().x, m_gameObject->m_transform->GetPosition().y, radius, 0.0f, 0.0f, 1.0f);
 }

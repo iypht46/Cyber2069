@@ -29,6 +29,11 @@ LaserGun::LaserGun()
 
 void LaserGun::OnAwake() {
 
+	weaponObj->AddComponent<SoundPlayer>();
+	weaponObj->GetComponent<SoundPlayer>()->CreateSoundPlayer();
+	weaponObj->GetComponent<SoundPlayer>()->SetSound(SoundPath("SFX_Laser_Shoot"));
+	weaponObj->GetComponent<SoundPlayer>()->SetLoop(false);
+
 	weapon_damage = 10.0f;
 	//weapon_firerate = 1.0f;
 
@@ -50,6 +55,10 @@ void LaserGun::Modify()
 void LaserGun::GameTimeBehaviour(float dt) 
 {
 	laserObj->SetActive(false);
+
+	if (Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT)) {
+		weaponObj->GetComponent<SoundPlayer>()->PlaySound();
+	}
 
 	if (Input::GetMouseHold(Input::MouseKeyCode::MOUSE_LEFT) ||
 		Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT))
