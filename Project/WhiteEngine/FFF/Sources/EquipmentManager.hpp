@@ -43,7 +43,7 @@ public:
 
 	std::vector<bool> Unlock_Weapons;
 	std::vector<bool> Unlock_Artifacts;
-
+	
 	int* weaponItemTex;
 	int* artifactItemTex;
 

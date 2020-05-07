@@ -15,8 +15,6 @@
 class GameObject;
 class Component;
 
-#define SpritePath(path) "Sources/Assets/Sprites/" path ".png" 
-
 class MeshRenderer : public Component
 {
 private:
