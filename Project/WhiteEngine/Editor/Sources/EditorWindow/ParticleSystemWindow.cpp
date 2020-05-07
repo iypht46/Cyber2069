@@ -201,19 +201,32 @@ namespace Tools
 		if (ImGui::TreeNode("Spawn Shape Setting"))
 		{
 			ImGui::PushItemWidth(-1);
-			ImGui::AlignTextToFramePadding(); ImGui::Text("Spawn On Edge"); ImGui::SameLine();
-			ImGui::Checkbox("##EmitterSpawnOnEdge", &emitter->spawnOnEdge);
+			if (emitter->GetEmitterShape() == ParticleSystem::EmitterShape::Circle)
+			{
+				ImGui::AlignTextToFramePadding(); ImGui::Text("Spawn On Edge"); ImGui::SameLine();
+				ImGui::Checkbox("##EmitterSpawnOnEdge", &emitter->spawnOnEdge);
 
-			ImGui::AlignTextToFramePadding(); ImGui::Text("Spawn Radius"); ImGui::SameLine();
-			ImGui::DragFloat("##EmitterSpawnRadius", &emitter->spawnRadius, 0.1f, 0.0f, 360.0f);
+				ImGui::AlignTextToFramePadding(); ImGui::Text("Spawn Radius"); ImGui::SameLine();
+				ImGui::DragFloat("##EmitterSpawnRadius", &emitter->spawnRadius, 0.1f, 0.0f, 360.0f);
 
-			ImGui::AlignTextToFramePadding(); ImGui::Text("Min Emission Angle"); ImGui::SameLine();
-			ImGui::DragFloat("##EmitterMinAngle", &emitter->minEmissionAngle, 0.1f, 0.0f, 360.0f);
+				ImGui::AlignTextToFramePadding(); ImGui::Text("Min Emission Angle"); ImGui::SameLine();
+				ImGui::DragFloat("##EmitterMinAngle", &emitter->minEmissionAngle, 0.1f, 0.0f, 360.0f);
 
-			ImGui::AlignTextToFramePadding(); ImGui::Text("Max Emission Angle"); ImGui::SameLine();
-			ImGui::DragFloat("##EmitterMaxAngle", &emitter->maxEmissionAngle, 0.1f, 0.0f, 360.0f);
-			ImGui::TreePop();
+				ImGui::AlignTextToFramePadding(); ImGui::Text("Max Emission Angle"); ImGui::SameLine();
+				ImGui::DragFloat("##EmitterMaxAngle", &emitter->maxEmissionAngle, 0.1f, 0.0f, 360.0f);
+				
+			}
+			else
+			{
+
+				ImGui::AlignTextToFramePadding(); ImGui::Text("Line Length"); ImGui::SameLine();
+				ImGui::DragFloat("##EmitterLineLength", &emitter->lineLength, 0.1f, 0.0f, MAX_NUM);
+
+				ImGui::AlignTextToFramePadding(); ImGui::Text("Line Angle"); ImGui::SameLine();
+				ImGui::DragFloat("##EmitterLineAngle", &emitter->lineAngleOffset, 0.1f, 0.0f, MAX_NUM);
+			}
 			ImGui::PopItemWidth();
+			ImGui::TreePop();
 		}
 
 	}

@@ -42,7 +42,8 @@ namespace Tools
 		if (!*m_open)
 			return;
 
-		m_selectedEntity = dynamic_cast<EditorEntity*>(m_entityObject->GetSelected());
+		if (m_entityObject)
+			m_selectedEntity = dynamic_cast<EditorEntity*>(m_entityObject->GetSelected());
 
 		if (!m_previewBool)
 		{
@@ -108,8 +109,9 @@ namespace Tools
 			}
 			else
 			{
-				m_entityObject.reset(); //Clear entity
-				m_entityObject = make_unique<EditorEntity>(); //Make new entity
+				//m_entityObject.reset(); //Clear entity
+				if (!m_entityObject)
+					m_entityObject = make_unique<EditorEntity>(); //Make new entity
 
 				result = m_entityObject->Load(path.generic_string());
 				returnMessage = (result) ? (returnMessage + "Success") : (returnMessage + "Failed");

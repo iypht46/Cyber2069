@@ -56,6 +56,8 @@ namespace Tools
 		virtual void SetOpen(bool open);
 		virtual void SetDirty(bool dirty);
 		virtual void RenderMenu() {}
+		virtual void SetAction(EDITOR_ACTION action);
+		virtual void SetFileDialog(bool i);
 	};
 	
 }

@@ -218,6 +218,11 @@ namespace Tools
 			Physic::PhysicScene::GetInstance()->Update(dt);
 			m_particleSystem->ConstantEmit(dt);
 			m_particleSystem->LifeTimeModification(dt);
+
+			for (auto particle : Factory<Component, ParticleSystem::ParticleBehaviour>::getCollection())
+			{
+				particle.second->OnUpdate(dt);
+			}
 		}
 
 		//If playing or pausing render the particles

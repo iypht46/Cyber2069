@@ -56,6 +56,19 @@ namespace Tools
 		if (m_sceneEditor->IsOpen())
 			m_sceneEditor->Update();*/
 
+		//Update after setting object to inspector and hierarchy
+		for (auto it = m_editorMap.begin(); it != m_editorMap.end(); it++)
+		{
+			auto editor = it->second.get();
+
+			if (editor->IsOpen())
+			{
+				editor->Update();
+				/*ENGINE_INFO("Update Editor: " + editor->GetName());*/
+			}
+
+		}
+
 		if (m_currentEditor)
 		{
 			//TODO: Use observer pattern for optimization?
@@ -74,30 +87,21 @@ namespace Tools
 			//m_currentEditor->Update();
 		}
 
-		//Update after setting object to inspector and hierarchy
-		for (auto it = m_editorMap.begin(); it != m_editorMap.end(); it++)
-		{
-			auto editor = it->second.get();
-
-			if (editor->IsOpen())
-			{
-				editor->Update();
-				/*ENGINE_INFO("Update Editor: " + editor->GetName());*/
-			}
-
-		}
+		
 
 		if (m_inspector->GetBool())
 			m_inspector->Render();
-
-		if (m_hierarchy->GetBool())
-			m_hierarchy->Render();
 
 		if (m_acBool)
 			m_acEditor->Update();
 
 		if (m_particleBool)
 			m_particleEditor->Update();
+
+		if (m_hierarchy->GetBool())
+			m_hierarchy->Render();
+
+		
 	}
 
 	void MainEditor::Terminate()
@@ -181,10 +185,12 @@ namespace Tools
 							{
 								Container::wString filter = "Engine Files (*." + editor->GetName() + ")|*." + editor->GetName();
 
-								std::string path = openfilename(filter.c_str());
+								//std::string path = openfilename(filter.c_str());
 								//Handle the file
 
-								this->Load(editor, path.c_str());
+								//this->Load(editor, path.c_str());
+								editor->SetAction(EDITOR_ACTION::EDITOR_LOAD);
+								editor->SetFileDialog(true);
 							}
 							else
 							{

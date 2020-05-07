@@ -111,7 +111,10 @@ template <class T>
 void Factory<Component, T>::Remove(T* element) {
 	Component* comp = dynamic_cast<Component*>(element);
 	if (comp != nullptr) {
-		m_Collection.erase(comp->getComponentID());
+		auto it = m_Collection.find(comp->getComponentID());
+		
+		if (it != m_Collection.end())
+			m_Collection.erase(it);
 	}
 }
 

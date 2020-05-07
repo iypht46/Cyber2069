@@ -20,7 +20,7 @@ Transform::Transform() {
 }
 
 Transform::~Transform() {
-	Factory<Component, Transform>::Remove(this);
+	//Factory<Component, Transform>::Remove(this);
 }
 
 glm::vec3 Transform::GetPosition() {

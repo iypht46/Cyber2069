@@ -16,7 +16,6 @@ namespace Tools
 
 	void SceneEditor::Init(void)
 	{
-		m_gameplayWindow = make_unique<GameplayWindow>();
 		m_sceneWindow = make_unique<SceneWindow>(&m_sceneBool);
 		m_fileDialog = new ImGui::FileBrowser(ImGuiFileBrowserFlags_EnterNewFilename | ImGuiFileBrowserFlags_CloseOnEsc
 			| ImGuiFileBrowserFlags_CreateNewDir);
@@ -45,7 +44,8 @@ namespace Tools
 		}
 
 		//m_gameplayWindow->Render();
-		m_selectedEntity = dynamic_cast<EditorEntity*>(m_sceneObject->GetSelected());
+		if (m_sceneObject)
+			m_selectedEntity = dynamic_cast<EditorEntity*>(m_sceneObject->GetSelected());
 		m_sceneWindow->Render();
 	}
 
@@ -92,7 +92,8 @@ namespace Tools
 			else
 			{
 				//m_sceneObject.reset(); //Clear entity
-				//m_sceneObject = make_unique<EditorSceneObject>(); //Make new entity
+				if (!m_sceneObject)
+					m_sceneObject = make_unique<EditorSceneObject>(); //Make new entity
 
 				result = m_sceneObject->Load(path.generic_string());
 				returnMessage = (result) ? (returnMessage + "Success") : (returnMessage + "Failed");

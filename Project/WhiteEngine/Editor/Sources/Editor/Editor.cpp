@@ -24,21 +24,26 @@ namespace Tools
 		{
 			m_fileDialog->Display();
 
+			if (!m_fileDialog->IsOpened())
+			{
+				m_action = EDITOR_ACTION::EDITOR_NONE;
+			}
+
 			if (m_fileDialog->HasSelected() && m_action != EDITOR_ACTION::EDITOR_NONE)
 			{
 				std::string returnMsg;
 				if (m_action == EDITOR_ACTION::EDITOR_SAVE)
 				{
 					returnMsg += "Save " + m_editorName + " ";
-
-					if (Save(m_fileDialog->GetSelected(), returnMsg))
-					{
-						//Save Successful
-					}
-					else
-					{
-						//Save Failed
-					}
+					Save(m_fileDialog->GetSelected(), returnMsg);
+					//if (Save(m_fileDialog->GetSelected(), returnMsg))
+					//{
+					//	//Save Successful
+					//}
+					//else
+					//{
+					//	//Save Failed
+					//}
 
 					PopupData newData("Save :", returnMsg);
 					m_popup.Push(newData);
@@ -46,22 +51,26 @@ namespace Tools
 				else
 				{
 					returnMsg += "Load " + m_editorName + " ";
-					if (Load(m_fileDialog->GetSelected(), returnMsg))
-					{
-						//Load Successful
-					}
-					else
-					{
-						//Load Failed
-					}
+					Load(m_fileDialog->GetSelected(), returnMsg);
+					//if (Load(m_fileDialog->GetSelected(), returnMsg))
+					//{
+					//	//Load Successful
+					//}
+					//else
+					//{
+					//	//Load Failed
+					//}
 
 					PopupData newData("Load :", returnMsg);
 					m_popup.Push(newData);
 				}
+
 				m_action = EDITOR_ACTION::EDITOR_NONE;
 				m_fileDialog->ClearSelected();
 				ENGINE_INFO(returnMsg);
 			}
+
+			
 		}
 
 		m_popup.Update();
@@ -119,5 +128,21 @@ namespace Tools
 
 			m_dirtyFlag = dirty;
 		}
+	}
+
+	void Editor::SetAction(EDITOR_ACTION action)
+	{
+		m_action = action;
+	}
+
+	void Editor::SetFileDialog(bool i)
+	{
+		if (!m_fileDialog)
+			return;
+
+		if (i)
+			m_fileDialog->Open();
+		else
+			m_fileDialog->Close();
 	}
 }
