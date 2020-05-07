@@ -52,6 +52,7 @@ namespace World
 	static GameInfo* g_gameInfo;
 	static Graphic::CameraObject* cam = Graphic::getCamera();
 
+	std::unique_ptr<GameObject> mouseCursor;
 
 	//======================================
 	//TESTING ONLY, DON'T FORGET TO REMOVE v
@@ -174,6 +175,14 @@ namespace World
 		//Input
 		//Bool for debugging
 		Input::Init(false);
+
+		mouseCursor = std::make_unique<GameObject>();
+		mouseCursor->m_transform->SetScale(glm::vec3(50, 50, 1));
+		mouseCursor->AddComponent<MeshRenderer>();
+		mouseCursor->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/Cursor"));
+		mouseCursor->GetComponent<MeshRenderer>()->SetLayer(9999);
+		mouseCursor->GetComponent<MeshRenderer>()->SetUI(true);
+		mouseCursor->GetComponent<MeshRenderer>()->Init();
 
 		//Physics
 		g_physicScene = new Physic::PhysicScene();
@@ -1176,6 +1185,7 @@ namespace World
 		//Update All Systems
 		//Update Input
 		Input::Update();
+		mouseCursor->m_transform->SetPosition(glm::vec3(Input::GetMouseScreenPosition(), 0));
 
 		//Test Only
 		//DebugInput(dt);
