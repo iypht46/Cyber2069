@@ -69,7 +69,10 @@ public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
-			cereal::base_class<BehaviourScript>(this)
+			cereal::base_class<BehaviourScript>(this),
+			hoverModifier,
+			buttonType,
+			onClickType
 		);
 	}
 };
