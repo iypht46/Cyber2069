@@ -97,6 +97,8 @@ public:
 			sr_EmissionShapeAsInt = (int)emitterShape;
 		}
 
+		EmitterShape GetEmitterShape() { return emitterShape; }
+
 	private:
 		friend class ParticleSystem;
 		EmitterShape emitterShape;
@@ -160,6 +162,8 @@ public:
 			this->rotationType = rotationType;
 			sr_rotationTypeAsInt = (int)rotationType;
 		}
+
+		DirectionType GetRotationType() { return rotationType; }
 
 	private:
 		friend class ParticleSystem;
@@ -320,7 +324,7 @@ public:
 	std::shared_ptr<ParticleAnimation> animation;
 
 	int RenderLayer = 1;
-	std::string texturePath = "Sources/Assets/white_square.png";
+	std::string texturePath = "none";//"Sources/Assets/white_square.png";
 
 	//create default modules create objpool (assign partice number), init objpool (instatiate objects), modify particle objject in obj pool according to data
 	virtual void Init();

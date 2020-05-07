@@ -6,12 +6,12 @@
 namespace Tools
 {
 
-	ParticleEditor::ParticleEditor(bool* isOpen) : Editor("ParticleSystem", isOpen)
+	ParticleEditor::ParticleEditor(bool* isOpen) : Editor("Particle System", isOpen)
 	{
 		this->Init();
 	}
 
-	ParticleEditor::ParticleEditor() : Editor("ParticleSystem")
+	ParticleEditor::ParticleEditor() : Editor("Particle System")
 	{
 		this->Init();
 	}
@@ -144,6 +144,12 @@ namespace Tools
 
 	bool ParticleEditor::New()
 	{
+		if (m_particleWindow->RunState() != PS_STATE::PS_DEFAULT)
+		{
+			m_particleWindow->SetRunState(PS_STATE::PS_DEFAULT);
+			m_particleSystem->Reset();
+		}
+
 		m_particleSystem = m_gameObj->AddComponent<ParticleSystem>();
 		m_particleWindow->SetObjectToRender(m_particleSystem);
 

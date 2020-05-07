@@ -1,12 +1,14 @@
 #include "ParticleSystemWindow.hpp"
 #include "Utility/Filesystem.hpp"
 #include <misc/cpp/imgui_stdlib.h>
+#include <imgui_internal.h>
 
 
 namespace Tools
 {
 	constexpr auto MAX_NUM = 9999;
 	const std::string dirType[] = { "AWAY_FROM_CENTER", "TO_CENTER", "CUSTOM" };
+	const std::string emitShape[] = { "CIRCLE", "LINE" };
 
 	void ParticleSystemWindow::SetObjectToRender(ParticleSystem* particle)
 	{
@@ -39,7 +41,16 @@ namespace Tools
 
 	void ParticleSystemWindow::RenderObject(ParticleSystem* particle)
 	{
-		if (ImGui::Button("Play"))
+		bool isTexSelected = (particle->texturePath != "none");
+		bool isPlaying = (m_runState == PS_STATE::PS_PLAY);
+
+		if (isPlaying || !isTexSelected)
+		{
+			ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+		}
+
+		if (ImGui::Button("Play") && isTexSelected && !isPlaying)
 		{
 			if (m_runState == PS_STATE::PS_DEFAULT)
 				particle->Init();
@@ -49,18 +60,32 @@ namespace Tools
 			if (!particle->emitter->constantParticle)
 				particle->TriggerBurstEmission();
 		}
-			
+		
+		if (isPlaying)
+		{
+			ImGui::PopItemFlag();
+			ImGui::PopStyleVar();
+		}
+
 		ImGui::SameLine();
-		if (ImGui::Button("Pause"))
+		if (ImGui::Button("Pause") && isTexSelected && isPlaying)
 		{
 			m_runState = PS_STATE::PS_PAUSE;
 		}
+
+		
 			
 		ImGui::SameLine();
-		if (ImGui::Button("Stop"))
+		if (ImGui::Button("Stop") && isTexSelected)
 		{
 			particle->Reset();
 			m_runState = PS_STATE::PS_DEFAULT;
+		}
+
+		if (!isTexSelected)
+		{
+			ImGui::PopItemFlag();
+			ImGui::PopStyleVar();
 		}
 
 		ImGui::AlignTextToFramePadding(); ImGui::Text("Particle Texture: "); ImGui::SameLine();
@@ -134,20 +159,39 @@ namespace Tools
 			/*ImGui::AlignTextToFramePadding(); ImGui::Text("Constant Particle"); ImGui::SameLine();
 			ImGui::Checkbox("##EmitterConstant", &emitter->constantParticle);*/
 
-			ImGui::AlignTextToFramePadding(); ImGui::Text("Spawn Type: "); ImGui::SameLine();
+			ImGui::AlignTextToFramePadding(); ImGui::Text("Type: "); ImGui::SameLine();
 			if (ImGui::RadioButton("Constant", (emitter->constantParticle)))
 				emitter->constantParticle = true;
 			ImGui::SameLine();
 			if (ImGui::RadioButton("Burst", (!emitter->constantParticle)))
 				emitter->constantParticle = false;
 
-			ImGui::AlignTextToFramePadding(); ImGui::Text("Constant Numbers"); ImGui::SameLine();
+			ImGui::AlignTextToFramePadding(); ImGui::Text("Spawn Rate"); ImGui::SameLine();
 			ImGui::DragFloat("##EmitterConstSpawnRate", &emitter->particleRate, 0.1f, 0.0f, MAX_NUM);
 
 			if (!emitter->constantParticle)
 			{
 				ImGui::AlignTextToFramePadding(); ImGui::Text("Burst Numbers"); ImGui::SameLine();
 				ImGui::DragInt("##PSEmitterBurstNumber", &emitter->burstParticleNumber, 1, 0, MAX_NUM);
+			}
+
+			ImGui::AlignTextToFramePadding(); ImGui::Text("Emitter Shape"); ImGui::SameLine();
+			ParticleSystem::EmitterShape emitterShape = emitter->GetEmitterShape();
+			int current = static_cast<int>(emitterShape);
+			if (ImGui::BeginCombo("##PSEmitterShape", emitShape[current].c_str()))
+			{
+				for (int i = 0; i < (sizeof(emitShape) / sizeof(emitShape[0])); i++)
+				{
+					bool is_selected = (current == i);
+					if (ImGui::Selectable(emitShape[i].c_str(), &is_selected))
+					{
+						emitter->SetEmitterShape(static_cast<ParticleSystem::EmitterShape>(i));
+					}
+
+					if (is_selected)
+						ImGui::SetItemDefaultFocus();
+				}
+				ImGui::EndCombo();
 			}
 
 			ImGui::PopItemWidth();
@@ -206,6 +250,8 @@ namespace Tools
 		ImGui::AlignTextToFramePadding(); ImGui::Text("Enable"); ImGui::SameLine();
 		ImGui::Checkbox("##PSShapeEnable", &shape->isEnabled);
 
+		
+
 		if (!shape->isEnabled)
 			return;
 
@@ -213,26 +259,31 @@ namespace Tools
 		{
 			ImGui::PushItemWidth(-1);
 
+			ImGui::AlignTextToFramePadding(); ImGui::Text("Fixed Scale"); ImGui::SameLine();
+			ImGui::Checkbox("##PSFixedScale", &shape->fixedScale);
+
 			ImGui::AlignTextToFramePadding(); ImGui::Text("X Min Size"); ImGui::SameLine();
 			ImGui::DragFloat("##PSminXSize", &shape->minXSize, 0.1f, 0.0f, MAX_NUM);
 			ImGui::AlignTextToFramePadding(); ImGui::Text("X Max Size"); ImGui::SameLine();
 			ImGui::DragFloat("##PSmaxXSize", &shape->maxXSize, 0.1f, 0.0f, MAX_NUM);
-			ImGui::AlignTextToFramePadding(); ImGui::Text("Y Min Size"); ImGui::SameLine();
-			ImGui::DragFloat("##PSminYSize", &shape->minYSize, 0.1f, 0.0f, MAX_NUM);
-			ImGui::AlignTextToFramePadding(); ImGui::Text("Y Max Size"); ImGui::SameLine();
-			ImGui::DragFloat("##PSmaxYSize", &shape->maxYSize, 0.1f, 0.0f, MAX_NUM);
+
+			if (!shape->fixedScale)
+			{
+				ImGui::AlignTextToFramePadding(); ImGui::Text("Y Min Size"); ImGui::SameLine();
+				ImGui::DragFloat("##PSminYSize", &shape->minYSize, 0.1f, 0.0f, MAX_NUM);
+				ImGui::AlignTextToFramePadding(); ImGui::Text("Y Max Size"); ImGui::SameLine();
+				ImGui::DragFloat("##PSmaxYSize", &shape->maxYSize, 0.1f, 0.0f, MAX_NUM);
+			}
 
 			ImGui::AlignTextToFramePadding(); ImGui::Text("Custom Shape Lifetime"); ImGui::SameLine();
-			ImGui::Checkbox("####PSEmitterCustom", &shape->usingLifetimeModifier);
+			ImGui::Checkbox("####PSEmitterCustom", &shape->usingLifetimeScaleModifier);
 
-			if (shape->usingLifetimeModifier)
+			if (shape->usingLifetimeScaleModifier)
 			{
 				ImGui::AlignTextToFramePadding(); ImGui::Text("Start Time"); ImGui::SameLine();
-				ImGui::DragFloat("##PSStartTime", &shape->shape_ModStart, 0.1f, 0.0f, MAX_NUM);
-				ImGui::AlignTextToFramePadding(); ImGui::Text("X Modifer"); ImGui::SameLine();
-				ImGui::DragFloat("##PSXmodifier", &shape->sizeXModifierbyLifeTime, 0.01f, 0.0f, MAX_NUM);
-				ImGui::AlignTextToFramePadding(); ImGui::Text("Y Modifer"); ImGui::SameLine();
-				ImGui::DragFloat("##PSYmodifer", &shape->sizeYModifierbyLifeTime, 0.1f, 0.0f, MAX_NUM);
+				ImGui::DragFloat("##PSStartTime", &shape->scale_ModStart, 0.1f, 0.0f, MAX_NUM);
+				ImGui::AlignTextToFramePadding(); ImGui::Text("Scale Modifer"); ImGui::SameLine();
+				ImGui::DragFloat("##PSXmodifier", &shape->scaleModifierPerFrame, 0.01f, 0.0f, MAX_NUM);
 			}
 			ImGui::PopItemWidth();
 			ImGui::TreePop();
@@ -241,16 +292,18 @@ namespace Tools
 		if (ImGui::TreeNode("Rotation Setting"))
 		{
 			ImGui::PushItemWidth(-1);
-			int currentDir = static_cast<int>(shape->rotationType);
-			if (ImGui::BeginCombo("Rotation Type", dirType[currentDir].c_str()))
+
+			ImGui::AlignTextToFramePadding(); ImGui::Text("Rotation Type"); ImGui::SameLine();
+			ParticleSystem::DirectionType rotationType = shape->GetRotationType();
+			int currentDir = static_cast<int>(rotationType);
+			if (ImGui::BeginCombo("##PSRotationType", dirType[currentDir].c_str()))
 			{
 				for (int i = 0; i < (sizeof(dirType) / sizeof(dirType[0])); i++)
 				{
-					bool is_selected = (static_cast<int>(shape->rotationType) == i);
+					bool is_selected = (static_cast<int>(rotationType) == i);
 					if (ImGui::Selectable(dirType[i].c_str(), &is_selected))
 					{
-						shape->rotationType = static_cast<ParticleSystem::DirectionType>(i);
-						shape->sr_rotationTypeAsInt = i;
+						shape->SetRotationType(static_cast<ParticleSystem::DirectionType>(i));
 					}
 
 					if (is_selected)
@@ -265,13 +318,16 @@ namespace Tools
 			ImGui::DragFloat("##PSmaxRot", &shape->maxRotaion, 0.1f, 0.0f, 360.f);
 
 			ImGui::AlignTextToFramePadding(); ImGui::Text("Custom Rotation Lifetime"); ImGui::SameLine();
-			ImGui::Checkbox("##PSEmitterCustomRot", &shape->usingLifetimeRotModifier);
+			ImGui::Checkbox("##PSEmitterCustomRot", &shape->usingLifetimeRotationModifier);
 
-			if (shape->usingLifetimeRotModifier)
+			if (shape->usingLifetimeRotationModifier)
 			{
 				ImGui::AlignTextToFramePadding(); ImGui::Text("Rotation Modifier"); ImGui::SameLine();
-				ImGui::DragFloat("##PSRotmodifier", &shape->rotationModifier, 0.01f, 0.0f, MAX_NUM);
+				ImGui::DragFloat("##PSRotmodifier", &shape->rotation_ModStart, 0.01f, 0.0f, MAX_NUM);
+				ImGui::AlignTextToFramePadding(); ImGui::Text("Rotation Speed Modifier"); ImGui::SameLine();
+				ImGui::DragFloat("##PSRotmodifier", &shape->rotationSpeed, 0.01f, 0.0f, MAX_NUM);
 			}
+
 			ImGui::PopItemWidth();
 			ImGui::TreePop();
 		}
@@ -291,15 +347,42 @@ namespace Tools
 		if (!particle->color->isEnabled)
 			return;
 
-		ImGui::PushItemWidth(-1);
-		ImGui::AlignTextToFramePadding(); ImGui::Text("Color Value"); ImGui::SameLine();
-		if (ImGui::ColorEdit3("##PSColorValue", &particle->color->Color[0]) && m_runState != PS_STATE::PS_DEFAULT)
-		{
-			particle->UpdateMesh();
-		}
+		ImGui::AlignTextToFramePadding(); ImGui::Text("Type: "); ImGui::SameLine();
+		if (ImGui::RadioButton("Constant", (!particle->color->usingLifeTimeModifier)))
+			particle->color->usingLifeTimeModifier = false;
+		ImGui::SameLine();
+		if (ImGui::RadioButton("Interpolate", (particle->color->usingLifeTimeModifier)))
+			particle->color->usingLifeTimeModifier = true;
 
-		ImGui::AlignTextToFramePadding(); ImGui::Text("Use LifeTime Modifier"); ImGui::SameLine();
-		ImGui::Checkbox("##PSColorLifeTimeMod", &particle->color->useLifeTimeMod);
+		ImGui::PushItemWidth(-1);
+		
+
+		if (particle->color->usingLifeTimeModifier)
+		{
+			ImGui::AlignTextToFramePadding(); ImGui::Text("Interpolation Start"); ImGui::SameLine();
+			ImGui::DragFloat("##PSIntStart", &particle->color->InterpolationStart, 0.01f, 0.0f, 1.0f);
+			ImGui::AlignTextToFramePadding(); ImGui::Text("Interpolation End"); ImGui::SameLine();
+			ImGui::DragFloat("##PSIntEnd", &particle->color->InterpolationEnd, 0.01f, 0.0f, 1.0f);
+
+			ImGui::AlignTextToFramePadding(); ImGui::Text("Start Color"); ImGui::SameLine();
+			ImGui::ColorEdit3("##PSStartColorValue", &particle->color->Color_Start[0]);
+			ImGui::AlignTextToFramePadding(); ImGui::Text("End Color"); ImGui::SameLine();
+			ImGui::ColorEdit3("##PSEndColorValue", &particle->color->Color_End[0]);
+		}
+		else
+		{
+			ImGui::AlignTextToFramePadding(); ImGui::Text("Color Value"); ImGui::SameLine();
+			ImGui::ColorEdit3("##PSColorValue", &particle->color->Color[0]);
+		}		 /*&& m_runState != PS_STATE::PS_DEFAULT)
+		{
+			//particle->UpdateMesh();
+		}*/
+
+		/*ImGui::AlignTextToFramePadding(); ImGui::Text("Use LifeTime Modifier"); ImGui::SameLine();
+		ImGui::Checkbox("##PSColorLifeTimeMod", &particle->color->usingLifeTimeModifier);*/
+
+		
+
 		ImGui::PopItemWidth();
 	}
 

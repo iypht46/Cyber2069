@@ -18,6 +18,7 @@ namespace Tools
 		~ParticleSystemWindow() { this->Terminate(); }
 		void SetObjectToRender(ParticleSystem* particle);
 		PS_STATE RunState();
+		inline void SetRunState(PS_STATE state) { m_runState = state; } 
 	protected:
 		virtual void Init() override;
 		virtual void OnRender() override;

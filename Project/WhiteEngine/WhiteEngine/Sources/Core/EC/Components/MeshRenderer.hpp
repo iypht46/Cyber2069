@@ -58,14 +58,13 @@ public:
 	bool IsReplaceColor();
 	void RemoveReplaceColor();
 
-	unsigned int GetTexture() { return texture; }
+	unsigned int GetTexture();
 
 	int GetLayer();
 	bool IsUI();
 	bool IsTextureLoaded();
 
 	void Render(glm::mat4 globalModelTransform);
-	unsigned int GetTexture();
 //serialization
 public:
 	template<class Archive>
