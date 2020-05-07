@@ -6,7 +6,6 @@
 
 namespace Input
 {
-	
 	////////////Enum Input Key////////////
 	enum class KeyCode : int
 	{

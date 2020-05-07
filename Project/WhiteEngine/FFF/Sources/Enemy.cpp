@@ -1,9 +1,9 @@
 #include "Enemy.hpp"
 #include "GameController.hpp"
 
-void Enemy::Init() {
-	hpSystem = m_gameObject->GetComponent<HPsystem>();
-	animator = m_gameObject->GetComponent<Animator>();
+void Enemy::OnAwake() {
+	hpSystem = GetGameObject()->GetComponent<HPsystem>();
+	animator = GetGameObject()->GetComponent<Animator>();
 }
 
 void Enemy::OnTakeDamage() {
@@ -12,14 +12,18 @@ void Enemy::OnTakeDamage() {
 
 void Enemy::OnDead() {
 	//call all funct from events vector
-	m_gameObject->SetActive(false);
-	GameController::GetInstance()->AddScoreValue(1.0);
+	GetGameObject()->SetActive(false);
+	GameController::GetInstance()->AddScoreValue(baseScore);
+	GameController::GetInstance()->AddComboValue(1.0);
+	state = EnemyState::Idle;
+	affectedByWeapon = false;
+	GotZap = false;
 }
 
 //check if target in range
 void Enemy::OnUpdate(float dt) {
 	if (target != nullptr) {
-		foundTarget = glm::length(target->GetPosition() - m_gameObject->m_transform.GetPosition()) < targetDetectionRange;
+		foundTarget = glm::length(target->GetPosition() - GetGameObject()->m_transform->GetPosition()) < targetDetectionRange;
 	}
 }
 

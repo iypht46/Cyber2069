@@ -135,7 +135,6 @@ namespace Physic
 		for (auto it = m_bodies.begin(); it != m_bodies.end(); ++it)
 		{
 			Rigidbody* body = (*it);
-
 			body->AddForce(m_gravity * body->GetGravityScale() * body->GetMass() * GRAVITY_MUL);
 		}
 	}
@@ -195,10 +194,11 @@ namespace Physic
 	{
 		//ENGINE_INFO("Check Collision");
 		//ENGINE_INFO("Main: {}, LayerToCheck: {}", LayerToNum(mainLayer), LayerToNum(layerToCheck));
+		//ENGINE_INFO("main col {}:{} , Layertochacke {}:{}", GetStringFromLayer(mainLayer), m_colliders[mainLayer].size(), GetStringFromLayer(layerToCheck), m_colliders[layerToCheck].size());
+
 		//Check collision of main collider with layer to check
 		for (auto mainCol : m_colliders[mainLayer])
 		{
-
 			for (auto colToCheck : m_colliders[layerToCheck])
 			{
 				//If same collider then skip
@@ -442,7 +442,7 @@ namespace Physic
 		auto layer = m_layerString.find(layerName);
 		if (layer == m_layerString.end())
 		{
-			ENGINE_ERROR("Undefined layer name: {}", layerName);
+			ENGINE_ERROR("Undefined layer name: \"{}\"", layerName);
 			return Layer::LAYER_INVALID;
 		}
 
@@ -462,6 +462,14 @@ namespace Physic
 		std::string layerName = "INV";
 		ENGINE_ERROR("{}, is not map to any named", layerName);
 		return layerName;
+	}
+
+	Colliders PhysicScene::GetColliderLayer(std::string layer) {
+		return m_colliders[GetLayerFromString(layer)];
+	}
+
+	Colliders PhysicScene::GetColliderLayer(Layer layer) {
+		return m_colliders[layer];
 	}
 
 	void PhysicScene::SetGravity(glm::vec3 value)

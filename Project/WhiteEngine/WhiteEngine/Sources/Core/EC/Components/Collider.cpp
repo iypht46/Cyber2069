@@ -6,6 +6,20 @@
 
 
 	//////////////Base Collider/////////////
+	Collider::Collider() {
+		Factory<Component, Collider>::Add(this);
+	}
+
+	Collider::~Collider() {
+		Factory<Component, Collider>::Remove(this);
+	}
+
+	void Collider::Init() {
+		//Set Rigidbody
+		m_rigidbody = GetGameObject()->GetComponent<Rigidbody>();
+
+		Physic::PhysicScene::GetInstance()->Add(this, GetGameObject()->Layer);
+	}
 
 	COLLIDER_TYPE Collider::GetType()
 	{
@@ -28,13 +42,13 @@
 		switch (m_collisionState)
 		{
 		case COL_STATE::ENTER:
-			m_gameObject->CollisionEnter(msg.m_collision);
+			GetGameObject()->CollisionEnter(msg.m_collision);
 			break;
 		case COL_STATE::STAY:
-			m_gameObject->CollisionStay(msg.m_collision);
+			GetGameObject()->CollisionStay(msg.m_collision);
 			break;
 		case COL_STATE::EXIT:
-			m_gameObject->CollisionExit(msg.m_collision);
+			GetGameObject()->CollisionExit(msg.m_collision);
 			m_collisionState = COL_STATE::NONE;
 			break;
 		default:
@@ -50,13 +64,13 @@
 		switch (m_collisionState)
 		{
 		case COL_STATE::ENTER:
-			m_gameObject->TriggerEnter(msg.m_collision);
+			GetGameObject()->TriggerEnter(msg.m_collision);
 			break;
 		case COL_STATE::STAY:
-			m_gameObject->TriggerStay(msg.m_collision);
+			GetGameObject()->TriggerStay(msg.m_collision);
 			break;
 		case COL_STATE::EXIT:
-			m_gameObject->TriggerExit(msg.m_collision);
+			GetGameObject()->TriggerExit(msg.m_collision);
 			m_collisionState = COL_STATE::NONE;
 			break;
 		default:
@@ -68,20 +82,21 @@
 
 
 	//////////////Box Collider//////////////
-	void BoxCollider::Init(float hW, float hH)
-	{
-		//Set Transform
-		//m_transform = m_gameObject->GetTransform();
-		//Set Rigidbody
-		m_rigidbody = m_gameObject->GetComponent<Rigidbody>();
-		//Set Transform
-		m_transform = &m_gameObject->m_transform;
+	BoxCollider::BoxCollider() : Collider(COLLIDER_TYPE::BOX) {
+		Factory<Component, BoxCollider>::Add(this);
+	}
+
+	BoxCollider::~BoxCollider() {
+		Factory<Component, BoxCollider>::Remove(this);
+	}
+
+	void BoxCollider::Init() {
+
+		Collider::Init();
 
 		//Set Box Size
-		m_halfWidth = hW;
-		m_halfHeight = hH;
-		m_colliderScale.x = hW / m_transform->GetScale().x;
-		m_colliderScale.y = hH / m_transform->GetScale().y;
+		m_colliderScale.x = m_halfWidth / m_gameObject->m_transform->GetScale().x;
+		m_colliderScale.y = m_halfHeight / m_gameObject->m_transform->GetScale().y;
 
 		if (m_rigidbody)
 		{
@@ -101,8 +116,29 @@
 	void BoxCollider::ReSize(float hW, float hH) {
 		m_halfWidth = hW;
 		m_halfHeight = hH;
-		m_colliderScale.x = hW / m_transform->GetScale().x;
-		m_colliderScale.y = hH / m_transform->GetScale().y;
+		m_colliderScale.x = hW / m_gameObject->m_transform->GetScale().x;
+		m_colliderScale.y = hH / m_gameObject->m_transform->GetScale().y;
+
+		if (m_rigidbody)
+		{
+			m_rigidbody = m_rigidbody;
+			m_isStatic = false;
+
+			if (m_rigidbody->automass) {
+				ComputeMass();
+			}
+		}
+		else
+		{
+			m_isStatic = true;
+		}
+	}
+
+	void BoxCollider::ReScale(float scaleX, float scaleY) {
+		m_halfWidth = (m_gameObject->m_transform->GetScale().x * scaleX) / 2;
+		m_halfHeight = (m_gameObject->m_transform->GetScale().y * scaleY) / 2;
+		m_colliderScale.x = scaleX;
+		m_colliderScale.y = scaleY;
 
 		if (m_rigidbody)
 		{
@@ -122,27 +158,26 @@
 	void BoxCollider::Init(float hW, float hH, Rigidbody* rigid)
 	{
 		//Set Transform
-		m_transform = &m_gameObject->m_transform;
+		//m_transform = GetGameObject()->m_transform.get();
 		//Set Rigidbody
 		m_rigidbody = rigid;
 		//Set Box Size
 		m_halfWidth = hW;
 		m_halfHeight = hH;
-		m_colliderScale.x = hW / m_transform->GetScale().x;
-		m_colliderScale.y = hH / m_transform->GetScale().y;
+		m_colliderScale.x = hW / m_gameObject->m_transform->GetScale().x;
+		m_colliderScale.y = hH / m_gameObject->m_transform->GetScale().y;
 
 		ComputeMass();
 		//Set Static
 		m_isStatic = false;
-		
 	}
 
 	void BoxCollider::ComputeAABB(Physic::AABB& a)
 	{
-		a.m_min.x = m_transform->GetPosition().x - m_halfWidth;
-		a.m_min.y = m_transform->GetPosition().y + m_halfHeight;
-		a.m_max.x = m_transform->GetPosition().x + m_halfWidth;
-		a.m_max.y = m_transform->GetPosition().y - m_halfHeight;
+		a.m_min.x = m_gameObject->m_transform->GetPosition().x - m_halfWidth;
+		a.m_min.y = m_gameObject->m_transform->GetPosition().y + m_halfHeight;
+		a.m_max.x = m_gameObject->m_transform->GetPosition().x + m_halfWidth;
+		a.m_max.y = m_gameObject->m_transform->GetPosition().y - m_halfHeight;
 
 	}
 

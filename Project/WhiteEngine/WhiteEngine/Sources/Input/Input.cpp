@@ -408,6 +408,9 @@ namespace Input
 
 	void Init(bool isDebug)
 	{
+		//Mouse
+		glfwSetInputMode(Window::GetWindow(),GLFW_CURSOR,GLFW_CURSOR_HIDDEN);
+
 		//Debug
 		g_inputDebug = isDebug;
 		ENGINE_WARN("Input System Initialized");

@@ -1,23 +1,16 @@
 #include "EnemyBehaviours.h"
 
-void Flyer::Init(Transform* player) {
-	SetTarget(player);
-	airFollow = m_gameObject->GetComponent<AirFollowing>();
+void Flyer::OnAwake() {
+	ENGINE_INFO("flyer init");
+	airFollow = GetGameObject()->GetComponent<AirFollowing>();
 
-	airFollow->SetPlayer(target);
+	rigidbody = GetGameObject()->GetComponent<Rigidbody>();
 
-	targetDetectionRange = 1000.0f;
-
-	rigidbody = m_gameObject->GetComponent<Rigidbody>();
-	Enemy::Init();
-}
-
-void Flyer::OnStart() {
-
+	Enemy::OnAwake();
 }
 
 void Flyer::OnUpdate(float dt) {
-	if (m_gameObject->Active()) {
+	if (GetGameObject()->Active()) {
 		Enemy::OnUpdate(dt);
 
 		if (foundTarget) {
@@ -30,14 +23,14 @@ void Flyer::OnUpdate(float dt) {
 }
 
 void Flyer::OnFixedUpdate(float dt) {
-	if (m_gameObject->Active()) {
+	if (!affectedByWeapon) {
 		switch (state)
 		{
 		case Idle:
-			//rigidbody->SetVelocity(glm::vec3(0));
-			airFollow->FollowPlayer(dt);
+			rigidbody->SetVelocity(glm::vec3(0));
 			break;
 		case Chase:
+			airFollow->SetPlayer(target);
 			airFollow->FollowPlayer(dt);
 			break;
 		case Active:
@@ -45,4 +38,13 @@ void Flyer::OnFixedUpdate(float dt) {
 			break;
 		}
 	}
+}
+
+void Flyer::SetStats(float Speed, float HP, float Dmg) 
+{
+	airFollow->SetFlySpeed(Speed);
+	hpSystem->SetMaxHP(HP);
+
+	//will add air dash
+	CollideDamage = Dmg;
 }

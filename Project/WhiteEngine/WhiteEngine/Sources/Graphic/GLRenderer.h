@@ -38,12 +38,21 @@ public:
 	}
 };
 
+class CircleVertex {
+public:
+	float x, y, radius, r, g, b;
+	CircleVertex(float x, float y, float radius, float r, float g, float b) {
+		this->x = x; this->y = y; this->radius = radius; this->r = r; this->g = g; this->b = b;
+	}
+};
+
 class GLRenderer
 {
 protected:
 	static GLRenderer * instance;
 	multiset <MeshRenderer*, LayerComparator > MeshSet;
 	queue <LineVertex*> Lineq;
+	queue <CircleVertex*> Circleq;
 	
 	GLRenderer(int w, int h);
 
@@ -62,6 +71,9 @@ protected:
 	GLuint colVBO = -1;
 	GLuint colVAO = -1;
 
+	GLuint cirVBO = -1;
+	GLuint cirVAO = -1;
+
 	GLuint gProgramId;
 	GLuint gProgramId2;
 	int gPos2DLocation = -1;
@@ -79,7 +91,7 @@ public:
 	void Render();
 	static GLRenderer* GetInstance();
 	bool InitGL(string vertexShaderFile, string fragmentShaderFile);
-	bool drawDebug = true;
+	bool drawDebug = false;
 
 
 	~GLRenderer();
@@ -98,8 +110,10 @@ public:
 
 	void RenderDebugCollider(BoxCollider* col);
 	void RenderLine(LineVertex* vertex);
+	void RenderCircle(CircleVertex* vertex);
 
 	void DrawDebug_Line(float x1, float y1, float x2, float y2, float r, float g, float b);
+	void DrawDebug_Circle(float x, float y, float radius, float r, float g, float b);
 
 
 	glm::mat4 GetprojectionMatrix();

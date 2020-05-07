@@ -1,26 +1,22 @@
 #pragma once
 
-#include <iostream>
+#include <memory>
 #include <vector>
 #include <string>
+
 #include "Components/Transform.hpp"
+#include "Components/BehaviourScript.h"
 #include "Core/Factory.h"
 #include "Core/LogCustomType.hpp"
+#include "Physic/PhysicScene.hpp"
 
 //Forward Declaration
-class Component;
-class BehaviourScript;
 namespace Physic { struct Collision; }
 
-//cereal test
-#include <fstream>
 #include <cereal/cereal.hpp>
-#include <cereal/archives/binary.hpp>
 #include <cereal/types/string.hpp>
 #include <cereal/types/vector.hpp>
 #include <cereal/types/memory.hpp>
-#include "Serialization/SomeClass.h"
-//cereal test
 
 class GameObject
 {
@@ -28,13 +24,13 @@ protected:
 	friend class BehaviourScript;
 	friend class Collider;
 
-	bool isActive;
+	bool isActive = true;
 
 	static int s_IDCounter;
 	int m_objectID;
-	
-	std::vector<shared_ptr<Component>> m_components;
-	std::vector<shared_ptr<BehaviourScript>> m_scripts;
+
+	std::vector<std::shared_ptr<Component>> m_components;
+	std::vector<std::shared_ptr<BehaviourScript>> m_scripts;
 
 	void CollisionEnter(const Physic::Collision);
 	void CollisionStay(const Physic::Collision);
@@ -44,88 +40,106 @@ protected:
 	void TriggerExit(const Physic::Collision);
 public:
 	GameObject();
-	std::string Name;
-	Transform m_transform;
+	~GameObject() {}
+
+	std::string Layer = "Default";
+
+	std::string Name = "GameObj";
+	//change this to smart ptr
+	std::shared_ptr<Transform> m_transform;
 
 	void SetActive(bool activestate);
 	bool Active();
 
 	int GetID();
 
-	virtual void OnAwake() {};
-	virtual void OnEnable() {};
-	virtual void OnStart() {};
-	virtual void OnUpdate(float dt) {};
-	virtual void OnFixedUpdate(float dt) {};
-	virtual void OnDisable() {};
+	//init all member component
+	void InitComponents();
+
+	//start all member behaviour script
+	void StartComponents();
 
 	template <class T>
 	T* AddComponent();
 
 	template <class T>
+	std::weak_ptr<T> AddComponent_weak();
+
+	template <class T>
 	T* GetComponent();
+
+	template <class T>
+	std::weak_ptr<T> GetComponent_weak();
 
 	//Log to logger
 	LogCustomType_DC(GameObject);
 
-	//===========================
-	//test serialzation
+	//serialization
+public:
 	template<class Archive>
-	void serialize(Archive &archive);
-
-	void Save();
-	void Load();
-	shared_ptr<SomeClass> outside;
-	std::vector<shared_ptr<SomeClass>> scv;
-
-	//===========================
-
-	//GameObject* GetGameObject();
-	//void SetGameObject(GameObject* obj);
+	void serialize(Archive& archive) {
+		ENGINE_INFO("saving/writing {}", *this);
+		archive(
+			isActive,
+			Name,
+			Layer,
+			m_transform,
+			m_components
+			);
+	}
 };
 
 template<class T>
 T* GameObject::AddComponent() {
-	shared_ptr<T> component = Factory<T>::Create();
+	std::shared_ptr<T> component = Factory<Component, T>::Create();
 
 	m_components.push_back(component);
 	m_components.back()->SetGameObject(this);
 
-	//if is behaviou script, also assign to script collection
-	shared_ptr<BehaviourScript> behaviour = dynamic_pointer_cast<BehaviourScript>(component);
-	if (behaviour) {
-		m_scripts.push_back(behaviour);
-	}
-
 	return component.get();
+}
+
+//return a weak ptr of component instead of raw
+template<class T>
+std::weak_ptr<T> GameObject::AddComponent_weak() {
+	std::shared_ptr<T> component = Factory<Component, T>::Create();
+
+	m_components.push_back(component);
+	m_components.back()->SetGameObject(this);
+
+	return component;
 }
 
 template<class T>
 T* GameObject::GetComponent() {
 
-	for (shared_ptr<Component> component : m_components) 
+	for (std::shared_ptr<Component> component : m_components)
 	{
 		if (dynamic_pointer_cast<T>(component))
 		{
 			return dynamic_pointer_cast<T>(component).get();
 		}
 	}
-	
+
+	return nullptr;
+}
+
+//return a weak ptr of component instead of raw
+template<class T>
+std::weak_ptr<T> GameObject::GetComponent_weak() {
+
+	for (std::shared_ptr<Component> component : m_components)
+	{
+		if (dynamic_pointer_cast<T>(component))
+		{
+			return dynamic_pointer_cast<T>(component);
+		}
+	}
+
 	return nullptr;
 }
 
 LogCustomType_DF(GameObject)
 {
-	return os << "GameObject: " << obj.Name << "\n";
-}
-
-//==============
-//serialazation test
-//==============
-
-template<class Archive>
-void GameObject::serialize(Archive &archive) {
-	archive(Name, isActive, outside, scv);
-
-	archive.serializeDeferment();
+	return os << "GameObject: " << obj.Name << " ID: " << obj.m_objectID;
 }

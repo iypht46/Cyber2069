@@ -1,11 +1,15 @@
-#include "Component.hpp"
+#include "Core/Factory.h"
 
 int Component::s_IDcounter = 0;
 
 Component::Component() {
 	Component::s_IDcounter++;
 	m_componentID = s_IDcounter;
+
+	Factory<Component, Component>::Add(this);
 }
+
+void Component::Init() { }
 
 int Component::getComponentID() {
 	return m_componentID;
@@ -20,5 +24,5 @@ void Component::SetGameObject(GameObject* obj) {
 }
 
 Component::~Component() {
-
+	Factory<Component, Component>::Remove(this);
 }
