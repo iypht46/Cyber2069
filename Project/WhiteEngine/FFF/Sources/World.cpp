@@ -404,9 +404,26 @@ namespace World
 			logo->GetComponent<MeshRenderer>()->SetUI(true);
 			logo->GetComponent<MeshRenderer>()->SetLayer(10);
 			logo->m_transform->SetScale(glm::vec3(68*3, 55*3, 1));
+			logo->AddComponent<Button>();
+			logo->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::STATECONTROL, GAME_STATE::LOADOUT);
+			logo->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
 			gamecontroller->AddComponent<UIController>();
 			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::MainMenu].push_back(logo);
+
+			logo = Instantiate();
+			logo->AddComponent<MeshRenderer>();
+			logo->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/WhiteLogo"));
+			logo->GetComponent<MeshRenderer>()->SetUI(true);
+			logo->GetComponent<MeshRenderer>()->SetLayer(10);
+			logo->m_transform->SetScale(glm::vec3(68 * 3, 55 * 3, 1));
+			logo->m_transform->SetPosition(glm::vec3(300.0f, -100.0f, 1.0f));
+			logo->AddComponent<Button>();
+			logo->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::STATECONTROL, GAME_STATE::GAMEPLAY);
+			logo->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
+			logo->SetActive(false);
+
+			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Loadout].push_back(logo);
 
 			std::shared_ptr<GameObject> ui_LoadOut = Instantiate();
 			std::shared_ptr<GameObject> ui_button = Instantiate();

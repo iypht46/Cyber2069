@@ -1,5 +1,8 @@
 #include "Button.hpp"
 #include "../../FFF/Sources/LoadoutUI.hpp"
+#include "../../FFF/Sources/GameController.hpp"
+#include "../../FFF/Sources/Scripts/GameControl/UIController.h"
+
 
 #include "Graphic/GLRenderer.h"
 
@@ -70,6 +73,10 @@ void Button::OnClick()
 	switch (buttonType)
 	{
 	case BUTTON_TYPE::UICONTROL:
+		UIController::GetInstance()->ToggleUI(onClickType);
+		break;
+	case BUTTON_TYPE::STATECONTROL:
+		GameController::GetInstance()->SetGameState(onClickType);
 		break;
 	case BUTTON_TYPE::LOADOUTSELECT:
 
@@ -77,10 +84,10 @@ void Button::OnClick()
 		{
 			switch (lsb->OnclickType)
 			{
-			case ONCLICK_TYPE::ONCLICK_ADD:
+			case LOADOUTONCLICK_TYPE::ADD:
 				lsb->AddEquipment();
 				break;
-			case ONCLICK_TYPE::ONCLICK_REMOVE:
+			case LOADOUTONCLICK_TYPE::REMOVE:
 				if (lsb->type == ITEM_TYPE::WEAPON) 
 				{
 					lsb->RemoveWeapon();

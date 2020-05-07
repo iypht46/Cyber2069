@@ -13,6 +13,7 @@
 
 enum BUTTON_TYPE {
 	UICONTROL = 0,
+	STATECONTROL,
 	LOADOUTSELECT
 };
 
@@ -46,7 +47,10 @@ private:
 public:
 	OnHoverModifier hoverModifier;
 	bool isOnHover = false;
+	
+	//type of the button
 	int buttonType = 0;
+	//enum for the func paramiter of that type
 	int onClickType = 0;
 
 	Button();
@@ -54,6 +58,7 @@ public:
 	void ModifyOnHover();
 
 	void SetModifier(OnHoverModifier modifier) { this->hoverModifier = modifier; }
+	void SetButtonType(int buttonType, int onClickType) {this->buttonType = buttonType; this->onClickType = onClickType; }
 
 	virtual void OnAwake();
 	virtual void OnUpdate(float dt);

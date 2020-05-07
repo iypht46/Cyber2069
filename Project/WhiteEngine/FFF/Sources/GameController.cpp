@@ -261,6 +261,8 @@ void GameController::OnUpdate(float dt)
 
 			StateChanged = false;
 			StateGamplayChanged = true;
+
+			this->GetGameObject()->GetComponent<EquipmentManager>()->InitPlayerEquipment();
 		}
 
 		this->ScoreText.lock()->GetComponent<TextRenderer>()->SetText("Score: " + to_string((int)ScoreValue));
@@ -319,7 +321,7 @@ void GameController::OnUpdate(float dt)
 			//Do only once after gameplaystate changed
 			if (StateGamplayChanged) 
 			{
-				SpawnQueen();
+				Current_Queen = SpawnQueen();
 
 				StateGamplayChanged = false;
 			}

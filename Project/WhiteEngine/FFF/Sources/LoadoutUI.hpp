@@ -11,9 +11,10 @@
 
 #include <vector>
 
-enum ONCLICK_TYPE {
-	ONCLICK_ADD = 0,
-	ONCLICK_REMOVE
+enum LOADOUTONCLICK_TYPE {
+	ADD = 0,
+	REMOVE,
+	START
 };
 
 class LoadoutUI : public BehaviourScript 
@@ -35,8 +36,6 @@ private:
 
 public:
 	LoadoutUI();
-
-	void StartGameplay();
 
 	void AssignSelectButton(std::shared_ptr<GameObject> selectButton);
 

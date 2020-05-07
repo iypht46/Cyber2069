@@ -474,7 +474,10 @@ void EquipmentManager::InitPlayerEquipment()
 {
 	PlayerController* player = playerObj->GetComponent<PlayerController>();
 
-	AddPlayerWeapon(Weapon_Buffer);
+	if (Weapon_Buffer != -1) {
+		AddPlayerWeapon(Weapon_Buffer);
+		playerObj->GetComponent<PlayerController>()->assignWeapon();
+	}
 	
 	for (int i = 0; i < maxPlayerArtifact; i++)
 	{
