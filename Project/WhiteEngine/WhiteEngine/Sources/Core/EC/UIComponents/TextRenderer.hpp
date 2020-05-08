@@ -50,6 +50,8 @@ public:
 	void Render();
 
 	void SetText(string text);
+	void SetlineSpacing(float linespacing) { this->lineSpacing = linespacing; }
+
 	string GetText() { return this->text; }
 	void SetColor(glm::vec3 color);
 	void LoadFont(string path,float DefautFontSize);
