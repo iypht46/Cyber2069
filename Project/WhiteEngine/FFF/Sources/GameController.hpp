@@ -22,6 +22,7 @@
 #include <cereal/types/polymorphic.hpp>
 
 class EnemySpawner;
+class UIController;
 
 enum POOL_TYPE {
 	BULLET_MG = 0,
@@ -159,12 +160,15 @@ public:
 
 class GameController : public BehaviourScript {
 private:
+	friend class UIController;
+
 	static GameController* instance;
 	float ScoreValue = 0;
 	float ComboValue = 1;
 
 	std::unique_ptr<PlayerData> Data;
 
+	//change----------------
 	float startHPscaleX;
 	float startHPscaleY;
 
@@ -173,6 +177,7 @@ private:
 
 	float startHPposX;
 	float startStaminaposX;
+	//----------------------
 
 	PlayerController* playerControl;
 	HPsystem* PlayerHP;
@@ -184,6 +189,10 @@ private:
 
 	int CocoonNeed = 5;
 	int CocoonCount = 0;
+
+	float MasterVolume = 1.0f;
+	float MusicVolume = 1.0f;
+	float SFXVolume = 1.0f;
 
 	map<int, ObjectPool*> Pools; //added while onawake and init manually, hard coding, collect all pool used in game
 
@@ -228,6 +237,14 @@ private:
 	//player data manager
 	void LoadData();
 	void SaveData();
+	/*add later*/void Resetdata() {};
+
+	//sound option
+	void SetMasterVolume(float);
+	void SetMusicVolume(float);
+	void SetSFXVolume(float);
+	float AdjustVolumeForSFX(float);
+	float AdjustVolumeForMusic(float);
 
 public:
 	std::weak_ptr<GameObject> player;
