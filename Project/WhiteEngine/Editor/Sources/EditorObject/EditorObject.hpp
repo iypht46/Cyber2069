@@ -24,32 +24,4 @@ namespace Tools
 		EditorObject* m_selected;
 		bool m_open = false;
 	};
-
-	inline unsigned int EditorObject::m_totalObject = 0;
-	inline unsigned int EditorObject::m_selectedObject = 0;
-
-	inline void EditorObject::Init() {}
-	inline EditorObject* EditorObject::GetSelected() { return m_selected; }
-	inline void EditorObject::AddObject(EditorObject* obj) {}
-	inline void EditorObject::AddObject() {}
-	inline bool EditorObject::Load(Container::wString path) { return false; }
-	inline bool EditorObject::Save(Container::wString path) { return false; }
-
-	inline EditorObject::EditorObject() 
-	{
-		m_objectID = ++m_totalObject;
-		this->Init();
-	}
-
-	inline void EditorObject::PreRender() {}
-
-	inline void EditorObject::Render()
-	{
-		PreRender();
-		OnRender();
-		PostRender();
-	}
-
-	inline void EditorObject::PostRender() {}
-
 }

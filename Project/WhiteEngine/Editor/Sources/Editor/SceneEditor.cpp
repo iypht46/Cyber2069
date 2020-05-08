@@ -20,7 +20,7 @@ namespace Tools
 		m_fileDialog = new ImGui::FileBrowser(ImGuiFileBrowserFlags_EnterNewFilename | ImGuiFileBrowserFlags_CloseOnEsc
 			| ImGuiFileBrowserFlags_CreateNewDir);
 		m_fileDialog->SetTitle("Scene Save/Load Directory");
-		m_fileDialog->SetTypeFilters({ ".Scene" });
+		m_fileDialog->SetTypeFilters({ ".scene" });
 	}
 
 	void SceneEditor::OnUpdate(void)
@@ -59,7 +59,7 @@ namespace Tools
 		bool result = false;
 		if (path.has_filename())
 		{
-			path.replace_extension(".Scene");
+			path.replace_extension(".scene");
 			result = m_sceneObject->Save(path.generic_string());
 			if (result)
 			{

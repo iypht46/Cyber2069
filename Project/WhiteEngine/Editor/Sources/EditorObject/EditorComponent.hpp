@@ -17,7 +17,7 @@ namespace Tools
 	protected:
 		static std::map<std::string, EditorComponent*> m_componentTable;
 		static AvailableComponent m_availableComponent;
-		static int m_totalNum;
+		static inline int m_totalNumEC = 0;
 		int m_id;
 		bool m_open = true;
 		Component* m_component = nullptr;
@@ -42,7 +42,7 @@ namespace Tools
 		static AvailableComponent* GetTableList();
 	};
 
-	inline int EditorComponent::m_totalNum = 0;
+	//inline int EditorComponent::m_totalNumEC = 0;
 
 
 

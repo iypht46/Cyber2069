@@ -23,14 +23,14 @@ namespace Tools
 	void PrefabEditor::Init(void)
 	{
 		//Window Setup
-		m_previewWindow = make_unique<PreviewWindow>(&m_previewBool, "Prefab Preview");
+		m_previewWindow = make_unique<PreviewWindow>(&m_previewBool, "Prefab Preview", false, 400, 400);
 		m_mainWindow = m_previewWindow.get();
 
 		//File Dialog Setup
 		m_fileDialog = new ImGui::FileBrowser(ImGuiFileBrowserFlags_EnterNewFilename | ImGuiFileBrowserFlags_CloseOnEsc
 			| ImGuiFileBrowserFlags_CreateNewDir);
 		m_fileDialog->SetTitle("Prefab Save/Load Directory");
-		m_fileDialog->SetTypeFilters({ ".Prefab" });
+		m_fileDialog->SetTypeFilters({ ".prefab" });
 
 		//Editor object setup
 		m_previewBool = false;
@@ -77,7 +77,7 @@ namespace Tools
 		bool result = false;
 		if (path.has_filename())
 		{
-			path.replace_extension("." + m_editorName);
+			path.replace_extension(".prefab");
 			result = m_entityObject->Save(path.generic_string());
 			if (result)
 			{

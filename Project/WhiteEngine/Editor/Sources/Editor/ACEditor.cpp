@@ -22,7 +22,7 @@ namespace Tools
 		m_meshEC = dynamic_cast<MeshRendererEC*>(m_entityACTester->GetComponent("MeshRendererEC"));
 
 		//Initialize Window
-		m_previewWindow = std::make_unique<PreviewWindow>(&m_previewBool, "Animation Preview");
+		m_previewWindow = std::make_unique<PreviewWindow>(&m_previewBool, "Animation Preview", false, 400, 400);
 		m_previewWindow->SetEntity(m_entityACTester.get());
 		m_animationWindow = std::make_unique<AnimationWindow>();
 		m_animationWindow->SetEditorObject(m_acObject.get());

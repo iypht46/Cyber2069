@@ -8,7 +8,7 @@ namespace Tools
 
 	EditorComponent::EditorComponent(std::string name, bool canDisable) : m_componentName(name)
 	{
-		m_id = ++m_totalNum;
+		m_id = ++m_totalNumEC;
 		if (canDisable)
 			m_enable = new bool(true);
 		//m_enable = true;
