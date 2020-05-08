@@ -47,6 +47,8 @@ public:
 		float lifetime = 0;
 
 	public:
+		ParticleBehaviour();
+		~ParticleBehaviour();
 		//create partcle object and translate value from serialization
 		virtual void Init();
 		virtual void OnEnable();
@@ -55,7 +57,7 @@ public:
 
 	class ParticleModule {
 	public:
-		bool isEnabled = false;
+		bool isEnabled = true;
 
 		//serialization
 	public:
@@ -304,6 +306,8 @@ public:
 	class ParticleAnimation :public ParticleModule {
 	public:
 		std::string controllerPath = "none";
+
+		ParticleAnimation() { isEnabled = false; }
 
 		//serialization
 	public:

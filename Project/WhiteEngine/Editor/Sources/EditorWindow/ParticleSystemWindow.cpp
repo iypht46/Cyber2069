@@ -166,13 +166,14 @@ namespace Tools
 			if (ImGui::RadioButton("Burst", (!emitter->constantParticle)))
 				emitter->constantParticle = false;
 
-			ImGui::AlignTextToFramePadding(); ImGui::Text("Spawn Rate"); ImGui::SameLine();
-			ImGui::DragFloat("##EmitterConstSpawnRate", &emitter->particleRate, 0.1f, 0.0f, MAX_NUM);
-
 			if (!emitter->constantParticle)
 			{
 				ImGui::AlignTextToFramePadding(); ImGui::Text("Burst Numbers"); ImGui::SameLine();
 				ImGui::DragInt("##PSEmitterBurstNumber", &emitter->burstParticleNumber, 1, 0, MAX_NUM);
+			}
+			else {
+				ImGui::AlignTextToFramePadding(); ImGui::Text("Spawn Rate"); ImGui::SameLine();
+				ImGui::DragFloat("##EmitterConstSpawnRate", &emitter->particleRate, 0.1f, 0.0f, MAX_NUM);
 			}
 
 			ImGui::AlignTextToFramePadding(); ImGui::Text("Emitter Shape"); ImGui::SameLine();
@@ -210,20 +211,20 @@ namespace Tools
 				ImGui::DragFloat("##EmitterSpawnRadius", &emitter->spawnRadius, 0.1f, 0.0f, 360.0f);
 
 				ImGui::AlignTextToFramePadding(); ImGui::Text("Min Emission Angle"); ImGui::SameLine();
-				ImGui::DragFloat("##EmitterMinAngle", &emitter->minEmissionAngle, 0.1f, 0.0f, 360.0f);
+				ImGui::DragFloat("##EmitterMinAngle", &emitter->minEmissionAngle, 0.2f, 0.0f, 360.0f);
 
 				ImGui::AlignTextToFramePadding(); ImGui::Text("Max Emission Angle"); ImGui::SameLine();
-				ImGui::DragFloat("##EmitterMaxAngle", &emitter->maxEmissionAngle, 0.1f, 0.0f, 360.0f);
+				ImGui::DragFloat("##EmitterMaxAngle", &emitter->maxEmissionAngle, 0.2f, 0.0f, 360.0f);
 				
 			}
 			else
 			{
 
 				ImGui::AlignTextToFramePadding(); ImGui::Text("Line Length"); ImGui::SameLine();
-				ImGui::DragFloat("##EmitterLineLength", &emitter->lineLength, 0.1f, 0.0f, MAX_NUM);
+				ImGui::DragFloat("##EmitterLineLength", &emitter->lineLength, 1.0f, 0.0f, MAX_NUM);
 
 				ImGui::AlignTextToFramePadding(); ImGui::Text("Line Angle"); ImGui::SameLine();
-				ImGui::DragFloat("##EmitterLineAngle", &emitter->lineAngleOffset, 0.1f, 0.0f, MAX_NUM);
+				ImGui::DragFloat("##EmitterLineAngle", &emitter->lineAngleOffset, 0.2f, -360.0f, 360.0f);
 			}
 			ImGui::PopItemWidth();
 			ImGui::TreePop();
@@ -335,10 +336,10 @@ namespace Tools
 
 			if (shape->usingLifetimeRotationModifier)
 			{
-				ImGui::AlignTextToFramePadding(); ImGui::Text("Rotation Modifier"); ImGui::SameLine();
-				ImGui::DragFloat("##PSRotmodifier", &shape->rotation_ModStart, 0.01f, 0.0f, MAX_NUM);
+				ImGui::AlignTextToFramePadding(); ImGui::Text("Modifier Start Time"); ImGui::SameLine();
+				ImGui::DragFloat("##PSRotmodStart", &shape->rotation_ModStart, 0.01f, 0.0f, 1.0f);
 				ImGui::AlignTextToFramePadding(); ImGui::Text("Rotation Speed Modifier"); ImGui::SameLine();
-				ImGui::DragFloat("##PSRotmodifier", &shape->rotationSpeed, 0.01f, 0.0f, MAX_NUM);
+				ImGui::DragFloat("##PSRotmodifier", &shape->rotationSpeed, 0.1f, 0.0f, MAX_NUM);
 			}
 
 			ImGui::PopItemWidth();

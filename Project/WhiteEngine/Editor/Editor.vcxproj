@@ -87,7 +87,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)Editor\Sources;$(SolutionDir)Editor\Vendors\imgui-filebrowser;$(SolutionDir)Editor\Vendors\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>D:\GIT\Cyber2069\Project\WhiteEngine\bin\Debug-Win32\WhiteEngine;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin\Debug-Win32\WhiteEngine;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>WhiteEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>NotSet</SubSystem>
     </Link>

@@ -1,6 +1,15 @@
 #include "ParticleSystem.h"
 #include "Utility/WhiteMath.h"
 
+//Particle Behaviour
+ParticleSystem::ParticleBehaviour::ParticleBehaviour() {
+	Factory<Component, ParticleSystem::ParticleBehaviour>::Add(this);
+}
+
+ParticleSystem::ParticleBehaviour::~ParticleBehaviour() {
+	Factory<Component, ParticleSystem::ParticleBehaviour>::Remove(this);
+}
+
 //Partice System ==============================================================================
 ParticleSystem::ParticleSystem() {
 	//add to factory
@@ -321,10 +330,10 @@ void ParticleSystem::LifeTimeModification(float dt) {
 		else {
 			//modify shape ============================================
 			if (shape->isEnabled) {
-				if (shape->usingLifetimeScaleModifier) {
+				if (shape->usingLifetimeScaleModifier && (p->lifetime / p->maxLifetime) >= shape->scale_ModStart) {
 					p->transform->SetScale(p->transform->GetScale() * shape->scaleModifierPerFrame);
 				}
-				if (shape->usingLifetimeRotationModifier && (p->lifetime / p->maxLifetime) >= shape->scale_ModStart) {
+				if (shape->usingLifetimeRotationModifier && (p->lifetime / p->maxLifetime) >= shape->rotation_ModStart) {
 					p->transform->Rotate(shape->rotationSpeed * dt);
 				}
 			}
