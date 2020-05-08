@@ -416,8 +416,8 @@ namespace World
 			logo->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/WhiteLogo"));
 			logo->GetComponent<MeshRenderer>()->SetUI(true);
 			logo->GetComponent<MeshRenderer>()->SetLayer(10);
-			logo->m_transform->SetScale(glm::vec3(68 * 3, 55 * 3, 1));
-			logo->m_transform->SetPosition(glm::vec3(300.0f, -100.0f, 1.0f));
+			logo->m_transform->SetScale(glm::vec3(68 , 55, 1));
+			logo->m_transform->SetPosition(glm::vec3(300.0f, -250.0f, 1.0f));
 			logo->AddComponent<Button>();
 			logo->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::STATECONTROL, GAME_STATE::GAMEPLAY);
 			logo->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -496,6 +496,8 @@ namespace World
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
 			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(ARTIFACT_TYPE::ARTF_BULLETAMP);
+			ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "Bullet Amplifier";
+			ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Make bullet more powerful";
 			ui_button->AddComponent<Button>();
 			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -553,6 +555,8 @@ namespace World
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::WEAPON);
 			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(0);
+			ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "Machine Gun";
+			ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Shoot bullet";
 			ui_button->AddComponent<Button>();
 			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -562,8 +566,31 @@ namespace World
 
 			ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
 
+			std::shared_ptr<GameObject> LoadoutText;
+			LoadoutText = Instantiate();
+
+			LoadoutText->AddComponent<TextRenderer>();
+			LoadoutText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 50);
+			LoadoutText->GetComponent<TextRenderer>()->SetText("Test/n Test");
+			LoadoutText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+			LoadoutText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
+			LoadoutText->m_transform->SetPosition(glm::vec3(100.0f, -100.0f, 1.0f));
+
+			ui_LoadOut->GetComponent<LoadoutUI>()->eqNameObj = LoadoutText;
+
+			LoadoutText = Instantiate();
+
+			LoadoutText->AddComponent<TextRenderer>();
+			LoadoutText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 30);
+			LoadoutText->GetComponent<TextRenderer>()->SetText("Test/n Test");
+			LoadoutText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+			LoadoutText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
+			LoadoutText->m_transform->SetPosition(glm::vec3(100.0f, -150.0f, 1.0f));
+
+			ui_LoadOut->GetComponent<LoadoutUI>()->eqDescriptionObj = LoadoutText;
 
 			gamecontroller->GetComponent<GameController>()->loadoutUI = ui_LoadOut;
+
 
 			
 

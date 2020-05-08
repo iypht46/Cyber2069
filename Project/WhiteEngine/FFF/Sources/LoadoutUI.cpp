@@ -124,11 +124,15 @@ void LoadoutUI::OnEnable()
 			ArtifactSelectButtons[i]->SetActive(true);
 		}
 	}
+
+	eqNameObj->SetActive(true);
+	eqDescriptionObj->SetActive(true);
 }
 
 void LoadoutUI::OnUpdate(float dt) 
 {
 	UpdateDisplaySlotTexture();
+	UpdateDescriptionText();
 }
 
 void LoadoutUI::OnDisable()
@@ -161,6 +165,9 @@ void LoadoutUI::OnDisable()
 			ArtifactSelectButtons[i]->SetActive(false);
 		}
 	}
+
+	eqNameObj->SetActive(false);
+	eqDescriptionObj->SetActive(false);
 }
 
 void LoadoutUI::AssignSelectButton(std::shared_ptr<GameObject> selectButton) 
@@ -251,6 +258,65 @@ void LoadoutUI::UpdateDisplaySlotTexture()
 			ArtifactDisplaySlot[i]->GetComponent<MeshRenderer>()->SetTexture(defaultArtfDisplayTex);
 		}
 	}
+}
+
+void LoadoutUI::UpdateDescriptionText() 
+{
+	eqName = "";
+	eqDescription = "";
+
+	for (std::shared_ptr<GameObject> obj : ArtifactSelectButtons) 
+	{
+		if (obj == nullptr) {
+			continue;
+		}
+
+		Button* bt = obj->GetComponent<Button>();
+
+		if (bt == nullptr) {
+			continue;
+		}
+
+		if (!bt->isOnHover) {
+			continue;
+		}
+
+		LoadoutSelectButton* lsb = obj->GetComponent<LoadoutSelectButton>();
+
+		if (lsb != nullptr) 
+		{
+			eqName = lsb->eq_name;
+			eqDescription = lsb->eq_description;
+		}
+	}
+
+	for (std::shared_ptr<GameObject> obj : WeaponSelectButtons)
+	{
+		if (obj == nullptr) {
+			continue;
+		}
+
+		Button* bt = obj->GetComponent<Button>();
+
+		if (bt == nullptr) {
+			continue;
+		}
+
+		if (!bt->isOnHover) {
+			continue;
+		}
+
+		LoadoutSelectButton* lsb = obj->GetComponent<LoadoutSelectButton>();
+
+		if (lsb != nullptr)
+		{
+			eqName = lsb->eq_name;
+			eqDescription = lsb->eq_description;
+		}
+	}
+	
+	eqNameObj->GetComponent<TextRenderer>()->SetText(eqName);
+	eqDescriptionObj->GetComponent<TextRenderer>()->SetText(eqDescription);
 }
 
 void LoadoutSelectButton::OnUpdate(float dt) 
