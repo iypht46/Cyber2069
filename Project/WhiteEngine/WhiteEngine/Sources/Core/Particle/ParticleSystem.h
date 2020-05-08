@@ -137,10 +137,10 @@ public:
 		//=================================
 		bool fixedScale = true;	//randomized size will keep the scale of the object, will use X size to determin the whole scale
 		//random---------------------------
-		float minXSize = 0.1f;
-		float maxXSize = 0.1f;
-		float minYSize = 0.1f;
-		float maxYSize = 0.1f;
+		float minXSize = 1.0f;
+		float maxXSize = 1.0f;
+		float minYSize = 1.0f;
+		float maxYSize = 1.0f;
 		//not random-----------------------
 		//float defaultSize;
 		//lifetime modifier----------------
