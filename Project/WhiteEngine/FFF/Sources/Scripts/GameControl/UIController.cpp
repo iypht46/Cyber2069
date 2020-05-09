@@ -51,7 +51,7 @@ void UIController::ToggleUI(int openGroup) {
 			for (std::weak_ptr<GameObject> uiobj : group.second) {
 
 				if (!uiobj.expired()) {
-					uiobj.lock()->SetActive(false);
+					uiobj.lock()->SetActive(true);
 				}
 				else {
 					ENGINE_WARN("uiobj is expired");
@@ -84,7 +84,7 @@ void UIController::UpdateEquipmentDisplay() {
 
 		for (int i = 0; i < EquipmentManager::maxPlayerArtifact; ++i) {
 			if (i < EquippedArtifactDisplay.size() && !EquippedArtifactDisplay[i].expired()) {
-				EquippedArtifactDisplay[i].lock()->GetComponent<MeshRenderer>()->SetTexture(em->weaponItemTex[em->Artifact_Buffer[i]]);
+				EquippedArtifactDisplay[i].lock()->GetComponent<MeshRenderer>()->SetTexture(em->artifactItemTex[em->Artifact_Buffer[i]]);
 			}
 		}
 	}
@@ -94,18 +94,25 @@ void UIController::OnAwake() {
 	this->PlayerHP = GameController::GetInstance()->PlayerHP;
 	this->playerControl = GameController::GetInstance()->playerControl;
 
-	startHPscaleX = HPbar.lock()->m_transform->GetScale().x;
-	startHPscaleY = HPbar.lock()->m_transform->GetScale().y;
-	startHPposX = HPbar.lock()->m_transform->GetPosition().x;
+	if (!HPbar.expired()) {
+		startHPscaleX = HPbar.lock()->m_transform->GetScale().x;
+		startHPscaleY = HPbar.lock()->m_transform->GetScale().y;
+		startHPposX = HPbar.lock()->m_transform->GetPosition().x;
+	}
 
-	startStaminascaleX = Staminabar.lock()->m_transform->GetScale().x;
-	startStaminascaleY = Staminabar.lock()->m_transform->GetScale().y;
-	startStaminaposX = Staminabar.lock()->m_transform->GetPosition().x;
+	if (!Staminabar.expired()) {
+		startStaminascaleX = Staminabar.lock()->m_transform->GetScale().x;
+		startStaminascaleY = Staminabar.lock()->m_transform->GetScale().y;
+		startStaminaposX = Staminabar.lock()->m_transform->GetPosition().x;
+	}
 
-	comboTextOgScale = ComboText.lock()->m_transform->GetScale();
+	if (!ComboText.expired()) {
+		comboTextOgScale = ComboText.lock()->m_transform->GetScale();
+	}
 }
 
 void UIController::updateHPUI() {
+
 	float playerHP = PlayerHP->GetHP();
 
 	if (playerHP < 0)
@@ -118,11 +125,15 @@ void UIController::updateHPUI() {
 
 	float movePos = ((hpDiff / 2) * startHPscaleX) / PlayerHP->GetMaxHP();
 
-	HPbar.lock()->m_transform->SetScale(glm::vec3(currentX, startHPscaleY, 1.0f));
-	HPbar.lock()->m_transform->SetPosition(glm::vec3(startHPposX - movePos, HPbar.lock()->m_transform->GetPosition().y, 1.0f));
+	if (!HPbar.expired()) {
+		HPbar.lock()->m_transform->SetScale(glm::vec3(currentX, startHPscaleY, 1.0f));
+		HPbar.lock()->m_transform->SetPosition(glm::vec3(startHPposX - movePos, HPbar.lock()->m_transform->GetPosition().y, 1.0f));
+	}
 
-	HPText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)playerHP) + "/" + to_string((int)PlayerHP->GetMaxHP()));
-	//HPText.lock()->m_transform->SetPosition(glm::vec3(startHPposX - movePos, HPbar.lock()->m_transform->GetPosition().y, 1.0f));
+	if (!HPText.expired()) {
+		HPText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)playerHP) + "/" + to_string((int)PlayerHP->GetMaxHP()));
+		//HPText.lock()->m_transform->SetPosition(glm::vec3(startHPposX - movePos, HPbar.lock()->m_transform->GetPosition().y, 1.0f));
+	}
 }
 
 void UIController::updateStaminaUI()
@@ -139,21 +150,30 @@ void UIController::updateStaminaUI()
 
 	float movePos = ((staDiff / 2) * startStaminascaleX) / playerControl->GetMaxStamina();
 
-	Staminabar.lock()->m_transform->SetScale(glm::vec3(currentX, startStaminascaleY, 1.0f));
-	Staminabar.lock()->m_transform->SetPosition(glm::vec3(startStaminaposX - movePos, Staminabar.lock()->m_transform->GetPosition().y, 1.0f));
+	if (!Staminabar.expired()) {
+		Staminabar.lock()->m_transform->SetScale(glm::vec3(currentX, startStaminascaleY, 1.0f));
+		Staminabar.lock()->m_transform->SetPosition(glm::vec3(startStaminaposX - movePos, Staminabar.lock()->m_transform->GetPosition().y, 1.0f));
+	}
 }
 
 void UIController::updateScoreUI() {
-	ScoreText.lock()->GetComponent<TextRenderer>()->SetText("Score: " + to_string((int)GameController::GetInstance()->ScoreValue));
-	GameOverScoreText.lock()->GetComponent<TextRenderer>()->SetText("Score: " + to_string((int)GameController::GetInstance()->ScoreValue));
+	if (!ScoreText.expired()) {
+		ScoreText.lock()->GetComponent<TextRenderer>()->SetText("Score: " + to_string((int)GameController::GetInstance()->ScoreValue));
+	}
+	if (!GameOverScoreText.expired()) {
+		GameOverScoreText.lock()->GetComponent<TextRenderer>()->SetText("Score: " + to_string((int)GameController::GetInstance()->ScoreValue));
+	}
 
-	float comboval = GameController::GetInstance()->ComboValue;
-	float combosizeMultiplier = 5.0f * glm::log(((comboval + 69.0) / 70.0) + 1.0f);
-	combosizeMultiplier = glm::clamp(combosizeMultiplier, 1.0f, 4.0f);
+	if (!ComboText.expired()) {
+		float comboval = GameController::GetInstance()->ComboValue;
+		float combosizeMultiplier = (1.0f * glm::log((comboval + 69.0f) / 70.0f)) + 1.0f;
+		combosizeMultiplier = glm::clamp(combosizeMultiplier, 1.0f, 4.0f);
 
-	ComboText.lock()->m_transform->SetScale(comboTextOgScale * combosizeMultiplier);
-	ComboText.lock()->m_transform->SetRotation(10.0f * (combosizeMultiplier - 1.0f));
-	ComboText.lock()->GetComponent<TextRenderer>()->SetText("x " + to_string((int)comboval));
+
+		ComboText.lock()->m_transform->SetScale(comboTextOgScale * combosizeMultiplier);
+		//ComboText.lock()->m_transform->SetRotation(10.0f * (combosizeMultiplier - 1.0f));
+		ComboText.lock()->GetComponent<TextRenderer>()->SetText("x " + to_string((int)comboval));
+	}
 }
 
 void UIController::updateQueenHPUI() {
@@ -166,16 +186,27 @@ void UIController::updateQueenHPUI() {
 
 	float currentX = (queenHP * startHPscaleX) / PlayerHP->GetMaxHP();
 	//float hpDiff = QueenHP->GetMaxHP() - queenHP;
+	if (!QueenHPbar.expired()) {
+		QueenHPbar.lock()->m_transform->SetScale(glm::vec3(currentX, startHPscaleY, 1.0f));
+	}
 
-	QueenHPbar.lock()->m_transform->SetScale(glm::vec3(currentX, startHPscaleY, 1.0f));
-
-	QueenHPText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)queenHP) + "/" + to_string((int)QueenHP->GetMaxHP()));
+	if (!QueenHPText.expired()) {
+		QueenHPText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)queenHP) + "/" + to_string((int)QueenHP->GetMaxHP()));
+	}
 }
 
 void UIController::UpdateVolumeTexts() {
 	int maxValue = 100;
 
-	MasterVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)(GameController::GetInstance()->MasterVolume * maxValue)));
-	MusicVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)(GameController::GetInstance()->MusicVolume * maxValue)));
-	SFXVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)(GameController::GetInstance()->SFXVolume * maxValue)));
+	if (!MasterVolumeText.expired()) {
+		MasterVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)(GameController::GetInstance()->MasterVolume * maxValue)));
+	}
+
+	if (!MusicVolumeText.expired()) {
+		MusicVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)(GameController::GetInstance()->MusicVolume * maxValue)));
+	}
+
+	if (!SFXVolumeText.expired()) {
+		SFXVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)(GameController::GetInstance()->SFXVolume * maxValue)));
+	}
 }

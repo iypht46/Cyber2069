@@ -245,6 +245,7 @@ private:
 	void SetMasterVolume(float);
 	void SetMusicVolume(float);
 	void SetSFXVolume(float);
+
 	float AdjustVolumeForSFX(float);
 	float AdjustVolumeForMusic(float);
 
@@ -315,10 +316,7 @@ public:
 			Presets,
 			Amplifiers,
 			ScoreValue,
-			ComboValue,
-			startHPscaleX,
-			startHPscaleY,
-			startHPposX
+			ComboValue
 			);
 
 		ENGINE_INFO("Finished");

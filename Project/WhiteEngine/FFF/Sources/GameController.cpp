@@ -140,10 +140,6 @@ void GameController::OnStart() {
 
 	SetSpawningAllSpawner(false);
 	playerControl->GetGameObject()->SetActive(false);
-	//HPbar.lock()->SetActive(false);
-	//Staminabar.lock()->SetActive(false);
-	//ScoreText.lock()->SetActive(false);
-	//ComboText.lock()->SetActive(false);
 
 	loadoutUI.lock()->SetActive(false);
 
@@ -204,12 +200,10 @@ void GameController::OnUpdate(float dt)
 			UIController::GetInstance()->ToggleUI(UI_GROUP::MainMenu);
 
 			playerControl->GetGameObject()->SetActive(false);
-			//HPbar.lock()->SetActive(false);
-			//Staminabar.lock()->SetActive(false);
-			//ScoreText.lock()->SetActive(false);
-			//ComboText.lock()->SetActive(false);
 
 			loadoutUI.lock()->SetActive(false);
+
+			ResetScore();
 
 			StateChanged = false;
 		}
@@ -252,11 +246,6 @@ void GameController::OnUpdate(float dt)
 			playerControl->GetGameObject()->SetActive(true);
 			playerControl->GetGameObject()->m_transform->SetPosition(PlayerStartPosition);
 
-			//HPbar.lock()->SetActive(true);
-			//Staminabar.lock()->SetActive(true);
-			//ScoreText.lock()->SetActive(true);
-			//ComboText.lock()->SetActive(true);
-
 			loadoutUI.lock()->SetActive(false);
 
 			StateChanged = false;
@@ -265,11 +254,9 @@ void GameController::OnUpdate(float dt)
 			this->GetGameObject()->GetComponent<EquipmentManager>()->InitPlayerEquipment();
 		}
 
-		//this->ScoreText.lock()->GetComponent<TextRenderer>()->SetText("Score: " + to_string((int)ScoreValue));
-		//this->ComboText.lock()->GetComponent<TextRenderer>()->SetText("x " + to_string((int)ComboValue));
-
 		SetSpawningAllSpawner(true);
 
+		UIController::GetInstance()->UpdateEquipmentDisplay();
 		UIController::GetInstance()->updateHPUI();
 		UIController::GetInstance()->updateStaminaUI();
 		UIController::GetInstance()->updateScoreUI();
