@@ -38,6 +38,7 @@
 #include "Weapon.hpp"
 #include "EquipmentManager.hpp"
 #include "LoadoutUI.hpp"
+#include "HighScoreUI.hpp"
 #include "ItemDrop.hpp"
 #include "Scripts/GameControl/UIController.h"
 
@@ -591,7 +592,38 @@ namespace World
 
 			gamecontroller->GetComponent<GameController>()->loadoutUI = ui_LoadOut;
 
+			std::shared_ptr<GameObject> ui_highscore = Instantiate();
+			ui_highscore->AddComponent<HighScoreUI>();
 
+			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(ui_highscore);
+
+			std::shared_ptr<GameObject> ScoreText;
+			
+			ScoreText = Instantiate();
+
+			ScoreText->AddComponent<TextRenderer>();
+			ScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 30);
+			ScoreText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+
+			ScoreText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
+			ScoreText->m_transform->SetPosition(glm::vec3(300.0f, 50.0f, 1.0f));
+
+			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(ScoreText);
+
+			ui_highscore->GetComponent<HighScoreUI>()->ScoreText = ScoreText;
+
+			ScoreText = Instantiate();
+
+			ScoreText->AddComponent<TextRenderer>();
+			ScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 30);
+			ScoreText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+
+			ScoreText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
+			ScoreText->m_transform->SetPosition(glm::vec3(100.0f, 50.0f, 1.0f));
+
+			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(ScoreText);
+
+			ui_highscore->GetComponent<HighScoreUI>()->NameText = ScoreText;
 			
 
 			//test parent/child------------------------------------------------

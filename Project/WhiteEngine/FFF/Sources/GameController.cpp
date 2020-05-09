@@ -355,6 +355,9 @@ void GameController::OnUpdate(float dt)
 		//Do only once after state changed
 		if (StateChanged) 
 		{
+			//update score
+			Data->AddLeaderboardEntry("whoite", ScoreValue);
+
 			UIController::GetInstance()->ToggleUI(UI_GROUP::GameOver);
 
 			SetSpawningAllSpawner(false);
@@ -366,9 +369,6 @@ void GameController::OnUpdate(float dt)
 			ComboText.lock()->SetActive(false);
 
 			currScoreCheckpoint = 0;
-			
-			//update score
-			Data->AddLeaderboardEntry("whoite", ScoreValue);
 
 			StateChanged = false;
 		}

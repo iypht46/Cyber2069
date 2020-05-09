@@ -284,6 +284,8 @@ public:
 
 	GameObject* GetPlayer() { return playerControl->GetGameObject(); }
 
+	PlayerData* GetPlayerData() { return Data.get(); }
+
 	virtual void OnAwake() override;
 	virtual void OnStart() override;
 	virtual void OnUpdate(float dt) override;
