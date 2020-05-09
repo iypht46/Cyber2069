@@ -2,6 +2,7 @@
 
 #include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/UIComponents/TextRenderer.hpp"
+#include "Core/EC/UIComponents/Button.hpp"
 
 #include "Graphic/GLRenderer.h"
 
@@ -9,6 +10,12 @@
 #include "EquipmentManager.hpp"
 
 #include <vector>
+
+enum LOADOUTONCLICK_TYPE {
+	ADD = 0,
+	REMOVE,
+	START
+};
 
 class LoadoutUI : public BehaviourScript 
 {
@@ -22,14 +29,17 @@ private:
 	vector<std::shared_ptr<GameObject>> WeaponSelectButtons;
 	vector<std::shared_ptr<GameObject>> ArtifactSelectButtons;
 
+	string eqName = "";
 	string eqDescription = "";
 
 	unsigned int defaultWeaponDisplayTex;
 	unsigned int defaultArtfDisplayTex;
-public:
-	LoadoutUI();
 
-	void StartGameplay();
+public:
+	std::shared_ptr<GameObject> eqNameObj;
+	std::shared_ptr<GameObject> eqDescriptionObj;
+
+	LoadoutUI();
 
 	void AssignSelectButton(std::shared_ptr<GameObject> selectButton);
 
@@ -37,8 +47,10 @@ public:
 	void AssignArtifactDisplaySlot(std::shared_ptr<GameObject> ArtifactDisplaySlot);
 
 	void UpdateDisplaySlotTexture();
+	void UpdateDescriptionText();
 
 	virtual void OnAwake();
+	virtual void OnStart();
 
 	virtual void OnEnable();
 	virtual void OnDisable();
@@ -52,7 +64,9 @@ public:
 			WeaponDisplaySlot,
 			ArtifactDisplaySlot,
 			WeaponSelectButtons,
-			ArtifactSelectButtons
+			ArtifactSelectButtons,
+			eqNameObj,
+			eqDescriptionObj
 		);
 	}
 };
@@ -68,7 +82,13 @@ private:
 public:
 	int type = 0;
 	int equipment_type = 0;
-	string description = "";
+	int currIndex = 0;
+	int OnclickType = 0;
+
+	string eq_name = "";
+	string eq_description = "";
+
+	virtual void OnUpdate(float dt);
 
 	void SetLoadoutUI(LoadoutUI* ui) { this->loadoutUI = ui; }
 	void SetEquipmentManager(EquipmentManager* eq) { this->eqManager = eq; }
@@ -87,7 +107,8 @@ public:
 			cereal::base_class<BehaviourScript>(this),
 			type,
 			equipment_type,
-			description
+			eq_name,
+			eq_description
 		);
 	}
 };

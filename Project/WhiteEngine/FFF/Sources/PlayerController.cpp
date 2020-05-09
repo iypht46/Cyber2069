@@ -157,76 +157,6 @@ void PlayerController::DebugInput() {
 		}
 	}
 
-
-	//Test Weapon
-	if (Input::GetKeyDown(Input::KeyCode::KEY_1))
-	{
-		assignWeapon(Weapons[0]);
-	}
-	
-	/*if (Input::GetKeyDown(Input::KeyCode::KEY_2))
-	{
-		assignWeapon(Weapons[1]);
-	}
-
-	if (Input::GetKeyDown(Input::KeyCode::KEY_3))
-	{
-		assignWeapon(Weapons[2]);
-	}
-
-	if (Input::GetKeyDown(Input::KeyCode::KEY_4))
-	{
-		assignWeapon(Weapons[3]);
-	}
-
-	if (Input::GetKeyDown(Input::KeyCode::KEY_5))
-	{
-		assignWeapon(Weapons[4]);
-	}*/
-
-	//Test Modify and Revert Artifact
-	if (Input::GetKeyDown(Input::KeyCode::KEY_F))
-	{
-		ModifyFromEquipment();
-	}
-
-	if (Input::GetKeyDown(Input::KeyCode::KEY_G))
-	{
-		RevertArtifact();
-	}
-
-	//Test Setter for Artifact
-	if (weapon != nullptr) 
-	{
-		/*if (Input::GetKeyDown(Input::KeyCode::KEY_F))
-		{
-			weapon->MultiplyWeaponFireRate(2.0f);
-		}
-
-		if (Input::GetKeyDown(Input::KeyCode::KEY_G))
-		{
-			weapon->MultiplyWeaponDamage(2.0f);
-		}
-
-		if (Input::GetKeyDown(Input::KeyCode::KEY_H))
-		{
-			weapon->MultiplyWeaponAmplifier(2.0f);
-		}
-
-		if (Input::GetKeyDown(Input::KeyCode::KEY_J))
-		{
-			m_gameObject->GetComponent<Rigidbody>()->SetGravityScale(0.5f);
-		}
-
-		if (Input::GetKeyDown(Input::KeyCode::KEY_K))
-		{
-			move_speed = move_speed * 2.0f;
-			max_move_speed = max_move_speed * 2.0f;
-		}*/
-
-
-	}
-
 }
 
 void PlayerController::move()
@@ -473,7 +403,7 @@ void PlayerController::assignPool(ObjectPool* pool)
 
 void PlayerController::assignWeapon() 
 {
-	assignWeapon(Weapons[0]);
+	assignWeapon(Weapons.at(0));
 }
 
 void PlayerController::assignWeapon(Weapon* wp) 
@@ -550,7 +480,7 @@ void PlayerController::ModifyFromEquipment()
 	}
 }
 
-void PlayerController::RevertArtifact() 
+void PlayerController::RevertEquipment() 
 {
 	for (Equipment* e : Equipments)
 	{
@@ -559,6 +489,11 @@ void PlayerController::RevertArtifact()
 			a->Revert();
 		}
 	}
+
+	Equipments.clear();
+	Weapons.clear();
+
+	weapon = nullptr;
 }
 
 void PlayerController::MultiplyMoveSpeed(float value) 

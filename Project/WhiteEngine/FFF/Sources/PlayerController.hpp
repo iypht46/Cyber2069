@@ -106,7 +106,7 @@ public:
 	void RemoveEquipment(int index);
 
 	void ModifyFromEquipment();
-	void RevertArtifact();
+	void RevertEquipment();
 
 	void MultiplyMoveSpeed(float value);
 

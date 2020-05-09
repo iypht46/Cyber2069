@@ -45,6 +45,10 @@ void GameController::OnStart() {
 	CreatePool(PrefabPath("Bullet_ZP"), POOL_TYPE::BULLET_ZP, 20);
 	CreatePool(PrefabPath("Bullet_BH"), POOL_TYPE::BULLET_BH, 20);
 	CreatePool(PrefabPath("Bullet_Fume"), POOL_TYPE::BULLET_FUME, 20);
+	
+	ENGINE_INFO("GameControl Creating Item");
+	ENGINE_INFO("======================================================================");
+	CreatePool(PrefabPath("ItemDrop"), POOL_TYPE::ITEM_DROP, 1);
 
 	ENGINE_INFO("GameControl Creating Enemy");
 	ENGINE_INFO("======================================================================");
@@ -84,7 +88,7 @@ void GameController::OnStart() {
 	CreatePool(PrefabPath("Queen"), POOL_TYPE::ENEMY_QUEEN, 1);
 	QueenSpawner = CreateSpawner(POOL_TYPE::ENEMY_QUEEN);
 	QueenSpawner->SetSpawnMode(SPAWN_MODE::RANGE);
-	QueenSpawner->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() / -2);
+	QueenSpawner->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() * 0.75, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() * 0.75);
 
 	//Cocoon spawner
 	ENGINE_INFO("GameControl Creating Queen");
@@ -144,6 +148,14 @@ void GameController::OnStart() {
 	loadoutUI.lock()->SetActive(false);
 
 	PlayerStartPosition = playerControl->GetGameObject()->m_transform->GetPosition();
+
+	m_gameObject->GetComponent<EquipmentManager>()->Unlock_WEAPON(WEAPON_TYPE::WEAPON_MACHINEGUN);
+
+	m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_BULLETAMP);
+	m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_FIRERATEUP);
+	m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_SPEEDRUNNER);
+	m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_ATKUP);
+
 }
 
 void GameController::CreatePool(std::string prefabPath, int poolType, int poolSize) {
@@ -249,6 +261,8 @@ void GameController::OnUpdate(float dt)
 
 			StateChanged = false;
 			StateGamplayChanged = true;
+
+			this->GetGameObject()->GetComponent<EquipmentManager>()->InitPlayerEquipment();
 		}
 
 		this->ScoreText.lock()->GetComponent<TextRenderer>()->SetText("Score: " + to_string((int)ScoreValue));
@@ -294,13 +308,20 @@ void GameController::OnUpdate(float dt)
 					}
 				}
 			}
+			else {
+				
+				if (CocoonSpawner != nullptr)
+				{
+					Current_Cocoon = CocoonSpawner->SpawnEnemy();
+				}
+			}
 
 			break;
 		case GAMEPLAY_STATE::QUEEN:
 			//Do only once after gameplaystate changed
 			if (StateGamplayChanged) 
 			{
-				SpawnQueen();
+				Current_Queen = SpawnQueen();
 
 				StateGamplayChanged = false;
 			}
@@ -322,6 +343,10 @@ void GameController::OnUpdate(float dt)
 
 		if (playerControl->GetGameObject()->GetComponent<HPsystem>()->isDead()) 
 		{
+			this->GetGameObject()->GetComponent<EquipmentManager>()->ResetPlayerEquipment();
+			
+			CocoonCount = 0;
+			SetGameplayState(GAMEPLAY_STATE::NORMAL);
 			SetGameState(GAME_STATE::ENDING);
 		}
 

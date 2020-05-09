@@ -12,6 +12,7 @@ void DeQueen::OnAwake() {
 
 	FlyerPool = GameController::GetInstance()->GetPool(POOL_TYPE::ENEMY_FLYER);
 	BomberPool = GameController::GetInstance()->GetPool(POOL_TYPE::ENEMY_BOMBER);
+	ItemPool = GameController::GetInstance()->GetPool(POOL_TYPE::ITEM_DROP);
 
 	Enemy::OnAwake();
 }
@@ -78,4 +79,17 @@ void DeQueen::OnFixedUpdate(float dt) {
 
 void DeQueen::SetSpawnDelay(int time) {
 	this->SpawnDelay = time;
+}
+
+void DeQueen::SpawnItem() 
+{
+	if (!GameController::GetInstance()->GetGameObject()->GetComponent<EquipmentManager>()->isAllUnlock()) 
+	{
+		GameObject* item = ItemPool->GetInactiveObject();
+
+		item->GetComponent<Rigidbody>()->SetVelocity(glm::vec3(0));
+		item->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+
+		item->SetActive(true);
+	}
 }

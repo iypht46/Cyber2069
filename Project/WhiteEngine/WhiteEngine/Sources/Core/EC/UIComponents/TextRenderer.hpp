@@ -32,10 +32,13 @@ struct GLCharacter {
 class TextRenderer : public Component 
 {
 protected:
+
 	std::string text;
 	glm::vec3 color;
 	float fontSize;
 	std::string fontPath;
+
+	float lineSpacing = 1.0f;
 
 	GLuint VAO;
 	GLuint VBO;
@@ -47,6 +50,9 @@ public:
 	void Render();
 
 	void SetText(string text);
+	void SetlineSpacing(float linespacing) { this->lineSpacing = linespacing; }
+
+	string GetText() { return this->text; }
 	void SetColor(glm::vec3 color);
 	void LoadFont(string path,float DefautFontSize);
 

@@ -92,10 +92,13 @@ protected:
 	AirPatrol* airPatrol;
 	ObjectPool* FlyerPool;
 	ObjectPool* BomberPool;
+	ObjectPool* ItemPool;
 	SoundPlayer* QueenSound;
 public:
 
 	void SetStats(float Speed, float HP, float SpawnDelay);
+
+	void SpawnItem();
 
 	//void assignFlyPool(ObjectPool* pool);
 	//void assignBombPool(ObjectPool* pool);
