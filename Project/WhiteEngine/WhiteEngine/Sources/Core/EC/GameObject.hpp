@@ -38,6 +38,7 @@ protected:
 	void TriggerEnter(const Physic::Collision);
 	void TriggerStay(const Physic::Collision);
 	void TriggerExit(const Physic::Collision);
+
 public:
 	GameObject();
 	~GameObject() {}

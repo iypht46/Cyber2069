@@ -170,16 +170,16 @@ private:
 
 	std::unique_ptr<PlayerData> Data;
 
-	//change----------------
-	float startHPscaleX;
-	float startHPscaleY;
+	////change----------------
+	//float startHPscaleX;
+	//float startHPscaleY;
 
-	float startStaminascaleX;
-	float startStaminascaleY;
+	//float startStaminascaleX;
+	//float startStaminascaleY;
 
-	float startHPposX;
-	float startStaminaposX;
-	//----------------------
+	//float startHPposX;
+	//float startStaminaposX;
+	////----------------------
 
 	PlayerController* playerControl;
 	HPsystem* PlayerHP;
@@ -213,8 +213,8 @@ private:
 
 	float scoreCheckpoint[4] = { 0.0f, 10.0f,200.0f,300.0f };
 
-	void updateHPui();
-	void updateStaminaUI();
+	//void updateHPui();
+	//void updateStaminaUI();
 
 	void updateSpawner();
 
@@ -239,7 +239,7 @@ private:
 	//player data manager
 	void LoadData();
 	void SaveData();
-	/*add later*/void Resetdata() {};
+	void ResetData();
 
 	//sound option
 	void SetMasterVolume(float);
@@ -250,10 +250,10 @@ private:
 
 public:
 	std::weak_ptr<GameObject> player;
-	std::weak_ptr<GameObject> HPbar;
-	std::weak_ptr<GameObject> Staminabar;
-	std::weak_ptr<GameObject> ScoreText;
-	std::weak_ptr<GameObject> ComboText;
+	/*std::weak_ptr<GameObject> HPbar;
+	std::weak_ptr<GameObject> Staminabar;*/
+	//std::weak_ptr<GameObject> ScoreText;
+	//std::weak_ptr<GameObject> ComboText;
 
 	std::weak_ptr<GameObject> loadoutUI;
 
@@ -312,11 +312,6 @@ public:
 		archive(
 			cereal::base_class<BehaviourScript>(this),
 			cereal::defer(player),
-			cereal::defer(HPbar),
-			cereal::defer(Staminabar),
-			cereal::defer(ScoreText),
-			cereal::defer(ComboText),
-			cereal::defer(loadoutUI),
 			Presets,
 			Amplifiers,
 			ScoreValue,

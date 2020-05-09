@@ -85,11 +85,15 @@ void DeQueen::SpawnItem()
 {
 	if (!GameController::GetInstance()->GetGameObject()->GetComponent<EquipmentManager>()->isAllUnlock()) 
 	{
-		GameObject* item = ItemPool->GetInactiveObject();
+		GameObject* item = ItemPool->GetGameObject();
+		if (item != nullptr) {
+			item->GetComponent<Rigidbody>()->SetVelocity(glm::vec3(0));
+			item->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
 
-		item->GetComponent<Rigidbody>()->SetVelocity(glm::vec3(0));
-		item->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
-
-		item->SetActive(true);
+			item->SetActive(true);
+		}
+		else {
+			ENGINE_ERROR("{} Can't spawn Item", *m_gameObject);
+		}
 	}
 }

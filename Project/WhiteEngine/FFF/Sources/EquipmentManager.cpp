@@ -6,7 +6,20 @@ int EquipmentManager::totalArtifact = 7;
 int EquipmentManager::maxPlayerWeapon = 1;
 int EquipmentManager::maxPlayerArtifact = 2;
 
-EquipmentManager::EquipmentManager(){}
+EquipmentManager* EquipmentManager::_instance = nullptr;
+
+EquipmentManager::EquipmentManager() {
+	_instance = this;
+}
+
+EquipmentManager* EquipmentManager::GetInstance() {
+	if (_instance != nullptr) {
+		return _instance;
+	}
+	else {
+		ENGINE_ERROR("There is no instance of Equipmentmanager");
+	}
+}
 
 void EquipmentManager::OnAwake() 
 {
