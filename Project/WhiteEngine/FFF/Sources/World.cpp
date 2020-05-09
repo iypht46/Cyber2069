@@ -419,6 +419,8 @@ namespace World
 			wp_MachineGun->m_transform->SetParent(Rabbit->m_transform);
 			wp_MachineGun->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
 			
+			wp_MachineGun->AddComponent<SoundPlayer>();
+
 			Serialization::SaveObject(*wp_MachineGun, PrefabPath("Weapons/MachineGun"));
 
 			gamecontroller->AddComponent<EquipmentManager>();
@@ -669,6 +671,7 @@ namespace World
 				flyer->GetComponent<Rigidbody>()->Init(15, 15);
 
 				flyer->AddComponent<HPsystem>();
+				flyer->AddComponent<SoundPlayer>();
 
 				//og flyer
 				flyer->AddComponent<AirFollowing>();
@@ -742,6 +745,7 @@ namespace World
 				bomber->GetComponent<Rigidbody>()->SetGravityScale(0.000001);
 
 				bomber->AddComponent<HPsystem>();
+				bomber->AddComponent<SoundPlayer>();
 				bomber->AddComponent<AirFollowing>();
 				bomber->AddComponent<AirDash>()->dashDamage = 0;
 				bomber->AddComponent<Explosion>();
@@ -789,6 +793,7 @@ namespace World
 				flyer->AddComponent<BoxCollider>()->ReScale(0.5, 0.5);
 
 				flyer->AddComponent<HPsystem>();
+				flyer->AddComponent<SoundPlayer>();
 
 				//tank
 				flyer->AddComponent<GroundPatrol>()->SetSpeed(50.0f);
@@ -856,6 +861,7 @@ namespace World
 				flyer->AddComponent<BoxCollider>()->ReScale(1, 1);
 
 				flyer->AddComponent<HPsystem>();
+				flyer->AddComponent<SoundPlayer>();
 
 				//charger
 				flyer->AddComponent<GroundPatrol>();
@@ -917,6 +923,7 @@ namespace World
 				flyer->AddComponent<BoxCollider>()->ReScale(0.5, 0.5);
 
 				flyer->AddComponent<HPsystem>();
+				flyer->AddComponent<SoundPlayer>();
 
 				//spitter
 				flyer->AddComponent<GroundPatrol>();
@@ -979,6 +986,7 @@ namespace World
 				queen->GetComponent<Rigidbody>()->SetGravityScale(0.00001);
 
 				queen->AddComponent<HPsystem>();
+				queen->AddComponent<SoundPlayer>();
 				queen->AddComponent<AirPatrol>();
 				queen->GetComponent<AirPatrol>()->SetPoint(-(Graphic::Window::GetWidth() * 2), Graphic::Window::GetWidth() * 2);
 				queen->AddComponent<DeQueen>();
@@ -1074,6 +1082,8 @@ namespace World
 				Bullet->GetComponent<Rigidbody>()->Init(7, 7);
 				Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0000001f);
 
+				Bullet->AddComponent<SoundPlayer>();
+
 				Bullet->AddComponent<ParticleSystem>();
 				Serialization::LoadObject(*Bullet->GetComponent<ParticleSystem>(), ParticlePath("Bullet_Hit_Example"));
 
@@ -1098,6 +1108,8 @@ namespace World
 				Bullet->GetComponent<Rigidbody>()->Init(7, 7);
 				Bullet->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
 
+				Bullet->AddComponent<SoundPlayer>();
+
 				Bullet->m_transform->SetScale(glm::vec3(30, 30, 1));
 
 				Bullet->AddComponent<GrenadeLauncherBullet>();
@@ -1119,6 +1131,8 @@ namespace World
 				Bullet->GetComponent<Rigidbody>()->Init(7, 7);
 				Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0f);
 
+				Bullet->AddComponent<SoundPlayer>();
+
 				Bullet->m_transform->SetScale(glm::vec3(10, 10, 1));
 
 				Bullet->AddComponent<ZapperGunBullet>();
@@ -1139,6 +1153,8 @@ namespace World
 				Bullet->AddComponent<Rigidbody>();
 				Bullet->GetComponent<Rigidbody>()->Init(7, 7);
 				Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0000001f);
+
+				Bullet->AddComponent<SoundPlayer>();
 
 				Bullet->AddComponent<ParticleSystem>();
 				Bullet->GetComponent<ParticleSystem>()->emitter->isEnabled = true;
