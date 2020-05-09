@@ -1,5 +1,9 @@
 #pragma once
 #include "Equipment.hpp"
+#include <memory>
+#include <set>
+#include <string>
+
 #include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/Components/Transform.hpp"
 #include "Core/EC/Components/Rigidbody.hpp"
@@ -13,20 +17,28 @@
 #include "Enemy.hpp"
 #include "Core/EC/Components/SoundPlayer.hpp"
 
+#include <cereal/types/string.hpp>
+#include <cereal/types/set.hpp>
 #include <cereal/types/base_class.hpp>
 #include <cereal/types/polymorphic.hpp>
 
-class Weapon : public Equipment 
+enum WEAPON_TYPE {
+	WEAPON_MACHINEGUN = 0,
+	WEAPON_LASER,
+	WEAPON_GRENADELAUNCHER,
+	WEAPON_ZAPPER,
+	WEAPON_BLACKHOLE,
+};
+
+class Weapon : public Equipment , public BehaviourScript
 {
 protected:
 	float bullet_speed;
 	float weapon_firerate;
 	float weapon_damage;
 
-	float weapon_delay_count;
-
-	GameObject* weaponObj;
-	ObjectPool* BulletPool;
+	GameObject* weaponObj = nullptr;
+	ObjectPool* BulletPool = nullptr;
 	
 	float* angle;
 
@@ -34,23 +46,68 @@ protected:
 	float angle_rad;
 
 	glm::vec2 weapon_scale;
-public:
-	virtual void Modify(GameObject* obj) = 0;
-	virtual void GameTimeBehaviour(float dt) = 0;
-	virtual void onDisable() = 0;
+	glm::vec2 bullet_scale;
 
-	GameObject* GetWeapon() { return this->weaponObj; }
+	float weapon_delay_count = 0.0f;
+
+
+public:
+	std::set<std::string> TargetLayers;
+
+	virtual void Modify() = 0;
+	virtual void GameTimeBehaviour(float dt) = 0;
+
+	GameObject* GetWeapon() { return this->m_gameObject; }
 	
 	void SetBulletSpeed(float value) { this->bullet_speed = value; }
 	void SetWeaponFireRate(float value) { this->weapon_firerate = value; }
 	void SetWeaponDamage(float value) { this->weapon_damage = value; }
 
+	void MultiplyweaponBulletSpeed(float value) { this->bullet_speed = this->bullet_speed * value; }
+	void MultiplyWeaponFireRate(float value) { this->weapon_firerate = this->weapon_firerate / value; }
+	void MultiplyWeaponDamage(float value) { this->weapon_damage = this->weapon_damage * value; }
+	virtual void MultiplyWeaponAmplifier(float value) = 0;
+
 	glm::vec2 GetWeaponScale() { return weapon_scale; }
 
 	void AssignAngle(float* angle) { this->angle = angle; }
 	void AssignPool(ObjectPool* ObjPool) { this->BulletPool = ObjPool; }
-};
 
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Equipment>(this),
+			cereal::base_class<BehaviourScript>(this),
+			TargetLayers,
+			bullet_speed,
+			weapon_firerate,
+			weapon_damage
+		);	
+	}
+};
+CEREAL_REGISTER_TYPE(Weapon);
+
+class Bullet :public BehaviourScript {
+public:
+	std::set<std::string> TargetLayers;
+
+	bool isTarget(Physic::Layer);
+	bool isTarget(std::string);
+
+	Bullet();
+	~Bullet();
+
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<BehaviourScript>(this),
+			TargetLayers
+			);
+	}
+};
+CEREAL_REGISTER_TYPE(Bullet);
 
 //Machine Gun ===========================================================================================
 class MachineGun : public Weapon {
@@ -59,12 +116,24 @@ protected:
 	float SoundTimer;
 public:
 	MachineGun();
-	void Modify(GameObject* obj);
+	void Modify();
 	void GameTimeBehaviour(float dt);
-	void onDisable();
-};
+	void MultiplyWeaponAmplifier(float value);
 
-class MachineGunBullet : public BehaviourScript {
+	virtual void OnAwake();
+
+//serialization
+public:
+	template <class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Weapon>(this)
+			);
+	}
+};
+CEREAL_REGISTER_TYPE(MachineGun);
+
+class MachineGunBullet : public Bullet {
 protected:
 	Graphic::CameraObject* cam;
 
@@ -84,7 +153,7 @@ public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
-			cereal::base_class<BehaviourScript>(this),
+			cereal::base_class<Bullet>(this),
 			bulletDmg
 			);
 	}
@@ -96,17 +165,48 @@ CEREAL_REGISTER_TYPE(MachineGunBullet);
 //Laser Gun =============================================================================================
 class LaserGun : public Weapon {
 private:
-	GameObject* laser;
+	std::shared_ptr <GameObject> laserObj = nullptr;
 	float laser_length;
+	float laser_size;
+	float laser_duration;
+	float laser_duration_count = 0.0f;
+
+
+	glm::vec2 Lstart;
+	glm::vec2 Lend;
+
+	glm::vec2 gunPos;
+	glm::vec2 endPos;
+
 	float SoundCounter;
 	float SoundTimer;
+
 public:
 	LaserGun();
-	void Modify(GameObject* obj);
+	void Modify();
 	void GameTimeBehaviour(float dt);
-	void onDisable();
+	void AssignLaserObj(std::shared_ptr <GameObject> obj) { this->laserObj = obj; }
+	void MultiplyWeaponAmplifier(float value);
+
+	/*void DamageEnemyInRange();
+	bool isInRange(Collider* col);*/
+	
+	virtual void OnAwake();
+	virtual void OnDisable();
+
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Weapon>(this),
+			laserObj,
+			laser_size
+		);
+	}
 };
+CEREAL_REGISTER_TYPE(LaserGun);
 //-------------------------------------------------------------------------------------------------------
+
 
 //Grenade Launcher ======================================================================================
 class GrenadeLauncher : public Weapon {
@@ -116,12 +216,24 @@ private:
 	float SoundTimer;
 public:
 	GrenadeLauncher();
-	void Modify(GameObject* obj);
+	void Modify();
 	void GameTimeBehaviour(float dt);
-	void onDisable();
-};
+	void MultiplyWeaponAmplifier(float value);
 
-class GrenadeLauncherBullet : public BehaviourScript {
+	virtual void OnAwake();
+
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Weapon>(this),
+			grenade_radius
+			);
+	}
+};
+CEREAL_REGISTER_TYPE(GrenadeLauncher);
+
+class GrenadeLauncherBullet : public Bullet {
 protected:
 	Graphic::CameraObject* cam;
 
@@ -149,7 +261,7 @@ public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
-			cereal::base_class<BehaviourScript>(this),
+			cereal::base_class<Bullet>(this),
 			bulletDmg,
 			radius,
 			scaleX
@@ -171,12 +283,28 @@ private:
 	float SoundTimer;
 public:
 	ZapperGun();
-	void Modify(GameObject* obj);
+	void Modify();
 	void GameTimeBehaviour(float dt);
-	void onDisable();
+	void MultiplyWeaponAmplifier(float value);
+	
+	virtual void OnAwake();
+
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Weapon>(this),
+			chainNumber,
+			zapDistance,
+			zapDuration,
+			zapRate
+		);
+	}
 };
 
-class ZapperGunBullet : public BehaviourScript {
+CEREAL_REGISTER_TYPE(ZapperGun);
+
+class ZapperGunBullet : public Bullet {
 protected:
 	Graphic::CameraObject* cam;
 
@@ -221,7 +349,7 @@ public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
-			cereal::base_class<BehaviourScript>(this),
+			cereal::base_class<Bullet>(this),
 			bulletDmg,
 			chainNumber,
 			zapDistance,
@@ -244,12 +372,27 @@ private:
 	float SoundTimer;
 public:
 	BlackholeGun();
-	void Modify(GameObject* obj);
+	void Modify();
 	void GameTimeBehaviour(float dt);
-	void onDisable();
+	void MultiplyWeaponAmplifier(float value);
+
+	virtual void OnAwake();
+
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Weapon>(this),
+			bullet_Duration,
+			bullet_Radius,
+			bullet_ToCenterSpeed
+		);
+	}
 };
 
-class BlackholeGunBullet : public BehaviourScript {
+CEREAL_REGISTER_TYPE(BlackholeGun);
+
+class BlackholeGunBullet : public Bullet {
 protected:
 	Graphic::CameraObject* cam;
 
@@ -260,6 +403,8 @@ protected:
 	float Radius = 200.0f;
 	float ToCenterSpeed = 10.0f;
 
+	float Dot_count = 0.0f;
+
 	bool isTriggerEnemy = false;
 	float DurationCount = 0;
 
@@ -269,7 +414,7 @@ public:
 	void SetRadius(float radius) { this->Radius = radius; }
 	void SetToCenterSpeed(float spd) { this->ToCenterSpeed = spd; }
 
-	void DragEnemy();
+	void DragEnemy(float dt);
 	void ReleaseEnemy();
 
 	virtual void OnAwake();
@@ -282,7 +427,7 @@ public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
-			cereal::base_class<BehaviourScript>(this),
+			cereal::base_class<Bullet>(this),
 			bulletDmg,
 			Duration,
 			Radius,

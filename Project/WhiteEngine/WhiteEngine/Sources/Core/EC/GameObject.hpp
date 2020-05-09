@@ -63,7 +63,13 @@ public:
 	T* AddComponent();
 
 	template <class T>
+	std::weak_ptr<T> AddComponent_weak();
+
+	template <class T>
 	T* GetComponent();
+
+	template <class T>
+	std::weak_ptr<T> GetComponent_weak();
 
 	//Log to logger
 	LogCustomType_DC(GameObject);
@@ -72,6 +78,7 @@ public:
 public:
 	template<class Archive>
 	void serialize(Archive& archive) {
+		ENGINE_INFO("saving/writing {}", *this);
 		archive(
 			isActive,
 			Name,
@@ -84,12 +91,23 @@ public:
 
 template<class T>
 T* GameObject::AddComponent() {
-	std::shared_ptr<T> component = Factory<T>::Create();
+	std::shared_ptr<T> component = Factory<Component, T>::Create();
 
 	m_components.push_back(component);
 	m_components.back()->SetGameObject(this);
 
 	return component.get();
+}
+
+//return a weak ptr of component instead of raw
+template<class T>
+std::weak_ptr<T> GameObject::AddComponent_weak() {
+	std::shared_ptr<T> component = Factory<Component, T>::Create();
+
+	m_components.push_back(component);
+	m_components.back()->SetGameObject(this);
+
+	return component;
 }
 
 template<class T>
@@ -106,7 +124,22 @@ T* GameObject::GetComponent() {
 	return nullptr;
 }
 
+//return a weak ptr of component instead of raw
+template<class T>
+std::weak_ptr<T> GameObject::GetComponent_weak() {
+
+	for (std::shared_ptr<Component> component : m_components)
+	{
+		if (dynamic_pointer_cast<T>(component))
+		{
+			return dynamic_pointer_cast<T>(component);
+		}
+	}
+
+	return nullptr;
+}
+
 LogCustomType_DF(GameObject)
 {
-	return os << "GameObject: " << obj.Name << "\n";
+	return os << "GameObject: " << obj.Name << " ID: " << obj.m_objectID;
 }

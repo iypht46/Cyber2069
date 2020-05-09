@@ -3,7 +3,10 @@
 #include "GameController.hpp"
 
 GrenadeLauncher::GrenadeLauncher() {
-	weaponObj = new GameObject();
+
+	this->type = WEAPON_TYPE::WEAPON_GRENADELAUNCHER;
+
+	/*weaponObj = new GameObject();
 	weaponObj->AddComponent<MeshRenderer>();
 	weaponObj->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
 	weaponObj->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/grenadeL_spritesheet.png");
@@ -12,23 +15,31 @@ GrenadeLauncher::GrenadeLauncher() {
 	weaponObj->GetComponent<SoundPlayer>()->SetSound(SoundPath("SFX_GrenadeLauncher_Shoot"));
 	weaponObj->GetComponent<SoundPlayer>()->SetLoop(false);
 
-	weaponObj->SetActive(false);
+	weaponObj->SetActive(false);*/
+
+	
+}
+
+void GrenadeLauncher::OnAwake() {
 
 	weapon_damage = 1.0f;
-	weapon_firerate = 0.3f;
-	bullet_speed = 500.0f;
+	//weapon_firerate = 0.3f;
+	bullet_speed = 300.0f;
 
-	grenade_radius = 200.0f;
+	grenade_radius = 100.0f;
 
-	weapon_scale.x = 50.0f;
-	weapon_scale.y = 50.0f;
+	m_gameObject->SetActive(false);
 
 	SoundTimer = 0.30f;
 	SoundCounter = SoundTimer;
 }
 
-void GrenadeLauncher::Modify(GameObject* obj) {
+void GrenadeLauncher::Modify() {
 
+}
+
+void GrenadeLauncher::MultiplyWeaponAmplifier(float value) {
+	grenade_radius = grenade_radius * value;
 }
 
 void GrenadeLauncher::GameTimeBehaviour(float dt) {
@@ -44,7 +55,7 @@ void GrenadeLauncher::GameTimeBehaviour(float dt) {
 		}
 
 		weapon_delay_count += dt;
-		if (weapon_delay_count > weapon_firerate)
+		if (weapon_delay_count >= (1.0f / weapon_firerate))
 		{
 			GameObject* bullet = BulletPool->GetInactiveObject();
 
@@ -70,9 +81,4 @@ void GrenadeLauncher::GameTimeBehaviour(float dt) {
 			}
 		}
 	}
-}
-
-void GrenadeLauncher::onDisable() 
-{
-	weaponObj->SetActive(false);
 }

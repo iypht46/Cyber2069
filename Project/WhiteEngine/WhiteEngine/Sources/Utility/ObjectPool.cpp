@@ -17,6 +17,25 @@ void ObjectPool::AddObject(GameObject* obj) {
 	m_objects.push(obj);
 }
 
+void ObjectPool::SetActiveAllGameObject(bool active) 
+{
+	if (m_objects.size() > 0) {
+		GameObject* back = m_objects.back();
+		GameObject* obj = nullptr;
+
+		do {
+			obj = m_objects.front();
+
+			m_objects.pop();
+			m_objects.push(obj);
+
+			obj->SetActive(active);
+
+		} while (obj != back);
+
+	}
+}
+
 int ObjectPool::GetPoolSize() {
 	return m_objects.size();
 }

@@ -1,12 +1,12 @@
 #include "Event.h"
 
 void EventSystem::Trigger() {
-	for (Event* event : m_events) {
+	//unique vector have to be iterate like this, I don't fulley understand what this means
+	for (auto&& event : m_events) {
 		event->Call();
 	}
 }
 
 EventSystem::~EventSystem() {
-	delete[] m_events.data();
-	m_events.clear();
+
 }

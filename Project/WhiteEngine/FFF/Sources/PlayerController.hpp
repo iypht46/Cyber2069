@@ -9,6 +9,7 @@
 
 #include "HPsystem.hpp"
 #include "Weapon.hpp"
+#include "Artifact.hpp"
 
 #include "Enemy.hpp"
 #include "Character.hpp"
@@ -80,7 +81,7 @@ protected:
 public:
 	PlayerController();
 	~PlayerController() {}
-	
+
 	void DebugInput();
 
 	void mouseAim();
@@ -96,9 +97,21 @@ public:
 	void cameraZoom(float dt);
 
 	void assignPool(ObjectPool* pool);
+	void assignWeapon();
 	void assignWeapon(Weapon* wp);
 
 	void AddEquipment(Equipment* e);
+	void AddEquipment(GameObject* obj);
+	void RemoveWeapon(int index);
+	void RemoveEquipment(int index);
+
+	void ModifyFromEquipment();
+	void RevertEquipment();
+
+	void MultiplyMoveSpeed(float value);
+
+	vector<Weapon*> GetWeapons() { return Weapons; }
+	vector<Equipment*> GetEquipments() { return Equipments; }
 
 	virtual void OnAwake();
 	virtual void OnUpdate(float dt);

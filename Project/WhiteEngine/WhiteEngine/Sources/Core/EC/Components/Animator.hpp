@@ -3,6 +3,7 @@
 
 #include "../../Animation/Animation.hpp"
 #include "../../Animation/AnimationController.hpp"
+#include "Core/Factory.h"
 
 #include <cereal/types/string.hpp>
 #include <cereal/types/polymorphic.hpp>

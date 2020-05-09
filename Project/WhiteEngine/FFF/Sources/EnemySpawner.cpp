@@ -13,24 +13,40 @@ void EnemySpawner::OnUpdate(float dt)
 	}
 }
 
+void EnemySpawner::OnAwake() 
+{
+}
+
 GameObject* EnemySpawner::SpawnEnemy() {
-	float randPosX, randPosY;
+	if (Spawning) {
 
-	if (x2 > x1) {
-		randPosX = (rand() % (x2 - x1 + 1)) + x1;
-	}
-	else {
-		randPosX = (rand() % (x1 - x2 + 1)) + x2;
+		glm::vec2 SpawnPos;
+
+		switch (SpawningMode)
+		{
+		case SPAWN_MODE::EDGE:
+			SpawnPos = GetRandomPos_Edge();
+			break;
+		case SPAWN_MODE::PLATFORM:
+			SpawnPos = GetRandomPos_Platform();
+			break;
+		case SPAWN_MODE::RANGE:
+			SpawnPos = GetRandomPos_Range(x1, y1, x2, y2);
+			break;
+		default:
+			SpawnPos = glm::vec2(0);
+			break;
+		}
+
+
+		if (SpawnPos.x != -1 && SpawnPos.y != -1) 
+		{
+
+			return SpawnEnemy(SpawnPos.x, SpawnPos.y);
+		}
 	}
 
-	if (y2 > y1) {
-		randPosY = (rand() % (y2 - y1 + 1)) + y1;
-	}
-	else {
-		randPosY = (rand() % (y1 - y2 + 1)) + y2;
-	}
-
-	return SpawnEnemy(randPosX, randPosY);
+	return nullptr;
 }
 
 GameObject* EnemySpawner::SpawnEnemy(float posX,float posY)
@@ -141,6 +157,8 @@ void EnemySpawner::updateSpawner() {
 			break;
 		case POOL_TYPE::ENEMY_QUEEN:
 			SpawnRate = SpawnAmplifier->EnemySpawnRate * SpawnPreset->QueenRatio;
+		case POOL_TYPE::ENEMY_COCOON:
+			SpawnRate = SpawnAmplifier->EnemySpawnRate * SpawnPreset->CocoonRatio;
 			break;
 		case POOL_TYPE::ENEMY_TANK:
 			SpawnRate = SpawnAmplifier->EnemySpawnRate * SpawnPreset->TankRatio;
@@ -160,4 +178,117 @@ void EnemySpawner::updateSpawner() {
 	}
 	
 	SpawnRateCount = SpawnRate;
+}
+
+
+glm::vec2 EnemySpawner::GetRandomPos_Edge() {
+	int winWidth;
+	int winHeight;
+
+	cam = Graphic::getCamera();
+	glm::vec3 camPos = cam->GetCampos();
+
+	winWidth = Graphic::Window::GetWidth() * cam->GetZoom();
+	winHeight = Graphic::Window::GetHeight() * cam->GetZoom();
+
+	glm::vec2 tmp = GetRandomPos_Range(camPos.x + (winWidth * 0.25f), camPos.y + (winHeight * 0.25f), camPos.x - (winWidth * 0.25f), camPos.y - (winHeight * 0.25f));
+
+	if (tmp.x >= 0) 
+	{
+		tmp.x += (winWidth / 2);
+	}
+	else 
+	{
+		tmp.x -= (winWidth / 2);
+	}
+
+	if (tmp.y >= 0) 
+	{
+		tmp.y += (winHeight / 2);
+	}
+	else 
+	{
+		tmp.y -= (winHeight / 2);
+	}
+
+	return tmp;
+}
+
+glm::vec2 EnemySpawner::GetRandomPos_Platform() {
+	int winWidth;
+	int winHeight;
+
+	cam = Graphic::getCamera();
+	glm::vec3 camPos = cam->GetCampos();
+
+	winWidth = Graphic::Window::GetWidth() * cam->GetZoom();
+	winHeight = Graphic::Window::GetHeight() * cam->GetZoom();
+
+	Physic::PhysicScene* ps = Physic::PhysicScene::GetInstance();
+	Platforms = ps->GetColliderLayer(ps->GetLayerFromString("Platform"));
+	
+	int randPlatform = rand() % Platforms.size();
+	
+	Transform* pf = Platforms.at(randPlatform)->GetGameObject()->m_transform.get();
+
+	glm::vec2 tmp(-1, -1);
+
+	while(camPos.x - (winWidth / 2) < (pf->GetPosition().x + pf->GetScale().x) &&
+		  (camPos.x - (winWidth / 2) + winWidth) > pf->GetPosition().x &&
+		  camPos.y - (winHeight / 2) < (pf->GetPosition().y + pf->GetScale().y) &&
+		  (camPos.y - (winHeight / 2) + winHeight) >  pf->GetPosition().y)
+	{
+		Platforms.erase(Platforms.begin() + randPlatform);
+
+		if (Platforms.size() == 0) 
+		{
+			//GAME_INFO("NO PLATFORM DETECTED!");
+
+			return tmp;
+		}
+		else {
+			randPlatform = rand() % Platforms.size();
+			pf = Platforms.at(randPlatform)->GetGameObject()->m_transform.get();
+		}
+	}
+
+	//GAME_INFO("Spawing on Platform!");
+
+	if (SpawnType != POOL_TYPE::ENEMY_COCOON)
+	{
+		tmp = GetRandomPos_Range(pf->GetPosition().x + (pf->GetScale().x / 2), pf->GetPosition().y + 100.0f, pf->GetPosition().x - (pf->GetScale().x / 2), pf->GetPosition().y + 100.0f);
+	}
+	else
+	{
+		tmp = GetRandomPos_Range(pf->GetPosition().x + (pf->GetScale().x / 2), pf->GetPosition().y - 60.0f, pf->GetPosition().x - (pf->GetScale().x / 2), pf->GetPosition().y - 60.0f);
+	}
+
+	return tmp;
+}
+
+glm::vec2 EnemySpawner::GetRandomPos_Range(float rx1, float ry1, float rx2, float ry2) {
+
+	float randPosX, randPosY;
+
+	if (rx2 == rx1) {
+		randPosX = rx1;
+	}
+	else if (rx2 > rx1) {
+		randPosX = (rand() % (int)(rx2 - rx1 + 1)) + rx1;
+	}
+	else {
+		randPosX = (rand() % (int)(rx1 - rx2 + 1)) + rx2;
+	}
+
+	if (ry2 == ry1) {
+		randPosY = ry1;
+	}
+	else if (ry2 > ry1) {
+		randPosY = (rand() % (int)(ry2 - ry1 + 1)) + ry1;
+	}
+	else {
+		randPosY = (rand() % (int)(ry1 - ry2 + 1)) + ry2;
+	}
+	
+	return glm::vec2(randPosX, randPosY);
 }

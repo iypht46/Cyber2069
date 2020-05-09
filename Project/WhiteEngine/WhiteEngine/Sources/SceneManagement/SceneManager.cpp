@@ -1,4 +1,5 @@
 #include "SceneManager.h"
+#include "Core/Logger.hpp"
 
 namespace SceneManagement {
 
@@ -8,26 +9,28 @@ namespace SceneManagement {
 
 	void Scene::Init() {
 		//init gameobjects
-		for (std::shared_ptr<GameObject> obj : GameObjectsInScene) {
-			obj->InitComponents();
+		for (std::pair<int, std::shared_ptr<GameObject>> objIt : GameObjectsInScene) {
+			objIt.second->InitComponents();
 		}
 
 		//start gameobjects
-		for (std::shared_ptr<GameObject> obj : GameObjectsInScene) {
-			obj->StartComponents();
+		for (std::pair<int, std::shared_ptr<GameObject>> objIt : GameObjectsInScene) {
+			objIt.second->StartComponents();
 		}
 	}
 
 	std::shared_ptr<GameObject> Instantiate() {
-		std::shared_ptr<GameObject> newObj = Factory<GameObject>::Create();
-		SceneManagement::ActiveScene->GameObjectsInScene.insert(newObj);
+		std::shared_ptr<GameObject> newObj = Factory<void, GameObject>::Create();
+		SceneManagement::ActiveScene->GameObjectsInScene[newObj->GetID()] = newObj;
+		ENGINE_INFO("Scene Size {}", SceneManagement::ActiveScene->GameObjectsInScene.size());
 
 		return newObj;
 	}
 
 	std::shared_ptr<GameObject> Instantiate(std::string prefabPath) {
-		std::shared_ptr<GameObject> newObj = Factory<GameObject>::Create(prefabPath);
-		SceneManagement::ActiveScene->GameObjectsInScene.insert(newObj);
+		std::shared_ptr<GameObject> newObj = Factory<void, GameObject>::Create(prefabPath);
+		SceneManagement::ActiveScene->GameObjectsInScene[newObj->GetID()] = newObj;
+		ENGINE_INFO("Scene Size {}", SceneManagement::ActiveScene->GameObjectsInScene.size());
 
 		return newObj;
 	}

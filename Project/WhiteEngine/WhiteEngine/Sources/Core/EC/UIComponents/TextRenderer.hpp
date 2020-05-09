@@ -2,7 +2,7 @@
 
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
-#include "Component.hpp"
+#include "Core/EC/Components/Component.hpp"
 #include "Graphic/MeshVbo.h"
 #include <iostream>
 #include <map>
@@ -11,6 +11,7 @@
 #include "ft2build.h"
 #include FT_FREETYPE_H
 
+#include "Serialization/glmCereal.h"
 #include <cereal/types/string.hpp>
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/base_class.hpp>
@@ -46,10 +47,12 @@ public:
 	void Render();
 
 	void SetText(string text);
+	string GetText() { return this->text; }
 	void SetColor(glm::vec3 color);
 	void LoadFont(string path,float DefautFontSize);
 
 	TextRenderer();
+	~TextRenderer();
 
 //serialization
 public:

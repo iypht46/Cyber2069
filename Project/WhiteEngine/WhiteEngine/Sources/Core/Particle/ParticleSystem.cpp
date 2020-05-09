@@ -4,7 +4,7 @@
 //Partice System ==============================================================================
 ParticleSystem::ParticleSystem() {
 	//add to factory
-	Factory<ParticleSystem>::Add(this);
+	Factory<Component, ParticleSystem>::Add(this);
 
 	//create standard module, these could get replaced when load from prefab
 	emitter = std::make_shared<ParticleEmitter>();
@@ -15,6 +15,11 @@ ParticleSystem::ParticleSystem() {
 	animation = std::make_shared<ParticleAnimation>();
 
 	emitTimer = 0;
+}
+
+ParticleSystem::~ParticleSystem() {
+	//add to factory
+	Factory<Component, ParticleSystem>::Remove(this);
 }
 
 void ParticleSystem::Init() {
@@ -33,6 +38,8 @@ void ParticleSystem::Init() {
 	velocity->directionType = (DirectionType)(velocity->sr_directionTypeAsInt);
 
 	//emitter============================================================================
+	emitter->emitterShape = (EmitterShape)(emitter->sr_EmissionShapeAsInt);
+
 	emitter->particlePool = std::make_shared<ObjectPool>();
 	emitter->particlePool->objectCount = emitter->particleSamples;
 	//create object and add appropriate cmponent
@@ -42,6 +49,7 @@ void ParticleSystem::Init() {
 		
 		/*its components remains in the system and gets updated still*/
 		
+		//creating particle object, apply some property and store it in object pool
 		std::shared_ptr<GameObject> particle = std::make_shared<GameObject>();
 		Particles.push_back(particle);
 
@@ -90,36 +98,89 @@ void ParticleSystem::SpawnParticle(GameObject* p) {
 	ParticleBehaviour* particle = p->GetComponent<ParticleBehaviour>();
 
 	//set spawn position =========================================================
-	float spawndirection = glm::radians(m_gameObject->m_transform->GetRotation() + WhiteMath::Rand(emitter->minEmissionAngle, emitter->maxEmissionAngle));
-	glm::vec3 spawnPosition(glm::cos(spawndirection), glm::sin(spawndirection), 0.0);
-	//set spawn distance from center;
-	if (emitter->spawnOnEdge) {
-		spawnPosition *= emitter->spawnRadius;
+	glm::vec2 spawnPositionOffset;
+	glm::vec3 spawnPosition;
+	switch (emitter->emitterShape)
+	{
+	default:
+	case ParticleSystem::EmitterShape::Circle:
+	{
+		float spawndirection = glm::radians(m_gameObject->m_transform->GetRotation() + WhiteMath::Rand(emitter->minEmissionAngle, emitter->maxEmissionAngle));
+		spawnPositionOffset = glm::vec2(glm::cos(spawndirection), glm::sin(spawndirection));
+		//set spawn distance from center;
+		if (emitter->spawnOnEdge) {
+			spawnPositionOffset *= emitter->spawnRadius;
+		}
+		else {
+			spawnPositionOffset *= WhiteMath::Rand(0.0f, emitter->spawnRadius);
+		}
+		break;
 	}
-	else {
-		spawnPosition *= WhiteMath::Rand(0.0f, emitter->spawnRadius);
+	case ParticleSystem::EmitterShape::Line:
+	{
+		float angle = glm::radians(emitter->lineAngleOffset + m_gameObject->m_transform->GetRotation());
+		glm::vec2 line = glm::vec2(glm::cos(angle), glm::sin(angle));
+		spawnPositionOffset = line * WhiteMath::Rand(-(emitter->lineLength / 2.0f), emitter->lineLength / 2.0f);
+		break;
 	}
-	particle->transform->SetPosition(spawnPosition + m_gameObject->m_transform->GetPosition());
+	}
+	spawnPosition = glm::vec3(spawnPositionOffset, 0) + m_gameObject->m_transform->GetPosition();
+	particle->transform->SetPosition(spawnPosition);
+	//-----------------------------------------------------------------------------
 
 	//setup particle shape ========================================================
-	glm::vec3 scale(WhiteMath::Rand(shape->minXSize, shape->maxXSize), WhiteMath::Rand(shape->minYSize, shape->maxYSize), 1.0);
+	glm::vec3 scale;
+	if (shape->fixedScale) {
+		float scaleval = WhiteMath::Rand(shape->minXSize, shape->maxXSize);
+		scale = glm::vec3(scaleval, scaleval, 1.0);
+	}
+	else {
+		scale = glm::vec3(WhiteMath::Rand(shape->minXSize, shape->maxXSize), WhiteMath::Rand(shape->minYSize, shape->maxYSize), 1.0);
+	}
 	particle->transform->SetScale(scale);
+	//-----------------------------------------------------------------------------
 
 	//setup particle rotation =====================================================
 	float rotation;
 	switch (shape->rotationType)
 	{
 	default:
-	case ParticleSystem::DirectionType::AwayFromcenter:
+	case ParticleSystem::DirectionType::AwayFromSpawn:
 	{
-		glm::vec3 direction = particle->transform->GetPosition() - m_gameObject->m_transform->GetPosition();
-		rotation = glm::degrees(glm::atan(direction.y / direction.x));
+		switch (emitter->emitterShape)
+		{
+		default:
+		case ParticleSystem::EmitterShape::Circle:
+		{
+			glm::vec3 direction = particle->transform->GetPosition() - m_gameObject->m_transform->GetPosition();
+			rotation = glm::degrees(glm::atan(direction.y, direction.x));
+			break;
+		}
+		case ParticleSystem::EmitterShape::Line:
+		{
+			rotation = glm::degrees(emitter->lineAngleOffset + m_gameObject->m_transform->GetRotation() + 90.0f);
+			break;
+		}
+		}
 		break;
 	}
-	case ParticleSystem::DirectionType::ToCenter:
+	case ParticleSystem::DirectionType::ToSpawn:
 	{
-		glm::vec3 direction = m_gameObject->m_transform->GetPosition() - particle->transform->GetPosition();
-		rotation = glm::degrees(glm::atan(direction.y / direction.x));
+		switch (emitter->emitterShape)
+		{
+		default:
+		case ParticleSystem::EmitterShape::Circle:
+		{
+			glm::vec3 direction = m_gameObject->m_transform->GetPosition() - particle->transform->GetPosition();
+			rotation = glm::degrees(glm::atan(direction.y, direction.x));
+			break;
+		}
+		case ParticleSystem::EmitterShape::Line:
+		{
+			rotation = glm::degrees(emitter->lineAngleOffset + m_gameObject->m_transform->GetRotation() - 90.0f);
+			break;
+		}
+		}
 		break;
 	}
 	case ParticleSystem::DirectionType::Custom:
@@ -127,6 +188,7 @@ void ParticleSystem::SpawnParticle(GameObject* p) {
 		break;
 	}
 	particle->transform->SetRotation(rotation);
+	//-----------------------------------------------------------------------------
 
 	//setup particle lifetime =====================================================
 	particle->maxLifetime = WhiteMath::Rand(lifetime->minLifeTime, lifetime->maxLifeTime);
@@ -137,14 +199,39 @@ void ParticleSystem::SpawnParticle(GameObject* p) {
 	switch (velocity->directionType)
 	{
 	default:
-	case ParticleSystem::DirectionType::AwayFromcenter:
-		direction = particle->transform->GetPosition() - m_gameObject->m_transform->GetPosition();
+	case ParticleSystem::DirectionType::AwayFromSpawn:
+		switch (emitter->emitterShape)
+		{
+		default:
+		case ParticleSystem::EmitterShape::Circle:
+		{
+			direction = particle->transform->GetPosition() - m_gameObject->m_transform->GetPosition();
+			break;
+		}
+		case ParticleSystem::EmitterShape::Line:
+		{
+			direction = glm::vec3(glm::cos(glm::radians(emitter->lineAngleOffset + m_gameObject->m_transform->GetRotation() + 90)), glm::sin(glm::radians(emitter->lineAngleOffset + m_gameObject->m_transform->GetRotation() + 90)), 0);
+			break;
+		}
+		}
 		break;
 
-	case ParticleSystem::DirectionType::ToCenter:
-		direction = m_gameObject->m_transform->GetPosition() - particle->transform->GetPosition();
+	case ParticleSystem::DirectionType::ToSpawn:
+		switch (emitter->emitterShape)
+		{
+		default:
+		case ParticleSystem::EmitterShape::Circle:
+		{
+			direction = m_gameObject->m_transform->GetPosition() - particle->transform->GetPosition();
+			break;
+		}
+		case ParticleSystem::EmitterShape::Line:
+		{
+			direction = glm::vec3(glm::cos(glm::radians(emitter->lineAngleOffset + m_gameObject->m_transform->GetRotation() - 90)), glm::sin(glm::radians(emitter->lineAngleOffset + m_gameObject->m_transform->GetRotation() - 90)), 0);
+			break;
+		}
+		}
 		break;
-
 	case ParticleSystem::DirectionType::Custom:
 		direction = glm::vec3(velocity->customDirection, 0.0f);
 		break;
@@ -154,8 +241,7 @@ void ParticleSystem::SpawnParticle(GameObject* p) {
 	particle->rb->SetVelocity(glm::normalize(direction) * speed);
 
 	//set color ===================================================================
-	//if random color
-
+	particle->renderer->SetReplaceColor(color->Color);
 	p->SetActive(true);
 }
 
@@ -206,11 +292,28 @@ void ParticleSystem::LifeTimeModification(float dt) {
 		}
 		else {
 			//modify shape ============================================
+			if (shape->isEnabled) {
+				if (shape->usingLifetimeScaleModifier) {
+					p->transform->SetScale(p->transform->GetScale() * shape->scaleModifierPerFrame);
+				}
+				if (shape->usingLifetimeRotationModifier && (p->lifetime / p->maxLifetime) >= shape->scale_ModStart) {
+					p->transform->Rotate(shape->rotationSpeed * dt);
+				}
+			}
+			//---------------------------------------------------------
 
 			//modify velocity =========================================
 			if (velocity->usingLifetimeModifier) {
 				p->rb->SetVelocity(p->rb->GetVelocity() * velocity->lifetimeSpeedModifier);
 			}
+			//---------------------------------------------------------
+
+			//modify color ============================================
+			if (color->usingLifeTimeModifier) {
+				float interpolator = WhiteMath::percentageValue(p->lifetime, p->maxLifetime, color->InterpolationStart, color->InterpolationEnd);
+				p->renderer->SetReplaceColor(WhiteMath::interpolate(color->Color_Start, color->Color_End, interpolator));
+			}
+			//---------------------------------------------------------
 		}
 	}
 

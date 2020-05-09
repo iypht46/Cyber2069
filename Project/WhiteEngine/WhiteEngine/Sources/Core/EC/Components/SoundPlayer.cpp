@@ -3,11 +3,11 @@
 SoundPlayer::SoundPlayer() {
 	//isLooping = false;
 	//volumeValue = 1.0f;
-	Factory<SoundPlayer>::Add(this);
+	Factory<Component, SoundPlayer>::Add(this);
 }
 
 SoundPlayer::~SoundPlayer() {
-
+	Factory<Component, SoundPlayer>::Remove(this);
 }
 
 void SoundPlayer::Init() {

@@ -7,7 +7,7 @@
 #include "Window.hpp"
 #include <vector>
 #include <glm/glm.hpp>
-#include "Core/EC/Components/TextRenderer.hpp"
+#include "Core/EC/UIComponents/TextRenderer.hpp"
 #include "Core/EC/Components/MeshRenderer.hpp"
 #include "Core/EC/GameObject.hpp"
 #include "Graphic/Camera.hpp"
@@ -183,7 +183,7 @@ bool GLRenderer::Initialize(string vertexShaderFile, string fragmentShaderFile)
 
 	//Create VBO
 	glBindBuffer(GL_ARRAY_BUFFER, this->cirVBO);
-	glBufferData(GL_ARRAY_BUFFER, circleVertexData.size() * 2 * sizeof(GLfloat), &circleVertexData.front(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, circleVertexData.size() * sizeof(GLfloat), &circleVertexData.front(), GL_STATIC_DRAW);
 
 	return true;
 
@@ -212,20 +212,20 @@ void GLRenderer::Render()
 		}
 	}
 
-	for (TextRenderer *obj : Factory<TextRenderer>::getCollection()) {
+	for (auto obj : Factory<Component, TextRenderer>::getCollection()) {
 
-		if (obj->GetGameObject()->Active())
+		if (obj.second->GetGameObject()->Active())
 		{
-			obj->Render();
+			obj.second->Render();
 		}
 	}
 
 	if (drawDebug) {
-		for (BoxCollider *obj : Factory<BoxCollider>::getCollection())
+		for (auto obj : Factory<Component, BoxCollider>::getCollection())
 		{
-			if (obj->GetGameObject()->Active())
+			if (obj.second->GetGameObject()->Active())
 			{
-				RenderDebugCollider(obj);
+				RenderDebugCollider(obj.second);
 			}
 		}
 
@@ -258,11 +258,11 @@ void GLRenderer::Render()
 
 void GLRenderer::AssignLayer() 
 {
-	for (MeshRenderer *obj : Factory<MeshRenderer>::getCollection()) 
+	for (auto obj : Factory<Component, MeshRenderer>::getCollection()) 
 	{
-		if (obj->inSet == false) 
+		if (obj.second->inSet == false) 
 		{
-			obj->inSet = true;
+			obj.second->inSet = true;
 
 			//if (obj->layer == -1) 
 			//{
@@ -270,7 +270,7 @@ void GLRenderer::AssignLayer()
 				//obj->SetLayer(0);
 			//}
 
-			GLRenderer::GetInstance()->AddMeshToSet(obj);
+			GLRenderer::GetInstance()->AddMeshToSet(obj.second);
 		}
 	}
 }
@@ -423,8 +423,10 @@ GLuint GLRenderer::LoadTexture(string path)
 
 	glTexImage2D(GL_TEXTURE_2D, 0, Mode, image->w, image->h, 0, Mode, GL_UNSIGNED_BYTE, image->pixels);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 

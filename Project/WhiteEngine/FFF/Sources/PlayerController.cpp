@@ -14,25 +14,19 @@ void PlayerController::OnAwake() {
 	hpSystem = m_gameObject->GetComponent<HPsystem>();
 
 	stamina = max_stamina;
-
+	hpSystem->ResetHP();
 
 	direction.x = 1;
 	direction.y = 1;
 
-	//need changes? Poom 17/04/2020---------
-	AddEquipment(new MachineGun());
+
+	/*AddEquipment(new MachineGun());
 	AddEquipment(new LaserGun());
 	AddEquipment(new GrenadeLauncher());
 	AddEquipment(new ZapperGun());
-	AddEquipment(new BlackholeGun());
+	AddEquipment(new BlackholeGun());*/
 
-	assignWeapon(Weapons[0]);
-
-	for (Equipment* e : Equipments)
-	{
-		e->Modify(this->m_gameObject);
-	}
-	//--------------------------------------
+	//assignWeapon(Weapons[0]);
 }
 
 void PlayerController::OnCollisionEnter(const Physic::Collision col)
@@ -103,7 +97,10 @@ void PlayerController::OnUpdate(float dt)
 		dash(dt);
 	}
 
-	mouseAim();
+	if (weapon != nullptr) {
+
+		mouseAim();
+	}
 
 	for (Equipment* e : Equipments)
 	{
@@ -115,7 +112,7 @@ void PlayerController::OnUpdate(float dt)
 			}
 		}
 		else {
-			w->GameTimeBehaviour(dt);
+			e->GameTimeBehaviour(dt);
 		}
 	}
 }
@@ -158,31 +155,6 @@ void PlayerController::DebugInput() {
 		else {
 			hpSystem->SetInvincible(false);
 		}
-	}
-
-	if (Input::GetKeyDown(Input::KeyCode::KEY_1))
-	{
-		assignWeapon(Weapons[0]);
-	}
-	
-	if (Input::GetKeyDown(Input::KeyCode::KEY_2))
-	{
-		assignWeapon(Weapons[1]);
-	}
-
-	if (Input::GetKeyDown(Input::KeyCode::KEY_3))
-	{
-		assignWeapon(Weapons[2]);
-	}
-
-	if (Input::GetKeyDown(Input::KeyCode::KEY_4))
-	{
-		assignWeapon(Weapons[3]);
-	}
-
-	if (Input::GetKeyDown(Input::KeyCode::KEY_5))
-	{
-		assignWeapon(Weapons[4]);
 	}
 
 }
@@ -429,36 +401,41 @@ void PlayerController::assignPool(ObjectPool* pool)
 	this->MGbulletPool = pool;
 }
 
+void PlayerController::assignWeapon() 
+{
+	assignWeapon(Weapons.at(0));
+}
+
 void PlayerController::assignWeapon(Weapon* wp) 
 {
 	if (this->weapon != nullptr)
 	{
-		this->weapon->onDisable();
+		this->weapon->GetWeapon()->SetActive(false);
 	}
 	else 
 	{
-		weapon = wp;
+		this->weapon = wp;
 	}
 
 	weaponTranform = wp->GetWeapon()->m_transform.get();
 	float currDirY = weapon->GetWeapon()->m_transform->GetScale().y / glm::abs(weapon->GetWeapon()->m_transform->GetScale().y);
 
-	weapon = wp;
 
+	this->weapon = wp;
 	wp->GetWeapon()->SetActive(true);
 	wp->AssignAngle(&angle_deg);
-	wp->SetGameObject(m_gameObject);
+	wp->SetmodifyObject(m_gameObject);
 
 	//already set in editor, no need to set here
-	wp->GetWeapon()->m_transform->SetParent(m_gameObject->m_transform);
+	//wp->GetWeapon()->m_transform->SetParent(m_gameObject->m_transform);
 
 
 	if (direction.x == -1.0f) 
 	{
-		wp->GetWeapon()->m_transform->SetScale(glm::vec3(wp->GetWeaponScale().x * -1.0f, wp->GetWeaponScale().y * currDirY, 1));
+		wp->GetWeapon()->m_transform->SetScale(glm::vec3(glm::abs(wp->GetWeapon()->m_transform->GetScale().x) * -1.0f, glm::abs(wp->GetWeapon()->m_transform->GetScale().y) * currDirY, 1));
 	}
 	else {
-		wp->GetWeapon()->m_transform->SetScale(glm::vec3(wp->GetWeaponScale().x, wp->GetWeaponScale().y * currDirY, 1));
+		wp->GetWeapon()->m_transform->SetScale(glm::vec3(glm::abs(wp->GetWeapon()->m_transform->GetScale().x), glm::abs(wp->GetWeapon()->m_transform->GetScale().y) * currDirY, 1));
 	}
 
 	wp->GetWeapon()->m_transform->SetLocalPosition(glm::vec3(1.0f, 0.0f, 0.0f));
@@ -466,11 +443,61 @@ void PlayerController::assignWeapon(Weapon* wp)
 
 void PlayerController::AddEquipment(Equipment* e) 
 {
-	e->SetGameObject(m_gameObject);
+	e->SetmodifyObject(m_gameObject);
 	Equipments.push_back(e);
 
 	if (Weapon* w = dynamic_cast<Weapon*>(e))
 	{
 		Weapons.push_back(w);
 	}
+}
+
+void PlayerController::AddEquipment(GameObject* obj)
+{
+	Equipment* e = obj->GetComponent<Equipment>();
+
+	if (e != nullptr)
+	{
+		AddEquipment(e);
+	}
+}
+
+void PlayerController::RemoveWeapon(int index) 
+{
+	Weapons.erase(Weapons.begin() + index);
+}
+
+void PlayerController::RemoveEquipment(int index)
+{
+	Equipments.erase(Equipments.begin() + index);
+}
+
+void PlayerController::ModifyFromEquipment() 
+{
+	for (Equipment* e : Equipments)
+	{
+		e->Modify();
+	}
+}
+
+void PlayerController::RevertEquipment() 
+{
+	for (Equipment* e : Equipments)
+	{
+		if (Artifact* a = dynamic_cast<Artifact*>(e)) 
+		{
+			a->Revert();
+		}
+	}
+
+	Equipments.clear();
+	Weapons.clear();
+
+	weapon = nullptr;
+}
+
+void PlayerController::MultiplyMoveSpeed(float value) 
+{
+	this->move_speed = this->move_speed * value; 
+	this->max_move_speed = this->max_move_speed * value; 
 }

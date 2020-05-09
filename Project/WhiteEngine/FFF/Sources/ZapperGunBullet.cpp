@@ -64,7 +64,14 @@ void ZapperGunBullet::OnTriggerEnter(const Physic::Collision col) {
 			vector <Transform*> transformTmp;
 	
 			Physic::PhysicScene* ps = Physic::PhysicScene::GetInstance();
-			colliders = ps->GetColliderLayer(ps->GetLayerFromString("Enemy"));
+
+			//get all collider in target layers
+			Physic::Colliders colliders;
+			for (std::string target : TargetLayers) {
+				Physic::Colliders layerColliders = ps->GetColliderLayer(target);
+				colliders.insert(colliders.end(), layerColliders.begin(), layerColliders.end());
+			}
+
 			isTriggerEnemy = true;
 			zapDurationCount = 0.0f;
 			zapRateCount = 0.0f;
@@ -185,16 +192,16 @@ void ZapperGunBullet::Zap(float dt) {
 
 		if (e != nullptr) {
 
-			/*Rigidbody* rb = e->GetGameObject()->GetComponent<Rigidbody>();
+			Rigidbody* rb = e->GetGameObject()->GetComponent<Rigidbody>();
 
-			rb->SetVelocity(glm::vec3(0.0f));*/
+			rb->SetVelocity(glm::vec3(0.0f));
 
 			if (zapDurationCount > zapDuration) 
 			{
 				e->TakeDamage(bulletDmg);
 			}
 
-			e->GetGameObject()->m_transform->SetPosition(TargetTranform.at(i)->GetPosition());
+			//e->GetGameObject()->m_transform->SetPosition(TargetTranform.at(i)->GetPosition());
 
 			if (i < (Targets.size() - 1))
 			{
@@ -209,11 +216,6 @@ void ZapperGunBullet::Zap(float dt) {
 			}
 		}
 	}
-
-	if (zapRateCount > zapRate) {
-		zapRateCount = 0.0f;
-	}
-
 }
 
 void ZapperGunBullet::enemRelease() 

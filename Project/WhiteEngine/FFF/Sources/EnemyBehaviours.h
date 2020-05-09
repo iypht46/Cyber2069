@@ -54,16 +54,15 @@ private:
 protected:
 	AirFollowing* airFollow = nullptr;
 	AirDash* airDash = nullptr;
+	Explosion* explosion = nullptr;
 	SoundPlayer* BomberSound;
 	int SoundCounter;
 
 public:
 	EnemyState state = EnemyState::Idle;
 
-	Bomber() {}
+	Bomber();
 	~Bomber() {}
-
-	Explosion* explosion = nullptr;
 
 public:
 	void SetStats(float Speed, float HP, float Dmg, float AimTime, float DashSpeed, float ExplodeDmg, float ExplodeRadius);
@@ -95,10 +94,13 @@ protected:
 	AirPatrol* airPatrol;
 	ObjectPool* FlyerPool;
 	ObjectPool* BomberPool;
+	ObjectPool* ItemPool;
 	SoundPlayer* QueenSound;
 public:
 
 	void SetStats(float Speed, float HP, float SpawnDelay);
+
+	void SpawnItem();
 
 	//void assignFlyPool(ObjectPool* pool);
 	//void assignBombPool(ObjectPool* pool);

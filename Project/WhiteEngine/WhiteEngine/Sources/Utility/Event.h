@@ -1,5 +1,10 @@
 #pragma once
 #include <vector>
+#include <memory>
+#include <functional>
+
+#include <cereal/types/base_class.hpp>
+#include <cereal/types/polymorphic.hpp>
 
 //============================================
 //Event Controller
@@ -22,24 +27,24 @@ private:
 	template<class T, class ParamT>
 	class TypedEvent :public Event {
 	protected:
-		T* m_HostObject;
-		void (T::*m_Function) (ParamT param);
+		std::weak_ptr<T> m_HostObject;
+		std::function<void(ParamT)> m_Function;
 
 	public:
 		ParamT m_Param;
 
-		TypedEvent(T* host, void(T::*functionptr)(ParamT), ParamT defaultParam);
+		TypedEvent(std::weak_ptr<T> host, void(T::*functionptr)(ParamT), ParamT defaultParam);
 		virtual void Call();
 
 		virtual ~TypedEvent() {}
 	};
 
 
-	std::vector<Event*> m_events;
+	std::vector<std::unique_ptr<Event>> m_events;
 
 public:
 	template<class T, class ParamT>
-	void addEvent(T* host, void(T::*fuctionptr)(ParamT), ParamT defaultParam);
+	void addEvent(std::weak_ptr<T> host, void(T::*functionptr)(ParamT), ParamT defaultParam);
 
 	void Trigger();
 
@@ -53,13 +58,13 @@ public:
 
 template<class T, class ParamT>
 void EventSystem::TypedEvent<T, ParamT>::Call() {
-	(m_HostObject->*m_Function)(m_Param);
+	(*m_Function)(m_Param);
 }
 
 template<class T, class ParamT>
-EventSystem::TypedEvent<T, ParamT>::TypedEvent(T* host, void(T::*functionptr)(ParamT), ParamT defaultParam) {
+EventSystem::TypedEvent<T, ParamT>::TypedEvent(std::weak_ptr<T> host, void(T::* functionptr)(ParamT), ParamT defaultParam) {
 	m_HostObject = host;
-	m_Function = functionptr;
+	m_Function = std::bind(&T::functionptr, host, std::placeholders::_1);
 	m_Param = defaultParam;
 }
 
@@ -70,7 +75,7 @@ EventSystem::TypedEvent<T, ParamT>::TypedEvent(T* host, void(T::*functionptr)(Pa
 //============================================
 
 template<class T, class ParamT>
-void EventSystem::addEvent(T* host, void(T::*fuctionptr)(ParamT), ParamT defaultParam) {
-	Event* newEvent = new TypedEvent<T, ParamT>(host, fuctionptr, defaultParam);
-	m_events.push_back(newEvent);
+void EventSystem::addEvent(std::weak_ptr<T> host, void(T::* fuctionptr)(ParamT), ParamT defaultParam) {
+	std::unique_ptr<Event> newEvent = std::make_unique<TypedEvent<T, ParamT>>(host, fuctionptr, defaultParam);
+	m_events.push_back(std::move(newEvent));
 }

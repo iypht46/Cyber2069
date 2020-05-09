@@ -4,10 +4,12 @@
 #include "Physic/Collision.hpp"
 
 BehaviourScript::BehaviourScript() {
-	Factory<BehaviourScript>::Add(this);
+	Factory<Component, BehaviourScript>::Add(this);
 }
 
-BehaviourScript::~BehaviourScript() { }
+BehaviourScript::~BehaviourScript() {
+	Factory<Component, BehaviourScript>::Remove(this);
+}
 
 void BehaviourScript::Init() { }
 

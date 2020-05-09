@@ -2,6 +2,10 @@
 #include "Core/Logger.hpp"
 #include "Graphic/GLRenderer.h"
 
+Bomber::Bomber() {
+
+}
+
 void Bomber::OnAwake() {
 	airFollow = m_gameObject->GetComponent<AirFollowing>();
 	airDash = m_gameObject->GetComponent<AirDash>();
@@ -52,7 +56,6 @@ void Bomber::OnFixedUpdate(float dt) {
 				if (airDash->DashEnd()) {
 					explosion->Explode();
 					hpSystem->Dead();
-
 
 					state = EnemyState::Idle;
 				}

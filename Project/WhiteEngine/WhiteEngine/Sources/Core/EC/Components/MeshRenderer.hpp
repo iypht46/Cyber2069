@@ -15,12 +15,9 @@
 class GameObject;
 class Component;
 
-#define SpritePath(path) "Sources/Assets/Sprites/" path ".png" 
-
 class MeshRenderer : public Component
 {
 private:
-	bool isUI = false;
 	
 	std::string sr_texturePath;
 	float sr_NumFrameX = 1;
@@ -35,6 +32,8 @@ private:
 
 public:
 	int layer = 0; //higher layer is infront
+
+	bool isUI = false;
 	bool inSet = false;
 
 	MeshRenderer();
@@ -52,6 +51,8 @@ public:
 	void SetReplaceColor(glm::vec3 color);
 	void SetReplaceColor(std::string hexcode);
 	void RemoveReplaceColor();
+
+	unsigned int GetTexture() { return texture; }
 
 	int GetLayer();
 

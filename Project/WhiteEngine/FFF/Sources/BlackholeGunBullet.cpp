@@ -34,7 +34,7 @@ void BlackholeGunBullet::OnUpdate(float dt)
 		rb->SetVelocity(glm::vec3(0));
 		DurationCount += dt;
 
-		DragEnemy();
+		DragEnemy(dt);
 
 		GLRenderer::GetInstance()->DrawDebug_Circle(m_gameObject->m_transform->GetPosition().x, m_gameObject->m_transform->GetPosition().y, Radius, 0.0f, 0.0f, 1.0f);
 
@@ -75,14 +75,23 @@ void BlackholeGunBullet::OnCollisionEnter(const Physic::Collision col) {
 	m_gameObject->SetActive(false);
 }
 
-void BlackholeGunBullet::DragEnemy() 
+void BlackholeGunBullet::DragEnemy(float dt) 
 {
 	Rigidbody* enemRb;
 
 	Physic::PhysicScene* ps = Physic::PhysicScene::GetInstance();
-	Physic::Colliders colliders = ps->GetColliderLayer(ps->GetLayerFromString("Enemy"));
+
+	//get all collider in target layers
+	Physic::Colliders colliders;
+	for (std::string target : TargetLayers) {
+		Physic::Colliders layerColliders = ps->GetColliderLayer(target);
+		colliders.insert(colliders.end(), layerColliders.begin(), layerColliders.end());
+	}
+
 	Physic::Colliders collide;
 
+
+	Dot_count += dt;
 	for (Collider* c : colliders) {
 		float distance = glm::length(c->GetGameObject()->m_transform->GetPosition() - m_gameObject->m_transform->GetPosition());
 		
@@ -104,10 +113,19 @@ void BlackholeGunBullet::DragEnemy()
 				if (distance < 10) 
 				{
 					enemRb->SetVelocity(glm::vec3(0.0f));
-					enemy->TakeDamage(bulletDmg);
+
+					if (Dot_count >= 1.0f) 
+					{
+						enemy->TakeDamage(bulletDmg);
+					}
 				}
 			}
 		}
+	}
+
+	if (Dot_count >= 1.0f)
+	{
+		Dot_count = 0.0f;
 	}
 
 	BhSound->SetSound(SoundPath("SFX_BlackHole_Sucking"));
@@ -116,7 +134,14 @@ void BlackholeGunBullet::DragEnemy()
 
 void BlackholeGunBullet::ReleaseEnemy() {
 	Physic::PhysicScene* ps = Physic::PhysicScene::GetInstance();
-	Physic::Colliders colliders = ps->GetColliderLayer(ps->GetLayerFromString("Enemy"));
+
+	//get all collider in target layers
+	Physic::Colliders colliders;
+	for (std::string target : TargetLayers) {
+		Physic::Colliders layerColliders = ps->GetColliderLayer(target);
+		colliders.insert(colliders.end(), layerColliders.begin(), layerColliders.end());
+	}
+
 	Physic::Colliders collide;
 
 	for (Collider* c : colliders) {

@@ -39,8 +39,9 @@ protected:
 	void OnTakeDamage();
 	void OnDead();
 public:
+	float baseScore = 1.0f;
 	float CollideDamage = 1.0f;
-	float targetDetectionRange = 1000.0f;
+	float targetDetectionRange = 2000.0f;
 
 	virtual void OnAwake() override;
 	virtual void OnUpdate(float dt) override;
@@ -62,6 +63,7 @@ public:
 		archive(
 			cereal::base_class<Character>(this),
 			targetDetectionRange,
+			baseScore,
 			CollideDamage
 		);
 	}

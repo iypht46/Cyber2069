@@ -6,7 +6,7 @@
 //#include <glm/gtc/quaternion.hpp>
 //#include <glm/gtx/quaternion.hpp>
 
-#include "Component.hpp"
+#include "Core/Factory.h"
 
 //serialization
 #include "Serialization/glmCereal.h"
@@ -32,6 +32,8 @@ private:
 	glm::vec3 m_localScale;
 	float m_localRotation = 0.0f;
 
+	static float maxParallaxDistance;
+
 	//runtime rendering matrix
 	glm::mat4 m_modelMatrix;
 
@@ -43,6 +45,7 @@ private:
 	//updatelocalrotation
 public:
 	Transform();
+	~Transform();
 
 	glm::vec3 GetPosition();
 	glm::vec3 GetLocalPosition();
@@ -53,6 +56,7 @@ public:
 	glm::vec3 Up();
 	glm::vec3 Right();
 
+	float GetParallaxValue();
 	glm::mat4 GetModelMatrix();
 
 	void SetParent(std::weak_ptr<Transform> newParent);
