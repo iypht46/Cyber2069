@@ -493,6 +493,7 @@ void PlayerController::RevertEquipment()
 	Equipments.clear();
 	Weapons.clear();
 
+	weapon->GetGameObject()->SetActive(false);
 	weapon = nullptr;
 }
 

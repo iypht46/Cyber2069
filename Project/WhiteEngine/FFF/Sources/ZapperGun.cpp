@@ -9,10 +9,9 @@ ZapperGun::ZapperGun() {
 
 void ZapperGun::OnAwake(){
 
-	weaponObj->GetComponent<SoundPlayer>()->CreateSoundPlayer();
-	weaponObj->GetComponent<SoundPlayer>()->SetSound(SoundPath("SFX_Zapper_Shoot"));
-	weaponObj->GetComponent<SoundPlayer>()->SetLoop(false);
-	weaponObj->SetActive(false);
+	m_gameObject->GetComponent<SoundPlayer>()->SetSound(SoundPath("SFX_Zapper_Shoot"));
+	m_gameObject->GetComponent<SoundPlayer>()->SetLoop(false);
+	m_gameObject->SetActive(false);
 
 	weapon_damage = 1.0f;
 	//weapon_firerate = 0.1f;
@@ -42,15 +41,17 @@ void ZapperGun::GameTimeBehaviour(float dt) {
 	if (Input::GetMouseHold(Input::MouseKeyCode::MOUSE_LEFT) ||
 		Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT))
 	{
-		SoundCounter -= dt;
+		/*SoundCounter -= dt;
 		if (SoundCounter <= 0) {
-			weaponObj->GetComponent<SoundPlayer>()->PlaySound();
+			m_gameObject->GetComponent<SoundPlayer>()->PlaySound();
 			SoundCounter = SoundTimer;
-		}
+		}*/
 
 		weapon_delay_count += dt;
 		if (weapon_delay_count >= (1.0f / weapon_firerate))
 		{
+			m_gameObject->GetComponent<SoundPlayer>()->PlaySound();
+
 			GameObject* bullet = BulletPool->GetInactiveObject();
 
 			if (bullet != nullptr) {
