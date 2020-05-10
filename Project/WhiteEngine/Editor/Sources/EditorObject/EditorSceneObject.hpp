@@ -11,6 +11,7 @@
 
 //Standard Library
 #include <utility>
+#include <queue>
 
 namespace Tools
 {
@@ -22,6 +23,7 @@ namespace Tools
 	private:
 		SceneObjectHandle m_sceneObject;
 		std::set<EditorEntity*> m_entityInScene;
+		std::queue<EditorEntity*> m_removeQueue;
 	protected:
 		virtual void PreRender() override;
 		virtual void OnRender() override;
@@ -35,6 +37,8 @@ namespace Tools
 		void AddObjToScene(GameObject* obj); //Add gameobject to scene object only
 		EditorEntity* AddEntity();
 		void AddEntity(EditorEntity* ent);
+		void RemoveEntity(EditorEntity* ent);
+		void ProcessRemoveQueue();
 		void AddPrefab(Utility::fs::path prefabPath);
 		virtual bool Load(Container::wString path) override;
 		virtual bool Save(Container::wString path) override;

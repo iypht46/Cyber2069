@@ -52,15 +52,12 @@ namespace Tools
 		void MainMenuBar();
 		bool AccessEditor(Editor* editor);
 		bool AccessEditor(EDITOR_TYPE type);
-		std::string openfilename(const char *filter = "All Files (*.*)\0*.*\0", HWND owner = NULL);
 	public:
 		MainEditor();
 		~MainEditor();
 		void Init();
 		void Update();
 		void Terminate();
-		void Save(Editor*, Container::wString fileName = "whiteFile");
-		void Load(Editor*, const char*);
 	};
 }
 

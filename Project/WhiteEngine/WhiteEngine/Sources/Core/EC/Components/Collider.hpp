@@ -86,8 +86,8 @@
 	{
 		friend class Rigidbody;
 	private:
-		float m_halfWidth;
-		float m_halfHeight;
+		float m_halfWidth = 1.0f;
+		float m_halfHeight = 1.0f;
 		/*unused var*/glm::vec3 m_colliderScale; //Scale multiplier in halfwidth and halfheight
 	public:
 		//Constructor

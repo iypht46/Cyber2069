@@ -7,6 +7,7 @@
 //From Editor Project
 #include "EditorComponent.hpp"
 #include "EditorObject.hpp"
+#include "EditorObject/CoreComponentEC.hpp"
 //Third Party Library
 #include "imgui.h"
 #include "glm/ext.hpp"
@@ -45,18 +46,20 @@ namespace Tools
 		ComponentsEC m_components;
 		ComponentsMap m_componentsMap;
 		ImGuiTreeNodeFlags m_nodeFlag = ImGuiTreeNodeFlags_OpenOnArrow;
+		EditorEntity* m_parent;
 		void AddComponentToEntity(EditorComponent* compEC);
 	protected:
 		//Override Methods
 		virtual void PreRender() override;
 		virtual void OnRender() override;
 		virtual void PostRender() override;
-		void LoadChildObject(); //Wrap child object with EditorEntity object and put into m_childEntities container.
+		void HierarchyPopup();
 		void LoadComponents(); //Wrap components with EditorComponent object and put into m_components and m_componentsMap container.
 		void LoadGameObject(); //Load all gameobject data into entity (Child Object & Components).
 	public:
 		//Constructor
 		EditorEntity();
+		~EditorEntity();
 		EditorEntity(GameObjectHandle gameObject);
 		EditorEntity(GameObject* obj);
 
@@ -66,12 +69,14 @@ namespace Tools
 		virtual void AddObject() override;
 		virtual bool Load(Container::wString path) override;
 		virtual bool Save(Container::wString path) override;
+		void LoadChildObject(); //Wrap child object with EditorEntity object and put into m_childEntities container.
 
 		//Entity Interface
 		void RenderGameObject(glm::mat4 cam);
 		void SetScene(EditorSceneObject* scene);
 		bool IsInScene();
 		void SetParent(EditorEntity* ent);
+		EditorEntity* GetParent();
 		GameObject* GetGameObject();
 		GameObjectHandle GetGameObjectHandle();
 		TransformEC* GetTransformEC();
@@ -84,4 +89,5 @@ namespace Tools
 		std::string GetName();
 		int GetID();
 	};
+
 }

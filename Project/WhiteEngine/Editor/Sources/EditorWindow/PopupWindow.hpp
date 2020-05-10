@@ -29,6 +29,7 @@ namespace Tools
 		void Push(PopupData& PopupData);
 		int size() const;
 		void Update();
+		static PopupWindow& GetGlobalPopup();
 	};
 }
 

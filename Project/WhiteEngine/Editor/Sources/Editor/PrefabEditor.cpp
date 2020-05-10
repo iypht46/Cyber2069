@@ -5,6 +5,8 @@
 #include "Core/Logger.hpp"
 #include "Container/String.hpp"
 #include "Serialization/Serialization.h"
+#include "Core/GameInfo.h"
+#include "Graphic/GLRenderer.h"
 
 #include <iostream>
 
@@ -24,6 +26,8 @@ namespace Tools
 	{
 		//Window Setup
 		m_previewWindow = make_unique<PreviewWindow>(&m_previewBool, "Prefab Preview", false, 400, 400);
+		RenderFunction customRenderFunc = [=](glm::mat4 mat) { this->RenderPrefab(mat); };
+		m_previewWindow->SetCustomRenderFunction(customRenderFunc);
 		m_mainWindow = m_previewWindow.get();
 
 		//File Dialog Setup
@@ -63,13 +67,30 @@ namespace Tools
 		/*auto mesh = m_editorEntitiy->GetComponent("MeshRendererEC");
 		if (mesh)
 			m_previewWindow->SetMesh(mesh);*/
-		m_previewWindow->SetEntity(m_entityObject.get());
+		//m_previewWindow->SetEntity(m_entityObject.get());
 		m_previewWindow->Render();
 	}
 
 	void PrefabEditor::Terminate(void)
 	{
 
+	}
+
+	void PrefabEditor::RenderPrefab(glm::mat4 cam)
+	{
+		if (!m_entityObject)
+			return;
+
+		auto anim = m_entityObject->GetGameObject()->GetComponent<Animator>();
+		auto col = m_entityObject->GetGameObject()->GetComponent<BoxCollider>();
+
+		if (anim)
+			anim->animUpdate(World::GameInfo::GetInstance().m_deltaTime);
+
+		if (col)
+			GLRenderer::GetInstance()->RenderDebugCollider(col, cam);
+
+		m_entityObject->RenderGameObject(cam);
 	}
 
 	bool PrefabEditor::Save(Utility::fs::path path, Container::wString& returnMessage)
@@ -165,6 +186,7 @@ namespace Tools
 			ImGui::EndMenu();
 		}
 	}
+
 	EditorObject * PrefabEditor::GetEditorObject()
 	{
 		return m_entityObject.get();

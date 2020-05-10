@@ -102,7 +102,7 @@ bool MeshRenderer::IsUI()
 
 bool MeshRenderer::IsTextureLoaded()
 {
-	return (m_texture);
+	return (sr_texturePath != "none");
 }
 
 void  MeshRenderer::CreateMesh(float NumframeX, float NumFrameY)
@@ -273,4 +273,9 @@ unsigned int MeshRenderer::GetTexture()
 		return m_texture->m_textureID;
 	else
 		return -1;
+}
+
+std::string MeshRenderer::GetTexturePath()
+{
+	return sr_texturePath;
 }

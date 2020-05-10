@@ -1,7 +1,9 @@
 //Editor
-#include "EditorEntity.hpp"
-#include "CoreComponentEC.hpp"
-#include "EditorSceneObject.hpp"
+#include "EditorObject/EditorEntity.hpp"
+#include "EditorObject/CoreComponentEC.hpp"
+#include "EditorObject/ParticleComponentEC.hpp"
+#include "EditorObject/EditorSceneObject.hpp"
+#include "EditorWindow/PopupWindow.hpp"
 //White Engine
 #include "Core/EC/GameObject.hpp"
 #include "Core/EC/Components/MeshRenderer.hpp"
@@ -22,14 +24,15 @@ namespace Tools
 	EditorEntity::EditorEntity() 
 	{
 		m_gameObject = std::make_shared<GameObject>();
-		//m_gameObject = std::make_unique<GameObject>();
 		LoadGameObject();
-		//m_objectName = m_gameObject->GetName();
-		//m_isActive = m_gameObject->Active();
-		////Create transform
-		//m_transformEC = std::make_unique<TransformEC>();
-		//m_transformEC->Init(m_gameObject->m_transform.get());
-		//this->AddComponentToEntity(m_transformEC.get());
+	}
+
+	EditorEntity::~EditorEntity()
+	{
+		for (auto comp : m_components)
+		{
+			delete comp;
+		}
 	}
 
 	EditorEntity::EditorEntity(GameObject* obj)
@@ -43,6 +46,7 @@ namespace Tools
 	{
 		//Create gameobject from parameter
 		m_gameObject = gameObject;
+		gameObject->SetAllComponents();
 		LoadGameObject();
 	}
 
@@ -93,8 +97,9 @@ namespace Tools
 
 		if (m_gameObject.get())
 		{
-			LoadGameObject();
 			m_gameObject->SetAllComponents();
+			LoadGameObject();
+			
 		}
 
 		return (m_gameObject.get());
@@ -148,14 +153,7 @@ namespace Tools
 
 	void EditorEntity::OnRender()
 	{
-		if (ImGui::BeginPopupContextItem("##EntityAction"))
-		{
-			if (ImGui::Selectable("Add Child Object"))
-			{
-				this->AddObject();
-			}
-			ImGui::EndPopup();
-		}
+		HierarchyPopup();
 		
 		if (ImGui::IsItemClicked())
 		{
@@ -204,6 +202,28 @@ namespace Tools
 
 	}
 
+	void EditorEntity::HierarchyPopup()
+	{
+		if (ImGui::BeginPopupContextItem("##EntityAction"))
+		{
+			if (ImGui::Selectable("Add Child Object"))
+			{
+				this->AddObject();
+			}
+
+			//If this entity is in scene
+			if (m_scene)
+			{
+				if (ImGui::Selectable("Remove"))
+				{
+					m_scene->RemoveEntity(this);
+				}
+			}
+			
+			ImGui::EndPopup();
+		}
+	}
+
 	void EditorEntity::LoadChildObject()
 	{
 		int childCount = m_gameObject->m_transform->GetChildCount();
@@ -240,17 +260,23 @@ namespace Tools
 		//Create transform
 		m_transformEC = std::make_unique<TransformEC>();
 		m_transformEC->Init(m_gameObject->m_transform.get());
-		this->AddComponentToEntity(m_transformEC.get());
-		this->LoadChildObject();
+		//this->AddComponentToEntity(m_transformEC.get());
+		//this->LoadChildObject();
 		this->LoadComponents();
-		this->GetGameObject()->SetAllComponents();
+		//this->GetGameObject()->SetAllComponents();
 	}
 
 	void EditorEntity::SetParent(EditorEntity* ent)
 	{
+		m_parent = ent;
 		TransformEC* transEC = ent->GetTransformEC();
 		m_transformEC->SetParent(transEC);
 		
+	}
+
+	EditorEntity* EditorEntity::GetParent()
+	{
+		return m_parent;
 	}
 
 	GameObject* EditorEntity::GetGameObject()
@@ -271,8 +297,9 @@ namespace Tools
 	void EditorEntity::AddComponent(std::string type)
 	{
 		//Check if component have been added
-		if (m_componentsMap[type])
+		if (m_componentsMap.find(type) != m_componentsMap.end())
 		{
+			ENGINE_INFO("Component Already Exist!!");
 			return;
 		}
 
@@ -283,19 +310,28 @@ namespace Tools
 		}
 		else if (type == "BoxColliderEC")
 		{
+			
 			comp = m_gameObject->AddComponent<BoxCollider>();
 		}
 		else if (type == "RigidbodyEC")
 		{
-			comp = m_gameObject->AddComponent<Rigidbody>();
+			if (!m_gameObject->GetComponent<Collider>())
+			{
+				PopupData data("Add Component:", "Please add collider before adding rigidbody");
+				PopupWindow::GetGlobalPopup().Push(data);
+			}
+			else
+			{
+				comp = m_gameObject->AddComponent<Rigidbody>();
+			}
 		}
 		else if (type == "AnimatorEC")
 		{
 			comp = m_gameObject->AddComponent<Animator>();
 		}
-		else if (type == "SoundPlayerEC")
+		else if (type == "ParticleComponentEC")
 		{
-			comp = m_gameObject->AddComponent<SoundPlayer>();
+			comp = m_gameObject->AddComponent<ParticleSystem>();
 		}
 
 		if (comp)
@@ -365,18 +401,46 @@ namespace Tools
 		return m_componentsMap[name];
 	}
 
-	bool EditorEntity::RemoveComponent(std::string name)
+	bool EditorEntity::RemoveComponent(std::string type)
 	{
-		auto it = m_componentsMap.find(name);
+		//If component doesn't exist in map then do nothing
+		auto it = m_componentsMap.find(type);
 		if (it == m_componentsMap.end())
 			return false;
-		
 
-		m_components.erase(std::remove(m_components.begin(), m_components.end(), m_componentsMap[name]), m_components.end());
-		m_componentsMap.erase(name);
+		Component* comp = nullptr;
+		if (type == "MeshRendererEC")//(type.find("MeshRendererEC") != std::string::npos)
+		{
+			m_gameObject->RemoveComponent<MeshRenderer>();
+		}
+		else if (type == "BoxColliderEC")
+		{
+
+			m_gameObject->RemoveComponent<BoxCollider>();
+		}
+		else if (type == "RigidbodyEC")
+		{
+				m_gameObject->RemoveComponent<Rigidbody>();
+		}
+		else if (type == "AnimatorEC")
+		{
+			m_gameObject->RemoveComponent<Animator>();
+		}
+		else if (type == "ParticleComponentEC")
+		{
+			m_gameObject->RemoveComponent<ParticleSystem>();
+		}
+		else
+		{
+			return false;
+		}
 
 		auto component = (*it).second;
-
+		m_componentsMap.erase(it);
+		auto componentIt = std::find(m_components.begin(), m_components.end(), component);
+		if (componentIt != m_components.end())
+			m_components.erase(componentIt);
+		delete component;
 		return true;
 	}
 

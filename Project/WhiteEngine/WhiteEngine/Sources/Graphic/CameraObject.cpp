@@ -86,7 +86,7 @@ namespace Graphic
 		return m_view;
 	}
 
-	glm::mat4 CameraObject::GetViewProjMatrix(void)
+	glm::mat4 CameraObject::GetProjViewMatrix(void)
 	{
 		return m_projection * m_view;
 	}

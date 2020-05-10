@@ -39,7 +39,7 @@ namespace Tools
 
 		if (m_customRender && m_customRenderFunction)
 		{
-			glm::mat4 camMatrix = m_camera->GetViewProjMatrix();
+			glm::mat4 camMatrix = m_camera->GetProjViewMatrix();
 			//std::cout << "Camera Matrix: \n" << glm::to_string(camMatrix) << std::endl;
 			m_shader->use();
 
@@ -51,7 +51,7 @@ namespace Tools
 		{
 			if (m_entityToRender)//(m_mesh && m_mesh->IsTextureLoaded())
 			{
-				glm::mat4 camMatrix = m_camera->GetViewProjMatrix();
+				glm::mat4 camMatrix = m_camera->GetProjViewMatrix();
 				//std::cout << "Camera Matrix: \n" << glm::to_string(camMatrix) << std::endl;
 				m_shader->use();
 				auto anim = m_entityToRender->GetGameObject()->GetComponent<Animator>();

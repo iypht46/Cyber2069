@@ -18,7 +18,6 @@ namespace Tools
 	MAKE_COMPONENT(BoxColliderEC);
 	MAKE_COMPONENT(RigidbodyEC);
 	MAKE_COMPONENT(AnimatorEC);
-	MAKE_COMPONENT(SoundPlayerEC);
 	MAKE_COMPONENT(ParticleComponentEC);
 	//*****          END            *****//
 
@@ -79,7 +78,11 @@ namespace Tools
 			m_isReplaceColor = m_typeComponent->IsReplaceColor();
 
 			if (m_isLoaded)
+			{
 				m_typeComponent->Init();
+				m_textureName = Utility::fs::path(m_typeComponent->GetTexturePath()).filename().generic_string();
+			}
+				
 
 			if (m_isReplaceColor)
 				m_replaceColor = m_typeComponent->GetReplaceColor();
@@ -208,13 +211,13 @@ namespace Tools
 	{
 		ImGui::PushItemWidth(-1);
 		ImGui::AlignTextToFramePadding(); ImGui::Text("Size");
-		ImGui::SameLine();
+
 		if (ImGui::DragFloat("X##Width", &m_width, 0.1, -500.0f, 500.0f, "%.1f", 1.0f))
 		{
 			m_typeComponent->ReSize(m_width, m_height);
 			dirty = true;
 		}
-		ImGui::SameLine(); 
+		//ImGui::SameLine(); 
 
 		if (ImGui::DragFloat("Y##Height", &m_height, 0.1, -500.0f, 500.0f, "%.1f", 1.0f))
 		{
@@ -407,21 +410,5 @@ namespace Tools
 
 			m_acFileDialog.ClearSelected();
 		}
-	}
-
-	void SoundPlayerEC::Init(Component * soundPlayerComponent)
-	{
-		m_component = soundPlayerComponent;
-		m_typeComponent = dynamic_cast<SoundPlayer*>(m_component);
-
-		if (m_typeComponent)
-		{
-
-		}
-	}
-
-	void SoundPlayerEC::OnRender()
-	{
-
 	}
 }

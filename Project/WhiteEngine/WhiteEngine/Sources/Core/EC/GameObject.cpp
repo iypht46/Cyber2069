@@ -54,9 +54,10 @@ int GameObject::GetID() {
 
 void GameObject::SetAllComponents()
 {
+	m_transform->SetGameObject(this);
 	for (std::shared_ptr<Component> component : m_components) {
 		component->SetGameObject(this);
-		component->Init();
+		//component->Init();
 
 		//if is behaviou script, also assign to script collection
 		std::shared_ptr<BehaviourScript> behaviour = dynamic_pointer_cast<BehaviourScript>(component);
@@ -66,9 +67,18 @@ void GameObject::SetAllComponents()
 	}
 }
 
+void GameObject::InitAllComponents()
+{
+	for (std::shared_ptr<Component> component : m_components) 
+	{
+		component->Init();
+	}
+}
+
 void GameObject::InitComponents() {
 
 	SetAllComponents();
+	InitAllComponents();
 
 	for (std::shared_ptr<BehaviourScript> behaviour : m_scripts) {
 		behaviour->OnAwake();

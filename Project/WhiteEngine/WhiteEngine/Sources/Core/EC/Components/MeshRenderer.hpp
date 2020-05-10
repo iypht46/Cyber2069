@@ -33,7 +33,6 @@ private:
 	MeshVbo* mesh = nullptr;
 	Animator* anim = nullptr;
 	GLuint texture = -1;
-	bool m_texLoaded = false;
 	glm::vec3 ReplaceColor;
 
 	Graphic::Texture* m_texture = nullptr;
@@ -59,6 +58,7 @@ public:
 	void RemoveReplaceColor();
 
 	unsigned int GetTexture();
+	std::string GetTexturePath();
 
 	int GetLayer();
 	bool IsUI();
@@ -72,13 +72,11 @@ public:
 		archive(
 			cereal::base_class<Component>(this),
 			m_isUI,
-			m_texLoaded,
 			sr_texturePath,
 			sr_NumFrameX,
 			sr_NumFrameY,
 			layer,
-			ReplaceColor,
-			inSet
+			ReplaceColor
 		);
 	}
 };

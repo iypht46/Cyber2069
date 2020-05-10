@@ -62,6 +62,7 @@ public:
 
 	//init all member component
 	void SetAllComponents();
+	void InitAllComponents();
 	void InitComponents();
 
 	//start all member behaviour script
@@ -69,6 +70,9 @@ public:
 
 	template <class T>
 	T* AddComponent();
+
+	template <class T>
+	void RemoveComponent();
 
 	template <class T>
 	std::weak_ptr<T> AddComponent_weak();
@@ -105,6 +109,22 @@ T* GameObject::AddComponent() {
 	m_components.back()->SetGameObject(this);
 
 	return component.get();
+}
+
+template<class T>
+void GameObject::RemoveComponent() {
+	for (auto it = m_components.begin(); it != m_components.end(); ++it)
+	{
+		std::shared_ptr<T> component = dynamic_pointer_cast<T>(*it);
+		if (component)
+		{
+			m_components.erase(it);
+			component.reset();
+			return;
+		}
+
+		
+	}
 }
 
 //return a weak ptr of component instead of raw

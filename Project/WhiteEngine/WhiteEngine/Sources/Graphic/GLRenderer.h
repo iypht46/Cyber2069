@@ -118,7 +118,7 @@ public:
 
 	void AddMeshToSet(MeshRenderer* mesh);
 
-	void RenderDebugCollider(BoxCollider* col);
+	void RenderDebugCollider(BoxCollider* col, glm::mat4 mat);
 	void RenderLine(LineVertex* vertex);
 	void RenderCircle(CircleVertex* vertex);
 

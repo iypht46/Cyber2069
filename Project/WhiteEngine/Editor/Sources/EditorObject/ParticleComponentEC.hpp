@@ -19,5 +19,6 @@ namespace Tools
 	private:
 		INIT_COMPONENT(ParticleSystem);
 		ImGui::FileBrowser m_particleFileBrowser;
+		std::string m_particleFileName = "none";
 	};
 }

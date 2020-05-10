@@ -17,6 +17,7 @@ namespace Tools
 	class Inspector : public UIWindow, public EditorObjectRenderer
 	{
 	private:
+		std::string m_objectName;
 		EditorEntity* m_entityToRender;
 		AvailableComponent* m_editorComponentList;
 		ImGuiTextFilter filter;

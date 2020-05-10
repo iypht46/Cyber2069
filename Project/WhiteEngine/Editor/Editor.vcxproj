@@ -109,7 +109,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Editor\Vendors\imgui-filebrowser;$(SolutionDir)Editor\Vendors\imgui;$(SolutionDir)Editor\Sources;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)FFF\Sources;$(SolutionDir)Editor\Vendors\imgui-filebrowser;$(SolutionDir)Editor\Vendors\imgui;$(SolutionDir)Editor\Sources;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableModules>false</EnableModules>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>

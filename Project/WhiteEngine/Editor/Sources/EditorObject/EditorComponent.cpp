@@ -6,17 +6,28 @@
 namespace Tools
 {
 
-	EditorComponent::EditorComponent(std::string name, bool canDisable) : m_componentName(name)
+	EditorComponent::EditorComponent(std::string name, bool canDisable, bool canRemove) : m_componentName(name)
 	{
 		m_id = ++m_totalNumEC;
+
 		if (canDisable)
 			m_enable = new bool(true);
-		//m_enable = true;
+		if (canRemove)
+			m_open = new bool(true);
+	}
+
+	EditorComponent::~EditorComponent()
+	{
+		if (m_enable != nullptr)
+			delete m_enable;
+
+		if (m_open != nullptr)
+			delete m_open;
 	}
 
 	bool EditorComponent::Render()
 	{
-		if (ImGui::CollapsingHeader(m_componentName.c_str(), &m_open))
+		if (ImGui::CollapsingHeader(m_componentName.c_str(), m_open))
 		{
 			if (m_enable)
 			{
@@ -24,11 +35,14 @@ namespace Tools
 				if (ImGui::Checkbox("##IsEnable", m_enable))
 					m_component->SetEnable(*m_enable);
 			}
-			
+
 			OnRender();
 		}
 
-		return m_open;
+		if (m_open)
+			return *m_open;
+		else
+			return false;
 	}
 
 	std::string EditorComponent::GetName()
@@ -58,7 +72,6 @@ namespace Tools
 
 	EditorComponent* EditorComponent::addComponent(std::string type, EditorComponent* comp)
 	{
-		//ENGINE_INFO("Adding prototype for {}", type);
 		m_componentTable[type] = comp;
 		m_availableComponent.push_back(type);
 

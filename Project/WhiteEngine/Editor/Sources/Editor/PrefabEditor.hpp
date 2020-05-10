@@ -30,6 +30,7 @@ namespace Tools
 		virtual void Init(void) override;
 		virtual void OnUpdate(void) override;
 		virtual void Terminate(void) override;
+		virtual void RenderPrefab(glm::mat4 cam);
 	public:
 		PrefabEditor(bool* isOpen);
 		PrefabEditor();

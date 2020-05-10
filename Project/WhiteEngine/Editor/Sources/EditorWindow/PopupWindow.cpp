@@ -73,6 +73,13 @@ namespace Tools
 		DisplayPopup(popup);
 	}
 
+	PopupWindow& PopupWindow::GetGlobalPopup()
+	{
+		static PopupWindow popup;
+
+		return popup;
+	}
+
 	int PopupWindow::size() const
 	{
 		return m_popupQueue.size();

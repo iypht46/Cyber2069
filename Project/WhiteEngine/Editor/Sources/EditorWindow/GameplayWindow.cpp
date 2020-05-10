@@ -3,6 +3,7 @@
 #include "Graphic/GraphicCore.hpp"
 
 
+
 namespace Tools
 {
 	void GameplayWindow::Init()

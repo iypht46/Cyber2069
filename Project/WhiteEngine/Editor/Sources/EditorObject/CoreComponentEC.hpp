@@ -17,7 +17,7 @@ namespace Tools
 		virtual void OnRender() override;
 		IMPLEMENT_CLONE(TransformEC);
 	public:
-		TransformEC() : EditorComponent("TransformEC", false) { }
+		TransformEC() : EditorComponent("TransformEC", false, false) { }
 		virtual void SetParent(TransformEC* other);
 		virtual void Init(Component* engineComponent) override;
 		
@@ -52,8 +52,8 @@ namespace Tools
 	private:
 		//TODO: Add pointer to members of each component
 		INIT_COMPONENT(BoxCollider)
-		float m_width;
-		float m_height;
+		float m_width = 0.0f;
+		float m_height = 0.0f;
 	protected:
 		virtual void OnRender() override;
 		IMPLEMENT_CLONE(BoxColliderEC);
@@ -67,9 +67,9 @@ namespace Tools
 	{
 	private:
 		INIT_COMPONENT(Rigidbody)
-		float m_mass;
-		float m_gravityScale;
-		float m_drag;
+		float m_mass = 0.0f;
+		float m_gravityScale = 1.0f;
+		float m_drag = 0.0f;
 	protected:
 		virtual void OnRender() override;
 		IMPLEMENT_CLONE(RigidbodyEC);
@@ -83,7 +83,7 @@ namespace Tools
 	{
 	private:
 		INIT_COMPONENT(Animator)
-		float m_framerate;
+		float m_framerate = 12;
 		Utility::fs::path m_controllerPath;
 		std::shared_ptr<AnimationController> m_controller;
 		ImGui::FileBrowser m_acFileDialog;
@@ -97,29 +97,4 @@ namespace Tools
 		void SetCurrentState(int index);
 
 	};
-
-	class SoundPlayerEC : public EditorComponent
-	{
-	private:
-		INIT_COMPONENT(SoundPlayer)
-		bool m_looping;
-		float m_volume;
-		std::string m_soundName;
-		bool m_isSoundLoaded = false;
-	protected:
-		virtual void OnRender() override;
-		IMPLEMENT_CLONE(SoundPlayerEC);
-	public:
-		SoundPlayerEC() : EditorComponent("SoundPlayerEC") {}
-		virtual void Init(Component* soundPlayerComponent) override;
-		
-
-	};
-	//EDITOR_COMP(RigidbodyEC, Rigidbody)
-	//	//TODO: Add pointer to members of each component
-	//public:
-	//	RigidbodyEC(Rigidbody* component) : m_component(component) { this->Init(); }
-	//	virtual void Init() override;
-	//	virtual void Render() override;
-	//};
 }

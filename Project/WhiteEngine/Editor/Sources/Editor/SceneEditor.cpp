@@ -43,9 +43,17 @@ namespace Tools
 			}
 		}
 
-		//m_gameplayWindow->Render();
 		if (m_sceneObject)
-			m_selectedEntity = dynamic_cast<EditorEntity*>(m_sceneObject->GetSelected());
+		{
+			auto obj = m_sceneObject->GetSelected();
+
+			if (obj)
+				m_selectedEntity = dynamic_cast<EditorEntity*>(obj);
+			else
+				m_selectedEntity = nullptr;
+			//m_sceneObject->ProcessRemoveQueue();
+		}
+			
 		m_sceneWindow->Render();
 	}
 

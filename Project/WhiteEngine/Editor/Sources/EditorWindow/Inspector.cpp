@@ -1,5 +1,6 @@
 #include "Inspector.hpp"
 #include "Graphic/GraphicCore.hpp"
+#include "EditorObject/CoreComponentEC.hpp"
 #include "misc/cpp/imgui_stdlib.h"
 #include <iostream>
 #include <array>
@@ -23,11 +24,8 @@ namespace Tools
 
 	void Inspector::OnRender(void)
 	{
-		//TODO: Render some header or some shit first
 		if (!m_entityToRender)
-		{
 			return;
-		}
 
 		ImVec2 window_size = ImGui::GetWindowSize();
 
@@ -48,13 +46,18 @@ namespace Tools
 		//Editor dirty flag. TODO: Send it to editor
 		bool dirty_flag = false;
 
+		auto transformEC = m_entityToRender->GetTransformEC();
+		if (transformEC)
+			transformEC->Render();
 		//Render Component
 		for (auto component : m_entityToRender->GetComponentList())
 		{
-			if (!component->Render())
+			bool close = component->Render();
+			if (!close)
 			{
 				//TODO: Test Remove Component
 				m_entityToRender->RemoveComponent(component->GetName());
+				continue;
 			}
 
 			if (component->dirty)
@@ -96,11 +99,19 @@ namespace Tools
 
 	void Inspector::SetEditorObject(EditorObject * obj)
 	{
+		if (!obj)
+		{
+			m_entityToRender = nullptr;
+			return;
+		}
+			
+
 		EditorEntity* objEntity = dynamic_cast<EditorEntity*>(obj);
 
 		if (objEntity)
+		{
 			m_entityToRender = objEntity;
-
+		}
 	}
 
 	void Inspector::ResetEditorObject()

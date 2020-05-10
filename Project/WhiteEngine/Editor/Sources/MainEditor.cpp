@@ -32,29 +32,7 @@ namespace Tools
 		MainMenuBar();
 		//TODO: Set up docking space?
 
-		for (auto it = m_editorMap.begin(); it != m_editorMap.end(); it++)
-		{
-			auto editor = it->second.get();
-
-			if (editor->IsFocused() && editor->IsOpen())
-				m_currentEditor = editor;
-
-			/*if (editor->IsOpen())
-			{
-				editor->Update();
-				ENGINE_INFO("Update Editor: " + editor->GetName());
-			}*/
-				
-		}
-
-		/*if (m_prefabEditor->IsFocused() && m_prefabEditor->IsOpen()) m_currentEditor = m_prefabEditor.get();
-		if (m_sceneEditor->IsFocused() && m_sceneEditor->IsOpen()) m_currentEditor = m_sceneEditor.get();
-
-		if (m_prefabEditor->IsOpen())
-			m_prefabEditor->Update();
-
-		if (m_sceneEditor->IsOpen())
-			m_sceneEditor->Update();*/
+		
 
 		//Update after setting object to inspector and hierarchy
 		for (auto it = m_editorMap.begin(); it != m_editorMap.end(); it++)
@@ -64,30 +42,27 @@ namespace Tools
 			if (editor->IsOpen())
 			{
 				editor->Update();
-				/*ENGINE_INFO("Update Editor: " + editor->GetName());*/
 			}
 
+		}
+
+		for (auto it = m_editorMap.begin(); it != m_editorMap.end(); it++)
+		{
+			auto editor = it->second.get();
+
+			if (editor->IsFocused() && editor->IsOpen())
+				m_currentEditor = editor;
 		}
 
 		if (m_currentEditor)
 		{
 			//TODO: Use observer pattern for optimization?
-			//if (m_currentEditor->GetSelectedEntity())
 			if (m_currentEditor->IsFocused() || m_inspector->isFocused() || m_hierarchy->isFocused())
 			{
 				m_inspector->SetEditorObject(m_currentEditor->GetSelectedEntity());
 				m_hierarchy->SetEditorObject(m_currentEditor->GetEditorObject());
-
-				//m_hierarchy->SetEditorObject();
-				//m_inspector->SetEntity(m_currentEditor->GetSelectedEntity());
 			}
-				
-			//else
-				//m_inspector->ResetEntity();
-			//m_currentEditor->Update();
 		}
-
-		
 
 		if (m_inspector->GetBool())
 			m_inspector->Render();
@@ -101,37 +76,11 @@ namespace Tools
 		if (m_hierarchy->GetBool())
 			m_hierarchy->Render();
 
-		
+		PopupWindow::GetGlobalPopup().Update();
 	}
 
 	void MainEditor::Terminate()
 	{
-		
-	}
-
-	void MainEditor::Save(Editor* editor, Container::wString fileName)
-	{
-		
-	}
-
-	void MainEditor::Load(Editor* editor, const char * path)
-	{
-		try
-		{
-			std::string returnMsg;
-			if (!editor->Load(path, returnMsg))
-			{
-				//Toggle error popup
-				/*static bool loadFile;
-				ImGuiWindowFlags loadFileModalFlag = ImGuiWindowFlags_Modal;
-				ImGui::BeginPopupModal("#Load File", &loadFile);*/
-				throw returnMsg;
-			}
-		}
-		catch (std::string msg)
-		{
-			ENGINE_ERROR("ERROR: " + msg);
-		}
 		
 	}
 
@@ -299,26 +248,6 @@ namespace Tools
 			ENGINE_ERROR("ERROR: Editor doesn't exist!");
 			return false;
 		}
-	}
-
-	//Open window file dialog, Example Filter format: "Scene Files(*.scene)|*.scene"
-	std::string MainEditor::openfilename(const char *filter, HWND owner)
-	{
-		OPENFILENAME ofn;
-		char fileName[MAX_PATH] = "";
-		ZeroMemory(&ofn, sizeof(ofn));
-		ofn.lStructSize = sizeof(OPENFILENAME);
-		ofn.hwndOwner = owner;
-		ofn.lpstrFilter = filter;
-		ofn.lpstrFile = fileName;
-		ofn.lpstrInitialDir = "D:/GIT/";
-		ofn.nMaxFile = MAX_PATH;
-		ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
-		ofn.lpstrDefExt = "";
-		std::string fileNameStr;
-		if (GetOpenFileName(&ofn))
-			fileNameStr = fileName;
-		return fileNameStr;
 	}
 }
 

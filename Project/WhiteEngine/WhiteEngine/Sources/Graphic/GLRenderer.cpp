@@ -220,7 +220,7 @@ void GLRenderer::Render(Graphic::CameraObject* cam)
 			if (obj->IsUI())
 				obj->Render(this->GetprojectionMatrix());
 			else
-				obj->Render(cam->GetViewProjMatrix());
+				obj->Render(cam->GetProjViewMatrix());
 		}
 	}
 
@@ -237,7 +237,7 @@ void GLRenderer::Render(Graphic::CameraObject* cam)
 		{
 			if (obj.second->GetGameObject()->Active())
 			{
-				RenderDebugCollider(obj.second);
+				RenderDebugCollider(obj.second, cam->GetProjViewMatrix());
 			}
 		}
 
@@ -306,7 +306,7 @@ void GLRenderer::Render(glm::mat4 globalModelTransform)
 
 		if (obj->GetGameObject()->Active())
 		{
-			obj->Render(camera);
+			obj->Render(globalModelTransform);
 		}
 	}
 
@@ -323,7 +323,7 @@ void GLRenderer::Render(glm::mat4 globalModelTransform)
 		{
 			if (obj.second->GetGameObject()->Active())
 			{
-				RenderDebugCollider(obj.second);
+				RenderDebugCollider(obj.second, globalModelTransform);
 			}
 		}
 
@@ -619,7 +619,7 @@ Graphic::Texture GLRenderer::LoadTextureNew(std::string path)
 	return textureObject;
 }
 
-void GLRenderer::RenderDebugCollider(BoxCollider* col)
+void GLRenderer::RenderDebugCollider(BoxCollider* col, glm::mat4 projViewMat)
 {
 	GameObject* obj = col->GetGameObject();
 
@@ -627,10 +627,10 @@ void GLRenderer::RenderDebugCollider(BoxCollider* col)
 	glm::mat4 tMat = glm::translate(glm::mat4(1.0f), obj->m_transform->GetLocalPosition());
 	glm::mat4 transformMat = tMat * sMat;
 
-	glm::mat4 projectionMatrix = Graphic::getCamera()->GetProjectionMatrix();
-	glm::mat4 viewMatrix = Graphic::getCamera()->GetViewMatrix();
+	//glm::mat4 projectionMatrix = Graphic::getCamera()->GetProjectionMatrix();
+	//glm::mat4 viewMatrix = Graphic::getCamera()->GetViewMatrix();
 
-	glm::mat4 currentMatrix = projectionMatrix * viewMatrix * transformMat;
+	glm::mat4 currentMatrix = projViewMat * transformMat;//projectionMatrix * viewMatrix * transformMat;
 
 	glUniform1i(modeUniformId, 0);
 	glUniformMatrix4fv(mMatrixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
