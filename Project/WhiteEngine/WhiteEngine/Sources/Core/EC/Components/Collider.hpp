@@ -41,7 +41,7 @@
 
 		//Constructor
 		Collider();
-		Collider(COLLIDER_TYPE col) 
+		Collider(COLLIDER_TYPE col)
 			: m_colliderType(col), m_density(1.0f) {}
 		//Destructor
 		~Collider() = 0;
@@ -86,8 +86,8 @@
 	{
 		friend class Rigidbody;
 	private:
-		float m_halfWidth;
-		float m_halfHeight;
+		float m_halfWidth = 1.0f;
+		float m_halfHeight = 1.0f;
 		/*unused var*/glm::vec3 m_colliderScale; //Scale multiplier in halfwidth and halfheight
 	public:
 		//Constructor
@@ -99,9 +99,9 @@
 		void ReSize(float sizeX, float sizeY);
 		void ReScale(float scaleX, float scaleY);
 		void ComputeAABB(Physic::AABB&);
-		
+
 		//Box Collider Interface
-		virtual void ComputeMass();
+		virtual void ComputeMass(Rigidbody* rigid);
 		virtual glm::vec3 GetColliderScale();
 
 		float GetHw() { return m_halfWidth; }
@@ -120,4 +120,3 @@
 	};
 
 	CEREAL_REGISTER_TYPE(BoxCollider);
-

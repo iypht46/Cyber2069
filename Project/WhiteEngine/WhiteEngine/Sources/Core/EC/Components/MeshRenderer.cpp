@@ -3,6 +3,9 @@
 #include "Graphic/GLRenderer.h"
 #include "Graphic/Camera.hpp"
 #include "Core/EC/GameObject.hpp"
+#include "Graphic/Texture.hpp"
+#include <glm/ext.hpp>
+
 
 #include <string.h>
 
@@ -12,7 +15,7 @@
 //	return m1.layer < m2.layer;
 //}
 
-MeshRenderer::MeshRenderer() 
+MeshRenderer::MeshRenderer()
 {
 	ReplaceColor = glm::vec3(1, 1, 1);
 
@@ -55,30 +58,51 @@ void MeshRenderer::Init() {
 
 void MeshRenderer::SetTexture(std::string path)
 {
-	//save data
-	sr_texturePath = path;
+	if (path == "none")
+		return;
 
-	texture = GLRenderer::GetInstance()->LoadTexture(path);
+	auto newTexture = GLRenderer::GetInstance()->LoadTextureNew(path);
+
+	if (newTexture.m_textureID != -1)
+	{
+		sr_texturePath = path;
+		m_texture = new Graphic::Texture(newTexture);
+	}
+
+	////save data
+	//sr_texturePath = path;
+	////ENGINE_INFO("Texture Path: " + sr_texturePath);
+	//texture = GLRenderer::GetInstance()->LoadTexture(path);
+
+	//if (texture != -1)
+	//	m_texLoaded = true;
+	//else
+	//	m_texLoaded = false;
 }
 
-void MeshRenderer::SetTexture(unsigned int tex) 
-{
-	texture = tex;
-}
-
-void MeshRenderer::SetLayer(unsigned int layer) 
+void MeshRenderer::SetLayer(unsigned int layer)
 {
 	this->layer = layer;
 }
 
-void MeshRenderer::SetUI(bool ui) 
+void MeshRenderer::SetUI(bool ui)
 {
-	isUI = ui;
+	m_isUI = ui;
 }
 
-int MeshRenderer::GetLayer() 
+int MeshRenderer::GetLayer()
 {
 	return this->layer;
+}
+
+bool MeshRenderer::IsUI()
+{
+	return m_isUI;
+}
+
+bool MeshRenderer::IsTextureLoaded()
+{
+	return (sr_texturePath != "none");
 }
 
 void  MeshRenderer::CreateMesh(float NumframeX, float NumFrameY)
@@ -87,12 +111,23 @@ void  MeshRenderer::CreateMesh(float NumframeX, float NumFrameY)
 	sr_NumFrameX = NumframeX;
 	sr_NumFrameY = NumFrameY;
 
-	this->mesh = new SquareMeshVbo();
-	this->mesh->LoadData(NumframeX, NumFrameY);
+	if (!mesh)
+	{
+		this->mesh = new SquareMeshVbo();
+		this->mesh->LoadData(NumframeX, NumFrameY);
+	}
+	else
+	{
+		SquareMeshVbo* sm = dynamic_cast<SquareMeshVbo*>(mesh);
+		if (sm)
+			sm->ReloadTextureData(NumframeX, NumFrameY);
+	}
+	
 	GLRenderer::GetInstance()->SetMeshAttribId(mesh);
 }
 
 void MeshRenderer::SetReplaceColor(glm::vec3 color) {
+	isReplaceColor = true;
 	this->ReplaceColor = color;
 }
 
@@ -101,12 +136,30 @@ void MeshRenderer::SetReplaceColor(std::string hexcode) {
 	//SetReplaceColor(smthing);
 }
 
+void MeshRenderer::SetReplaceColorBool(bool i)
+{
+	isReplaceColor = i;
+}
+
+glm::vec3 MeshRenderer::GetReplaceColor()
+{
+	return ReplaceColor;
+}
+
+bool MeshRenderer::IsReplaceColor()
+{
+	return isReplaceColor;
+}
+
 void MeshRenderer::RemoveReplaceColor() {
 	ReplaceColor = glm::vec3(1);
 }
 
 void MeshRenderer::Render(glm::mat4 globalModelTransform)
 {
+	if (!m_gameObject->Active())
+		return;
+
 	SquareMeshVbo *squareMesh = dynamic_cast<SquareMeshVbo *>(this->mesh);
 
 	GLuint modelMatixId = GLRenderer::GetInstance()->GetModelMatrixAttrId();
@@ -128,11 +181,10 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 		return;
 	}
 
-	vector<glm::mat4> matrixStack;
+	//vector<glm::mat4> matrixStack;
+	glm::mat4 modelMatrix = GetGameObject()->m_transform->GetModelMatrix();
 
-
-	glm::mat4 currentMatrix;
-
+	/*
 	if (!isUI){
 		glm::mat4 modelMatrix = GetGameObject()->m_transform->GetModelMatrix();
 		glm::mat4 projectionMatrix = Graphic::getCamera()->GetProjectionMatrix();
@@ -146,39 +198,84 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 
 		currentMatrix = projectionMatrix * modelMatrix;
 	}
-
+	*/
 	if (squareMesh != nullptr)
 	{
-		if (/*isReplaceColor*/ true) {
-
-			glUniform1i(modeId, 3);
-			glUniform3f(colorId,ReplaceColor.x, ReplaceColor.y, ReplaceColor.z);
-
-		}
-		else {
-			glUniform1i(modeId, 1);
-		}
-
-		glUniformMatrix4fv(modelMatixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
-
-		//-------Animation--------
-
-		if (GetGameObject()->GetComponent<Animator>() != nullptr) 
+		if (this->IsTextureLoaded())
+		//if (m_texLoaded)
 		{
-			glUniform1f(offsetXId, GetGameObject()->GetComponent<Animator>()->GetCurrentUVFrame().x);
-			glUniform1f(offsetYId, GetGameObject()->GetComponent<Animator>()->GetCurrentUVFrame().y);
-
+			glBindTexture(GL_TEXTURE_2D, m_texture->m_textureID);
+			//glBindTexture(GL_TEXTURE_2D, texture);
+			if (isReplaceColor)
+			{
+				glUniform1i(modeId, RENDER_MODE::REPLACE_COLOR);
+				glUniform3f(colorId, ReplaceColor.x, ReplaceColor.y, ReplaceColor.z);
+			}
+			else
+			{
+				glUniform1i(modeId, RENDER_MODE::NORM);
+			}
 		}
-		else {
+		else
+		{
+			glUniform1i(modeId, RENDER_MODE::COLOR);
+		}
+
+		glm::vec2 textureScale;
+
+		if (IsTextureLoaded())
+		{
+			textureScale = m_texture->m_size;
+			
+		}
+		//-------Animation--------
+		auto animation = GetGameObject()->GetComponent<Animator>();
+
+		if (animation && animation->GetController().get())
+		{
+			auto uv = animation->GetCurrentUVFrame();
+			textureScale = textureScale / animation->GetController()->getSheetSize(); //Divide by frame size to get the unit texture size
+			glUniform1f(offsetXId, uv.x);
+			glUniform1f(offsetYId, uv.y);
+			//glUniform1f(offsetXId, 0.0f);
+			//glUniform1f(offsetYId, 0.0f);
+		}
+		else 
+		{
 			glUniform1f(offsetXId, 0.0f);
 			glUniform1f(offsetYId, 0.0f);
 
 		}
 
+		if (IsTextureLoaded())
+		{
+			modelMatrix *= glm::scale(glm::vec3(textureScale, 1.0f));
+		}
+
+		glm::mat4 currentMatrix = globalModelTransform * modelMatrix;
+
+		glUniformMatrix4fv(modelMatixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
+
 		/*glUniform1f(offsetXId, 0);
 		glUniform1f(offsetYId, 0);*/
+		//std::cout << "Render\n";
 
-		glBindTexture(GL_TEXTURE_2D, this->texture);
+		/*if (IsTextureLoaded())
+			glBindTexture(GL_TEXTURE_2D, m_texture->m_textureID);*/
+
 		squareMesh->Render();
 	}
+}
+
+unsigned int MeshRenderer::GetTexture()
+{
+	if (m_texture)
+		return m_texture->m_textureID;
+	else
+		return -1;
+}
+
+std::string MeshRenderer::GetTexturePath()
+{
+	return sr_texturePath;
 }

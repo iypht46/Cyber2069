@@ -183,7 +183,7 @@ namespace World
 		//Runtime
 		Core::Logger::Init();
 		Graphic::Init();
-
+		Graphic::EnableFrameBuffer(FBO_STATE::MAIN);
 		//Input
 		//Bool for debugging
 		Input::Init(false);
@@ -235,7 +235,8 @@ namespace World
 		
 		title->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth(), Graphic::Window::GetHeight(), 1.0f));
 		
-		while (!Input::GetKeyDown(Input::KeyCode::KEY_SPACE))
+		bool start = false;
+		while (!start)
 		{
 			Input::Update();
 		
@@ -244,7 +245,15 @@ namespace World
 			if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE))
 			{
 				title->SetActive(false);
+				start = true;
 			}
+
+			if (Input::GetKeyDown(Input::KeyCode::KEY_ESCAPE))
+			{
+				start = true;
+				g_gameInfo->GameShouldClose();
+			}
+				
 		}
 
 		//Serialization::LoadObject(*SceneManagement::ActiveScene, ScenePath("SerializationTest"));
@@ -419,7 +428,7 @@ namespace World
 				Rabbit->Layer = "Player";
 
 				//Set Transform
-				Rabbit->m_transform->SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
+				Rabbit->m_transform->SetScale(glm::vec3(1, 1, 1));
 				Rabbit->m_transform->SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
 
 				Rabbit->AddComponent<MeshRenderer>();

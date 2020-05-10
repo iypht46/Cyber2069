@@ -24,8 +24,8 @@ namespace Graphic
 		{
 			const GLFWvidmode* vidMode = glfwGetVideoMode(glfwMonitor);
 
-			int posX = (glm::abs(vidMode->width - (windowRes.x)) * 0.15f);
-			int posY = (glm::abs(vidMode->height - (windowRes.y)) * 0.15f);
+			int posX = static_cast<int>((glm::abs(vidMode->width - (windowRes.x)) * 0.15f));
+			int posY = static_cast<int>((glm::abs(vidMode->height - (windowRes.y)) * 0.15f));
 
 			glfwSetWindowPos(glfwWindow, posX, posY);
 
@@ -38,13 +38,13 @@ namespace Graphic
 			{
 			case Graphic::Window::WindowMode::WINDOWED:
 
-				glfwSetWindowMonitor(glfwWindow, nullptr, 0, 0, windowRes.x, windowRes.y, c_refreshRate);
+				glfwSetWindowMonitor(glfwWindow, nullptr, 0, 0, windowRes.x, windowRes.y, static_cast<int>(c_refreshRate));
 				RecenterWindow();
 
 				break;
 			case Graphic::Window::WindowMode::FULLSCREEN:
 				
-				glfwSetWindowMonitor(glfwWindow, glfwMonitor, 0, 0, windowRes.x, windowRes.y, c_refreshRate);
+				glfwSetWindowMonitor(glfwWindow, glfwMonitor, 0, 0, windowRes.x, windowRes.y, static_cast<int>(c_refreshRate));
 				break;
 			}
 		}

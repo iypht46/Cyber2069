@@ -12,6 +12,7 @@
 
 //Forward Declaration
 namespace Physic { struct Collision; }
+namespace Tools { class EditorEntity; }
 
 #include <cereal/cereal.hpp>
 #include <cereal/types/string.hpp>
@@ -23,7 +24,9 @@ class GameObject
 protected:
 	friend class BehaviourScript;
 	friend class Collider;
+	friend class Tools::EditorEntity;
 
+	std::string m_objectName = "GameObject";
 	bool isActive = true;
 
 	static int s_IDCounter;
@@ -52,9 +55,15 @@ public:
 	void SetActive(bool activestate);
 	bool Active();
 
+	std::string GetName();
+	void SetName(std::string);
+
+	void AddComponent(Component*);
 	int GetID();
 
 	//init all member component
+	void SetAllComponents();
+	void InitAllComponents();
 	void InitComponents();
 
 	//start all member behaviour script
@@ -62,6 +71,9 @@ public:
 
 	template <class T>
 	T* AddComponent();
+
+	template <class T>
+	void RemoveComponent();
 
 	template <class T>
 	std::weak_ptr<T> AddComponent_weak();
@@ -82,7 +94,7 @@ public:
 		ENGINE_INFO("saving/writing {}", *this);
 		archive(
 			isActive,
-			Name,
+			m_objectName,
 			Layer,
 			m_transform,
 			m_components
@@ -98,6 +110,22 @@ T* GameObject::AddComponent() {
 	m_components.back()->SetGameObject(this);
 
 	return component.get();
+}
+
+template<class T>
+void GameObject::RemoveComponent() {
+	for (auto it = m_components.begin(); it != m_components.end(); ++it)
+	{
+		std::shared_ptr<T> component = dynamic_pointer_cast<T>(*it);
+		if (component)
+		{
+			m_components.erase(it);
+			component.reset();
+			return;
+		}
+
+		
+	}
 }
 
 //return a weak ptr of component instead of raw

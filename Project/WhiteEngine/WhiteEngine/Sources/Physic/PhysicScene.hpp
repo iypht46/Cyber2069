@@ -34,6 +34,7 @@ namespace Physic
 
 	//Collider
 	using LayerBit = std::bitset<LAYER_BIT>;
+	//Store pair of the main layerbit and the set collision layerbit
 	using LayerBitPair = std::pair<LayerBit, LayerBit>;
 	using Colliders = std::vector<Collider*>;
 	using Bodies = std::vector<Rigidbody*>;
@@ -97,6 +98,7 @@ namespace Physic
 		//Remove collider from layer
 		void Remove(Collider*, Layer);
 		void Remove(Collider*, std::string);
+		void Remove(Rigidbody*);
 		//Send Collision Message to Collider in list
 		void SendCollisionMsg(void);
 

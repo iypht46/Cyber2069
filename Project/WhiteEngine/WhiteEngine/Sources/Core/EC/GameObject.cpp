@@ -11,6 +11,7 @@ GameObject::GameObject()
 {
 	m_objectID = GameObject::s_IDCounter++;
 	m_transform = make_shared<Transform>();
+	m_transform->SetGameObject(this);
 
 	Factory<void, GameObject>::Add(this);
 }
@@ -37,17 +38,26 @@ bool GameObject::Active() {
 	return isActive;
 }
 
+std::string GameObject::GetName()
+{
+	return m_objectName;
+}
+
+void GameObject::SetName(std::string name)
+{
+	m_objectName = name;
+}
+
 int GameObject::GetID() {
 	return m_objectID;
 }
 
-void GameObject::InitComponents() {
-
+void GameObject::SetAllComponents()
+{
 	m_transform->SetGameObject(this);
-
 	for (std::shared_ptr<Component> component : m_components) {
 		component->SetGameObject(this);
-		component->Init();
+		//component->Init();
 
 		//if is behaviou script, also assign to script collection
 		std::shared_ptr<BehaviourScript> behaviour = dynamic_pointer_cast<BehaviourScript>(component);
@@ -55,6 +65,20 @@ void GameObject::InitComponents() {
 			m_scripts.push_back(behaviour);
 		}
 	}
+}
+
+void GameObject::InitAllComponents()
+{
+	for (std::shared_ptr<Component> component : m_components)
+	{
+		component->Init();
+	}
+}
+
+void GameObject::InitComponents() {
+
+	SetAllComponents();
+	InitAllComponents();
 
 	for (std::shared_ptr<BehaviourScript> behaviour : m_scripts) {
 		behaviour->OnAwake();

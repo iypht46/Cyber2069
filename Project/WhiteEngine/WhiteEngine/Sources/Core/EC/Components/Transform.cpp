@@ -1,5 +1,5 @@
 #include "Transform.hpp"
-#include "../../Logger.hpp"
+#include "Core/Logger.hpp"
 #include <iostream>
 #include <memory>
 using namespace glm;
@@ -25,7 +25,7 @@ Transform::~Transform() {
 
 glm::vec3 Transform::GetPosition() {
 	return m_position;
-}		  
+}
 
 glm::vec3 Transform::GetLocalPosition() {
 	return m_localPosition;
@@ -73,8 +73,18 @@ void Transform::SetParent(std::weak_ptr<Transform> newParent) {
 	parent.lock()->children.push_back(weak_from_this());
 }
 
+bool Transform::HasParent()
+{
+	return !parent.expired();
+}
+
 Transform* Transform::GetChild(int index) {
 	return (children.at(index)).lock().get();
+}
+
+unsigned int Transform::GetChildCount()
+{
+	return children.size();
 }
 
 /*
@@ -160,7 +170,7 @@ void Transform::SetPosition(glm::vec3 position) {
 
 void Transform::SetLocalPosition(glm::vec3 localposition) {
 	m_localPosition = localposition;
-	
+
 	//update world position and child position
 	UpdateWorldPosition();
 }

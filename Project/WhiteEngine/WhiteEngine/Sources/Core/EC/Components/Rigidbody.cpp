@@ -45,16 +45,12 @@ void Rigidbody::Init(float hW, float hH)
 
 Collider* Rigidbody::GetCollider()
 {
-	if (m_collider)
-	{
-		return m_collider;
-	}
-
-	return nullptr;
+	return m_collider;
 }
 
 Rigidbody::~Rigidbody()
 {
+	Physic::PhysicScene::GetInstance()->Remove(this);
 	Factory<Component, Rigidbody>::Remove(this);
 }
 
@@ -88,12 +84,12 @@ void Rigidbody::SetGravityScale(float scale)
 }
 
 
-void Rigidbody::AddForce(vec3 force) 
+void Rigidbody::AddForce(vec3 force)
 {
 	m_velocity += (force / m_mass);
 }
 
-void Rigidbody::AddRelativeForce(vec3 force) 
+void Rigidbody::AddRelativeForce(vec3 force)
 {
 	vec3 AbsoluteForce;
 	float Rotation(radians(m_transform->GetRotation()));
@@ -104,7 +100,7 @@ void Rigidbody::AddRelativeForce(vec3 force)
 	AddForce(AbsoluteForce);
 }
 
-void Rigidbody::UpdateTransform(float dt) 
+void Rigidbody::UpdateTransform(float dt)
 {
 	m_velocity = m_velocity * (1 - m_drag);
 	m_transform->Translate(m_velocity * dt);
@@ -113,7 +109,7 @@ void Rigidbody::UpdateTransform(float dt)
 void Rigidbody::SetMass(float mass) {
 	if (automass) {
 		m_mass = mass;
-		m_invMass = 1.0 / m_mass;
+		m_invMass = 1.0f / m_mass;
 	}
 }
 

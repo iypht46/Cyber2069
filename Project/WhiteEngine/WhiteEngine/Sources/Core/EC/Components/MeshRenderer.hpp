@@ -14,22 +14,28 @@
 
 class GameObject;
 class Component;
+namespace Graphic { struct Texture; }
+
+enum RENDER_MODE : int { NORM = 1, COLOR, REPLACE_COLOR};
+
+#define SpritePath(path) "Sources/Assets/Sprites/" path ".png"
 
 class MeshRenderer : public Component
 {
 private:
-	
-	std::string sr_texturePath;
-	float sr_NumFrameX = 1;
-	float sr_NumFrameY = 1;
+	bool m_isUI = false;
 
-	MeshVbo* mesh;
+	std::string sr_texturePath = "none";
+	float sr_NumFrameX = 1.0f;
+	float sr_NumFrameY = 1.0f;
 
-	Animator* anim;
-	unsigned int texture;
-
+	bool isReplaceColor = false;
+	MeshVbo* mesh = nullptr;
+	Animator* anim = nullptr;
+	GLuint texture = -1;
 	glm::vec3 ReplaceColor;
 
+	Graphic::Texture* m_texture = nullptr;
 public:
 	int layer = 0; //higher layer is infront
 
@@ -44,33 +50,35 @@ public:
 
 	void CreateMesh(float NumframeX, float NumFrameY);
 	void SetTexture(std::string path);
-	void SetTexture(unsigned int tex);
-	//higher layer is in front, player is on 0
-	void SetLayer(unsigned int layer);
+	void SetLayer(unsigned int layer); //higher layer is in front, player is on 0
 	void SetUI(bool ui);
 	void SetReplaceColor(glm::vec3 color);
 	void SetReplaceColor(std::string hexcode);
+	void SetReplaceColorBool(bool i);
+	glm::vec3 GetReplaceColor();
+	bool IsReplaceColor();
 	void RemoveReplaceColor();
 
-	unsigned int GetTexture() { return texture; }
+	unsigned int GetTexture();
+	std::string GetTexturePath();
 
 	int GetLayer();
+	bool IsUI();
+	bool IsTextureLoaded();
 
 	void Render(glm::mat4 globalModelTransform);
-
 //serialization
 public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
 			cereal::base_class<Component>(this),
-			isUI,
+			m_isUI,
 			sr_texturePath,
 			sr_NumFrameX,
 			sr_NumFrameY,
 			layer,
-			ReplaceColor,
-			inSet
+			ReplaceColor
 		);
 	}
 };

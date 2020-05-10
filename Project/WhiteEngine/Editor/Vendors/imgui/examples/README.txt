@@ -1,5 +1,5 @@
 -----------------------------------------------------------------------
- dear imgui, v1.75 WIP
+ dear imgui, v1.75
 -----------------------------------------------------------------------
  examples/README.txt
  (This is the README file for the examples/ folder. See docs/ for more documentation)
@@ -11,6 +11,7 @@ Dear ImGui is highly portable and only requires a few things to run and render:
  - Uploading the font atlas texture into graphics memory
  - Providing a render function to render indexed textured triangles
  - Optional: clipboard support, mouse cursor supports, Windows IME support, etc.
+ - Optional (Advanced,Beta): platform window API to use multi-viewport.
 
 This is essentially what the example bindings in this folder are providing + obligatory portability cruft.
 
@@ -95,9 +96,15 @@ Most the example bindings are split in 2 parts:
 
  - Road-map: Dear ImGui 1.80 (WIP currently in the "docking" branch) will allows imgui windows to be
    seamlessly detached from the main application window. This is achieved using an extra layer to the
-   platform and renderer bindings, which allows Dear ImGui to communicate platform-specific requests.
-   If you decide to use unmodified imgui_impl_xxxx.cpp files, you will automatically benefit from
-   improvements and fixes related to viewports and platform windows without extra work on your side.
+   platform and renderer bindings, which allows Dear ImGui to communicate platform-specific requests such as
+   "create an additional OS window", "create a render context", "get the OS position of this window" etc.
+   When using this feature, the coupling with your OS/renderer becomes much tighter than a regular imgui
+   integration. It is also much more complicated and require more work to integrate correctly.
+   If you are new to imgui and you are trying to integrate it into your application, first try to ignore
+   everything related to Viewport and Platform Windows. You'll be able to come back to it later!
+   Note that if you decide to use unmodified imgui_impl_xxxx.cpp files, you will automatically benefit
+   from improvements and fixes related to viewports and platform windows without extra work on your side.
+   See 'ImGuiPlatformIO' for details.
 
 
 List of Platforms Bindings in this repository:
@@ -106,7 +113,7 @@ List of Platforms Bindings in this repository:
     imgui_impl_osx.mm         ; macOS native API (not as feature complete as glfw/sdl back-ends)
     imgui_impl_sdl.cpp        ; SDL2 (Windows, macOS, Linux, iOS, Android) https://www.libsdl.org
     imgui_impl_win32.cpp      ; Win32 native API (Windows)
-    imgui_impl_glut.cpp       ; GLUT/FreeGLUT (absolutely not recommended in 2019)
+    imgui_impl_glut.cpp       ; GLUT/FreeGLUT (absolutely not recommended in 2020!)
 
 List of Renderer Bindings in this repository:
 
@@ -131,22 +138,18 @@ Third-party framework, graphics API and languages bindings are listed at:
 
     https://github.com/ocornut/imgui/wiki/Bindings
 
-    Languages:
-     C, C#, ChaiScript, CovScript, D, Go, Haxe/hxcpp, Java, JavaScript, Julia, Lua, Nim,
-     Odin, Pascal, PureBasic, Python, Ruby, Rust, Swift...
+Including backends for:
 
-    Frameworks:
-     Amethyst, bsf, Cinder, Cocoa2d-x, Diligent Engine, Flexium, GML/GameMaker Studio,
-     GTK3 + OpenGL, Irrlicht, Ogre, OpenSceneGraph/OSG, openFrameworks, Orx, LÖVE+LUA,
-     Magnum, NanoRT, Nim Game Lib, px_render, Qt, Qt3d, SFML, Sokol, Unreal Engine 4, vtk...
-
-    Miscellaneous: Software Renderer, RemoteImgui, imgui-ws, etc.
+    AGS/Adventure Game Studio, Amethyst, bsf, Cinder, Cocos2d-x, Diligent Engine, Flexium,
+    GML/Game Maker Studio2, GTK3+OpenGL3, Irrlicht Engine, LÖVE+LUA, Magnum, NanoRT, Nim Game Lib,
+    Ogre, openFrameworks, OSG/OpenSceneGraph, Orx, px_render, Qt/QtDirect3D, SFML, Sokol,
+    Unreal Engine 4, vtk, Win32 GDI, etc.
 
 Not sure which to use?
 Recommended platform/frameworks:
 
     GLFW    https://github.com/glfw/glfw        Use imgui_impl_glfw.cpp
-    SDL2    https://www.libsdl.org              Use imgui_impl_sdl.cp
+    SDL2    https://www.libsdl.org              Use imgui_impl_sdl.cpp
     Sokol   https://github.com/floooh/sokol     Use util/sokol_imgui.h in Sokol repository.
 
 Those will allow you to create portable applications and will solve and abstract away many issues.
