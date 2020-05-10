@@ -11,6 +11,8 @@ void BlackholeGunBullet::OnUpdate(float dt)
 	int winWidth;
 	int winHeight;
 
+	//BhSound->PlaySound();
+
 	glm::vec3 camPos = cam->GetCampos();
 
 	winWidth = Graphic::Window::GetWidth() * cam->GetZoom();
@@ -49,6 +51,9 @@ void BlackholeGunBullet::OnUpdate(float dt)
 void BlackholeGunBullet::OnAwake()
 {
 	rb = m_gameObject->GetComponent<Rigidbody>();
+	BhSound = m_gameObject->GetComponent<SoundPlayer>();
+	BhSound->CreateSoundPlayer();
+	BhSound->SetSound(SoundPath("SFX_BlackHole_Travelling"));
 	cam = Graphic::getCamera();
 }
 
@@ -122,6 +127,9 @@ void BlackholeGunBullet::DragEnemy(float dt)
 	{
 		Dot_count = 0.0f;
 	}
+
+	BhSound->SetSound(SoundPath("SFX_BlackHole_Sucking"));
+	//BhSound->PlaySound();
 }
 
 void BlackholeGunBullet::ReleaseEnemy() {

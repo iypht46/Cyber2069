@@ -43,6 +43,8 @@ int GameObject::GetID() {
 
 void GameObject::InitComponents() {
 
+	m_transform->SetGameObject(this);
+
 	for (std::shared_ptr<Component> component : m_components) {
 		component->SetGameObject(this);
 		component->Init();

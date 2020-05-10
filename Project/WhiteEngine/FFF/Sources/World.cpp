@@ -38,6 +38,7 @@
 #include "Weapon.hpp"
 #include "EquipmentManager.hpp"
 #include "LoadoutUI.hpp"
+#include "HighScoreUI.hpp"
 #include "ItemDrop.hpp"
 #include "Scripts/GameControl/UIController.h"
 
@@ -54,6 +55,7 @@ namespace World
 	static GameInfo* g_gameInfo;
 	static Graphic::CameraObject* cam = Graphic::getCamera();
 
+	std::unique_ptr<GameObject> mouseCursor;
 
 	//======================================
 	//TESTING ONLY, DON'T FORGET TO REMOVE v
@@ -68,9 +70,18 @@ namespace World
 	GameObject* queen;
 
 	GameObject* gamecontroller;
+
+	//gameplay 
 	std::shared_ptr<GameObject> ui_ScoreText;
+	std::shared_ptr<GameObject> ui_ComboText;
 	std::shared_ptr<GameObject> ui_HPbar;
+	std::shared_ptr<GameObject> ui_HPtext;
 	std::shared_ptr<GameObject> ui_StaminaBar;
+	std::shared_ptr<GameObject> ui_BossHP;
+	std::shared_ptr<GameObject> ui_BossHPtext;
+	std::shared_ptr<GameObject> ui_Weapongp;
+	std::shared_ptr<GameObject> ui_Artifactgp1;
+	std::shared_ptr<GameObject> ui_Artifactgp2;
 
 	GameObject* Spawner;
 
@@ -126,15 +137,28 @@ namespace World
 			Rabbit->m_transform->Rotate(-1.0f);
 		}
 
-		if (Input::GetKeyHold(Input::KeyCode::KEY_Z))
+		if (Input::GetKeyHold(Input::KeyCode::KEY_Y))
 		{
-			Rabbit->m_transform->SetScale(Rabbit->m_transform->GetScale() + glm::vec3(1, 0, 0));
+			Bg1->m_transform->SetPosition(Bg1->m_transform->GetPosition() + glm::vec3(0, 0, 5));
+			ENGINE_INFO("Increased 1Zpos to {}", Bg1->m_transform->GetPosition().z);
 		}
 
-		if (Input::GetKeyHold(Input::KeyCode::KEY_C))
+		if (Input::GetKeyHold(Input::KeyCode::KEY_U))
 		{
-			Rabbit->m_transform->SetScale(Rabbit->m_transform->GetScale() + glm::vec3(-1, 0, 0));
+			Bg1->m_transform->SetPosition(Bg1->m_transform->GetPosition() + glm::vec3(0, 0, -5));
+			ENGINE_INFO("Decreased 1Zpos to {}", Bg1->m_transform->GetPosition().z);
+		}
 
+		if (Input::GetKeyHold(Input::KeyCode::KEY_H))
+		{
+			Bg2->m_transform->SetPosition(Bg2->m_transform->GetPosition() + glm::vec3(0, 0, 5));
+			ENGINE_INFO("Increased 2Zpos to {}", Bg2->m_transform->GetPosition().z);
+		}
+
+		if (Input::GetKeyHold(Input::KeyCode::KEY_J))
+		{
+			Bg2->m_transform->SetPosition(Bg2->m_transform->GetPosition() + glm::vec3(0, 0, -5));
+			ENGINE_INFO("Decreased 2Zpos to {}", Bg2->m_transform->GetPosition().z);
 		}
 
 		//if (Input::GetKeyHold(Input::KeyCode::KEY_N))
@@ -163,6 +187,14 @@ namespace World
 		//Input
 		//Bool for debugging
 		Input::Init(false);
+
+		mouseCursor = std::make_unique<GameObject>();
+		mouseCursor->m_transform->SetScale(glm::vec3(50, 50, 1));
+		mouseCursor->AddComponent<MeshRenderer>();
+		mouseCursor->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/Cursor"));
+		mouseCursor->GetComponent<MeshRenderer>()->SetLayer(9999);
+		mouseCursor->GetComponent<MeshRenderer>()->SetUI(true);
+		mouseCursor->GetComponent<MeshRenderer>()->Init();
 
 		//Physics
 		g_physicScene = new Physic::PhysicScene();
@@ -233,11 +265,11 @@ namespace World
 			ui_ScoreText->m_transform->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
 			ui_ScoreText->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 50.0f, (Graphic::Window::GetHeight() / -2) + 50.0f, 1.0f));
 
-			std::shared_ptr<GameObject> ui_ComboText = Instantiate();
+			ui_ComboText = Instantiate();
 			ui_ComboText->AddComponent<TextRenderer>();
 			ui_ComboText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 50);
 			ui_ComboText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-			ui_ComboText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
+			ui_ComboText->m_transform->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
 			ui_ComboText->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 50.0f, (Graphic::Window::GetHeight() / -2) + 150.0f, 1.0f));
 
 			ui_HPbar->AddComponent<MeshRenderer>();
@@ -256,25 +288,82 @@ namespace World
 			ui_StaminaBar->m_transform->SetScale(glm::vec3(500.0f, 20.0f, 1.0f));
 			ui_StaminaBar->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 280.0f, (Graphic::Window::GetHeight() / 2) - 80.0f, 1.0f));
 
+			ui_BossHP = Instantiate();
+			ui_BossHP->AddComponent<MeshRenderer>()->CreateMesh(1, 1);
+			ui_BossHP->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Red.jpg");
+			ui_BossHP->GetComponent<MeshRenderer>()->SetUI(true);
+			ui_BossHP->m_transform->SetScale(glm::vec3(100.0f, 20.0f, 1.0f));
+			ui_BossHP->m_transform->SetPosition(glm::vec3(0, (Graphic::Window::GetHeight() / 2) + 200, 1.0f));
+
+			ui_Weapongp = Instantiate();
+			ui_Weapongp->AddComponent<MeshRenderer>()->CreateMesh(1, 1);
+			ui_Weapongp->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/white.jpg");
+			ui_Weapongp->GetComponent<MeshRenderer>()->SetUI(true);
+			ui_Weapongp->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
+			ui_Weapongp->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / 2) - 50.0f, (Graphic::Window::GetHeight() / -2) + 40.0f, 1.0f));
+
+			ui_Artifactgp1 = Instantiate();
+			ui_Artifactgp1->AddComponent<MeshRenderer>()->CreateMesh(1, 1);
+			ui_Artifactgp1->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/white.jpg");
+			ui_Artifactgp1->GetComponent<MeshRenderer>()->SetUI(true);
+			ui_Artifactgp1->m_transform->SetScale(glm::vec3(50.0f, 50.0f, 1.0f));
+			ui_Artifactgp1->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / 2) - 50.0f, (Graphic::Window::GetHeight() / -2) + 120.0f, 1.0f));
+
+			ui_Artifactgp2 = Instantiate();
+			ui_Artifactgp2->AddComponent<MeshRenderer>()->CreateMesh(1, 1);
+			ui_Artifactgp2->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/white.jpg");
+			ui_Artifactgp2->GetComponent<MeshRenderer>()->SetUI(true);
+			ui_Artifactgp2->m_transform->SetScale(glm::vec3(50.0f, 50.0f, 1.0f));
+			ui_Artifactgp2->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / 2) - 50.0f, (Graphic::Window::GetHeight() / -2) + 190.0f, 1.0f));
+
+			ui_HPtext = Instantiate();
+			ui_HPtext->AddComponent<TextRenderer>();
+			ui_HPtext->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 10);
+			ui_HPtext->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+			ui_HPtext->m_transform->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
+			ui_HPtext->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 280.0f, (Graphic::Window::GetHeight() / 2) - 40.0f, 1.0f));
+
+			ui_BossHPtext = Instantiate();
+			ui_BossHPtext->AddComponent<TextRenderer>();
+			ui_BossHPtext->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 10);
+			ui_BossHPtext->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+			ui_BossHPtext->m_transform->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
+			ui_BossHPtext->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / 2), (Graphic::Window::GetHeight() / 2) + 200, 1.0f));
+
 			Bg2 = Instantiate().get();
 			Bg2->AddComponent<MeshRenderer>();
-			Bg2->GetComponent<MeshRenderer>()->SetLayer(-2);
+			Bg2->GetComponent<MeshRenderer>()->SetLayer(-5);
 			Bg2->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 			Bg2->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer2.png");
+			Bg2->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
+			Bg2->m_transform->SetPosition(glm::vec3(0, -300, 3000));
+
 
 			Bg1 = Instantiate().get();
 			Bg1->AddComponent<MeshRenderer>();
-			Bg1->GetComponent<MeshRenderer>()->SetLayer(-1);
+			Bg1->GetComponent<MeshRenderer>()->SetLayer(-4);
 			Bg1->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 			Bg1->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer1.png");
-
-			Bg2->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
-			//Bg2->m_transform->SetLocalScale(glm::vec3(2.0f, 2.0f, 1));
 			Bg1->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
+			Bg1->m_transform->SetPosition(glm::vec3(0, -300, 2000));
 
-			Bg2->m_transform->SetPosition(glm::vec3(0, -300, 0));
-			Bg1->m_transform->SetPosition(glm::vec3(0, -300, 0));
+			std::shared_ptr<GameObject> Bg0 = Instantiate();
+			Bg0->AddComponent<MeshRenderer>();
+			Bg0->GetComponent<MeshRenderer>()->SetLayer(-3);
+			Bg0->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			Bg0->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer1.png");
+			Bg0->GetComponent<MeshRenderer>()->SetReplaceColor(glm::vec3(0.2, 0.2, 0.8));
+			Bg0->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * -2.0f, Graphic::Window::GetHeight() * 1.5f, 1));
+			Bg0->m_transform->SetPosition(glm::vec3(0, -500, 1000));
 
+			std::shared_ptr<GameObject> Bg00 = Instantiate();
+			Bg00->AddComponent<MeshRenderer>();
+			Bg00->GetComponent<MeshRenderer>()->SetLayer(-2);
+			Bg00->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			Bg00->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer1.png");
+			Bg00->GetComponent<MeshRenderer>()->SetReplaceColor(glm::vec3(0.8, 0.8, 0.8));
+			Bg00->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 1.0f, 1));
+			Bg00->m_transform->SetPosition(glm::vec3(0, -700, 50));
 
 
 			//Player animation controller
@@ -337,7 +426,6 @@ namespace World
 				Rabbit->GetComponent<MeshRenderer>()->CreateMesh(7, 5);
 				Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_PlayerBody_Vversion03.png");
 				Rabbit->GetComponent<MeshRenderer>()->SetLayer(0);
-				Rabbit->GetComponent<MeshRenderer>()->SetReplaceColor(glm::vec3(1.0f, 1.0f, 1.0f));
 
 				Rabbit->AddComponent<Animator>();
 				Rabbit->GetComponent<Animator>()->sr_controllerPath = AnimationControllerPath("Player");
@@ -366,10 +454,6 @@ namespace World
 
 			gamecontroller->AddComponent<GameController>();
 			gamecontroller->GetComponent<GameController>()->player = Rabbit;
-			gamecontroller->GetComponent<GameController>()->ScoreText = ui_ScoreText;
-			gamecontroller->GetComponent<GameController>()->ComboText = ui_ComboText;
-			gamecontroller->GetComponent<GameController>()->HPbar = ui_HPbar;
-			gamecontroller->GetComponent<GameController>()->Staminabar = ui_StaminaBar;
 			gamecontroller->GetComponent<GameController>()->SetGameState(GAME_STATE::MAINMENU);
 			gamecontroller->GetComponent<GameController>()->SetGameplayState(GAMEPLAY_STATE::NORMAL);
 
@@ -379,10 +463,12 @@ namespace World
 			wp_MachineGun->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_shoot.png");
 			wp_MachineGun->GetComponent<MeshRenderer>()->SetLayer(3);
 
-			wp_MachineGun->AddComponent<MachineGun>()->SetWeaponFireRate(3.0f);
+			wp_MachineGun->AddComponent<MachineGun>()->SetWeaponFireRate(7.0f);
 			wp_MachineGun->m_transform->SetParent(Rabbit->m_transform);
 			wp_MachineGun->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
 			
+			wp_MachineGun->AddComponent<SoundPlayer>();
+
 			Serialization::SaveObject(*wp_MachineGun, PrefabPath("Weapons/MachineGun"));
 
 			gamecontroller->AddComponent<EquipmentManager>();
@@ -424,6 +510,15 @@ namespace World
 			logo->SetActive(false);
 
 			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Loadout].push_back(logo);
+			gamecontroller->GetComponent<UIController>()->ScoreText = ui_ScoreText;
+			gamecontroller->GetComponent<UIController>()->ComboText = ui_ComboText;
+			gamecontroller->GetComponent<UIController>()->HPbar = ui_HPbar;
+			gamecontroller->GetComponent<UIController>()->Staminabar = ui_StaminaBar;
+			gamecontroller->GetComponent<UIController>()->HPText = ui_HPtext;
+			gamecontroller->GetComponent<UIController>()->QueenHPText = ui_BossHPtext;
+			gamecontroller->GetComponent<UIController>()->EquippedWeaponDisplay.push_back(ui_Weapongp);
+			gamecontroller->GetComponent<UIController>()->EquippedArtifactDisplay.push_back(ui_Artifactgp1);
+			gamecontroller->GetComponent<UIController>()->EquippedArtifactDisplay.push_back(ui_Artifactgp2);
 
 			std::shared_ptr<GameObject> ui_LoadOut = Instantiate();
 			std::shared_ptr<GameObject> ui_button = Instantiate();
@@ -591,7 +686,38 @@ namespace World
 
 			gamecontroller->GetComponent<GameController>()->loadoutUI = ui_LoadOut;
 
+			std::shared_ptr<GameObject> ui_highscore = Instantiate();
+			ui_highscore->AddComponent<HighScoreUI>();
 
+			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(ui_highscore);
+
+			std::shared_ptr<GameObject> ScoreText;
+			
+			ScoreText = Instantiate();
+
+			ScoreText->AddComponent<TextRenderer>();
+			ScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 30);
+			ScoreText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+
+			ScoreText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
+			ScoreText->m_transform->SetPosition(glm::vec3(300.0f, 50.0f, 1.0f));
+
+			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(ScoreText);
+
+			ui_highscore->GetComponent<HighScoreUI>()->ScoreText = ScoreText;
+
+			ScoreText = Instantiate();
+
+			ScoreText->AddComponent<TextRenderer>();
+			ScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 30);
+			ScoreText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+
+			ScoreText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
+			ScoreText->m_transform->SetPosition(glm::vec3(100.0f, 50.0f, 1.0f));
+
+			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(ScoreText);
+
+			ui_highscore->GetComponent<HighScoreUI>()->NameText = ScoreText;
 			
 
 			//test parent/child------------------------------------------------
@@ -660,6 +786,7 @@ namespace World
 				flyer->GetComponent<Rigidbody>()->Init(15, 15);
 
 				flyer->AddComponent<HPsystem>();
+				flyer->AddComponent<SoundPlayer>();
 
 				//og flyer
 				flyer->AddComponent<AirFollowing>();
@@ -733,6 +860,7 @@ namespace World
 				bomber->GetComponent<Rigidbody>()->SetGravityScale(0.000001);
 
 				bomber->AddComponent<HPsystem>();
+				bomber->AddComponent<SoundPlayer>();
 				bomber->AddComponent<AirFollowing>();
 				bomber->AddComponent<AirDash>()->dashDamage = 0;
 				bomber->AddComponent<Explosion>();
@@ -780,6 +908,7 @@ namespace World
 				flyer->AddComponent<BoxCollider>()->ReScale(0.5, 0.5);
 
 				flyer->AddComponent<HPsystem>();
+				flyer->AddComponent<SoundPlayer>();
 
 				//tank
 				flyer->AddComponent<GroundPatrol>()->SetSpeed(50.0f);
@@ -847,6 +976,7 @@ namespace World
 				flyer->AddComponent<BoxCollider>()->ReScale(1, 1);
 
 				flyer->AddComponent<HPsystem>();
+				flyer->AddComponent<SoundPlayer>();
 
 				//charger
 				flyer->AddComponent<GroundPatrol>();
@@ -908,6 +1038,7 @@ namespace World
 				flyer->AddComponent<BoxCollider>()->ReScale(0.5, 0.5);
 
 				flyer->AddComponent<HPsystem>();
+				flyer->AddComponent<SoundPlayer>();
 
 				//spitter
 				flyer->AddComponent<GroundPatrol>();
@@ -970,6 +1101,7 @@ namespace World
 				queen->GetComponent<Rigidbody>()->SetGravityScale(0.00001);
 
 				queen->AddComponent<HPsystem>();
+				queen->AddComponent<SoundPlayer>();
 				queen->AddComponent<AirPatrol>();
 				queen->GetComponent<AirPatrol>()->SetPoint(-(Graphic::Window::GetWidth() * 2), Graphic::Window::GetWidth() * 2);
 				queen->AddComponent<DeQueen>();
@@ -1027,6 +1159,10 @@ namespace World
 				particle->shape->maxXSize = 4.5f;
 				particle->shape->minYSize = 4.5f;
 				particle->shape->maxYSize = 4.5f;
+				particle->color->usingLifeTimeModifier = true;
+				particle->color->InterpolationEnd = 0.5f;
+				particle->color->Color_Start = glm::vec3(1, 0, 0);
+				particle->color->Color_End = glm::vec3(1, 1, 1);
 
 				Serialization::SaveObject(*particle, ParticlePath("Bullet_Hit_Example"));
 			}
@@ -1040,7 +1176,7 @@ namespace World
 				particle->emitter->particleSamples = 10;
 				particle->emitter->particleRate = 0.0f;
 				particle->color->Color = glm::vec3(0.1f, 1.0f, 0.0f);
-				particle->velocity->SetDirectiontype(ParticleSystem::DirectionType::AwayFromcenter);
+				particle->velocity->SetDirectiontype(ParticleSystem::DirectionType::AwayFromSpawn);
 				particle->velocity->minSpeed = 10;
 				particle->velocity->maxSpeed = 30;
 
@@ -1060,6 +1196,8 @@ namespace World
 				Bullet->AddComponent<Rigidbody>();
 				Bullet->GetComponent<Rigidbody>()->Init(7, 7);
 				Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0000001f);
+
+				Bullet->AddComponent<SoundPlayer>();
 
 				Bullet->AddComponent<ParticleSystem>();
 				Serialization::LoadObject(*Bullet->GetComponent<ParticleSystem>(), ParticlePath("Bullet_Hit_Example"));
@@ -1085,6 +1223,8 @@ namespace World
 				Bullet->GetComponent<Rigidbody>()->Init(7, 7);
 				Bullet->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
 
+				Bullet->AddComponent<SoundPlayer>();
+
 				Bullet->m_transform->SetScale(glm::vec3(30, 30, 1));
 
 				Bullet->AddComponent<GrenadeLauncherBullet>();
@@ -1106,6 +1246,8 @@ namespace World
 				Bullet->GetComponent<Rigidbody>()->Init(7, 7);
 				Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0f);
 
+				Bullet->AddComponent<SoundPlayer>();
+
 				Bullet->m_transform->SetScale(glm::vec3(10, 10, 1));
 
 				Bullet->AddComponent<ZapperGunBullet>();
@@ -1126,6 +1268,8 @@ namespace World
 				Bullet->AddComponent<Rigidbody>();
 				Bullet->GetComponent<Rigidbody>()->Init(7, 7);
 				Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0000001f);
+
+				Bullet->AddComponent<SoundPlayer>();
 
 				Bullet->AddComponent<ParticleSystem>();
 				Bullet->GetComponent<ParticleSystem>()->emitter->isEnabled = true;
@@ -1241,7 +1385,9 @@ namespace World
 		//Update All Systems
 		//Update Input
 		Input::Update();
-		//Core
+		mouseCursor->m_transform->SetPosition(glm::vec3(Input::GetMouseScreenPosition(), 0));
+
+		//Test Only
 		//DebugInput(dt);
 
 		FactoryCollection::UpdateComponents(dt);

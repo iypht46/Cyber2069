@@ -14,14 +14,22 @@ LeaderboardEntry::LeaderboardEntry(std::string name, int score) {
 
 //initialize weapons/artifacts unlock data
 PlayerData::PlayerData() {
+	ResetProgress();
+}
+
+void PlayerData::AddLeaderboardEntry(std::string name, int score) {
+	Leaderboard.insert(std::make_shared<LeaderboardEntry>(name, score));
+}
+
+void PlayerData::ResetProgress() {
 	Weapons = vector<bool>(EquipmentManager::totalWeapon, false);
 	Artifacts = vector<bool>(EquipmentManager::totalArtifact, false);
 
 	Weapons[WEAPON_TYPE::WEAPON_MACHINEGUN] = true;
 }
 
-void PlayerData::AddLeaderboardEntry(std::string name, int score) {
-	Leaderboard.insert(std::make_shared<LeaderboardEntry>(name, score));
+void PlayerData::ResetLeaderboard() {
+	Leaderboard.clear();
 }
 
 void PlayerData::PrintLeaderboard() {

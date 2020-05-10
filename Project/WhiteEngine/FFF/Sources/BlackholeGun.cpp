@@ -6,16 +6,13 @@ BlackholeGun::BlackholeGun() {
 
 	this->type = WEAPON_TYPE::WEAPON_GRENADELAUNCHER;
 
-	/*weaponObj = new GameObject();
-	weaponObj->AddComponent<MeshRenderer>();
-	weaponObj->GetComponent<MeshRenderer>()->CreateMesh(3, 5);
-	weaponObj->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/blackhole_spritesheet.png");
-
-	weaponObj->SetActive(false);*/
-
 }
 
 void BlackholeGun::OnAwake() {
+	weaponObj->GetComponent<SoundPlayer>()->CreateSoundPlayer();
+	weaponObj->GetComponent<SoundPlayer>()->SetSound(SoundPath("SFX_BlackHoleGun_Shoot"));
+	weaponObj->GetComponent<SoundPlayer>()->SetLoop(false);
+	weaponObj->SetActive(false);
 
 	weapon_damage = 1.0f;
 	//weapon_firerate = 0.3f;
@@ -25,7 +22,11 @@ void BlackholeGun::OnAwake() {
 	bullet_Radius = 100.0f;
 	bullet_ToCenterSpeed = 100.0f;
 
+
 	m_gameObject->SetActive(false);
+
+	SoundTimer = 0.25f;
+	SoundCounter = SoundTimer;
 }
 
 void BlackholeGun::Modify() {
@@ -42,6 +43,12 @@ void BlackholeGun::GameTimeBehaviour(float dt) {
 	if (Input::GetMouseHold(Input::MouseKeyCode::MOUSE_LEFT) ||
 		Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT))
 	{
+		SoundCounter -= dt;
+		if (SoundCounter <= 0) {
+			weaponObj->GetComponent<SoundPlayer>()->PlaySound();
+			SoundCounter = SoundTimer;
+		}
+
 		weapon_delay_count += dt;
 		if (weapon_delay_count >= (1.0f / weapon_firerate))
 		{

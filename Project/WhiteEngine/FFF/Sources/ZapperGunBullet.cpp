@@ -46,6 +46,9 @@ void ZapperGunBullet::OnUpdate(float dt)
 void ZapperGunBullet::OnAwake()
 {
 	rb = m_gameObject->GetComponent<Rigidbody>();
+	ZappingSound = m_gameObject->GetComponent<SoundPlayer>();
+	ZappingSound->CreateSoundPlayer();
+	ZappingSound->SetSound(SoundPath("SFX_Zapper_Zapping"));
 	cam = Graphic::getCamera();
 }
 
@@ -111,7 +114,7 @@ void ZapperGunBullet::OnTriggerEnter(const Physic::Collision col) {
 		}
 	}
 
-	
+	//ZappingSound->PlaySound();
 }
 
 void ZapperGunBullet::OnCollisionEnter(const Physic::Collision col) {
@@ -213,7 +216,6 @@ void ZapperGunBullet::Zap(float dt) {
 			}
 		}
 	}
-
 }
 
 void ZapperGunBullet::enemRelease() 

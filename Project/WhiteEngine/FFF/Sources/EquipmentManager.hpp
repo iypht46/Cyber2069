@@ -26,6 +26,8 @@ enum ITEM_TYPE {
 
 class EquipmentManager : public BehaviourScript {
 private:
+	static EquipmentManager* _instance;
+
 	std::shared_ptr<GameObject> playerObj;
 
 	vector<std::shared_ptr<GameObject>> m_weaponObjs;
@@ -34,6 +36,7 @@ private:
 	int weaponCount = 0;		//number of equipped weapon
 	int artifactCount = 0;		//number of equipped artifacts
 public:
+	static EquipmentManager* GetInstance();
 
 	static int totalWeapon;
 	static int totalArtifact;
