@@ -10,13 +10,18 @@ Explosion::Explosion()
 void Explosion::OnAwake() {
 	thisTransform = m_gameObject->m_transform.get();
 	ps = Physic::PhysicScene::GetInstance();
-	targetlayer = ps->GetLayerFromString(targetLayer);
 }
 
 void Explosion::Explode() {
-	Physic::Colliders colliders = ps->GetColliderLayer(targetlayer);
 
-	for (Collider* c : colliders) {
+	//get all collider in target layers
+	Physic::Colliders targetColliders;
+	for (std::string target : TargetLayers) {
+		Physic::Colliders layerColliders = ps->GetColliderLayer(target);
+		targetColliders.insert(targetColliders.end(), layerColliders.begin(), layerColliders.end());
+	}
+
+	for (Collider* c : targetColliders) {
 		float distance = glm::length(c->GetGameObject()->m_transform->GetPosition() - thisTransform->GetPosition());
 		if (distance <= m_radius) {
 			HPsystem* hp = c->GetGameObject()->GetComponent<HPsystem>();
@@ -25,11 +30,6 @@ void Explosion::Explode() {
 			}
 		}
 	}
-}
-
-void Explosion::SetLayer(std::string layer) {
-	targetLayer = layer;
-	targetlayer = ps->GetLayerFromString(layer);
 }
 
 void Explosion::SetDamage(float val) {

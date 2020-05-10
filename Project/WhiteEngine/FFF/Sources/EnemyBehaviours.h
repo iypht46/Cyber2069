@@ -186,6 +186,9 @@ private:
 	SoundPlayer* SpitterSound;
 
 	int SoundCounter;
+
+	void Spit();
+
 public:
 
 	void SetStats(float Speed, float HP, float FireRate);

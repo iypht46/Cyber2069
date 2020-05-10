@@ -162,6 +162,7 @@
     <ClCompile Include="Sources\Scripts\GameControl\PlayerData.cpp" />
     <ClCompile Include="Sources\Scripts\GameControl\UIController.cpp" />
     <ClCompile Include="Sources\Scripts\Weapons\Bullet.cpp" />
+    <ClCompile Include="Sources\Scripts\Weapons\FlakBullet.cpp" />
     <ClCompile Include="Sources\Spitter.cpp" />
     <ClCompile Include="Sources\Tank.cpp" />
     <ClCompile Include="Sources\World.cpp" />

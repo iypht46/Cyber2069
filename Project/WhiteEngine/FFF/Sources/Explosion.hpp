@@ -6,7 +6,10 @@
 #include "Physic/PhysicScene.hpp"
 #include "HPsystem.hpp"
 #include <string>
+#include <set>
 
+#include <cereal/types/string.hpp>
+#include <cereal/types/set.hpp>
 #include <cereal/types/base_class.hpp>
 #include <cereal/types/polymorphic.hpp>
 
@@ -21,7 +24,7 @@ private:
 public:
 	float m_damage = 10.0f;
 	float m_radius = 200.0f;
-	std::string targetLayer = "Player";
+	std::set<std::string> TargetLayers;
 
 	Explosion();
 	~Explosion();
@@ -40,7 +43,7 @@ public:
 			cereal::base_class<BehaviourScript>(this),
 			m_damage,
 			m_radius,
-			targetLayer
+			TargetLayers
 			);
 	}
 };

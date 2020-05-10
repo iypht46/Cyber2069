@@ -18,7 +18,7 @@ public:
 	ObjectPool* BulletPool;
 
 	bool CooledDown();
-	void Shoot(Transform* target);
+	GameObject* Shoot(Transform* target);
 
 	virtual void OnAwake() override;
 	virtual void OnFixedUpdate(float dt) override;

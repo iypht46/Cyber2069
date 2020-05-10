@@ -1,6 +1,7 @@
 #include "../../Weapon.hpp"
 
 Bullet::Bullet() {
+	//shouldn't be here
 	TargetLayers.insert("Enemy");
 	TargetLayers.insert("GroundEnemy");
 }
