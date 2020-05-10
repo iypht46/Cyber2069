@@ -18,7 +18,7 @@ bool ObjectShooter::CooledDown() {
 	return weapon_delay_count >= (1.0f / firerate);
 }
 
-void ObjectShooter::Shoot(Transform* target) {
+GameObject* ObjectShooter::Shoot(Transform* target) {
 	if (target != nullptr) {
 
 		GameObject* bullet = BulletPool->GetGameObject();
@@ -44,5 +44,9 @@ void ObjectShooter::Shoot(Transform* target) {
 
 			weapon_delay_count = 0.0f;
 		}
+
+		return bullet;
 	}
+
+	return nullptr;
 }

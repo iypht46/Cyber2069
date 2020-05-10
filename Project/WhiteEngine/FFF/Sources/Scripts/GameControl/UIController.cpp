@@ -158,7 +158,7 @@ void UIController::updateStaminaUI()
 
 void UIController::updateScoreUI() {
 	if (!ScoreText.expired()) {
-		ScoreText.lock()->GetComponent<TextRenderer>()->SetText("Score: " + to_string((int)GameController::GetInstance()->ScoreValue));
+		ScoreText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)GameController::GetInstance()->ScoreValue));
 	}
 	if (!GameOverScoreText.expired()) {
 		GameOverScoreText.lock()->GetComponent<TextRenderer>()->SetText("Score: " + to_string((int)GameController::GetInstance()->ScoreValue));

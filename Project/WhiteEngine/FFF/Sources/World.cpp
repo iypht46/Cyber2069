@@ -827,7 +827,7 @@ namespace World
 				bomber->AddComponent<HPsystem>();
 				bomber->AddComponent<AirFollowing>();
 				bomber->AddComponent<AirDash>()->dashDamage = 0;
-				bomber->AddComponent<Explosion>();
+				bomber->AddComponent<Explosion>()->TargetLayers.insert("Player");
 				bomber->AddComponent<Bomber>();
 
 				bomber->SetActive(false);
@@ -1132,10 +1132,11 @@ namespace World
 				ParticleSystem* particle = new ParticleSystem();
 				particle->texturePath = "Sources/Assets/white_square.png";
 				particle->emitter->isEnabled = true;
+				particle->emitter->constantParticle = false;
 				particle->emitter->spawnRadius = 50;
 				particle->emitter->particleSamples = 10;
-				particle->emitter->particleRate = 0.0f;
-				particle->color->Color = glm::vec3(0.1f, 1.0f, 0.0f);
+				particle->emitter->burstParticleNumber = 10;
+				particle->color->Color = glm::vec3(1.0f, 0.75f, 0.0f);
 				particle->velocity->SetDirectiontype(ParticleSystem::DirectionType::AwayFromSpawn);
 				particle->velocity->minSpeed = 10;
 				particle->velocity->maxSpeed = 30;
@@ -1235,7 +1236,7 @@ namespace World
 				Serialization::SaveObject(*Bullet, PrefabPath("Bullet_BH"));
 			}
 
-			//fume bullet
+			//spitter bullet
 			{
 				GameObject* Bullet = Instantiate().get();
 				Bullet->Layer = "EnemyBullet";
@@ -1254,6 +1255,11 @@ namespace World
 
 				Bullet->AddComponent<BoxCollider>()->ReScale(1, 1);
 				//add fume bullet component
+				Bullet->AddComponent<FlakBullet>()->TargetLayers.clear();
+				Bullet->GetComponent<FlakBullet>()->TargetLayers.insert("Player");
+
+				Bullet->AddComponent<Explosion>()->m_radius = 100.0f;
+				Bullet->GetComponent<Explosion>()->m_damage = 5.0f;
 
 				Bullet->AddComponent<ParticleSystem>();
 				Serialization::LoadObject(*Bullet->GetComponent<ParticleSystem>(), ParticlePath("Bullet_Fume_Traverse"));

@@ -180,6 +180,9 @@ private:
 	GroundPatrol* groundPatrol;
 	ObjectShooter* shooting;
 	SoundPlayer* SpitterSound;
+
+	void Spit();
+
 public:
 
 	void SetStats(float Speed, float HP, float FireRate);
