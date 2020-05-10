@@ -29,12 +29,16 @@ private:
 	vector<std::shared_ptr<GameObject>> WeaponSelectButtons;
 	vector<std::shared_ptr<GameObject>> ArtifactSelectButtons;
 
+	string eqName = "";
 	string eqDescription = "";
 
 	unsigned int defaultWeaponDisplayTex;
 	unsigned int defaultArtfDisplayTex;
 
 public:
+	std::shared_ptr<GameObject> eqNameObj;
+	std::shared_ptr<GameObject> eqDescriptionObj;
+
 	LoadoutUI();
 
 	void AssignSelectButton(std::shared_ptr<GameObject> selectButton);
@@ -43,6 +47,7 @@ public:
 	void AssignArtifactDisplaySlot(std::shared_ptr<GameObject> ArtifactDisplaySlot);
 
 	void UpdateDisplaySlotTexture();
+	void UpdateDescriptionText();
 
 	virtual void OnAwake();
 	virtual void OnStart();
@@ -59,7 +64,9 @@ public:
 			WeaponDisplaySlot,
 			ArtifactDisplaySlot,
 			WeaponSelectButtons,
-			ArtifactSelectButtons
+			ArtifactSelectButtons,
+			eqNameObj,
+			eqDescriptionObj
 		);
 	}
 };
@@ -78,7 +85,8 @@ public:
 	int currIndex = 0;
 	int OnclickType = 0;
 
-	string description = "";
+	string eq_name = "";
+	string eq_description = "";
 
 	virtual void OnUpdate(float dt);
 
@@ -99,7 +107,8 @@ public:
 			cereal::base_class<BehaviourScript>(this),
 			type,
 			equipment_type,
-			description
+			eq_name,
+			eq_description
 		);
 	}
 };

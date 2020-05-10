@@ -34,6 +34,8 @@ void TextRenderer::Init() {
 
 void TextRenderer::LoadFont(string path, float DefautFontSize) {
 	
+	fontSize = DefautFontSize;
+
 	// FreeType
 	FT_Library ft;
 	// All functions return a value different than 0 whenever an error occurred
@@ -155,6 +157,14 @@ void TextRenderer::Render()
 	for (c = text.begin(); c != text.end(); c++)
 	{
 		GLCharacter ch = Characters[*c];
+
+		if (*c == '\n') 
+		{
+			x = GetGameObject()->m_transform->GetPosition().x;
+			y -= fontSize * scale.y * lineSpacing;
+
+			continue;
+		}
 
 		GLfloat xpos = x + ch.Bearing.x * scale.x;
 		GLfloat ypos = y - (ch.Size.y - ch.Bearing.y) * scale.y;

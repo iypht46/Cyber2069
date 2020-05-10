@@ -148,6 +148,7 @@
     <ClCompile Include="Sources\EnemySpawner.cpp" />
     <ClCompile Include="Sources\Flyer.cpp" />
     <ClCompile Include="Sources\GameController.cpp" />
+    <ClCompile Include="Sources\HighScoreUI.cpp" />
     <ClCompile Include="Sources\HPsystem.cpp" />
     <ClCompile Include="Sources\EquipmentManager.cpp" />
     <ClCompile Include="Sources\ItemDrop.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="Sources\EnemySpawner.hpp" />
     <ClInclude Include="Sources\Equipment.hpp" />
     <ClInclude Include="Sources\GameController.hpp" />
+    <ClInclude Include="Sources\HighScoreUI.hpp" />
     <ClInclude Include="Sources\HPsystem.hpp" />
     <ClInclude Include="Sources\EquipmentManager.hpp" />
     <ClInclude Include="Sources\ItemDrop.hpp" />
