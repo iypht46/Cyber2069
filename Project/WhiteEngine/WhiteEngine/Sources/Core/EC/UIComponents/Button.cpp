@@ -102,6 +102,36 @@ void Button::OnClick()
 			}
 		}
 		break;
+	case BUTTON_TYPE::OPTION:
+		switch (onClickType)
+		{
+		case OPTION::Master_Increase:
+			UIController::GetInstance()->AdjustMasterVolume(0.1f);
+			break;
+		case OPTION::Master_Decrease:
+			UIController::GetInstance()->AdjustMasterVolume(-0.1f);
+			break;
+		case OPTION::Music_Increase:
+			UIController::GetInstance()->AdjustMusicVolume(0.1f);
+			break;
+		case OPTION::Music_Decrease:
+			UIController::GetInstance()->AdjustMusicVolume(-0.1f);
+			break;
+		case OPTION::SFX_Increase:
+			UIController::GetInstance()->AdjustSFXVolume(0.1f);
+			break;
+		case OPTION::SFX_Decrease:
+			UIController::GetInstance()->AdjustSFXVolume(-0.1f);
+			break;
+		case OPTION::RESET_Progress:
+			GameController::GetInstance()->GetPlayerData()->ResetProgress();
+
+			UIController::GetInstance()->ToggleUI(UI_GROUP::MainMenu);
+			break;
+		default:
+			break;
+		}
+		break;
 	default:
 		break;
 	}

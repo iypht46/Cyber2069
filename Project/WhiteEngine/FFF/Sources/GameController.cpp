@@ -218,6 +218,8 @@ void GameController::OnUpdate(float dt)
 			StateChanged = false;
 		}
 
+		UIController::GetInstance()->UpdateVolumeTexts();
+
 		if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE)) 
 		{
 			SetGameState(GAME_STATE::LOADOUT);
@@ -378,6 +380,16 @@ void GameController::OnUpdate(float dt)
 		{
 			SetGameState(GAME_STATE::MAINMENU);
 		}
+
+		break;
+	case GAME_STATE::QUIT:
+		//Do only once after state changed
+		if (StateChanged)
+		{
+			
+		}
+
+		GAME_INFO("QUIT");
 
 		break;
 	default:

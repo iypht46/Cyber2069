@@ -44,12 +44,23 @@ enum GAME_STATE {
 	MAINMENU = 0,
 	LOADOUT,
 	GAMEPLAY,
-	ENDING
+	ENDING,
+	QUIT
 };
 
 enum GAMEPLAY_STATE {
 	NORMAL = 0,
 	QUEEN
+};
+
+enum OPTION {
+	Master_Increase = 0,
+	Master_Decrease,
+	Music_Increase,
+	Music_Decrease,
+	SFX_Increase,
+	SFX_Decrease,
+	RESET_Progress
 };
 
 struct EnemyPreset {

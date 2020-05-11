@@ -20,7 +20,9 @@ enum UI_GROUP {
 	Gameplay,				//not include boss hp bar
 	Pause,
 	GameOver,
-	Highscore
+	Highscore,
+	ResetProgressWarn,
+	QuitGameWarn
 };
 
 //forward declaration
