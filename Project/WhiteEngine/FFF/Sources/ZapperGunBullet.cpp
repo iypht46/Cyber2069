@@ -65,7 +65,7 @@ void ZapperGunBullet::OnTriggerEnter(const Physic::Collision col) {
 			Physic::PhysicScene* ps = Physic::PhysicScene::GetInstance();
 
 			//get all collider in target layers
-			Physic::Colliders colliders;
+			//Physic::Colliders colliders;
 			for (std::string target : TargetLayers) {
 				Physic::Colliders layerColliders = ps->GetColliderLayer(target);
 				colliders.insert(colliders.end(), layerColliders.begin(), layerColliders.end());

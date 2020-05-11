@@ -78,16 +78,18 @@ void MachineGun::GameTimeBehaviour(float dt) {
 	if (Input::GetMouseHold(Input::MouseKeyCode::MOUSE_LEFT) ||
 		Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT))
 	{
-		SoundCounter -= dt;
+		/*SoundCounter -= dt;
 		if (SoundCounter <= 0) {
 			m_gameObject->GetComponent<SoundPlayer>()->PlaySound();
 			SoundCounter = SoundTimer;
-		}
+		}*/
 
 		weapon_delay_count += dt;
 		//ENGINE_INFO("MG: {}/{}", weapon_delay_count, (1.0f / weapon_firerate));
 		if (weapon_delay_count >= (1.0f / weapon_firerate))
 		{
+			m_gameObject->GetComponent<SoundPlayer>()->PlaySound();
+
 			GameObject* bullet = BulletPool->GetInactiveObject();
 
 			if (bullet != nullptr) {
