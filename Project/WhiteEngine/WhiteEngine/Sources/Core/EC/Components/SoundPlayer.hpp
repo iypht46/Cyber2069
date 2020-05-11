@@ -9,6 +9,11 @@
 
 using namespace irrklang;
 
+enum SOUND_TYPE {
+	SOUND_SFX = 0,
+	SOUND_MUSIC,
+};
+
 class SoundPlayer : public Component {
 private:
 	bool isLooping = false;

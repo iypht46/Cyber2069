@@ -12,8 +12,7 @@ GrenadeLauncher::GrenadeLauncher() {
 	weaponObj->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/grenadeL_spritesheet.png");
 	weaponObj->AddComponent<SoundPlayer>();
 	weaponObj->GetComponent<SoundPlayer>()->CreateSoundPlayer();
-	weaponObj->GetComponent<SoundPlayer>()->SetSound(SoundPath("SFX_GrenadeLauncher_Shoot"));
-	weaponObj->GetComponent<SoundPlayer>()->SetLoop(false);
+
 
 	weaponObj->SetActive(false);*/
 
@@ -21,6 +20,10 @@ GrenadeLauncher::GrenadeLauncher() {
 }
 
 void GrenadeLauncher::OnAwake() {
+
+	weaponObj->GetComponent<SoundPlayer>();
+	weaponObj->GetComponent<SoundPlayer>()->SetSound(SoundPath("SFX_GrenadeLauncher_Shoot"));
+	weaponObj->GetComponent<SoundPlayer>()->SetLoop(false);
 
 	weapon_damage = 1.0f;
 	//weapon_firerate = 0.3f;

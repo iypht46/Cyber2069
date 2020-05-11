@@ -25,7 +25,6 @@ void MachineGun::OnAwake() {
 	//weapon_firerate = 0.3f;
 	bullet_speed = 400.0f;
 
-	m_gameObject->GetComponent<SoundPlayer>()->CreateSoundPlayer();
 	m_gameObject->GetComponent<SoundPlayer>()->SetSound(SoundPath("SFX_MachineGun_Shoot"));
 	m_gameObject->GetComponent<SoundPlayer>()->SetLoop(false);
 

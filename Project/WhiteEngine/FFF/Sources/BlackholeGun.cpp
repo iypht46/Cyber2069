@@ -9,7 +9,6 @@ BlackholeGun::BlackholeGun() {
 }
 
 void BlackholeGun::OnAwake() {
-	weaponObj->GetComponent<SoundPlayer>()->CreateSoundPlayer();
 	weaponObj->GetComponent<SoundPlayer>()->SetSound(SoundPath("SFX_BlackHoleGun_Shoot"));
 	weaponObj->GetComponent<SoundPlayer>()->SetLoop(false);
 	weaponObj->SetActive(false);

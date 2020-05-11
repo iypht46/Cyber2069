@@ -9,7 +9,6 @@ ZapperGun::ZapperGun() {
 
 void ZapperGun::OnAwake(){
 
-	weaponObj->GetComponent<SoundPlayer>()->CreateSoundPlayer();
 	weaponObj->GetComponent<SoundPlayer>()->SetSound(SoundPath("SFX_Zapper_Shoot"));
 	weaponObj->GetComponent<SoundPlayer>()->SetLoop(false);
 	weaponObj->SetActive(false);

@@ -47,7 +47,6 @@ void ZapperGunBullet::OnAwake()
 {
 	rb = m_gameObject->GetComponent<Rigidbody>();
 	ZappingSound = m_gameObject->GetComponent<SoundPlayer>();
-	ZappingSound->CreateSoundPlayer();
 	ZappingSound->SetSound(SoundPath("SFX_Zapper_Zapping"));
 	cam = Graphic::getCamera();
 }

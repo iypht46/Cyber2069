@@ -29,13 +29,6 @@ LaserGun::LaserGun()
 
 void LaserGun::OnAwake() {
 
-	weaponObj->AddComponent<SoundPlayer>();
-	weaponObj->GetComponent<SoundPlayer>()->CreateSoundPlayer();
-	weaponObj->GetComponent<SoundPlayer>()->SetSound(SoundPath("SFX_Laser_Shoot"));
-	weaponObj->GetComponent<SoundPlayer>()->SetLoop(false);
-
-	weaponObj->AddComponent<SoundPlayer>();
-	weaponObj->GetComponent<SoundPlayer>()->CreateSoundPlayer();
 	weaponObj->GetComponent<SoundPlayer>()->SetSound(SoundPath("SFX_Laser_Shoot"));
 	weaponObj->GetComponent<SoundPlayer>()->SetLoop(false);
 
