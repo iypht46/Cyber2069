@@ -1,5 +1,7 @@
 #include "GameController.hpp"
 #include "Scripts/GameControl/UIController.h"
+#include "Scripts/GameControl/SoundtrackController.h"
+
 #include "Input/Input.hpp"
 
 GameController* GameController::instance = nullptr;
@@ -25,7 +27,7 @@ GameController* GameController::GetInstance()
 void GameController::OnAwake() {
 	this->PlayerHP = player.lock()->GetComponent<HPsystem>();
 	this->playerControl = player.lock()->GetComponent<PlayerController>();
-
+	this->soundtrackCon = m_gameObject->GetComponent<SoundtrackController>();
 	//startHPscaleX = HPbar.lock()->m_transform->GetScale().x;
 	//startHPscaleY = HPbar.lock()->m_transform->GetScale().y;
 	//startHPposX = HPbar.lock()->m_transform->GetPosition().x;
@@ -232,6 +234,8 @@ void GameController::OnUpdate(float dt)
 
 			loadoutUI.lock()->SetActive(true);
 
+			soundtrackCon->PlayState(SOUNDTRACK_STATE::MENU, true);
+
 			StateChanged = false;
 		}
 
@@ -247,6 +251,8 @@ void GameController::OnUpdate(float dt)
 			playerControl->GetGameObject()->m_transform->SetPosition(PlayerStartPosition);
 
 			loadoutUI.lock()->SetActive(false);
+
+			soundtrackCon->PlayState(SOUNDTRACK_STATE::GAMEPLAY_NORMAL, true);
 
 			StateChanged = false;
 			StateGamplayChanged = true;
@@ -273,6 +279,8 @@ void GameController::OnUpdate(float dt)
 				{
 					Current_Cocoon = CocoonSpawner->SpawnEnemy();
 				}
+
+				soundtrackCon->PlayState(SOUNDTRACK_STATE::GAMEPLAY_NORMAL, true);
 
 				StateGamplayChanged = false;
 			}
@@ -311,6 +319,8 @@ void GameController::OnUpdate(float dt)
 			{
 				Current_Queen = SpawnQueen();
 				UIController::GetInstance()->QueenHP = Current_Queen->GetComponent<HPsystem>();
+
+				soundtrackCon->PlayState(SOUNDTRACK_STATE::GAMEPLAY_BOSS, true);
 
 				StateGamplayChanged = false;
 			}
@@ -357,6 +367,8 @@ void GameController::OnUpdate(float dt)
 			playerControl->GetGameObject()->SetActive(false);
 
 			currScoreCheckpoint = 0;
+
+			soundtrackCon->Stop(false);
 
 			StateChanged = false;
 		}

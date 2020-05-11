@@ -23,6 +23,7 @@
 
 class EnemySpawner;
 class UIController;
+class SoundtrackController;
 
 enum POOL_TYPE {
 	BULLET_MG = 0,
@@ -183,6 +184,8 @@ private:
 
 	PlayerController* playerControl;
 	HPsystem* PlayerHP;
+
+	SoundtrackController* soundtrackCon;
 
 	glm::vec3 PlayerStartPosition;
 

@@ -20,7 +20,7 @@
 
 #include "Utility/ObjectPool.h"
 
-//component headers might not necessary anymore
+//component headers might not be necessary anymore
 #include "Core/EC/Components/Collider.hpp"
 #include "Core/EC/Components/Rigidbody.hpp"
 #include "Core/EC/Components/Animator.hpp"
@@ -41,6 +41,7 @@
 #include "HighScoreUI.hpp"
 #include "ItemDrop.hpp"
 #include "Scripts/GameControl/UIController.h"
+#include "Scripts/GameControl/SoundtrackController.h"
 
 using SceneManagement::Instantiate;
 
@@ -221,6 +222,7 @@ namespace World
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("EnemyBullet", "Platform", Physic::RESOLVE_TYPE::COLLISION);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Item", "Platform", Physic::RESOLVE_TYPE::COLLISION);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Player", "Enemy", Physic::RESOLVE_TYPE::TRIGGER);
+		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Player", "GroundEnemy", Physic::RESOLVE_TYPE::TRIGGER);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Bullet", "Enemy", Physic::RESOLVE_TYPE::TRIGGER);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Bullet", "GroundEnemy", Physic::RESOLVE_TYPE::TRIGGER);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("EnemyBullet", "Player", Physic::RESOLVE_TYPE::TRIGGER);
@@ -743,6 +745,16 @@ namespace World
 			platform->m_transform->SetScale(glm::vec3(800, 20, 1));
 			platform->m_transform->SetPosition(glm::vec3(500, 500, 1));
 			platform->AddComponent<BoxCollider>()->ReScale(1, 1);
+
+			//Soundtrack
+			std::shared_ptr<GameObject> soundtrackPlayer = Instantiate();
+			soundtrackPlayer->AddComponent<SoundPlayer>();
+			gamecontroller->AddComponent<SoundtrackController>()->SetSoundChannel(soundtrackPlayer->GetComponent_weak<SoundPlayer>());
+			gamecontroller->GetComponent<SoundtrackController>()->MenuTracks.push_back(MusicPath("synthwave_loop_track_4"));
+			gamecontroller->GetComponent<SoundtrackController>()->GameplayTracks.push_back(MusicPath("Song09"));
+			gamecontroller->GetComponent<SoundtrackController>()->GameplayTracks.push_back(MusicPath("Song08"));
+			gamecontroller->GetComponent<SoundtrackController>()->GameplayTracks.push_back(MusicPath("Song03"));
+			gamecontroller->GetComponent<SoundtrackController>()->BossTracks.push_back(MusicPath("Song02"));
 
 			ENGINE_INFO("Enemy Creation ==========================================================");
 			//flyer animation
@@ -1341,7 +1353,6 @@ namespace World
 
 			//Add Sound
 			Bg2->AddComponent<SoundPlayer>();
-			Bg2->GetComponent<SoundPlayer>()->CreateSoundPlayer();
 			Bg2->GetComponent<SoundPlayer>()->SetSound("Sources/Assets/BGMPrototype.mp3");
 			Bg2->GetComponent<SoundPlayer>()->SetLoop(true);
 			Bg2->GetComponent<SoundPlayer>()->SetVolume(0.5);

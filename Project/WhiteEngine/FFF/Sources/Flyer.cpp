@@ -39,7 +39,7 @@ void Flyer::OnFixedUpdate(float dt) {
 			airFollow->FollowPlayer(dt);
 			SoundCounter -= dt;
 			if (SoundCounter <= 0) {
-				FlyerSound->PlaySound();
+				//FlyerSound->PlaySound();
 				SoundCounter = 20;
 			}
 			break;
