@@ -18,9 +18,8 @@ class SoundPlayer : public Component {
 private:
 	bool isLooping = false;
 	float volumeValue = 1.0f;
-	float currVolume = 1.0f;
 	/*undetermined*/std::string sr_soundpath;
-	int sound_type = SOUND_SFX;
+	int sound_type = SOUND_TYPE::SOUND_SFX;
 
 	ISoundEngine* soundPlayer = nullptr;
 	ISoundSource* soundSource = nullptr;
@@ -30,6 +29,10 @@ private:
 	//void CreateSoundPlayer();
 	//void UpdateVolume();
 	//-------------------------------------
+
+	static float MasterVolume;
+	static float MusicVolume;
+	static float SFXVolume;
 
 public:
 	SoundPlayer();
@@ -55,6 +58,14 @@ public:
 	void IncreaseVolume();
 	void DecreaseVolume();
 	void AdjustVolume(float diff);
+
+	static float GetMasterVolume() { return SoundPlayer::MasterVolume; }
+	static float GetMusicVolume() { return SoundPlayer::MusicVolume; }
+	static float GetSFXVolume() { return SoundPlayer::SFXVolume; }
+
+	static void SetMasterVolume(float vol) { SoundPlayer::MasterVolume = glm::clamp(vol, 0.0f, 2.0f); }
+	static void SetMusicVolume(float vol) { SoundPlayer::MusicVolume = glm::clamp(vol, 0.0f, 1.0f); }
+	static void SetSFXVolume(float vol) { SoundPlayer::SFXVolume = glm::clamp(vol, 0.0f, 1.0f); }
 
 //serialization
 public:

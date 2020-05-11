@@ -4,6 +4,7 @@
 
 #include "Core/EC/GameObject.hpp"
 #include "Core/EC/UIComponents/TextRenderer.hpp"
+#include "Core/EC/Components/SoundPlayer.hpp"
 
 #include "../../GameController.hpp"
 #include "../../EquipmentManager.hpp"
@@ -62,15 +63,15 @@ void UIController::ToggleUI(int openGroup) {
 }
 
 void UIController::AdjustMasterVolume(float diff) {
-	GameController::GetInstance()->SetMasterVolume(GameController::GetInstance()->MasterVolume + diff);
+	SoundPlayer::SetMasterVolume(SoundPlayer::GetMasterVolume() + diff);
 }
 
 void UIController::AdjustMusicVolume(float diff) {
-	GameController::GetInstance()->SetMusicVolume(GameController::GetInstance()->MusicVolume + diff);
+	SoundPlayer::SetMusicVolume(SoundPlayer::GetMusicVolume() + diff);
 }
 
 void UIController::AdjustSFXVolume(float diff) {
-	GameController::GetInstance()->SetSFXVolume(GameController::GetInstance()->SFXVolume + diff);
+	SoundPlayer::SetSFXVolume(SoundPlayer::GetSFXVolume() + diff);
 }
 
 void UIController::UpdateEquipmentDisplay() {
@@ -199,14 +200,14 @@ void UIController::UpdateVolumeTexts() {
 	int maxValue = 100;
 
 	if (!MasterVolumeText.expired()) {
-		MasterVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)(GameController::GetInstance()->MasterVolume * maxValue)));
+		MasterVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)(SoundPlayer::GetMasterVolume() * maxValue)));
 	}
 
 	if (!MusicVolumeText.expired()) {
-		MusicVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)(GameController::GetInstance()->MusicVolume * maxValue)));
+		MusicVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)(SoundPlayer::GetMusicVolume() * maxValue)));
 	}
 
 	if (!SFXVolumeText.expired()) {
-		SFXVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)(GameController::GetInstance()->SFXVolume * maxValue)));
+		SFXVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)(SoundPlayer::GetSFXVolume() * maxValue)));
 	}
 }
