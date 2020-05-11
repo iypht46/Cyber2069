@@ -59,6 +59,10 @@ void SoundPlayer::SetVolume(float value) {
 	UpdateVolume();
 }
 
+void SoundPlayer::SetSoundType(int type) {
+	sound_type = type;
+}
+
 void SoundPlayer::IncreaseVolume() {
 	volumeValue += 0.05f;
 	volumeValue = glm::clamp(volumeValue, 0.0f, 1.0f);

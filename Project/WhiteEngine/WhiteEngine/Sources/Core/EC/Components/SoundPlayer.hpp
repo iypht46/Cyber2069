@@ -18,7 +18,9 @@ class SoundPlayer : public Component {
 private:
 	bool isLooping = false;
 	float volumeValue = 1.0f;
+	float currVolume = 1.0f;
 	/*undetermined*/std::string sr_soundpath;
+	int sound_type = SOUND_SFX;
 
 	ISoundEngine* soundPlayer = nullptr;
 	ISoundSource* soundSource = nullptr;
@@ -41,6 +43,7 @@ public:
 	//---------------------------
 
 	float GetVolume() { return volumeValue; }
+	int GetSoundType() { return sound_type; }
 
 	void SetSound(std::string path);
 	void PlaySound();
@@ -48,6 +51,7 @@ public:
 	void DeleteSoundPlayer();
 	void SetLoop(bool loop);
 	void SetVolume(float value);
+	void SetSoundType(int type);
 	void IncreaseVolume();
 	void DecreaseVolume();
 	void AdjustVolume(float diff);
