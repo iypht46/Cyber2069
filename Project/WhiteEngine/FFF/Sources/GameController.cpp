@@ -5,6 +5,7 @@
 #include "Input/Input.hpp"
 
 GameController* GameController::instance = nullptr;
+float GameController::stateChangeDelay = 3.0f;
 
 GameController::GameController() {
 	if (instance == nullptr) 
@@ -183,14 +184,48 @@ void GameController::OnUpdate(float dt)
 
 	if (CurrentState != NextState) 
 	{
-		CurrentState = NextState;
-		StateChanged = true;
+		switch (NextState)
+		{
+		case GAMEPLAY:
+			gameStateChangeTimer += dt;
+			break;
+
+		case MAINMENU:
+		case LOADOUT:
+		case ENDING:
+			gameStateChangeTimer = stateChangeDelay;
+			break;
+
+		default:
+			break;
+		}
+
+		if (gameStateChangeTimer >= stateChangeDelay) {
+			CurrentState = NextState;
+			StateChanged = true;
+		}
 	}
 
 	if (CurrentGameplayState != NextGameplayState)
 	{
-		CurrentGameplayState = NextGameplayState;
-		StateGamplayChanged = true;
+		switch (NextGameplayState)
+		{
+		case NORMAL:
+			gameplayStateChangeTimer += dt;
+			break;
+
+		case QUEEN:
+			gameplayStateChangeTimer += dt;
+			break;
+
+		default:
+			break;
+		}
+
+		if (gameplayStateChangeTimer >= stateChangeDelay) {
+			CurrentGameplayState = NextGameplayState;
+			StateGamplayChanged = true;
+		}
 	}
 
 	switch (CurrentState)
@@ -252,8 +287,6 @@ void GameController::OnUpdate(float dt)
 
 			loadoutUI.lock()->SetActive(false);
 
-			soundtrackCon->PlayState(SOUNDTRACK_STATE::GAMEPLAY_NORMAL, true);
-
 			StateChanged = false;
 			StateGamplayChanged = true;
 
@@ -280,6 +313,7 @@ void GameController::OnUpdate(float dt)
 					Current_Cocoon = CocoonSpawner->SpawnEnemy();
 				}
 
+				soundtrackCon->Stop(true);
 				soundtrackCon->PlayState(SOUNDTRACK_STATE::GAMEPLAY_NORMAL, true);
 
 				StateGamplayChanged = false;
@@ -292,13 +326,16 @@ void GameController::OnUpdate(float dt)
 				{
 					CocoonCount++;
 
-					if (CocoonCount == CocoonNeed)
+					if (CocoonCount == CurrAmplifier->CocoonNeeded)
 					{
 						CocoonCount = 0;
 						SetGameplayState(GAMEPLAY_STATE::QUEEN);
-						StateGamplayChanged = true;
+
+						soundtrackCon->Stop(true);
+
+						//StateGamplayChanged = true;
 					}
-					else 
+					else if (NextGameplayState != GAMEPLAY_STATE::QUEEN)
 					{
 						Current_Cocoon = CocoonSpawner->SpawnEnemy();
 					}
@@ -332,6 +369,7 @@ void GameController::OnUpdate(float dt)
 				//if Queen Dead go back to normal state
 				if (!Current_Queen->Active()) 
 				{
+					soundtrackCon->Stop(true);
 					SetGameplayState(GAMEPLAY_STATE::NORMAL);
 				}
 			}
@@ -497,6 +535,48 @@ void GameController::SetActiveAllObjectInPool(bool active)
 	for (pair<int, ObjectPool*> pool : Pools) 
 	{
 		pool.second->SetActiveAllGameObject(active);
+	}
+}
+
+void GameController::SetGameState(int state) {
+	if (NextState != state) {
+		this->NextState = state;
+
+		switch (NextState)
+		{
+		case MAINMENU:
+			gameStateChangeTimer = stateChangeDelay;
+			break;
+		case LOADOUT:
+			gameStateChangeTimer = stateChangeDelay;
+			break;
+		case GAMEPLAY:
+			gameStateChangeTimer = 0;
+			break;
+		case ENDING:
+			gameStateChangeTimer = stateChangeDelay;
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+void GameController::SetGameplayState(int state){
+	if (NextGameplayState != state) {
+		this->NextGameplayState = state;
+
+		switch (NextGameplayState)
+		{
+		case NORMAL:
+			gameplayStateChangeTimer = 0;
+			break;
+		case QUEEN:
+			gameplayStateChangeTimer = 0;
+			break;
+		default:
+			break;
+		}
 	}
 }
 

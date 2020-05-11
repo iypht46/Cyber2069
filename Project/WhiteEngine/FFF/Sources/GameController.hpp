@@ -94,6 +94,8 @@ struct EnemyAmplifier {
 	float BomberExplodeRadius = 200;
 
 	//queen
+	//int CocoonNeeded = 5;
+	int CocoonNeeded = 1;
 	//float QueenHP = 500;
 	float QueenHP = 1;
 	float QueenSpeed = 75;
@@ -192,7 +194,7 @@ private:
 	GameObject* Current_Queen = nullptr;
 	GameObject* Current_Cocoon = nullptr;
 
-	int CocoonNeed = 1;
+	//int CocoonNeed = 1;
 	int CocoonCount = 0;
 
 	float MasterVolume = 1.0f;
@@ -238,6 +240,10 @@ private:
 
 	bool StateChanged = false;
 	bool StateGamplayChanged = false;
+
+	static float stateChangeDelay;
+	float gameStateChangeTimer = 0;
+	float gameplayStateChangeTimer = 0;
 
 	//player data manager
 	void LoadData();
@@ -300,8 +306,8 @@ public:
 	int GetGameState() { return CurrentState; }
 	int GetGameplayState() { return CurrentGameplayState; }
 
-	void SetGameState(int state) { this->NextState = state; }
-	void SetGameplayState(int state) { this->NextGameplayState = state; }
+	void SetGameState(int state);
+	void SetGameplayState(int state);
 
 	GameObject* GetPlayer() { return playerControl->GetGameObject(); }
 
