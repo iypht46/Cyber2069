@@ -6,6 +6,15 @@
 #include "Utility/WhiteMath.h"
 #include "Core//Logger.hpp"
 
+void SoundtrackController::OnAwake() {
+	ReRollTrackSet();
+}
+
+void SoundtrackController::ReRollTrackSet() {
+	CurrentGameActionTrack = RandomTrack(GameplayTracks);
+	CurrentGameBossTrack = RandomTrack(BossTracks);
+}
+
 void SoundtrackController::PlayState(SOUNDTRACK_STATE state, bool shouldfade) {
 	fade = shouldfade;
 	playing = true;
@@ -31,7 +40,7 @@ void SoundtrackController::PlayState(SOUNDTRACK_STATE state, bool shouldfade) {
 		case GAMEPLAY_NORMAL:
 			channel.lock()->SetLoop(true);
 			if (GameplayTracks.size() > 0) {
-				channel.lock()->SetSound(RandomTrack(GameplayTracks));
+				channel.lock()->SetSound(CurrentGameActionTrack);
 			}
 			else {
 				ENGINE_ERROR("{}; No gameplay track assigned", *m_gameObject);
@@ -41,7 +50,7 @@ void SoundtrackController::PlayState(SOUNDTRACK_STATE state, bool shouldfade) {
 		case GAMEPLAY_BOSS:
 			channel.lock()->SetLoop(true);
 			if (BossTracks.size() > 0) {
-				channel.lock()->SetSound(RandomTrack(BossTracks));
+				channel.lock()->SetSound(CurrentGameBossTrack);
 			}
 			else {
 				ENGINE_ERROR("{}; No boss fight track assigned", *m_gameObject);

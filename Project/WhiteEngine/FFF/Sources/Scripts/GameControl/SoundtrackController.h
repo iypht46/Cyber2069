@@ -31,6 +31,9 @@ private:
 
 	std::string RandomTrack(std::vector<std::string>& list);
 
+	std::string CurrentGameActionTrack;
+	std::string CurrentGameBossTrack;
+
 public:
 	float fadeLength = 1.5f;
 
@@ -42,12 +45,16 @@ public:
 
 	void SetSoundChannel(std::weak_ptr<SoundPlayer> player) { channel = player; }
 
+	//re randomize gameplaytrack and boss track
+	void ReRollTrackSet();
+
 	void PlayState(SOUNDTRACK_STATE state, bool shouldfade);
 	void Stop(bool shouldfade);
 
 	//whether the sound volume is appropriate to the playing state
 	bool SoundAdjusted();
 
+	virtual void OnAwake() override;
 	virtual void OnFixedUpdate(float) override;
 
 	//serialization
