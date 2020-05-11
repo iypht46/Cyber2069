@@ -4,6 +4,19 @@
 #include <set>
 #include <string>
 
+#include "Core/EC/Components/BehaviourScript.h"
+#include "Core/EC/Components/Transform.hpp"
+#include "Core/EC/Components/Rigidbody.hpp"
+#include "Core/EC/GameObject.hpp"
+#include "Utility/ObjectPool.h"
+
+#include "Physic/PhysicScene.hpp"
+
+#include "Graphic/Camera.hpp"
+#include "Graphic/Window.hpp"
+#include "Enemy.hpp"
+#include "Core/EC/Components/SoundPlayer.hpp"
+
 #include <cereal/types/string.hpp>
 #include <cereal/types/set.hpp>
 #include <cereal/types/base_class.hpp>
@@ -16,6 +29,9 @@ enum WEAPON_TYPE {
 	WEAPON_ZAPPER,
 	WEAPON_BLACKHOLE,
 };
+
+class Explosion;
+class ParticleSystem;
 
 class Weapon : public Equipment , public BehaviourScript
 {
@@ -78,6 +94,7 @@ CEREAL_REGISTER_TYPE(Weapon);
 class Bullet :public BehaviourScript {
 public:
 	std::set<std::string> TargetLayers;
+	float bulletDamage;
 
 	bool isTarget(Physic::Layer);
 	bool isTarget(std::string);
@@ -98,6 +115,9 @@ CEREAL_REGISTER_TYPE(Bullet);
 
 //Machine Gun ===========================================================================================
 class MachineGun : public Weapon {
+protected:
+	float SoundCounter;
+	float SoundTimer;
 public:
 	MachineGun();
 	void Modify();
@@ -161,6 +181,10 @@ private:
 
 	glm::vec2 gunPos;
 	glm::vec2 endPos;
+
+	float SoundCounter;
+	float SoundTimer;
+
 public:
 	LaserGun();
 	void Modify();
@@ -192,6 +216,8 @@ CEREAL_REGISTER_TYPE(LaserGun);
 class GrenadeLauncher : public Weapon {
 private:
 	float grenade_radius;
+	float SoundCounter;
+	float SoundTimer;
 public:
 	GrenadeLauncher();
 	void Modify();
@@ -220,6 +246,8 @@ protected:
 
 	float radius = 1000.0f;
 	float scaleX = 1.0f;
+
+	SoundPlayer* ExplodeSound;
 
 public:
 	void SetDamage(float dmg) { this->bulletDmg = dmg; }
@@ -255,6 +283,8 @@ private:
 	float zapDistance;
 	float zapDuration;
 	float zapRate;
+	float SoundCounter;
+	float SoundTimer;
 public:
 	ZapperGun();
 	void Modify();
@@ -300,6 +330,8 @@ protected:
 	vector <Transform*> TargetTranform;
 	Physic::Colliders colliders;
 
+	SoundPlayer* ZappingSound;
+
 public:
 	void SetDamage(float dmg) { this->bulletDmg = dmg; }
 	void SetChainNumber(float n) { this->chainNumber = n; }
@@ -340,6 +372,8 @@ private:
 	float bullet_Duration;
 	float bullet_Radius;
 	float bullet_ToCenterSpeed;
+	float SoundCounter;
+	float SoundTimer;
 public:
 	BlackholeGun();
 	void Modify();
@@ -367,6 +401,7 @@ protected:
 	Graphic::CameraObject* cam;
 
 	Rigidbody* rb;
+	SoundPlayer* BhSound;
 	float bulletDmg = 1.0f;
 	float Duration = 2.0f;
 	float Radius = 200.0f;
@@ -405,4 +440,37 @@ public:
 	}
 };
 CEREAL_REGISTER_TYPE(BlackholeGunBullet);
+//-------------------------------------------------------------------------------------------------------
+
+//Flak Bullet ===========================================================================================
+//explode on destination
+class FlakBullet : public Bullet {
+protected:
+	Graphic::CameraObject* cam;
+	Rigidbody* rb;
+	Explosion* explosion;
+	ParticleSystem* particle;
+
+	void Explode();
+
+public:
+	float destinationMargin = 10.0f;
+	//tmp
+	glm::vec2 Destination;
+
+	virtual void OnAwake();
+	virtual void OnUpdate(float dt);
+	virtual void OnCollisionEnter(const Physic::Collision col) override;
+
+	//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Bullet>(this),
+			destinationMargin
+			);
+	}
+};
+CEREAL_REGISTER_TYPE(FlakBullet);
 //-------------------------------------------------------------------------------------------------------

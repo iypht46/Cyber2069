@@ -20,7 +20,7 @@
 
 #include "Utility/ObjectPool.h"
 
-//component headers might not necessary anymore
+//component headers might not be necessary anymore
 #include "Core/EC/Components/Collider.hpp"
 #include "Core/EC/Components/Rigidbody.hpp"
 #include "Core/EC/Components/Animator.hpp"
@@ -41,6 +41,7 @@
 #include "HighScoreUI.hpp"
 #include "ItemDrop.hpp"
 #include "Scripts/GameControl/UIController.h"
+#include "Scripts/GameControl/SoundtrackController.h"
 
 using SceneManagement::Instantiate;
 
@@ -221,6 +222,7 @@ namespace World
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("EnemyBullet", "Platform", Physic::RESOLVE_TYPE::COLLISION);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Item", "Platform", Physic::RESOLVE_TYPE::COLLISION);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Player", "Enemy", Physic::RESOLVE_TYPE::TRIGGER);
+		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Player", "GroundEnemy", Physic::RESOLVE_TYPE::TRIGGER);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Bullet", "Enemy", Physic::RESOLVE_TYPE::TRIGGER);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Bullet", "GroundEnemy", Physic::RESOLVE_TYPE::TRIGGER);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("EnemyBullet", "Player", Physic::RESOLVE_TYPE::TRIGGER);
@@ -467,6 +469,8 @@ namespace World
 			wp_MachineGun->m_transform->SetParent(Rabbit->m_transform);
 			wp_MachineGun->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
 			
+			wp_MachineGun->AddComponent<SoundPlayer>();
+
 			Serialization::SaveObject(*wp_MachineGun, PrefabPath("Weapons/MachineGun"));
 
 			gamecontroller->AddComponent<EquipmentManager>();
@@ -742,6 +746,16 @@ namespace World
 			platform->m_transform->SetPosition(glm::vec3(500, 500, 1));
 			platform->AddComponent<BoxCollider>()->ReScale(1, 1);
 
+			//Soundtrack
+			std::shared_ptr<GameObject> soundtrackPlayer = Instantiate();
+			soundtrackPlayer->AddComponent<SoundPlayer>();
+			gamecontroller->AddComponent<SoundtrackController>()->SetSoundChannel(soundtrackPlayer->GetComponent_weak<SoundPlayer>());
+			gamecontroller->GetComponent<SoundtrackController>()->MenuTracks.push_back(MusicPath("synthwave_loop_track_4"));
+			gamecontroller->GetComponent<SoundtrackController>()->GameplayTracks.push_back(MusicPath("Song09"));
+			gamecontroller->GetComponent<SoundtrackController>()->GameplayTracks.push_back(MusicPath("Song08"));
+			gamecontroller->GetComponent<SoundtrackController>()->GameplayTracks.push_back(MusicPath("Song03"));
+			gamecontroller->GetComponent<SoundtrackController>()->BossTracks.push_back(MusicPath("Song02"));
+
 			ENGINE_INFO("Enemy Creation ==========================================================");
 			//flyer animation
 			{
@@ -784,6 +798,7 @@ namespace World
 				flyer->GetComponent<Rigidbody>()->Init(15, 15);
 
 				flyer->AddComponent<HPsystem>();
+				flyer->AddComponent<SoundPlayer>();
 
 				//og flyer
 				flyer->AddComponent<AirFollowing>();
@@ -857,9 +872,10 @@ namespace World
 				bomber->GetComponent<Rigidbody>()->SetGravityScale(0.000001);
 
 				bomber->AddComponent<HPsystem>();
+				bomber->AddComponent<SoundPlayer>();
 				bomber->AddComponent<AirFollowing>();
 				bomber->AddComponent<AirDash>()->dashDamage = 0;
-				bomber->AddComponent<Explosion>();
+				bomber->AddComponent<Explosion>()->TargetLayers.insert("Player");
 				bomber->AddComponent<Bomber>();
 
 				bomber->SetActive(false);
@@ -904,6 +920,7 @@ namespace World
 				flyer->AddComponent<BoxCollider>()->ReScale(0.5, 0.5);
 
 				flyer->AddComponent<HPsystem>();
+				flyer->AddComponent<SoundPlayer>();
 
 				//tank
 				flyer->AddComponent<GroundPatrol>()->SetSpeed(50.0f);
@@ -971,6 +988,7 @@ namespace World
 				flyer->AddComponent<BoxCollider>()->ReScale(1, 1);
 
 				flyer->AddComponent<HPsystem>();
+				flyer->AddComponent<SoundPlayer>();
 
 				//charger
 				flyer->AddComponent<GroundPatrol>();
@@ -1032,6 +1050,7 @@ namespace World
 				flyer->AddComponent<BoxCollider>()->ReScale(0.5, 0.5);
 
 				flyer->AddComponent<HPsystem>();
+				flyer->AddComponent<SoundPlayer>();
 
 				//spitter
 				flyer->AddComponent<GroundPatrol>();
@@ -1094,6 +1113,7 @@ namespace World
 				queen->GetComponent<Rigidbody>()->SetGravityScale(0.00001);
 
 				queen->AddComponent<HPsystem>();
+				queen->AddComponent<SoundPlayer>();
 				queen->AddComponent<AirPatrol>();
 				queen->GetComponent<AirPatrol>()->SetPoint(-(Graphic::Window::GetWidth() * 2), Graphic::Window::GetWidth() * 2);
 				queen->AddComponent<DeQueen>();
@@ -1164,10 +1184,11 @@ namespace World
 				ParticleSystem* particle = new ParticleSystem();
 				particle->texturePath = "Sources/Assets/white_square.png";
 				particle->emitter->isEnabled = true;
+				particle->emitter->constantParticle = false;
 				particle->emitter->spawnRadius = 50;
 				particle->emitter->particleSamples = 10;
-				particle->emitter->particleRate = 0.0f;
-				particle->color->Color = glm::vec3(0.1f, 1.0f, 0.0f);
+				particle->emitter->burstParticleNumber = 10;
+				particle->color->Color = glm::vec3(1.0f, 0.75f, 0.0f);
 				particle->velocity->SetDirectiontype(ParticleSystem::DirectionType::AwayFromSpawn);
 				particle->velocity->minSpeed = 10;
 				particle->velocity->maxSpeed = 30;
@@ -1188,6 +1209,8 @@ namespace World
 				Bullet->AddComponent<Rigidbody>();
 				Bullet->GetComponent<Rigidbody>()->Init(7, 7);
 				Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0000001f);
+
+				Bullet->AddComponent<SoundPlayer>();
 
 				Bullet->AddComponent<ParticleSystem>();
 				Serialization::LoadObject(*Bullet->GetComponent<ParticleSystem>(), ParticlePath("Bullet_Hit_Example"));
@@ -1213,6 +1236,8 @@ namespace World
 				Bullet->GetComponent<Rigidbody>()->Init(7, 7);
 				Bullet->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
 
+				Bullet->AddComponent<SoundPlayer>();
+
 				Bullet->m_transform->SetScale(glm::vec3(30, 30, 1));
 
 				Bullet->AddComponent<GrenadeLauncherBullet>();
@@ -1233,6 +1258,8 @@ namespace World
 				Bullet->AddComponent<Rigidbody>();
 				Bullet->GetComponent<Rigidbody>()->Init(7, 7);
 				Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0f);
+
+				Bullet->AddComponent<SoundPlayer>();
 
 				Bullet->m_transform->SetScale(glm::vec3(10, 10, 1));
 
@@ -1255,6 +1282,8 @@ namespace World
 				Bullet->GetComponent<Rigidbody>()->Init(7, 7);
 				Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0000001f);
 
+				Bullet->AddComponent<SoundPlayer>();
+
 				Bullet->AddComponent<ParticleSystem>();
 				Bullet->GetComponent<ParticleSystem>()->emitter->isEnabled = true;
 
@@ -1267,7 +1296,7 @@ namespace World
 				Serialization::SaveObject(*Bullet, PrefabPath("Bullet_BH"));
 			}
 
-			//fume bullet
+			//spitter bullet
 			{
 				GameObject* Bullet = Instantiate().get();
 				Bullet->Layer = "EnemyBullet";
@@ -1286,6 +1315,11 @@ namespace World
 
 				Bullet->AddComponent<BoxCollider>()->ReScale(1, 1);
 				//add fume bullet component
+				Bullet->AddComponent<FlakBullet>()->TargetLayers.clear();
+				Bullet->GetComponent<FlakBullet>()->TargetLayers.insert("Player");
+
+				Bullet->AddComponent<Explosion>()->m_radius = 100.0f;
+				Bullet->GetComponent<Explosion>()->m_damage = 5.0f;
 
 				Bullet->AddComponent<ParticleSystem>();
 				Serialization::LoadObject(*Bullet->GetComponent<ParticleSystem>(), ParticlePath("Bullet_Fume_Traverse"));
@@ -1319,7 +1353,6 @@ namespace World
 
 			//Add Sound
 			Bg2->AddComponent<SoundPlayer>();
-			Bg2->GetComponent<SoundPlayer>()->CreateSoundPlayer();
 			Bg2->GetComponent<SoundPlayer>()->SetSound("Sources/Assets/BGMPrototype.mp3");
 			Bg2->GetComponent<SoundPlayer>()->SetLoop(true);
 			Bg2->GetComponent<SoundPlayer>()->SetVolume(0.5);

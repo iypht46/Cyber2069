@@ -1,4 +1,5 @@
 #include "EnemyBehaviours.h"
+#include "Weapon.hpp"
 
 void Spitter::OnAwake() {
 	groundPatrol = m_gameObject->GetComponent<GroundPatrol>();
@@ -38,10 +39,17 @@ void Spitter::OnFixedUpdate(float dt) {
 	case EnemyState::Active:
 		if (shooting->CooledDown()) {
 			animator->setCurrentState(1);
-			shooting->Shoot(target);
+			Spit();
 		}
 		break;
 	default:
 		break;
+	}
+}
+
+void Spitter::Spit() {
+	GameObject* bullet = shooting->Shoot(target);
+	if (bullet != nullptr) {
+		bullet->GetComponent<FlakBullet>()->Destination = (glm::vec2)target->GetPosition();
 	}
 }

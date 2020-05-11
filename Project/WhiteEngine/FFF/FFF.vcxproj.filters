@@ -38,7 +38,9 @@
     <ClCompile Include="Sources\ZapperGunBullet.cpp" />
     <ClCompile Include="Sources\Scripts\GameControl\UIController.cpp" />
     <ClCompile Include="Sources\ItemDrop.cpp" />
+    <ClCompile Include="Sources\Scripts\Weapons\FlakBullet.cpp" />
     <ClCompile Include="Sources\HighScoreUI.cpp" />
+    <ClCompile Include="Sources\Scripts\GameControl\SoundtrackController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Artifact.hpp" />
@@ -66,6 +68,7 @@
     <ClInclude Include="Sources\Scripts\GameControl\UIController.h" />
     <ClInclude Include="Sources\ItemDrop.hpp" />
     <ClInclude Include="Sources\HighScoreUI.hpp" />
+    <ClInclude Include="Sources\Scripts\GameControl\SoundtrackController.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sources\Shader\fragment.shd" />

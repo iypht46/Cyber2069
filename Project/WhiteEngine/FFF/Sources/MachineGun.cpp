@@ -7,11 +7,14 @@ MachineGun::MachineGun()
 
 	this->type = WEAPON_TYPE::WEAPON_MACHINEGUN;
 
-	/*weaponObj = new GameObject();
-	weaponObj->AddComponent<MeshRenderer>();
+	//weaponObj = new GameObject();
+
+	/*weaponObj->AddComponent<MeshRenderer>();
 	weaponObj->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
 	weaponObj->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_shoot.png");
 	weaponObj->GetComponent<MeshRenderer>()->SetLayer(3);
+	weaponObj->AddComponent<SoundPlayer>();
+
 
 	weaponObj->SetActive(false);*/
 }
@@ -21,12 +24,20 @@ void MachineGun::OnAwake() {
 	weapon_damage = 1.0f;
 	//weapon_firerate = 0.3f;
 	bullet_speed = 400.0f;
-	
+
+	m_gameObject->GetComponent<SoundPlayer>()->CreateSoundPlayer();
+	m_gameObject->GetComponent<SoundPlayer>()->SetSound(SoundPath("SFX_MachineGun_Shoot"));
+	m_gameObject->GetComponent<SoundPlayer>()->SetLoop(false);
+
+	SoundTimer = 0.30f;
+	SoundCounter = SoundTimer;
+
 	m_gameObject->SetActive(false);
 }
 
 void MachineGun::Modify() 
 {
+
 }
 
 void MachineGun::MultiplyWeaponAmplifier(float value) 
@@ -68,6 +79,12 @@ void MachineGun::GameTimeBehaviour(float dt) {
 	if (Input::GetMouseHold(Input::MouseKeyCode::MOUSE_LEFT) ||
 		Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT))
 	{
+		SoundCounter -= dt;
+		if (SoundCounter <= 0) {
+			m_gameObject->GetComponent<SoundPlayer>()->PlaySound();
+			SoundCounter = SoundTimer;
+		}
+
 		weapon_delay_count += dt;
 		//ENGINE_INFO("MG: {}/{}", weapon_delay_count, (1.0f / weapon_firerate));
 		if (weapon_delay_count >= (1.0f / weapon_firerate))
