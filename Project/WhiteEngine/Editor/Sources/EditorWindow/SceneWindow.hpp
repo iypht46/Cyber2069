@@ -19,6 +19,7 @@ namespace Tools
 		virtual void PreRender() override;
 		virtual void OnRender() override;
 		virtual void Terminate() override;
+		void SetDrawDebug(bool i);
 	};
 }
 

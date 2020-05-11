@@ -146,6 +146,12 @@ namespace Tools
 				m_fileDialog->Open();
 			}
 
+			if (ImGui::MenuItem("Draw Debug", NULL, m_drawDebug))
+			{
+				m_drawDebug = !m_drawDebug;
+				m_sceneWindow->SetDrawDebug(m_drawDebug);
+			}
+
 			ImGui::EndMenu();
 		}
 	}

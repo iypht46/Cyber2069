@@ -37,6 +37,9 @@ namespace Tools
 		ImGui::SameLine();
 		if (ImGui::InputText("##EntityName", &m_entityToRender->m_objectName))
 			entity->SetName(m_entityToRender->m_objectName);
+		ImGui::AlignTextToFramePadding(); ImGui::Text("Layer"); ImGui::SameLine();
+		ImGui::InputText("##EntityLayer", &entity->Layer);
+			
 		ImGui::PopItemWidth();
 
 		ImGui::Separator();

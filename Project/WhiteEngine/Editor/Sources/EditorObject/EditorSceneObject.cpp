@@ -189,6 +189,7 @@ namespace Tools
 
 				delete entity;
 			}
+			m_selected = nullptr;
 		}
 	}
 }

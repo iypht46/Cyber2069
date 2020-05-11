@@ -23,6 +23,7 @@
 
 class EnemySpawner;
 class UIController;
+namespace Tools { class GameControllerScriptEC; }
 
 enum POOL_TYPE {
 	BULLET_MG = 0,
@@ -163,7 +164,7 @@ public:
 class GameController : public BehaviourScript {
 private:
 	friend class UIController;
-
+	friend class Tools::GameControllerScriptEC;
 	static GameController* instance;
 	float ScoreValue = 0;
 	float ComboValue = 1;

@@ -144,6 +144,7 @@
     <ClInclude Include="Sources\EditorObject\EditorAC.hpp" />
     <ClInclude Include="Sources\EditorObject\EditorParticleObject.hpp" />
     <ClInclude Include="Sources\EditorObject\ParticleComponentEC.hpp" />
+    <ClInclude Include="Sources\EditorObject\ScriptEC.hpp" />
     <ClInclude Include="Sources\EditorWindow\AnimationWindow.hpp" />
     <ClInclude Include="Sources\EditorWindow\ParticleSystemWindow.hpp" />
     <ClInclude Include="Sources\Editor\ACEditor.hpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="Vendors\imgui\imconfig.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\EditorObject\ComponentReg.cpp" />
     <ClCompile Include="Sources\EditorObject\EditorAC.cpp" />
     <ClCompile Include="Sources\EditorObject\EditorObject.cpp" />
     <ClCompile Include="Sources\EditorObject\ParticleComponentEC.cpp" />

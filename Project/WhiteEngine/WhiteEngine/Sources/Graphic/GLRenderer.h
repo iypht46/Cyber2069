@@ -114,6 +114,7 @@ public:
 	void SetDefaultViewport();
 
 	void AssignLayer();
+	void ResetAssignLayer();
 	void SetAsgnLayer(bool asgn);
 
 	void AddMeshToSet(MeshRenderer* mesh);

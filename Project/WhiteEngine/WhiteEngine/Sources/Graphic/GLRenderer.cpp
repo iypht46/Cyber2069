@@ -400,6 +400,18 @@ void GLRenderer::AssignLayer()
 	}
 }
 
+void GLRenderer::ResetAssignLayer()
+{
+	
+
+	for (auto mesh : MeshSet)
+	{
+		mesh->inSet = false;
+	}
+	MeshSet.clear();
+	AssignLayer();
+}
+
 void GLRenderer::SetAsgnLayer(bool asgn)
 {
 	this->AsgnLayer = asgn;

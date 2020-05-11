@@ -48,6 +48,11 @@ namespace Tools
 
 	}
 
+	void SceneWindow::SetDrawDebug(bool i)
+	{
+		GLRenderer::GetInstance()->drawDebug = i;
+	}
+
 	void SceneWindow::SceneCameraControl()
 	{
 		if (ImGui::IsWindowHovered())

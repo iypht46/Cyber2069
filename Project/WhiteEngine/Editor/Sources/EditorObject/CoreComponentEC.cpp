@@ -1,25 +1,15 @@
 //Editor
 #include "EditorObject/CoreComponentEC.hpp"
-#include "EditorObject/ParticleComponentEC.hpp"
 //White Engine
 #include "Core/Logger.hpp"
 #include "Utility/Filesystem.hpp"
+#include "Graphic/GLRenderer.h"
 //Third Party
 #include "misc/cpp/imgui_stdlib.h"
 
 
 namespace Tools
 {
-	//*****Prototype Design Variable*****//
-	std::map<std::string, EditorComponent*> EditorComponent::m_componentTable;
-	AvailableComponent EditorComponent::m_availableComponent;
-	MAKE_COMPONENT(TransformEC);
-	MAKE_COMPONENT(MeshRendererEC);
-	MAKE_COMPONENT(BoxColliderEC);
-	MAKE_COMPONENT(RigidbodyEC);
-	MAKE_COMPONENT(AnimatorEC);
-	MAKE_COMPONENT(ParticleComponentEC);
-	//*****          END            *****//
 
 	void TransformEC::Init(Component* engineComponent)
 	{
@@ -109,12 +99,20 @@ namespace Tools
 	{
 		ImGui::PushItemWidth(-1);
 		//Checkbox: UI
-		ImGui::AlignTextToFramePadding(); ImGui::Text("UI"); ImGui::SameLine();
+		ImGui::AlignTextToFramePadding(); ImGui::Text("IsUI"); ImGui::SameLine();
 		if (ImGui::Checkbox("##MeshUI", &m_isUI))
 		{
 			m_typeComponent->SetUI(m_isUI);
 			dirty = true;
 		}
+
+		ImGui::AlignTextToFramePadding(); ImGui::Text("Render Layer"); ImGui::SameLine();
+		if (ImGui::DragInt("##MeshLayer", &m_typeComponent->layer, 1.0f, -100, 100))
+		{
+			dirty = true;
+			GLRenderer::GetInstance()->ResetAssignLayer();
+		}
+			
 			
 
 		//Text: Texture name
@@ -246,7 +244,7 @@ namespace Tools
 		
 		ImGui::AlignTextToFramePadding(); ImGui::Text("Mass");
 		ImGui::SameLine(); 
-		if (ImGui::DragFloat("##Mass", &m_mass, 0.1f, 0.0f, 500.0f, ".1f", 1.0f))
+		if (ImGui::DragFloat("##Mass", &m_mass, 0.1f, 0.0f, 500.0f))
 		{
 			m_typeComponent->SetMass(m_mass);
 			dirty = true;
@@ -254,7 +252,7 @@ namespace Tools
 		
 		ImGui::AlignTextToFramePadding(); ImGui::Text("Gravity Scale");
 		ImGui::SameLine(); 
-		if (ImGui::DragFloat("##GravityScale", &m_gravityScale, 0.1, 0.0f, 500.0f, ".1f", 1.0f))
+		if (ImGui::DragFloat("##GravityScale", &m_gravityScale, 0.1, 0.0f, 500.0f))
 		{
 			m_typeComponent->SetGravityScale(m_gravityScale);
 			dirty = true;
@@ -262,7 +260,7 @@ namespace Tools
 		
 		ImGui::AlignTextToFramePadding(); ImGui::Text("Drag");
 		ImGui::SameLine(); 
-		if (ImGui::DragFloat("##Drag", &m_drag, 0.1f, 0.0f, 500.0f, ".1f", 1.0f))
+		if (ImGui::DragFloat("##Drag", &m_drag, 0.1f, 0.0f, 500.0f))
 		{
 			m_typeComponent->SetDrag(m_drag);
 			dirty = true;

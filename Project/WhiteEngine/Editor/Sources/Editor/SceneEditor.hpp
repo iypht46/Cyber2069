@@ -35,6 +35,7 @@ namespace Tools
 		SceneHandle m_sceneObject;
 		//Popup Window
 		PopupWindow m_scenePopup;
+		bool m_drawDebug = false;
 		
 	protected:
 		virtual void Init(void) override;

@@ -117,7 +117,7 @@ void Button::ModifyOnHover() {
 		if (mesh != nullptr) {
 			if (OnHoverTex != -1)
 			{
-				mesh->SetTexture(OnHoverTex);
+				//mesh->SetTexture(OnHoverTex);
 			}
 
 			mesh->SetReplaceColor(hoverModifier.ReColor);
@@ -134,7 +134,7 @@ void Button::ModifyOnHover() {
 		if (mesh != nullptr) {
 			if (DefaultTexture != -1 && OnHoverTex != -1)
 			{
-				mesh->SetTexture(DefaultTexture);
+				//mesh->SetTexture(DefaultTexture);
 			}
 
 			mesh->RemoveReplaceColor();
