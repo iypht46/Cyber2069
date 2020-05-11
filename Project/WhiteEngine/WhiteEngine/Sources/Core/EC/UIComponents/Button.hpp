@@ -22,13 +22,15 @@ struct OnHoverModifier {
 	glm::vec3 ReColor = glm::vec3(1, 1, 1);
 	string ReTexturePath = "";
 	string ReText = "";
+	glm::vec3 ReTextColor = glm::vec3(-1, 0, 0);
 public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
 			ReColor,
 			ReTexturePath,
-			ReText
+			ReText,
+			ReTextColor
 		);
 	}
 };
@@ -41,6 +43,7 @@ private:
 
 	int DefaultTexture = -1;
 	string DefaultText = "";
+	glm::vec3 DefaultTextColor;
 	
 	int OnHoverTex = -1;
 

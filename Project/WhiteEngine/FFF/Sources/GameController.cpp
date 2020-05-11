@@ -159,6 +159,8 @@ void GameController::OnStart() {
 	m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_ARTIFACTAMP);
 	m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_CURSEDPENDANT);
 
+	StateChanged = true;
+
 }
 
 void GameController::CreatePool(std::string prefabPath, int poolType, int poolSize) {
@@ -206,6 +208,7 @@ void GameController::OnUpdate(float dt)
 		{
 			UIController::GetInstance()->ToggleUI(UI_GROUP::MainMenu);
 
+			this->GetGameObject()->GetComponent<EquipmentManager>()->ResetPlayerEquipment();
 			playerControl->GetGameObject()->SetActive(false);
 
 			loadoutUI.lock()->SetActive(false);
@@ -342,8 +345,6 @@ void GameController::OnUpdate(float dt)
 
 		if (playerControl->GetGameObject()->GetComponent<HPsystem>()->isDead()) 
 		{
-			this->GetGameObject()->GetComponent<EquipmentManager>()->ResetPlayerEquipment();
-			
 			CocoonCount = 0;
 			SetGameplayState(GAMEPLAY_STATE::NORMAL);
 			SetGameState(GAME_STATE::ENDING);
@@ -366,6 +367,11 @@ void GameController::OnUpdate(float dt)
 			currScoreCheckpoint = 0;
 
 			StateChanged = false;
+
+			string scoreText = "Score: ";
+
+			scoreText += to_string((int)ScoreValue);
+			UIController::GetInstance()->GameOverScoreText.lock()->GetComponent<TextRenderer>()->SetText(scoreText);
 		}
 
 		if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE))

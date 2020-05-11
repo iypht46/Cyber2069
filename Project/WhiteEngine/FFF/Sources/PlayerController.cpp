@@ -493,8 +493,10 @@ void PlayerController::RevertEquipment()
 	Equipments.clear();
 	Weapons.clear();
 
-	weapon->GetGameObject()->SetActive(false);
-	weapon = nullptr;
+	if (weapon != nullptr) {
+		weapon->GetGameObject()->SetActive(false);
+		weapon = nullptr;
+	}
 }
 
 void PlayerController::MultiplyMoveSpeed(float value) 

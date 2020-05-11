@@ -29,6 +29,7 @@ void Button::OnAwake()
 	if (text != nullptr) 
 	{
 		DefaultText = text->GetText();
+		DefaultTextColor = text->GetColor();
 	}
 
 }
@@ -124,9 +125,17 @@ void Button::ModifyOnHover() {
 			//mesh->SetReplaceColor(glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f));
 		}
 
-		if ((text != nullptr) && hoverModifier.ReText != "")
+		if ((text != nullptr))
 		{
-			text->SetText(hoverModifier.ReText);
+			if (hoverModifier.ReText != "") {
+
+				text->SetText(hoverModifier.ReText);
+			}
+
+			if (hoverModifier.ReTextColor.x != -1) 
+			{
+				text->SetColor(hoverModifier.ReTextColor);
+			}
 		}
 	}
 	else 
@@ -143,6 +152,7 @@ void Button::ModifyOnHover() {
 		if ((text != nullptr))
 		{
 			text->SetText(DefaultText);
+			text->SetColor(DefaultTextColor);
 		}
 	}
 }
