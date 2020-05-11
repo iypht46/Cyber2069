@@ -22,6 +22,8 @@
 #include <cereal/types/polymorphic.hpp>
 
 class EnemySpawner;
+class UIController;
+class SoundtrackController;
 
 enum POOL_TYPE {
 	BULLET_MG = 0,
@@ -161,23 +163,29 @@ public:
 
 class GameController : public BehaviourScript {
 private:
+	friend class UIController;
+
 	static GameController* instance;
 	float ScoreValue = 0;
 	float ComboValue = 1;
 
 	std::unique_ptr<PlayerData> Data;
 
-	float startHPscaleX;
-	float startHPscaleY;
+	////change----------------
+	//float startHPscaleX;
+	//float startHPscaleY;
 
-	float startStaminascaleX;
-	float startStaminascaleY;
+	//float startStaminascaleX;
+	//float startStaminascaleY;
 
-	float startHPposX;
-	float startStaminaposX;
+	//float startHPposX;
+	//float startStaminaposX;
+	////----------------------
 
 	PlayerController* playerControl;
 	HPsystem* PlayerHP;
+
+	SoundtrackController* soundtrackCon;
 
 	glm::vec3 PlayerStartPosition;
 
@@ -186,6 +194,10 @@ private:
 
 	int CocoonNeed = 1;
 	int CocoonCount = 0;
+
+	float MasterVolume = 1.0f;
+	float MusicVolume = 1.0f;
+	float SFXVolume = 1.0f;
 
 	map<int, ObjectPool*> Pools; //added while onawake and init manually, hard coding, collect all pool used in game
 
@@ -204,8 +216,8 @@ private:
 
 	float scoreCheckpoint[4] = { 0.0f, 10.0f,200.0f,300.0f };
 
-	void updateHPui();
-	void updateStaminaUI();
+	//void updateHPui();
+	//void updateStaminaUI();
 
 	void updateSpawner();
 
@@ -230,13 +242,22 @@ private:
 	//player data manager
 	void LoadData();
 	void SaveData();
+	void ResetData();
+
+	//sound option
+	void SetMasterVolume(float);
+	void SetMusicVolume(float);
+	void SetSFXVolume(float);
+
+	float AdjustVolumeForSFX(float);
+	float AdjustVolumeForMusic(float);
 
 public:
 	std::weak_ptr<GameObject> player;
-	std::weak_ptr<GameObject> HPbar;
-	std::weak_ptr<GameObject> Staminabar;
-	std::weak_ptr<GameObject> ScoreText;
-	std::weak_ptr<GameObject> ComboText;
+	/*std::weak_ptr<GameObject> HPbar;
+	std::weak_ptr<GameObject> Staminabar;*/
+	//std::weak_ptr<GameObject> ScoreText;
+	//std::weak_ptr<GameObject> ComboText;
 
 	std::weak_ptr<GameObject> loadoutUI;
 
@@ -284,6 +305,8 @@ public:
 
 	GameObject* GetPlayer() { return playerControl->GetGameObject(); }
 
+	PlayerData* GetPlayerData() { return Data.get(); }
+
 	virtual void OnAwake() override;
 	virtual void OnStart() override;
 	virtual void OnUpdate(float dt) override;
@@ -295,18 +318,10 @@ public:
 		archive(
 			cereal::base_class<BehaviourScript>(this),
 			cereal::defer(player),
-			cereal::defer(HPbar),
-			cereal::defer(Staminabar),
-			cereal::defer(ScoreText),
-			cereal::defer(ComboText),
-			cereal::defer(loadoutUI),
 			Presets,
 			Amplifiers,
 			ScoreValue,
-			ComboValue,
-			startHPscaleX,
-			startHPscaleY,
-			startHPposX
+			ComboValue
 			);
 
 		ENGINE_INFO("Finished");

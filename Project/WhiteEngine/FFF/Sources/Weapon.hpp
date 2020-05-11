@@ -30,6 +30,9 @@ enum WEAPON_TYPE {
 	WEAPON_BLACKHOLE,
 };
 
+class Explosion;
+class ParticleSystem;
+
 class Weapon : public Equipment , public BehaviourScript
 {
 protected:
@@ -91,6 +94,7 @@ CEREAL_REGISTER_TYPE(Weapon);
 class Bullet :public BehaviourScript {
 public:
 	std::set<std::string> TargetLayers;
+	float bulletDamage;
 
 	bool isTarget(Physic::Layer);
 	bool isTarget(std::string);
@@ -436,4 +440,37 @@ public:
 	}
 };
 CEREAL_REGISTER_TYPE(BlackholeGunBullet);
+//-------------------------------------------------------------------------------------------------------
+
+//Flak Bullet ===========================================================================================
+//explode on destination
+class FlakBullet : public Bullet {
+protected:
+	Graphic::CameraObject* cam;
+	Rigidbody* rb;
+	Explosion* explosion;
+	ParticleSystem* particle;
+
+	void Explode();
+
+public:
+	float destinationMargin = 10.0f;
+	//tmp
+	glm::vec2 Destination;
+
+	virtual void OnAwake();
+	virtual void OnUpdate(float dt);
+	virtual void OnCollisionEnter(const Physic::Collision col) override;
+
+	//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Bullet>(this),
+			destinationMargin
+			);
+	}
+};
+CEREAL_REGISTER_TYPE(FlakBullet);
 //-------------------------------------------------------------------------------------------------------

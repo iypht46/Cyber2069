@@ -88,11 +88,13 @@ void GroundDash::Dash(float dt) {
 }
 
 void GroundDash::OnTriggerEnter(const Physic::Collision collision) {
-	GameObject* obj = collision.m_otherCollider->GetGameObject();
-	PlayerController* player = obj->GetComponent<PlayerController>();
+	if (dashing) {
+		GameObject* obj = collision.m_otherCollider->GetGameObject();
+		PlayerController* player = obj->GetComponent<PlayerController>();
 
-	///damage player
-	if (player != nullptr) {
-		obj->GetComponent<HPsystem>()->TakeDamage(dashDamage);
+		///damage player
+		if (player != nullptr) {
+			obj->GetComponent<HPsystem>()->TakeDamage(dashDamage);
+		}
 	}
 }

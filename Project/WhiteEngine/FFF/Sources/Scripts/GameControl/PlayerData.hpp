@@ -44,18 +44,10 @@ public:
 
 	PlayerData();
 
-	void AddLeaderboardEntry(std::string name, int score); /*{
-		std::shared_ptr<LeaderboardEntry> en = std::make_shared<LeaderboardEntry>(name, score);
-		Leaderboard.insert(en);
-	}*/
-	void PrintLeaderboard(); /*{
-		ENGINE_INFO("========== LEADER BOARD ===========");
-		int c = 0;
-		for (std::shared_ptr<LeaderboardEntry> en : Leaderboard) {
-			ENGINE_INFO("#{}: {}     {}", c, en->Name, en->Score);
-			++c;
-		}
-	}*/
+	void AddLeaderboardEntry(std::string name, int score);
+	void PrintLeaderboard();
+	void ResetProgress();
+	void ResetLeaderboard();
 
 	//serialization
 public:

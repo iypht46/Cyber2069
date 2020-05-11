@@ -38,6 +38,7 @@ protected:
 	void TriggerEnter(const Physic::Collision);
 	void TriggerStay(const Physic::Collision);
 	void TriggerExit(const Physic::Collision);
+
 public:
 	GameObject();
 	~GameObject() {}
@@ -127,16 +128,18 @@ T* GameObject::GetComponent() {
 //return a weak ptr of component instead of raw
 template<class T>
 std::weak_ptr<T> GameObject::GetComponent_weak() {
+	std::weak_ptr<T> ret;
 
 	for (std::shared_ptr<Component> component : m_components)
 	{
 		if (dynamic_pointer_cast<T>(component))
 		{
-			return dynamic_pointer_cast<T>(component);
+			ret = dynamic_pointer_cast<T>(component);
+			break;
 		}
 	}
 
-	return nullptr;
+	return ret;
 }
 
 LogCustomType_DF(GameObject)

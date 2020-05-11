@@ -13,6 +13,7 @@
 #define TexturePath(path) "Sources/Assets/Sprites/" path ".png" 
 #define DataPath "PlayerData.dat"
 #define SoundPath(path) "Sources/Assets/Sounds/SFX/" path ".wav"
+#define MusicPath(path) "Sources/Assets/Sounds/Musics/" path ".wav"
 
 namespace Serialization {
 

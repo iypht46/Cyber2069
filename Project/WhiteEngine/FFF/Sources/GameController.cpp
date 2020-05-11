@@ -1,5 +1,7 @@
 #include "GameController.hpp"
 #include "Scripts/GameControl/UIController.h"
+#include "Scripts/GameControl/SoundtrackController.h"
+
 #include "Input/Input.hpp"
 
 GameController* GameController::instance = nullptr;
@@ -25,14 +27,14 @@ GameController* GameController::GetInstance()
 void GameController::OnAwake() {
 	this->PlayerHP = player.lock()->GetComponent<HPsystem>();
 	this->playerControl = player.lock()->GetComponent<PlayerController>();
+	this->soundtrackCon = m_gameObject->GetComponent<SoundtrackController>();
+	//startHPscaleX = HPbar.lock()->m_transform->GetScale().x;
+	//startHPscaleY = HPbar.lock()->m_transform->GetScale().y;
+	//startHPposX = HPbar.lock()->m_transform->GetPosition().x;
 
-	startHPscaleX = HPbar.lock()->m_transform->GetScale().x;
-	startHPscaleY = HPbar.lock()->m_transform->GetScale().y;
-	startHPposX = HPbar.lock()->m_transform->GetPosition().x;
-
-	startStaminascaleX = Staminabar.lock()->m_transform->GetScale().x;
-	startStaminascaleY = Staminabar.lock()->m_transform->GetScale().y;
-	startStaminaposX = Staminabar.lock()->m_transform->GetPosition().x;
+	//startStaminascaleX = Staminabar.lock()->m_transform->GetScale().x;
+	//startStaminascaleY = Staminabar.lock()->m_transform->GetScale().y;
+	//startStaminaposX = Staminabar.lock()->m_transform->GetPosition().x;
 
 	LoadData();
 }
@@ -140,10 +142,6 @@ void GameController::OnStart() {
 
 	SetSpawningAllSpawner(false);
 	playerControl->GetGameObject()->SetActive(false);
-	HPbar.lock()->SetActive(false);
-	Staminabar.lock()->SetActive(false);
-	ScoreText.lock()->SetActive(false);
-	ComboText.lock()->SetActive(false);
 
 	loadoutUI.lock()->SetActive(false);
 
@@ -204,12 +202,10 @@ void GameController::OnUpdate(float dt)
 			UIController::GetInstance()->ToggleUI(UI_GROUP::MainMenu);
 
 			playerControl->GetGameObject()->SetActive(false);
-			HPbar.lock()->SetActive(false);
-			Staminabar.lock()->SetActive(false);
-			ScoreText.lock()->SetActive(false);
-			ComboText.lock()->SetActive(false);
 
 			loadoutUI.lock()->SetActive(false);
+
+			ResetScore();
 
 			StateChanged = false;
 		}
@@ -238,6 +234,8 @@ void GameController::OnUpdate(float dt)
 
 			loadoutUI.lock()->SetActive(true);
 
+			soundtrackCon->PlayState(SOUNDTRACK_STATE::MENU, true);
+
 			StateChanged = false;
 		}
 
@@ -252,12 +250,9 @@ void GameController::OnUpdate(float dt)
 			playerControl->GetGameObject()->SetActive(true);
 			playerControl->GetGameObject()->m_transform->SetPosition(PlayerStartPosition);
 
-			HPbar.lock()->SetActive(true);
-			Staminabar.lock()->SetActive(true);
-			ScoreText.lock()->SetActive(true);
-			ComboText.lock()->SetActive(true);
-
 			loadoutUI.lock()->SetActive(false);
+
+			soundtrackCon->PlayState(SOUNDTRACK_STATE::GAMEPLAY_NORMAL, true);
 
 			StateChanged = false;
 			StateGamplayChanged = true;
@@ -265,13 +260,12 @@ void GameController::OnUpdate(float dt)
 			this->GetGameObject()->GetComponent<EquipmentManager>()->InitPlayerEquipment();
 		}
 
-		this->ScoreText.lock()->GetComponent<TextRenderer>()->SetText("Score: " + to_string((int)ScoreValue));
-		this->ComboText.lock()->GetComponent<TextRenderer>()->SetText("x " + to_string((int)ComboValue));
-
 		SetSpawningAllSpawner(true);
 
-		updateHPui();
-		updateStaminaUI();
+		UIController::GetInstance()->UpdateEquipmentDisplay();
+		UIController::GetInstance()->updateHPUI();
+		UIController::GetInstance()->updateStaminaUI();
+		UIController::GetInstance()->updateScoreUI();
 		updateSpawner();
 
 		switch (CurrentGameplayState)
@@ -285,6 +279,8 @@ void GameController::OnUpdate(float dt)
 				{
 					Current_Cocoon = CocoonSpawner->SpawnEnemy();
 				}
+
+				soundtrackCon->PlayState(SOUNDTRACK_STATE::GAMEPLAY_NORMAL, true);
 
 				StateGamplayChanged = false;
 			}
@@ -322,18 +318,24 @@ void GameController::OnUpdate(float dt)
 			if (StateGamplayChanged) 
 			{
 				Current_Queen = SpawnQueen();
+				UIController::GetInstance()->QueenHP = Current_Queen->GetComponent<HPsystem>();
+
+				soundtrackCon->PlayState(SOUNDTRACK_STATE::GAMEPLAY_BOSS, true);
 
 				StateGamplayChanged = false;
 			}
 
 			if (Current_Queen != nullptr) 
 			{
+				UIController::GetInstance()->updateQueenHPUI();
+
 				//if Queen Dead go back to normal state
 				if (!Current_Queen->Active()) 
 				{
 					SetGameplayState(GAMEPLAY_STATE::NORMAL);
 				}
 			}
+
 
 			break;
 		default:
@@ -355,20 +357,18 @@ void GameController::OnUpdate(float dt)
 		//Do only once after state changed
 		if (StateChanged) 
 		{
+			//update score
+			Data->AddLeaderboardEntry("whoite", ScoreValue);
+
 			UIController::GetInstance()->ToggleUI(UI_GROUP::GameOver);
 
 			SetSpawningAllSpawner(false);
 			SetActiveAllObjectInPool(false);
 			playerControl->GetGameObject()->SetActive(false);
-			HPbar.lock()->SetActive(false);
-			Staminabar.lock()->SetActive(false);
-			ScoreText.lock()->SetActive(false);
-			ComboText.lock()->SetActive(false);
 
 			currScoreCheckpoint = 0;
-			
-			//update score
-			Data->AddLeaderboardEntry("whoite", ScoreValue);
+
+			soundtrackCon->Stop(false);
 
 			StateChanged = false;
 		}
@@ -431,41 +431,6 @@ void GameController::ResetScore() {
 
 void GameController::AssignPlayer(std::weak_ptr<GameObject> player) {
 	this->player = player;
-}
-
-void GameController::updateHPui() {
-	float playerHP = PlayerHP->GetHP();
-
-	if (playerHP < 0)
-	{
-		playerHP = 0;
-	}
-
-	float currentX = (playerHP * startHPscaleX) / PlayerHP->GetMaxHP();
-	float hpDiff = PlayerHP->GetMaxHP() - playerHP;
-
-	float movePos = ((hpDiff / 2) * startHPscaleX) / PlayerHP->GetMaxHP();
-
-	HPbar.lock()->m_transform->SetScale(glm::vec3(currentX, startHPscaleY, 1.0f));
-	HPbar.lock()->m_transform->SetPosition(glm::vec3(startHPposX - movePos , HPbar.lock()->m_transform->GetPosition().y, 1.0f));
-}
-
-void GameController::updateStaminaUI()
-{
-	float playerSta = playerControl->GetStamina();
-
-	if (playerSta < 0)
-	{
-		playerSta = 0;
-	}
-
-	float currentX = (playerSta * startStaminascaleX) / playerControl->GetMaxStamina();
-	float staDiff = playerControl->GetMaxStamina() - playerSta;
-
-	float movePos = ((staDiff / 2) * startStaminascaleX) / playerControl->GetMaxStamina();
-
-	Staminabar.lock()->m_transform->SetScale(glm::vec3(currentX, startStaminascaleY, 1.0f));
-	Staminabar.lock()->m_transform->SetPosition(glm::vec3(startStaminaposX - movePos, Staminabar.lock()->m_transform->GetPosition().y, 1.0f));
 }
 
 void GameController::AddPool(ObjectPool* pool, int type)
@@ -551,4 +516,29 @@ void GameController::LoadData() {
 
 void GameController::SaveData() {
 	Serialization::SaveObject(*Data, DataPath);
+}
+
+void GameController::ResetData() {
+	Data->ResetProgress();
+	Data->ResetLeaderboard();
+}
+
+void GameController::SetMasterVolume(float volume) {
+	MasterVolume = glm::clamp(volume, 0.0f, 2.0f);
+}
+
+void GameController::SetMusicVolume(float volume) {
+	MusicVolume = glm::clamp(volume, 0.0f, 1.0f);
+}
+
+void GameController::SetSFXVolume(float volume) {
+	SFXVolume = glm::clamp(volume, 0.0f, 1.0f);
+}
+
+float GameController::AdjustVolumeForMusic(float baseVolume) {
+	return MasterVolume * MusicVolume * baseVolume;
+}
+
+float GameController::AdjustVolumeForSFX(float baseVolume) {
+	return MasterVolume * SFXVolume * baseVolume;
 }

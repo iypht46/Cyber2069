@@ -20,7 +20,7 @@
 
 #include "Utility/ObjectPool.h"
 
-//component headers might not necessary anymore
+//component headers might not be necessary anymore
 #include "Core/EC/Components/Collider.hpp"
 #include "Core/EC/Components/Rigidbody.hpp"
 #include "Core/EC/Components/Animator.hpp"
@@ -38,8 +38,10 @@
 #include "Weapon.hpp"
 #include "EquipmentManager.hpp"
 #include "LoadoutUI.hpp"
+#include "HighScoreUI.hpp"
 #include "ItemDrop.hpp"
 #include "Scripts/GameControl/UIController.h"
+#include "Scripts/GameControl/SoundtrackController.h"
 
 using SceneManagement::Instantiate;
 
@@ -69,9 +71,18 @@ namespace World
 	GameObject* queen;
 
 	GameObject* gamecontroller;
+
+	//gameplay 
 	std::shared_ptr<GameObject> ui_ScoreText;
+	std::shared_ptr<GameObject> ui_ComboText;
 	std::shared_ptr<GameObject> ui_HPbar;
+	std::shared_ptr<GameObject> ui_HPtext;
 	std::shared_ptr<GameObject> ui_StaminaBar;
+	std::shared_ptr<GameObject> ui_BossHP;
+	std::shared_ptr<GameObject> ui_BossHPtext;
+	std::shared_ptr<GameObject> ui_Weapongp;
+	std::shared_ptr<GameObject> ui_Artifactgp1;
+	std::shared_ptr<GameObject> ui_Artifactgp2;
 
 	GameObject* Spawner;
 
@@ -211,6 +222,7 @@ namespace World
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("EnemyBullet", "Platform", Physic::RESOLVE_TYPE::COLLISION);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Item", "Platform", Physic::RESOLVE_TYPE::COLLISION);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Player", "Enemy", Physic::RESOLVE_TYPE::TRIGGER);
+		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Player", "GroundEnemy", Physic::RESOLVE_TYPE::TRIGGER);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Bullet", "Enemy", Physic::RESOLVE_TYPE::TRIGGER);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("Bullet", "GroundEnemy", Physic::RESOLVE_TYPE::TRIGGER);
 		Physic::PhysicScene::GetInstance()->SetLayerCollisions("EnemyBullet", "Player", Physic::RESOLVE_TYPE::TRIGGER);
@@ -255,11 +267,11 @@ namespace World
 			ui_ScoreText->m_transform->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
 			ui_ScoreText->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 50.0f, (Graphic::Window::GetHeight() / -2) + 50.0f, 1.0f));
 
-			std::shared_ptr<GameObject> ui_ComboText = Instantiate();
+			ui_ComboText = Instantiate();
 			ui_ComboText->AddComponent<TextRenderer>();
 			ui_ComboText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 50);
 			ui_ComboText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-			ui_ComboText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
+			ui_ComboText->m_transform->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
 			ui_ComboText->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 50.0f, (Graphic::Window::GetHeight() / -2) + 150.0f, 1.0f));
 
 			ui_HPbar->AddComponent<MeshRenderer>();
@@ -277,6 +289,48 @@ namespace World
 			ui_StaminaBar->GetComponent<MeshRenderer>()->SetLayer(10);
 			ui_StaminaBar->m_transform->SetScale(glm::vec3(500.0f, 20.0f, 1.0f));
 			ui_StaminaBar->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 280.0f, (Graphic::Window::GetHeight() / 2) - 80.0f, 1.0f));
+
+			ui_BossHP = Instantiate();
+			ui_BossHP->AddComponent<MeshRenderer>()->CreateMesh(1, 1);
+			ui_BossHP->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Red.jpg");
+			ui_BossHP->GetComponent<MeshRenderer>()->SetUI(true);
+			ui_BossHP->m_transform->SetScale(glm::vec3(100.0f, 20.0f, 1.0f));
+			ui_BossHP->m_transform->SetPosition(glm::vec3(0, (Graphic::Window::GetHeight() / 2) + 200, 1.0f));
+
+			ui_Weapongp = Instantiate();
+			ui_Weapongp->AddComponent<MeshRenderer>()->CreateMesh(1, 1);
+			ui_Weapongp->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/white.jpg");
+			ui_Weapongp->GetComponent<MeshRenderer>()->SetUI(true);
+			ui_Weapongp->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
+			ui_Weapongp->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / 2) - 50.0f, (Graphic::Window::GetHeight() / -2) + 40.0f, 1.0f));
+
+			ui_Artifactgp1 = Instantiate();
+			ui_Artifactgp1->AddComponent<MeshRenderer>()->CreateMesh(1, 1);
+			ui_Artifactgp1->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/white.jpg");
+			ui_Artifactgp1->GetComponent<MeshRenderer>()->SetUI(true);
+			ui_Artifactgp1->m_transform->SetScale(glm::vec3(50.0f, 50.0f, 1.0f));
+			ui_Artifactgp1->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / 2) - 50.0f, (Graphic::Window::GetHeight() / -2) + 120.0f, 1.0f));
+
+			ui_Artifactgp2 = Instantiate();
+			ui_Artifactgp2->AddComponent<MeshRenderer>()->CreateMesh(1, 1);
+			ui_Artifactgp2->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/white.jpg");
+			ui_Artifactgp2->GetComponent<MeshRenderer>()->SetUI(true);
+			ui_Artifactgp2->m_transform->SetScale(glm::vec3(50.0f, 50.0f, 1.0f));
+			ui_Artifactgp2->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / 2) - 50.0f, (Graphic::Window::GetHeight() / -2) + 190.0f, 1.0f));
+
+			ui_HPtext = Instantiate();
+			ui_HPtext->AddComponent<TextRenderer>();
+			ui_HPtext->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 10);
+			ui_HPtext->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+			ui_HPtext->m_transform->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
+			ui_HPtext->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 280.0f, (Graphic::Window::GetHeight() / 2) - 40.0f, 1.0f));
+
+			ui_BossHPtext = Instantiate();
+			ui_BossHPtext->AddComponent<TextRenderer>();
+			ui_BossHPtext->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 10);
+			ui_BossHPtext->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+			ui_BossHPtext->m_transform->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
+			ui_BossHPtext->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / 2), (Graphic::Window::GetHeight() / 2) + 200, 1.0f));
 
 			Bg2 = Instantiate().get();
 			Bg2->AddComponent<MeshRenderer>();
@@ -402,10 +456,6 @@ namespace World
 
 			gamecontroller->AddComponent<GameController>();
 			gamecontroller->GetComponent<GameController>()->player = Rabbit;
-			gamecontroller->GetComponent<GameController>()->ScoreText = ui_ScoreText;
-			gamecontroller->GetComponent<GameController>()->ComboText = ui_ComboText;
-			gamecontroller->GetComponent<GameController>()->HPbar = ui_HPbar;
-			gamecontroller->GetComponent<GameController>()->Staminabar = ui_StaminaBar;
 			gamecontroller->GetComponent<GameController>()->SetGameState(GAME_STATE::MAINMENU);
 			gamecontroller->GetComponent<GameController>()->SetGameplayState(GAMEPLAY_STATE::NORMAL);
 
@@ -454,14 +504,23 @@ namespace World
 			logo->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/WhiteLogo"));
 			logo->GetComponent<MeshRenderer>()->SetUI(true);
 			logo->GetComponent<MeshRenderer>()->SetLayer(10);
-			logo->m_transform->SetScale(glm::vec3(68 * 3, 55 * 3, 1));
-			logo->m_transform->SetPosition(glm::vec3(300.0f, -100.0f, 1.0f));
+			logo->m_transform->SetScale(glm::vec3(68 , 55, 1));
+			logo->m_transform->SetPosition(glm::vec3(300.0f, -250.0f, 1.0f));
 			logo->AddComponent<Button>();
 			logo->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::STATECONTROL, GAME_STATE::GAMEPLAY);
 			logo->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 			logo->SetActive(false);
 
 			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Loadout].push_back(logo);
+			gamecontroller->GetComponent<UIController>()->ScoreText = ui_ScoreText;
+			gamecontroller->GetComponent<UIController>()->ComboText = ui_ComboText;
+			gamecontroller->GetComponent<UIController>()->HPbar = ui_HPbar;
+			gamecontroller->GetComponent<UIController>()->Staminabar = ui_StaminaBar;
+			gamecontroller->GetComponent<UIController>()->HPText = ui_HPtext;
+			gamecontroller->GetComponent<UIController>()->QueenHPText = ui_BossHPtext;
+			gamecontroller->GetComponent<UIController>()->EquippedWeaponDisplay.push_back(ui_Weapongp);
+			gamecontroller->GetComponent<UIController>()->EquippedArtifactDisplay.push_back(ui_Artifactgp1);
+			gamecontroller->GetComponent<UIController>()->EquippedArtifactDisplay.push_back(ui_Artifactgp2);
 
 			std::shared_ptr<GameObject> ui_LoadOut = Instantiate();
 			std::shared_ptr<GameObject> ui_button = Instantiate();
@@ -534,6 +593,8 @@ namespace World
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
 			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(ARTIFACT_TYPE::ARTF_BULLETAMP);
+			ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "Bullet Amplifier";
+			ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Make bullet more powerful";
 			ui_button->AddComponent<Button>();
 			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -591,6 +652,8 @@ namespace World
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::WEAPON);
 			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(0);
+			ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "Machine Gun";
+			ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Shoot bullet";
 			ui_button->AddComponent<Button>();
 			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -600,9 +663,63 @@ namespace World
 
 			ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
 
+			std::shared_ptr<GameObject> LoadoutText;
+			LoadoutText = Instantiate();
+
+			LoadoutText->AddComponent<TextRenderer>();
+			LoadoutText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 50);
+			LoadoutText->GetComponent<TextRenderer>()->SetText("Test/n Test");
+			LoadoutText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+			LoadoutText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
+			LoadoutText->m_transform->SetPosition(glm::vec3(100.0f, -100.0f, 1.0f));
+
+			ui_LoadOut->GetComponent<LoadoutUI>()->eqNameObj = LoadoutText;
+
+			LoadoutText = Instantiate();
+
+			LoadoutText->AddComponent<TextRenderer>();
+			LoadoutText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 30);
+			LoadoutText->GetComponent<TextRenderer>()->SetText("Test/n Test");
+			LoadoutText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+			LoadoutText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
+			LoadoutText->m_transform->SetPosition(glm::vec3(100.0f, -150.0f, 1.0f));
+
+			ui_LoadOut->GetComponent<LoadoutUI>()->eqDescriptionObj = LoadoutText;
 
 			gamecontroller->GetComponent<GameController>()->loadoutUI = ui_LoadOut;
 
+			std::shared_ptr<GameObject> ui_highscore = Instantiate();
+			ui_highscore->AddComponent<HighScoreUI>();
+
+			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(ui_highscore);
+
+			std::shared_ptr<GameObject> ScoreText;
+			
+			ScoreText = Instantiate();
+
+			ScoreText->AddComponent<TextRenderer>();
+			ScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 30);
+			ScoreText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+
+			ScoreText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
+			ScoreText->m_transform->SetPosition(glm::vec3(300.0f, 50.0f, 1.0f));
+
+			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(ScoreText);
+
+			ui_highscore->GetComponent<HighScoreUI>()->ScoreText = ScoreText;
+
+			ScoreText = Instantiate();
+
+			ScoreText->AddComponent<TextRenderer>();
+			ScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 30);
+			ScoreText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+
+			ScoreText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
+			ScoreText->m_transform->SetPosition(glm::vec3(100.0f, 50.0f, 1.0f));
+
+			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(ScoreText);
+
+			ui_highscore->GetComponent<HighScoreUI>()->NameText = ScoreText;
 			
 
 			//test parent/child------------------------------------------------
@@ -628,6 +745,16 @@ namespace World
 			platform->m_transform->SetScale(glm::vec3(800, 20, 1));
 			platform->m_transform->SetPosition(glm::vec3(500, 500, 1));
 			platform->AddComponent<BoxCollider>()->ReScale(1, 1);
+
+			//Soundtrack
+			std::shared_ptr<GameObject> soundtrackPlayer = Instantiate();
+			soundtrackPlayer->AddComponent<SoundPlayer>();
+			gamecontroller->AddComponent<SoundtrackController>()->SetSoundChannel(soundtrackPlayer->GetComponent_weak<SoundPlayer>());
+			gamecontroller->GetComponent<SoundtrackController>()->MenuTracks.push_back(MusicPath("synthwave_loop_track_4"));
+			gamecontroller->GetComponent<SoundtrackController>()->GameplayTracks.push_back(MusicPath("Song09"));
+			gamecontroller->GetComponent<SoundtrackController>()->GameplayTracks.push_back(MusicPath("Song08"));
+			gamecontroller->GetComponent<SoundtrackController>()->GameplayTracks.push_back(MusicPath("Song03"));
+			gamecontroller->GetComponent<SoundtrackController>()->BossTracks.push_back(MusicPath("Song02"));
 
 			ENGINE_INFO("Enemy Creation ==========================================================");
 			//flyer animation
@@ -748,7 +875,7 @@ namespace World
 				bomber->AddComponent<SoundPlayer>();
 				bomber->AddComponent<AirFollowing>();
 				bomber->AddComponent<AirDash>()->dashDamage = 0;
-				bomber->AddComponent<Explosion>();
+				bomber->AddComponent<Explosion>()->TargetLayers.insert("Player");
 				bomber->AddComponent<Bomber>();
 
 				bomber->SetActive(false);
@@ -1057,10 +1184,11 @@ namespace World
 				ParticleSystem* particle = new ParticleSystem();
 				particle->texturePath = "Sources/Assets/white_square.png";
 				particle->emitter->isEnabled = true;
+				particle->emitter->constantParticle = false;
 				particle->emitter->spawnRadius = 50;
 				particle->emitter->particleSamples = 10;
-				particle->emitter->particleRate = 0.0f;
-				particle->color->Color = glm::vec3(0.1f, 1.0f, 0.0f);
+				particle->emitter->burstParticleNumber = 10;
+				particle->color->Color = glm::vec3(1.0f, 0.75f, 0.0f);
 				particle->velocity->SetDirectiontype(ParticleSystem::DirectionType::AwayFromSpawn);
 				particle->velocity->minSpeed = 10;
 				particle->velocity->maxSpeed = 30;
@@ -1168,7 +1296,7 @@ namespace World
 				Serialization::SaveObject(*Bullet, PrefabPath("Bullet_BH"));
 			}
 
-			//fume bullet
+			//spitter bullet
 			{
 				GameObject* Bullet = Instantiate().get();
 				Bullet->Layer = "EnemyBullet";
@@ -1187,6 +1315,11 @@ namespace World
 
 				Bullet->AddComponent<BoxCollider>()->ReScale(1, 1);
 				//add fume bullet component
+				Bullet->AddComponent<FlakBullet>()->TargetLayers.clear();
+				Bullet->GetComponent<FlakBullet>()->TargetLayers.insert("Player");
+
+				Bullet->AddComponent<Explosion>()->m_radius = 100.0f;
+				Bullet->GetComponent<Explosion>()->m_damage = 5.0f;
 
 				Bullet->AddComponent<ParticleSystem>();
 				Serialization::LoadObject(*Bullet->GetComponent<ParticleSystem>(), ParticlePath("Bullet_Fume_Traverse"));
@@ -1220,7 +1353,6 @@ namespace World
 
 			//Add Sound
 			Bg2->AddComponent<SoundPlayer>();
-			Bg2->GetComponent<SoundPlayer>()->CreateSoundPlayer();
 			Bg2->GetComponent<SoundPlayer>()->SetSound("Sources/Assets/BGMPrototype.mp3");
 			Bg2->GetComponent<SoundPlayer>()->SetLoop(true);
 			Bg2->GetComponent<SoundPlayer>()->SetVolume(0.5);

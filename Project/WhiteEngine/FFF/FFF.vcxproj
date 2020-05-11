@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{C27C9ABD-F457-4515-9A12-E60B5B1B7A78}</ProjectGuid>
     <RootNamespace>FFF</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -34,20 +34,20 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -148,6 +148,7 @@
     <ClCompile Include="Sources\EnemySpawner.cpp" />
     <ClCompile Include="Sources\Flyer.cpp" />
     <ClCompile Include="Sources\GameController.cpp" />
+    <ClCompile Include="Sources\HighScoreUI.cpp" />
     <ClCompile Include="Sources\HPsystem.cpp" />
     <ClCompile Include="Sources\EquipmentManager.cpp" />
     <ClCompile Include="Sources\ItemDrop.cpp" />
@@ -159,8 +160,10 @@
     <ClCompile Include="Sources\ObjectShooter.cpp" />
     <ClCompile Include="Sources\PlayerController.cpp" />
     <ClCompile Include="Sources\Scripts\GameControl\PlayerData.cpp" />
+    <ClCompile Include="Sources\Scripts\GameControl\SoundtrackController.cpp" />
     <ClCompile Include="Sources\Scripts\GameControl\UIController.cpp" />
     <ClCompile Include="Sources\Scripts\Weapons\Bullet.cpp" />
+    <ClCompile Include="Sources\Scripts\Weapons\FlakBullet.cpp" />
     <ClCompile Include="Sources\Spitter.cpp" />
     <ClCompile Include="Sources\Tank.cpp" />
     <ClCompile Include="Sources\World.cpp" />
@@ -182,6 +185,7 @@
     <ClInclude Include="Sources\EnemySpawner.hpp" />
     <ClInclude Include="Sources\Equipment.hpp" />
     <ClInclude Include="Sources\GameController.hpp" />
+    <ClInclude Include="Sources\HighScoreUI.hpp" />
     <ClInclude Include="Sources\HPsystem.hpp" />
     <ClInclude Include="Sources\EquipmentManager.hpp" />
     <ClInclude Include="Sources\ItemDrop.hpp" />
@@ -189,6 +193,7 @@
     <ClInclude Include="Sources\ObjectShooter.h" />
     <ClInclude Include="Sources\PlayerController.hpp" />
     <ClInclude Include="Sources\Scripts\GameControl\PlayerData.hpp" />
+    <ClInclude Include="Sources\Scripts\GameControl\SoundtrackController.h" />
     <ClInclude Include="Sources\Scripts\GameControl\UIController.h" />
     <ClInclude Include="Sources\Weapon.hpp" />
     <ClInclude Include="Sources\World.hpp" />

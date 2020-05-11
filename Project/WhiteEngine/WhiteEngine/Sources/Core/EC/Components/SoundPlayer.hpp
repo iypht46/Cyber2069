@@ -23,21 +23,34 @@ private:
 	ISoundEngine* soundPlayer = nullptr;
 	ISoundSource* soundSource = nullptr;
 	ISound* soundVolume = nullptr;
+	
+	//these should be private -------------
+	//void CreateSoundPlayer();
+	//void UpdateVolume();
+	//-------------------------------------
+
 public:
 	SoundPlayer();
 	~SoundPlayer();
 
 	virtual void Init();
-
+	
+	//---------------------------
 	void CreateSoundPlayer();
-	void SetSound(const ik_c8* path);
+	void UpdateVolume();
+	//---------------------------
+
+	float GetVolume() { return volumeValue; }
+
+	void SetSound(std::string path);
 	void PlaySound();
+	void StopSound();
 	void DeleteSoundPlayer();
 	void SetLoop(bool loop);
-	void UpdateVolume();
 	void SetVolume(float value);
 	void IncreaseVolume();
 	void DecreaseVolume();
+	void AdjustVolume(float diff);
 
 //serialization
 public:
