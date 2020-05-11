@@ -74,7 +74,7 @@ void MachineGun::MultiplyWeaponAmplifier(float value)
 void MachineGun::GameTimeBehaviour(float dt) {
 
 	BulletPool = GameController::GetInstance()->GetPool(POOL_TYPE::BULLET_MG);
-
+	weapon_delay_count += dt;
 	if (Input::GetMouseHold(Input::MouseKeyCode::MOUSE_LEFT) ||
 		Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT))
 	{
@@ -84,7 +84,6 @@ void MachineGun::GameTimeBehaviour(float dt) {
 			SoundCounter = SoundTimer;
 		}*/
 
-		weapon_delay_count += dt;
 		//ENGINE_INFO("MG: {}/{}", weapon_delay_count, (1.0f / weapon_firerate));
 		if (weapon_delay_count >= (1.0f / weapon_firerate))
 		{
