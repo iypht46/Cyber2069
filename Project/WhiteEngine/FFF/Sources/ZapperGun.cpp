@@ -38,6 +38,7 @@ void ZapperGun::MultiplyWeaponAmplifier(float value) {
 void ZapperGun::GameTimeBehaviour(float dt) {
 	BulletPool = GameController::GetInstance()->GetPool(POOL_TYPE::BULLET_ZP);
 
+	weapon_delay_count += dt;
 	if (Input::GetMouseHold(Input::MouseKeyCode::MOUSE_LEFT) ||
 		Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT))
 	{
@@ -47,7 +48,7 @@ void ZapperGun::GameTimeBehaviour(float dt) {
 			SoundCounter = SoundTimer;
 		}*/
 
-		weapon_delay_count += dt;
+
 		if (weapon_delay_count >= (1.0f / weapon_firerate))
 		{
 			m_gameObject->GetComponent<SoundPlayer>()->PlaySound();

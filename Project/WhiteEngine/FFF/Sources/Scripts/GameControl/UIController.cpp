@@ -4,6 +4,7 @@
 
 #include "Core/EC/GameObject.hpp"
 #include "Core/EC/UIComponents/TextRenderer.hpp"
+#include "Core/EC/Components/SoundPlayer.hpp"
 
 #include "../../GameController.hpp"
 #include "../../EquipmentManager.hpp"
@@ -62,45 +63,15 @@ void UIController::ToggleUI(int openGroup) {
 }
 
 void UIController::AdjustMasterVolume(float diff) {
-	GameController::GetInstance()->SetMasterVolume(GameController::GetInstance()->MasterVolume + diff);
-
-	if (GameController::GetInstance()->MasterVolume > 1.0f) 
-	{
-		GameController::GetInstance()->SetMasterVolume(1.0f);
-	}
-
-	if (GameController::GetInstance()->MasterVolume < 0.0f)
-	{
-		GameController::GetInstance()->SetMasterVolume(0.0f);
-	}
+	SoundPlayer::SetMasterVolume(SoundPlayer::GetMasterVolume() + diff);
 }
 
 void UIController::AdjustMusicVolume(float diff) {
-	GameController::GetInstance()->SetMusicVolume(GameController::GetInstance()->MusicVolume + diff);
-
-	if (GameController::GetInstance()->MusicVolume > 1.0f)
-	{
-		GameController::GetInstance()->SetMusicVolume(1.0f);
-	}
-
-	if (GameController::GetInstance()->MusicVolume < 0.0f)
-	{
-		GameController::GetInstance()->SetMusicVolume(0.0f);
-	}
+	SoundPlayer::SetMusicVolume(SoundPlayer::GetMusicVolume() + diff);
 }
 
 void UIController::AdjustSFXVolume(float diff) {
-	GameController::GetInstance()->SetSFXVolume(GameController::GetInstance()->SFXVolume + diff);
-
-	if (GameController::GetInstance()->SFXVolume > 1.0f)
-	{
-		GameController::GetInstance()->SetSFXVolume(1.0f);
-	}
-
-	if (GameController::GetInstance()->SFXVolume < 0.0f)
-	{
-		GameController::GetInstance()->SetSFXVolume(0.0f);
-	}
+	SoundPlayer::SetSFXVolume(SoundPlayer::GetSFXVolume() + diff);
 }
 
 void UIController::UpdateEquipmentDisplay() {
@@ -230,7 +201,7 @@ void UIController::UpdateVolumeTexts() {
 
 	if (!MasterVolumeText.expired()) {
 
-		int master = GameController::GetInstance()->MasterVolume * maxValue;
+		int master = SoundPlayer::GetMasterVolume() * maxValue;
 
 		if (master % 10 == 9) {
 			master += 1;
@@ -241,7 +212,7 @@ void UIController::UpdateVolumeTexts() {
 
 	if (!MusicVolumeText.expired()) {
 
-		int music = GameController::GetInstance()->MusicVolume * maxValue;
+		int music = SoundPlayer::GetMusicVolume() * maxValue;
 
 		if (music % 10 == 9) {
 			music += 1;
@@ -252,7 +223,7 @@ void UIController::UpdateVolumeTexts() {
 
 	if (!SFXVolumeText.expired()) {
 
-		int sfx = GameController::GetInstance()->SFXVolume * maxValue;
+		int sfx = SoundPlayer::GetSFXVolume() * maxValue;
 
 		if (sfx % 10 == 9) {
 			sfx += 1;

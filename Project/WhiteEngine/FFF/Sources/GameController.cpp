@@ -668,23 +668,3 @@ void GameController::SaveGameConfig() {
 
 	Serialization::SaveObjectXML(*config, XMLConfigPath("gameconfig"));
 }
-
-void GameController::SetMasterVolume(float volume) {
-	MasterVolume = glm::clamp(volume, 0.0f, 2.0f);
-}
-
-void GameController::SetMusicVolume(float volume) {
-	MusicVolume = glm::clamp(volume, 0.0f, 1.0f);
-}
-
-void GameController::SetSFXVolume(float volume) {
-	SFXVolume = glm::clamp(volume, 0.0f, 1.0f);
-}
-
-float GameController::AdjustVolumeForMusic(float baseVolume) {
-	return MasterVolume * MusicVolume * baseVolume;
-}
-
-float GameController::AdjustVolumeForSFX(float baseVolume) {
-	return MasterVolume * SFXVolume * baseVolume;
-}

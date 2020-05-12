@@ -2,6 +2,10 @@
 #include <glm/glm.hpp>
 #include "Core/Logger.hpp"
 
+float SoundPlayer::MasterVolume = 1.0f;
+float SoundPlayer::MusicVolume = 1.0f;
+float SoundPlayer::SFXVolume = 1.0f;
+
 SoundPlayer::SoundPlayer() {
 	//isLooping = false;
 	//volumeValue = 1.0f;
@@ -50,13 +54,26 @@ void SoundPlayer::SetLoop(bool loop) {
 
 void SoundPlayer::UpdateVolume() {
 	if (soundVolume != nullptr) {
-		soundVolume->setVolume(volumeValue);
+		switch (sound_type)
+		{
+		default:
+		case SOUND_SFX:
+			soundVolume->setVolume(volumeValue * SoundPlayer::SFXVolume * SoundPlayer::MasterVolume);
+			break;
+		case SOUND_MUSIC:
+			soundVolume->setVolume(volumeValue * SoundPlayer::MusicVolume * SoundPlayer::MasterVolume);
+			break;
+		}
 	}
 }
 
 void SoundPlayer::SetVolume(float value) {
 	volumeValue = value;
 	UpdateVolume();
+}
+
+void SoundPlayer::SetSoundType(int type) {
+	sound_type = type;
 }
 
 void SoundPlayer::IncreaseVolume() {

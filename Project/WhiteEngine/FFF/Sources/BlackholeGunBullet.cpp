@@ -52,7 +52,6 @@ void BlackholeGunBullet::OnAwake()
 {
 	rb = m_gameObject->GetComponent<Rigidbody>();
 	BhSound = m_gameObject->GetComponent<SoundPlayer>();
-	BhSound->CreateSoundPlayer();
 	BhSound->SetSound(SoundPath("SFX_BlackHole_Travelling"));
 	cam = Graphic::getCamera();
 }

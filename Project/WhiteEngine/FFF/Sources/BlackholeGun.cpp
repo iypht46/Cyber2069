@@ -39,6 +39,8 @@ void BlackholeGun::MultiplyWeaponAmplifier(float value) {
 void BlackholeGun::GameTimeBehaviour(float dt) {
 	BulletPool = GameController::GetInstance()->GetPool(POOL_TYPE::BULLET_BH);
 
+	weapon_delay_count += dt;
+
 	if (Input::GetMouseHold(Input::MouseKeyCode::MOUSE_LEFT) ||
 		Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT))
 	{
@@ -48,7 +50,6 @@ void BlackholeGun::GameTimeBehaviour(float dt) {
 			SoundCounter = SoundTimer;
 		}*/
 
-		weapon_delay_count += dt;
 		if (weapon_delay_count >= (1.0f / weapon_firerate))
 		{
 			m_gameObject->GetComponent<SoundPlayer>()->PlaySound();

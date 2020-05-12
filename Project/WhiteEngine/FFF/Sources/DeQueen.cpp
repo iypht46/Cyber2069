@@ -6,6 +6,7 @@
 
 void DeQueen::OnAwake() {
 	airPatrol = GetGameObject()->GetComponent<AirPatrol>();
+	QueenSound = GetGameObject()->GetComponent<SoundPlayer>();
 	
 	SpawnDelay = 0.2f;
 	SpawnDelayCount = SpawnDelay;
@@ -18,7 +19,6 @@ void DeQueen::OnAwake() {
 
 	SoundCounter = 0.30f;
 
-	QueenSound->CreateSoundPlayer();
 	QueenSound->SetSound(SoundPath("SFX_Queen_SpawningEnemy"));
 	QueenSound->SetLoop(false);
 

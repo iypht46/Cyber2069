@@ -45,7 +45,6 @@ void GrenadeLauncherBullet::OnAwake()
 {
 	rb = m_gameObject->GetComponent<Rigidbody>();
 	ExplodeSound = m_gameObject->GetComponent<SoundPlayer>();
-	ExplodeSound->CreateSoundPlayer();
 	ExplodeSound->SetSound(SoundPath("SFX_Grenade_Explode"));
 	cam = Graphic::getCamera();
 	scaleX = m_gameObject->m_transform->GetScale().x;

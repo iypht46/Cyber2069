@@ -237,10 +237,6 @@ private:
 	//int CocoonNeed = 1;
 	int CocoonCount = 0;
 
-	float MasterVolume = 1.0f;
-	float MusicVolume = 1.0f;
-	float SFXVolume = 1.0f;
-
 	map<int, ObjectPool*> Pools; //added while onawake and init manually, hard coding, collect all pool used in game
 
 	//extracted in on awake after created, need to assign since the editor or don't bother create any object
@@ -294,14 +290,6 @@ private:
 	void LoadData();
 	void SaveData();
 	void ResetData();
-
-	//sound option
-	void SetMasterVolume(float);
-	void SetMusicVolume(float);
-	void SetSFXVolume(float);
-
-	float AdjustVolumeForSFX(float);
-	float AdjustVolumeForMusic(float);
 
 public:
 	std::weak_ptr<GameObject> player;

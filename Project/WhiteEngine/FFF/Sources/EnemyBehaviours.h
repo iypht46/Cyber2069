@@ -22,8 +22,6 @@ private:
 	Rigidbody* rigidbody;
 protected:
 	AirFollowing* airFollow;
-	SoundPlayer* FlyerSound;
-	int SoundCounter;
 public:
 
 	Flyer() {}
@@ -55,8 +53,6 @@ protected:
 	AirFollowing* airFollow = nullptr;
 	AirDash* airDash = nullptr;
 	Explosion* explosion = nullptr;
-	SoundPlayer* BomberSound;
-	int SoundCounter;
 
 public:
 	EnemyState state = EnemyState::Idle;
@@ -152,9 +148,6 @@ private:
 	Rigidbody* rigidbody;
 	GroundPatrol* groundPatrol;
 	GroundDash* groundDash;
-	SoundPlayer* ChargerSound;
-
-	int SoundCounter;
 	bool dashingTmp = false;
 
 public:
@@ -183,9 +176,7 @@ private:
 	Rigidbody* rigidbody;
 	GroundPatrol* groundPatrol;
 	ObjectShooter* shooting;
-	SoundPlayer* SpitterSound;
 
-	int SoundCounter;
 
 	void Spit();
 
