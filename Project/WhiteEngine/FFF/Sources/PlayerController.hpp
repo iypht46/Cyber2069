@@ -55,7 +55,7 @@ protected:
 	float camSmall = 1.5f;
 	float camLarge = 0.65f;
 
-	float GunDistance = 0.45f;
+	float GunDistance = 1.0f;//0.45f;
 	//======================
 
 	//runtime var===========

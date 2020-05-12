@@ -5,7 +5,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 //#include <glm/gtc/quaternion.hpp>
 //#include <glm/gtx/quaternion.hpp>
-
+#include "Core/LogCustomType.hpp"
 #include "Core/Factory.h"
 
 //serialization
@@ -31,6 +31,7 @@ private:
 
 	glm::vec3 m_localPosition;
 	glm::vec3 m_localScale;
+	glm::vec3 m_meshScale = glm::vec3(1.0f);
 	float m_localRotation = 0.0f;
 
 	static float maxParallaxDistance;
@@ -74,7 +75,9 @@ public:
 	void SetRotation(float rotation);
 	void SetLocalRotation(float localrotation);
 	void Rotate(float rotation);
+	void SetMeshScale(glm::vec3 meshScale);
 
+	LogCustomType_DC(Transform);
 	//serialization
 public:
 	template<class Archive>
@@ -92,5 +95,10 @@ public:
 			);
 	}
 };
+
+LogCustomType_DF(Transform)
+{
+	return os << "Scale: " << obj.m_scale.x << ", " << obj.m_scale.y;
+}
 
 CEREAL_REGISTER_TYPE(Transform);

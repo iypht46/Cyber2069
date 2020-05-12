@@ -11,7 +11,7 @@
 #include "Core/EC/Components/MeshRenderer.hpp"
 #include "Core/EC/GameObject.hpp"
 #include "Graphic/Camera.hpp"
-
+#include <glm/gtx/string_cast.hpp>
 using namespace std;
 
 GLRenderer *GLRenderer::instance = nullptr;
@@ -192,15 +192,6 @@ bool GLRenderer::Initialize(string vertexShaderFile, string fragmentShaderFile)
 
 void GLRenderer::Render(Graphic::CameraObject* cam)
 {
-
-	//SetViewPort(0, 0, Graphic::Window::GetWidth(), Graphic::Window::GetHeight());
-	//Bind FBO
-	if (framebuffer)
-	{
-		framebuffer->BindFrameBuffer();
-		//ENGINE_INFO("Bind Frame Buffer");
-	}
-
 	AssignLayer();
 
 	// Clear color buffer
@@ -217,8 +208,10 @@ void GLRenderer::Render(Graphic::CameraObject* cam)
 
 		if (obj->GetGameObject()->Active() && obj->enabled)
 		{
+			//If object is flag as UI then reder with projection matrix
 			if (obj->IsUI())
-				obj->Render(this->GetprojectionMatrix());
+				obj->Render(cam->GetProjectionMatrix());
+			//Else render with projection * view matrix
 			else
 				obj->Render(cam->GetProjViewMatrix());
 		}
@@ -264,29 +257,10 @@ void GLRenderer::Render(Graphic::CameraObject* cam)
 		Circleq.pop();
 	}
 
-	//FBO Render
-	if (framebuffer)
-	{
-		framebuffer->UnBindFrameBuffer();
-		if (fboState == FBO_STATE::MAIN)
-		{
-			//SetClearColor(1.0f, 0.0f, 0.0f);
-			framebuffer->Render();
-			//ENGINE_INFO("Render form framebuffer");
-		}
-	}
 }
 
 void GLRenderer::Render(glm::mat4 globalModelTransform)
 {
-	//SetViewPort(0, 0, Graphic::Window::GetWidth(), Graphic::Window::GetHeight());
-	//Bind FBO
-	if (framebuffer)
-	{
-		framebuffer->BindFrameBuffer();
-		//ENGINE_INFO("Bind Frame Buffer");
-	}
-
 	AssignLayer();
 
 	// Clear color buffer
@@ -349,35 +323,6 @@ void GLRenderer::Render(glm::mat4 globalModelTransform)
 	{
 		Circleq.pop();
 	}
-
-	//FBO Render
-	if (framebuffer)
-	{
-		framebuffer->UnBindFrameBuffer();
-		if (fboState == FBO_STATE::MAIN)
-		{
-			//SetClearColor(1.0f, 0.0f, 0.0f);
-			framebuffer->Render();
-			//ENGINE_INFO("Render form framebuffer");
-		}
-	}
-}
-
-void GLRenderer::EnableFBO(FBO_STATE state, int w, int h)
-{
-	fboState = state;
-	framebuffer = new Graphic::Framebuffer();
-
-	if (!framebuffer->Init(w, h))
-	{
-		ENGINE_ERROR("ERROR::FRAMEBUFFER:: Failed generating Framebuffer!");
-		delete framebuffer;
-	}
-	else
-	{
-		ENGINE_INFO("Generate Framebuffer Complete");
-	}
-
 
 }
 
@@ -461,10 +406,6 @@ GLRenderer::~GLRenderer()
 		glDisableVertexAttribArray(gPos2DLocation);
 	}
 
-	if (framebuffer)
-	{
-		delete framebuffer;
-	}
 }
 
 void GLRenderer::SetOrthoProjection(float left, float right, float bottom, float top)
@@ -538,14 +479,6 @@ GLuint GLRenderer::GetOffsetXUniformId()
 GLuint GLRenderer::GetOffsetYUniformId()
 {
 	return this->offSetYId;
-}
-
-Graphic::Framebuffer * GLRenderer::GetFrameBuffer()
-{
-	if (this->framebuffer)
-		return this->framebuffer;
-	else
-		return nullptr;
 }
 
 GLuint GLRenderer::GetProgramId() {

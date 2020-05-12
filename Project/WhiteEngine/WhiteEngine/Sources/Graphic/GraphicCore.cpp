@@ -12,12 +12,11 @@ namespace Graphic
 
 		////////////OpenGL////////////
 		g_renderer = GLRenderer::GetInstance();
-
 		g_renderer->InitGL("Sources/Shader/vertext.shd", "Sources/Shader/fragment.shd");
 		g_renderer->SetOrthoProjection(-Window::GetWidth() / 2, Window::GetWidth() / 2, -Window::GetHeight() / 2, Window::GetHeight() / 2);
 		g_renderer->SetClearColor(72.0f/255.0f, 42.0f / 255.0f, 109.0f / 255.0f);
+		
 		getCamera()->ResetCam();
-		//getCamera()->ResetCam();
 
 		ENGINE_WARN("Graphic System Initialized");
 
@@ -30,7 +29,7 @@ namespace Graphic
 		//ENGINE_WARN("Render");
 		if (!Window::ShouldClose())
 		{
-			glm::mat4 globalMatrix = getCamera()->GetProjectionMatrix() * getCamera()->GetViewMatrix();
+			//glm::mat4 globalMatrix = getCamera()->GetProjectionMatrix() * getCamera()->GetViewMatrix();
 			g_renderer->Render(getCamera());
 			//g_renderer->Render(globalMatrix);
 			Window::SwapBuffer();
@@ -46,19 +45,5 @@ namespace Graphic
 		glfwTerminate();
 
 		ENGINE_WARN("Graphic System Terminated");
-	}
-
-	void EnableFrameBuffer(FBO_STATE state)
-	{
-		g_renderer->EnableFBO(state, Window::GetWidth(), Window::GetHeight());
-	}
-
-	CameraObject* getCamera()
-	{
-		if (g_camera == nullptr)
-		{
-			g_camera = new CameraObject();
-		}
-		return g_camera;
 	}
 }

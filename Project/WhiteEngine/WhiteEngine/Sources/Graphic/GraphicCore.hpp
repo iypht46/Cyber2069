@@ -16,6 +16,4 @@ namespace Graphic
 	void Render(void);
 
 	void Terminate(void);
-
-	void EnableFrameBuffer(FBO_STATE);
 }

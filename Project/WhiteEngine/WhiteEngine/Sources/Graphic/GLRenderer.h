@@ -89,8 +89,6 @@ protected:
 
 	Shader *vertexShader = nullptr;
 	Shader *fragmentShader = nullptr;
-	Graphic::Framebuffer* framebuffer = nullptr;
-	FBO_STATE fboState;
 	Shader *vertexShaderT = nullptr;
 	Shader *fragmentShaderT = nullptr;
 	glm::vec4* viewPort = nullptr;
@@ -104,7 +102,6 @@ public:
 
 	~GLRenderer();
 
-	void EnableFBO(FBO_STATE, int, int); //Should only be called in initialization
 	void SetMeshAttribId(MeshVbo * shape);
 
 	void SetOrthoProjection(float left, float right, float bottom, float top);
@@ -136,7 +133,6 @@ public:
 	GLuint GetvModeUniformId();
 	GLuint GetOffsetXUniformId();
 	GLuint GetOffsetYUniformId();
-	Graphic::Framebuffer* GetFrameBuffer();
 	//GLuint GetProgramID();
 
 	int GetgTex2DLocation();

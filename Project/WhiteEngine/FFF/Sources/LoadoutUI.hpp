@@ -32,8 +32,10 @@ private:
 	string eqName = "";
 	string eqDescription = "";
 
-	unsigned int defaultWeaponDisplayTex;
-	unsigned int defaultArtfDisplayTex;
+	//unsigned int defaultWeaponDisplayTex;
+	//unsigned int defaultArtfDisplayTex;
+	Graphic::Texture defaultWeaponDisplayTex;
+	Graphic::Texture defaultArtfDisplayTex;
 
 public:
 	std::shared_ptr<GameObject> eqNameObj;

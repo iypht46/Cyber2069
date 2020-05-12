@@ -1,7 +1,6 @@
 //Editor
 #include "EditorObject/CoreComponentEC.hpp"
 #include "EditorObject/ParticleComponentEC.hpp"
-#include "EditorObject/ScriptEC.hpp"
 
 namespace Tools
 {

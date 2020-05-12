@@ -5,7 +5,7 @@
 #include "GameController.hpp"
 #include "EquipmentManager.hpp"
 #include "PlayerController.hpp"
-
+#include "Graphic/Texture.hpp"
 
 #include "Graphic/Camera.hpp"
 
@@ -20,7 +20,8 @@ private:
 
 	pair<int, int> itemtype;
 
-	unsigned int defaultTex;
+	//unsigned int defaultTex;
+	Graphic::Texture defaultTex;
 public:
 	virtual void OnAwake(); 
 	virtual void OnStart();

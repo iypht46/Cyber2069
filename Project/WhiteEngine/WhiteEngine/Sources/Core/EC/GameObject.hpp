@@ -170,5 +170,5 @@ std::weak_ptr<T> GameObject::GetComponent_weak() {
 
 LogCustomType_DF(GameObject)
 {
-	return os << "GameObject: " << obj.Name << " ID: " << obj.m_objectID;
+	return os << "GameObject: " << obj.m_objectName << " ID: " << obj.m_objectID;
 }

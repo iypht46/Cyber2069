@@ -32,7 +32,7 @@ private:
 	bool isReplaceColor = false;
 	MeshVbo* mesh = nullptr;
 	Animator* anim = nullptr;
-	GLuint texture = -1;
+	//GLuint texture = -1;
 	glm::vec3 ReplaceColor;
 
 	Graphic::Texture* m_texture = nullptr;
@@ -50,6 +50,7 @@ public:
 
 	void CreateMesh(float NumframeX, float NumFrameY);
 	void SetTexture(std::string path);
+	void SetTexture(Graphic::Texture tex);
 	void SetLayer(unsigned int layer); //higher layer is in front, player is on 0
 	void SetUI(bool ui);
 	void SetReplaceColor(glm::vec3 color);
@@ -60,6 +61,7 @@ public:
 	void RemoveReplaceColor();
 
 	unsigned int GetTexture();
+	Graphic::Texture GetTextureObj();
 	std::string GetTexturePath();
 
 	int GetLayer();

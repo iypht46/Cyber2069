@@ -3,7 +3,7 @@
 #include "../../FFF/Sources/GameController.hpp"
 #include "../../FFF/Sources/Scripts/GameControl/UIController.h"
 
-
+#include <iostream>
 #include "Graphic/GLRenderer.h"
 
 Button::Button() {
@@ -18,11 +18,13 @@ void Button::OnAwake()
 
 	if (mesh != nullptr) 
 	{
-		DefaultTexture = mesh->GetTexture();
+		//DefaultTexture = mesh->GetTexture();
+		DefaultTexObj = mesh->GetTextureObj();
 
 		if (hoverModifier.ReTexturePath != "")
 		{
-			OnHoverTex = GLRenderer::GetInstance()->LoadTexture(hoverModifier.ReTexturePath);
+			//OnHoverTex = GLRenderer::GetInstance()->LoadTexture(hoverModifier.ReTexturePath);
+			OnHoverTexObj = GLRenderer::GetInstance()->LoadTextureNew(hoverModifier.ReTexturePath);
 		}
 	}
 
@@ -38,7 +40,7 @@ void Button::OnUpdate(float dt) {
 	isOnHover = false;
 
 	if (mesh != nullptr) {
-		if (mesh->isUI) 
+		if (mesh->IsUI()) 
 		{
 			m_pos = Input::GetMouseScreenPosition();
 		}
@@ -55,7 +57,6 @@ void Button::OnUpdate(float dt) {
 		glm::abs(diff.y) <= glm::abs((m_gameObject->m_transform->GetScale().y * 0.5f))) 
 	{
 		isOnHover = true;
-
 		if (Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT)) {
 			OnClick();
 		}
@@ -118,6 +119,7 @@ void Button::ModifyOnHover() {
 			if (OnHoverTex != -1)
 			{
 				//mesh->SetTexture(OnHoverTex);
+				mesh->SetTexture(OnHoverTexObj);
 			}
 
 			mesh->SetReplaceColor(hoverModifier.ReColor);
@@ -135,6 +137,7 @@ void Button::ModifyOnHover() {
 			if (DefaultTexture != -1 && OnHoverTex != -1)
 			{
 				//mesh->SetTexture(DefaultTexture);
+				mesh->SetTexture(DefaultTexObj);
 			}
 
 			mesh->RemoveReplaceColor();

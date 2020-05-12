@@ -6,9 +6,8 @@
 #include "Graphic/Texture.hpp"
 #include <glm/ext.hpp>
 
-
 #include <string.h>
-
+#include <iostream>
 #include <glm/gtx/matrix_interpolation.hpp>
 //bool operator < (const MeshRenderer &m1, const MeshRenderer &m2)
 //{
@@ -65,8 +64,8 @@ void MeshRenderer::SetTexture(std::string path)
 
 	if (newTexture.m_textureID != -1)
 	{
+		SetTexture(newTexture);
 		sr_texturePath = path;
-		m_texture = new Graphic::Texture(newTexture);
 	}
 
 	////save data
@@ -78,6 +77,16 @@ void MeshRenderer::SetTexture(std::string path)
 	//	m_texLoaded = true;
 	//else
 	//	m_texLoaded = false;
+}
+
+void MeshRenderer::SetTexture(Graphic::Texture tex)
+{
+	if (tex.m_textureID != -1)
+	{
+		delete m_texture;
+		m_texture = new Graphic::Texture(tex);
+		GetGameObject()->m_transform->SetMeshScale(glm::vec3(tex.m_size, 1.0f));
+	}
 }
 
 void MeshRenderer::SetLayer(unsigned int layer)
@@ -202,7 +211,6 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 	if (squareMesh != nullptr)
 	{
 		if (this->IsTextureLoaded())
-		//if (m_texLoaded)
 		{
 			glBindTexture(GL_TEXTURE_2D, m_texture->m_textureID);
 			//glBindTexture(GL_TEXTURE_2D, texture);
@@ -224,10 +232,8 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 		glm::vec2 textureScale;
 
 		if (IsTextureLoaded())
-		{
 			textureScale = m_texture->m_size;
-			
-		}
+
 		//-------Animation--------
 		auto animation = GetGameObject()->GetComponent<Animator>();
 
@@ -242,16 +248,21 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 		}
 		else 
 		{
+			textureScale = textureScale / glm::vec2(sr_NumFrameX, sr_NumFrameY);
 			glUniform1f(offsetXId, 0.0f);
 			glUniform1f(offsetYId, 0.0f);
-
 		}
 
-		if (IsTextureLoaded())
+		//ENGINE_INFO("Texture Scale : {}, {}", textureScale.x, textureScale.y);
+		if (IsTextureLoaded() && !m_isUI)
 		{
-			modelMatrix *= glm::scale(glm::vec3(textureScale, 1.0f));
+			auto meshMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(textureScale, 1.0f));
+			
+			modelMatrix *= meshMatrix;
+			
 		}
-
+			
+		//std::cout << glm::to_string(globalModelTransform) << std::endl << std::endl;
 		glm::mat4 currentMatrix = globalModelTransform * modelMatrix;
 
 		glUniformMatrix4fv(modelMatixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
@@ -273,6 +284,11 @@ unsigned int MeshRenderer::GetTexture()
 		return m_texture->m_textureID;
 	else
 		return -1;
+}
+
+Graphic::Texture MeshRenderer::GetTextureObj()
+{
+	return *m_texture;
 }
 
 std::string MeshRenderer::GetTexturePath()

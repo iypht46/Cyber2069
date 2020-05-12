@@ -1,5 +1,8 @@
 #include "Transform.hpp"
 #include "Core/Logger.hpp"
+#include "Core/EC/GameObject.hpp"
+#include "MeshRenderer.hpp"
+#include "Graphic/Texture.hpp"
 #include <iostream>
 #include <memory>
 using namespace glm;
@@ -32,7 +35,7 @@ glm::vec3 Transform::GetLocalPosition() {
 }
 
 glm::vec3 Transform::GetScale() {
-	return m_scale;
+	return m_scale; //* m_meshScale;
 }
 
 float Transform::GetRotation() {
@@ -60,7 +63,6 @@ glm::mat4 Transform::GetModelMatrix() {
 	glm::mat4 sMat = glm::scale(glm::mat4(1.0f), m_localScale);
 	glm::mat4 tMat = glm::translate(glm::mat4(1.0f), glm::vec3(m_localPosition.x, m_localPosition.y, 0));
 	glm::mat4 transformMat = tMat * rMat * sMat;
-
 	if (!parent.expired()) {
 		transformMat = parent.lock()->GetModelMatrix() * transformMat;
 	}
@@ -233,4 +235,9 @@ void Transform::SetLocalRotation(float localrotation) {
 
 void Transform::Rotate(float rotation) {
 	SetRotation(m_rotation + rotation);
+}
+
+void Transform::SetMeshScale(glm::vec3 meshScale)
+{
+	m_meshScale = meshScale;
 }
