@@ -144,11 +144,20 @@ void GameController::OnStart() {
 	PlayerStartPosition = playerControl->GetGameObject()->m_transform->GetPosition();
 
 	m_gameObject->GetComponent<EquipmentManager>()->Unlock_WEAPON(WEAPON_TYPE::WEAPON_MACHINEGUN);
+	m_gameObject->GetComponent<EquipmentManager>()->Unlock_WEAPON(WEAPON_TYPE::WEAPON_LASER);
+	m_gameObject->GetComponent<EquipmentManager>()->Unlock_WEAPON(WEAPON_TYPE::WEAPON_GRENADELAUNCHER);
+	m_gameObject->GetComponent<EquipmentManager>()->Unlock_WEAPON(WEAPON_TYPE::WEAPON_ZAPPER);
+	m_gameObject->GetComponent<EquipmentManager>()->Unlock_WEAPON(WEAPON_TYPE::WEAPON_BLACKHOLE);
 
 	m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_BULLETAMP);
 	m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_FIRERATEUP);
 	m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_SPEEDRUNNER);
 	m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_ATKUP);
+	m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_LOWGRAV);
+	m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_ARTIFACTAMP);
+	m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_CURSEDPENDANT);
+
+	StateChanged = true;
 
 	SaveGameConfig();
 }
@@ -232,6 +241,7 @@ void GameController::OnUpdate(float dt)
 		{
 			UIController::GetInstance()->ToggleUI(UI_GROUP::MainMenu);
 
+			this->GetGameObject()->GetComponent<EquipmentManager>()->ResetPlayerEquipment();
 			playerControl->GetGameObject()->SetActive(false);
 
 			loadoutUI.lock()->SetActive(false);
@@ -240,6 +250,8 @@ void GameController::OnUpdate(float dt)
 
 			StateChanged = false;
 		}
+
+		UIController::GetInstance()->UpdateVolumeTexts();
 
 		if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE)) 
 		{
@@ -379,8 +391,6 @@ void GameController::OnUpdate(float dt)
 
 		if (playerControl->GetGameObject()->GetComponent<HPsystem>()->isDead()) 
 		{
-			this->GetGameObject()->GetComponent<EquipmentManager>()->ResetPlayerEquipment();
-			
 			CocoonCount = 0;
 			SetGameplayState(GAMEPLAY_STATE::NORMAL);
 			SetGameState(GAME_STATE::ENDING);
@@ -407,12 +417,27 @@ void GameController::OnUpdate(float dt)
 			SaveData();
 
 			StateChanged = false;
+
+			string scoreText = "Score: ";
+
+			scoreText += to_string((int)ScoreValue);
+			UIController::GetInstance()->GameOverScoreText.lock()->GetComponent<TextRenderer>()->SetText(scoreText);
 		}
 
 		if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE))
 		{
 			SetGameState(GAME_STATE::MAINMENU);
 		}
+
+		break;
+	case GAME_STATE::QUIT:
+		//Do only once after state changed
+		if (StateChanged)
+		{
+			
+		}
+
+		GAME_INFO("QUIT");
 
 		break;
 	default:

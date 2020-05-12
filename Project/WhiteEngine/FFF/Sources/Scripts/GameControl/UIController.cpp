@@ -63,14 +63,44 @@ void UIController::ToggleUI(int openGroup) {
 
 void UIController::AdjustMasterVolume(float diff) {
 	GameController::GetInstance()->SetMasterVolume(GameController::GetInstance()->MasterVolume + diff);
+
+	if (GameController::GetInstance()->MasterVolume > 1.0f) 
+	{
+		GameController::GetInstance()->SetMasterVolume(1.0f);
+	}
+
+	if (GameController::GetInstance()->MasterVolume < 0.0f)
+	{
+		GameController::GetInstance()->SetMasterVolume(0.0f);
+	}
 }
 
 void UIController::AdjustMusicVolume(float diff) {
 	GameController::GetInstance()->SetMusicVolume(GameController::GetInstance()->MusicVolume + diff);
+
+	if (GameController::GetInstance()->MusicVolume > 1.0f)
+	{
+		GameController::GetInstance()->SetMusicVolume(1.0f);
+	}
+
+	if (GameController::GetInstance()->MusicVolume < 0.0f)
+	{
+		GameController::GetInstance()->SetMusicVolume(0.0f);
+	}
 }
 
 void UIController::AdjustSFXVolume(float diff) {
 	GameController::GetInstance()->SetSFXVolume(GameController::GetInstance()->SFXVolume + diff);
+
+	if (GameController::GetInstance()->SFXVolume > 1.0f)
+	{
+		GameController::GetInstance()->SetSFXVolume(1.0f);
+	}
+
+	if (GameController::GetInstance()->SFXVolume < 0.0f)
+	{
+		GameController::GetInstance()->SetSFXVolume(0.0f);
+	}
 }
 
 void UIController::UpdateEquipmentDisplay() {
@@ -199,14 +229,35 @@ void UIController::UpdateVolumeTexts() {
 	int maxValue = 100;
 
 	if (!MasterVolumeText.expired()) {
-		MasterVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)(GameController::GetInstance()->MasterVolume * maxValue)));
+
+		int master = GameController::GetInstance()->MasterVolume * maxValue;
+
+		if (master % 10 == 9) {
+			master += 1;
+		}
+
+		MasterVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string(master));
 	}
 
 	if (!MusicVolumeText.expired()) {
-		MusicVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)(GameController::GetInstance()->MusicVolume * maxValue)));
+
+		int music = GameController::GetInstance()->MusicVolume * maxValue;
+
+		if (music % 10 == 9) {
+			music += 1;
+		}
+
+		MusicVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string(music));
 	}
 
 	if (!SFXVolumeText.expired()) {
-		SFXVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)(GameController::GetInstance()->SFXVolume * maxValue)));
+
+		int sfx = GameController::GetInstance()->SFXVolume * maxValue;
+
+		if (sfx % 10 == 9) {
+			sfx += 1;
+		}
+
+		SFXVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string(sfx));
 	}
 }
