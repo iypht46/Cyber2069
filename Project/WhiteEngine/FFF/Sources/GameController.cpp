@@ -97,7 +97,7 @@ void GameController::OnStart() {
 
 
 	//difficulty ting needs to go out side---------------------------
-	shared_ptr<EnemyAmplifier> a = std::make_shared<EnemyAmplifier>();
+	/*shared_ptr<EnemyAmplifier> a = std::make_shared<EnemyAmplifier>();
 	a->EnemySpawnRate = 1.0f;
 	a->FlyerHP = 1.0f;
 	a->FlyerSpeed = 100.0f;
@@ -135,6 +135,7 @@ void GameController::OnStart() {
 
 	CurrAmplifier = Amplifiers[0].get();
 	CurrPreset = Presets[0].get();
+	*/
 
 	SetSpawningAllSpawner(false);
 	playerControl->GetGameObject()->SetActive(false);
@@ -158,8 +159,6 @@ void GameController::OnStart() {
 	m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_CURSEDPENDANT);
 
 	StateChanged = true;
-
-	SaveGameConfig();
 }
 
 void GameController::CreatePool(std::string prefabPath, int poolType, int poolSize) {
@@ -307,7 +306,6 @@ void GameController::OnUpdate(float dt)
 		UIController::GetInstance()->updateHPUI();
 		UIController::GetInstance()->updateStaminaUI();
 		UIController::GetInstance()->updateScoreUI();
-		updateSpawner();
 
 		switch (CurrentGameplayState)
 		{
@@ -475,6 +473,8 @@ void GameController::SetScore(float score) {
 
 void GameController::AddScoreValue(float baseScore) {
 	this->ScoreValue += baseScore * ComboValue;
+
+	updateDifficulty();
 }
 
 void GameController::AddComboValue(float value) {
@@ -491,6 +491,8 @@ void GameController::Restart() {
 
 	updateDifficulty();
 	updateEnemyPreset();
+
+	updateSpawner();
 }
 
 void GameController::AssignPlayer(std::weak_ptr<GameObject> player) {
@@ -519,20 +521,24 @@ void GameController::updateDifficulty()
 		}
 	}
 
-	updateSpawner();
-
 	ENGINE_INFO("update difficulty");
 }
 
 void GameController::updateEnemyPreset()
 {
+	CurrPreset = Presets[0].get();
+
 	int randPreset = rand() % Presets.size();
 
 	CurrPreset = Presets[randPreset].get();
 
-	updateSpawner();
-
 	ENGINE_INFO("update preset");
+}
+
+void GameController::SpawnEnemies() {
+	for (EnemySpawner* spawner : Spawners) {
+		spawner->SpawnEnemy();
+	}
 }
 
 void GameController::updateSpawner()
@@ -625,7 +631,7 @@ void GameController::LoadData() {
 	EquipmentManager* equipmentManager = m_gameObject->GetComponent<EquipmentManager>();
 	if (equipmentManager != nullptr) {
 		Data = std::make_unique<PlayerData>();
-		Serialization::LoadObject(*Data.get(), DataPath("PlayerData.dat"));
+		Serialization::LoadObject(*Data.get(), DataPath("PlayerData"));
 
 		equipmentManager->SetWeaponUnlockData(Data->Weapons);
 		equipmentManager->SetArtifactUnlockData(Data->Artifacts);
@@ -636,7 +642,7 @@ void GameController::LoadData() {
 }
 
 void GameController::SaveData() {
-	Serialization::SaveObject(*Data, DataPath("PlayerData.dat"));
+	Serialization::SaveObject(*Data, DataPath("PlayerData"));
 }
 
 void GameController::ResetData() {
@@ -651,9 +657,9 @@ void GameController::LoadGameConfig() {
 	Amplifiers = config->Amplifiers;
 	Presets = config->Presets;
 
-	//SoundPlayer::SetMasterVolume(config->MasterVolume);
-	//SoundPlayer::SetMusicVolume(config->MusicVolume);
-	//SoundPlayer::SetSFXVolume(config->SFXVolume);
+	SoundPlayer::SetMasterVolume(config->MasterVolume);
+	SoundPlayer::SetMusicVolume(config->MusicVolume);
+	SoundPlayer::SetSFXVolume(config->SFXVolume);
 }
 
 void GameController::SaveGameConfig() {
@@ -662,9 +668,9 @@ void GameController::SaveGameConfig() {
 	config->Amplifiers = Amplifiers;
 	config->Presets = Presets;
 
-	//config->MasterVolume = SoundPlayer::GetMasterVolume();
-	//config->MusicVolume = SoundPlayer::GetMusicVolume();
-	//config->SFXVolume = SoundPlayer::GetSFXVolume();
+	config->MasterVolume = SoundPlayer::GetMasterVolume();
+	config->MusicVolume = SoundPlayer::GetMusicVolume();
+	config->SFXVolume = SoundPlayer::GetSFXVolume();
 
 	Serialization::SaveObjectXML(*config, XMLConfigPath("gameconfig"));
 }

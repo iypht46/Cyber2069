@@ -261,6 +261,8 @@ private:
 	void updateEnemyPreset();
 	void updateSpawner();
 
+	void SpawnEnemies();
+
 	void LoadGameConfig();
 	void SaveGameConfig();
 
