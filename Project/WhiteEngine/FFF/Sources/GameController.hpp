@@ -318,6 +318,8 @@ public:
 
 	void Restart();
 
+	void ResetPlayerProgress();
+
 	GameObject* SpawnQueen();
 	GameObject* SpawnCocoon();
 
