@@ -10,6 +10,8 @@ GrenadeLauncher::GrenadeLauncher() {
 	weaponObj->AddComponent<MeshRenderer>();
 	weaponObj->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
 	weaponObj->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/grenadeL_spritesheet.png");
+	weaponObj->AddComponent<SoundPlayer>();
+	
 
 	weaponObj->SetActive(false);*/
 
@@ -18,6 +20,10 @@ GrenadeLauncher::GrenadeLauncher() {
 
 void GrenadeLauncher::OnAwake() {
 
+	m_gameObject->GetComponent<SoundPlayer>()->CreateSoundPlayer();
+	m_gameObject->GetComponent<SoundPlayer>()->SetSound(SoundPath("SFX_GrenadeLauncher_Shoot"));
+	m_gameObject->GetComponent<SoundPlayer>()->SetLoop(false);
+
 	weapon_damage = 1.0f;
 	//weapon_firerate = 0.3f;
 	bullet_speed = 300.0f;
@@ -25,6 +31,9 @@ void GrenadeLauncher::OnAwake() {
 	grenade_radius = 100.0f;
 
 	m_gameObject->SetActive(false);
+
+	SoundTimer = 0.30f;
+	SoundCounter = SoundTimer;
 }
 
 void GrenadeLauncher::Modify() {
@@ -38,12 +47,20 @@ void GrenadeLauncher::MultiplyWeaponAmplifier(float value) {
 void GrenadeLauncher::GameTimeBehaviour(float dt) {
 	BulletPool = GameController::GetInstance()->GetPool(POOL_TYPE::BULLET_GL);
 
+	weapon_delay_count += dt;
 	if (Input::GetMouseHold(Input::MouseKeyCode::MOUSE_LEFT) ||
 		Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT))
 	{
-		weapon_delay_count += dt;
+		/*SoundCounter -= dt;
+		if (SoundCounter <= 0) {
+			m_gameObject->GetComponent<SoundPlayer>()->PlaySound();
+			SoundCounter = SoundTimer;
+		}*/
+
 		if (weapon_delay_count >= (1.0f / weapon_firerate))
 		{
+			m_gameObject->GetComponent<SoundPlayer>()->PlaySound();
+
 			GameObject* bullet = BulletPool->GetInactiveObject();
 
 			if (bullet != nullptr) {

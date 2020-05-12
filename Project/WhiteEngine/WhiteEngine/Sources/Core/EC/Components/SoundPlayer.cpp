@@ -1,4 +1,10 @@
 #include "SoundPlayer.hpp"
+#include <glm/glm.hpp>
+#include "Core/Logger.hpp"
+
+float SoundPlayer::MasterVolume = 1.0f;
+float SoundPlayer::MusicVolume = 1.0f;
+float SoundPlayer::SFXVolume = 1.0f;
 
 SoundPlayer::SoundPlayer() {
 	//isLooping = false;
@@ -12,21 +18,30 @@ SoundPlayer::~SoundPlayer() {
 
 void SoundPlayer::Init() {
 	CreateSoundPlayer();
-	SetSound(&(sr_soundpath[0]));
 }
 
 void SoundPlayer::CreateSoundPlayer() {
 	soundPlayer = createIrrKlangDevice();
 }
 
-void SoundPlayer::SetSound(const ik_c8* path) {
+void SoundPlayer::SetSound(std::string path) {
 	sr_soundpath = path;
-	soundSource = soundPlayer->addSoundSourceFromFile(path); 
 }
 
 void SoundPlayer::PlaySound() {
+	if(!soundPlayer->getSoundSource(&(sr_soundpath[0]))){
+		soundSource = soundPlayer->addSoundSourceFromFile(&(sr_soundpath[0]));
+	}
+	else {
+		soundSource = soundPlayer->getSoundSource(&(sr_soundpath[0]));
+	}
+
 	soundVolume = soundPlayer->play2D(soundSource, isLooping, false, true);
-	
+}
+
+void SoundPlayer::StopSound() {
+	soundPlayer->stopAllSounds();
+	ENGINE_INFO("Stop sound");
 }
 
 void SoundPlayer::DeleteSoundPlayer() {
@@ -39,28 +54,42 @@ void SoundPlayer::SetLoop(bool loop) {
 
 void SoundPlayer::UpdateVolume() {
 	if (soundVolume != nullptr) {
-		soundVolume->setVolume(volumeValue);
+		switch (sound_type)
+		{
+		default:
+		case SOUND_SFX:
+			soundVolume->setVolume(volumeValue * SoundPlayer::SFXVolume * SoundPlayer::MasterVolume);
+			break;
+		case SOUND_MUSIC:
+			soundVolume->setVolume(volumeValue * SoundPlayer::MusicVolume * SoundPlayer::MasterVolume);
+			break;
+		}
 	}
 }
 
 void SoundPlayer::SetVolume(float value) {
 	volumeValue = value;
+	UpdateVolume();
+}
+
+void SoundPlayer::SetSoundType(int type) {
+	sound_type = type;
 }
 
 void SoundPlayer::IncreaseVolume() {
-	if (volumeValue == 1) {
-		volumeValue += 0;
-	}
-	else {
-		volumeValue += 0.05f;
-	}
+	volumeValue += 0.05f;
+	volumeValue = glm::clamp(volumeValue, 0.0f, 1.0f);
+	UpdateVolume();
 }
 
 void SoundPlayer::DecreaseVolume() {
-	if (volumeValue == 0) {
-		volumeValue -= 0;
-	}
-	else {
-		volumeValue -= 0.05f;
-	}
+	volumeValue -= 0.05f;
+	volumeValue = glm::clamp(volumeValue, 0.0f, 1.0f);
+	UpdateVolume();
+}
+
+void SoundPlayer::AdjustVolume(float diff) {
+	volumeValue += diff;
+	volumeValue = glm::clamp(volumeValue, 0.0f, 1.0f);
+	UpdateVolume();
 }

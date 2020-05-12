@@ -2,14 +2,16 @@
 
 void EnemySpawner::OnUpdate(float dt)
 {
-	//ENGINE_INFO("intv = {}/{}", SpawnRateCount, 1.0f / SpawnRate);
-	SpawnRateCount += dt;
+	if (Spawning) {
+		ENGINE_INFO("Spawner type: {}, interval: {}/{}", SpawnType, SpawnRateCount, 1.0f / SpawnRate);
+		SpawnRateCount += dt;
 
-	if (SpawnRateCount > 1.0f / SpawnRate)
-	{
-		SpawnRateCount = 0;
+		if (SpawnRateCount > 1.0f / SpawnRate)
+		{
+			SpawnRateCount = 0;
 
-		SpawnEnemy();
+			SpawnEnemy();
+		}
 	}
 }
 
@@ -177,7 +179,8 @@ void EnemySpawner::updateSpawner() {
 		ENGINE_WARN("No enemy preset assigned");
 	}
 	
-	SpawnRateCount = SpawnRate;
+	//SpawnRateCount = SpawnRate;
+	//ENGINE_INFO("Spawner Spawn Rate: {}", SpawnRate);
 }
 
 

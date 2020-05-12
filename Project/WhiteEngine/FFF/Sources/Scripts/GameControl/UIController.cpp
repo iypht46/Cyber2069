@@ -4,6 +4,7 @@
 
 #include "Core/EC/GameObject.hpp"
 #include "Core/EC/UIComponents/TextRenderer.hpp"
+#include "Core/EC/Components/SoundPlayer.hpp"
 
 #include "../../GameController.hpp"
 #include "../../EquipmentManager.hpp"
@@ -62,15 +63,15 @@ void UIController::ToggleUI(int openGroup) {
 }
 
 void UIController::AdjustMasterVolume(float diff) {
-	GameController::GetInstance()->SetMasterVolume(GameController::GetInstance()->MasterVolume + diff);
+	SoundPlayer::SetMasterVolume(SoundPlayer::GetMasterVolume() + diff);
 }
 
 void UIController::AdjustMusicVolume(float diff) {
-	GameController::GetInstance()->SetMusicVolume(GameController::GetInstance()->MusicVolume + diff);
+	SoundPlayer::SetMusicVolume(SoundPlayer::GetMusicVolume() + diff);
 }
 
 void UIController::AdjustSFXVolume(float diff) {
-	GameController::GetInstance()->SetSFXVolume(GameController::GetInstance()->SFXVolume + diff);
+	SoundPlayer::SetSFXVolume(SoundPlayer::GetSFXVolume() + diff);
 }
 
 void UIController::UpdateEquipmentDisplay() {
@@ -199,14 +200,35 @@ void UIController::UpdateVolumeTexts() {
 	int maxValue = 100;
 
 	if (!MasterVolumeText.expired()) {
-		MasterVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)(GameController::GetInstance()->MasterVolume * maxValue)));
+
+		int master = SoundPlayer::GetMasterVolume() * maxValue;
+
+		if (master % 10 == 9) {
+			master += 1;
+		}
+
+		MasterVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string(master));
 	}
 
 	if (!MusicVolumeText.expired()) {
-		MusicVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)(GameController::GetInstance()->MusicVolume * maxValue)));
+
+		int music = SoundPlayer::GetMusicVolume() * maxValue;
+
+		if (music % 10 == 9) {
+			music += 1;
+		}
+
+		MusicVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string(music));
 	}
 
 	if (!SFXVolumeText.expired()) {
-		SFXVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)(GameController::GetInstance()->SFXVolume * maxValue)));
+
+		int sfx = SoundPlayer::GetSFXVolume() * maxValue;
+
+		if (sfx % 10 == 9) {
+			sfx += 1;
+		}
+
+		SFXVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string(sfx));
 	}
 }

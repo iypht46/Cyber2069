@@ -44,6 +44,8 @@ void GrenadeLauncherBullet::OnUpdate(float dt)
 void GrenadeLauncherBullet::OnAwake()
 {
 	rb = m_gameObject->GetComponent<Rigidbody>();
+	ExplodeSound = m_gameObject->GetComponent<SoundPlayer>();
+	ExplodeSound->SetSound(SoundPath("SFX_Grenade_Explode"));
 	cam = Graphic::getCamera();
 	scaleX = m_gameObject->m_transform->GetScale().x;
 }
@@ -75,18 +77,21 @@ void GrenadeLauncherBullet::Explode() {
 	}
 
 	for (Collider* c : targetColliders) {
+		if (c->GetGameObject()->Active()) {
+			float distance = glm::length(c->GetGameObject()->m_transform->GetPosition() - m_gameObject->m_transform->GetPosition());
 
-		float distance = glm::length(c->GetGameObject()->m_transform->GetPosition() - m_gameObject->m_transform->GetPosition());
-		
-		if (distance <= radius) {
-			
-			//check for enemy anyway
-			Enemy* enemy = c->GetGameObject()->GetComponent<Enemy>();
-			if (enemy != nullptr) {
-				enemy->TakeDamage(bulletDmg);
+			if (distance <= radius) {
+
+				//check for enemy anyway
+				Enemy* enemy = c->GetGameObject()->GetComponent<Enemy>();
+				if (enemy != nullptr) {
+					enemy->TakeDamage(bulletDmg);
+				}
 			}
 		}
 	}
+
+	ExplodeSound->PlaySound();
 
 	GLRenderer::GetInstance()->DrawDebug_Circle(m_gameObject->m_transform->GetPosition().x, m_gameObject->m_transform->GetPosition().y, radius, 0.0f, 0.0f, 1.0f);
 }

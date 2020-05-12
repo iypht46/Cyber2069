@@ -476,6 +476,14 @@ void PlayerController::ModifyFromEquipment()
 {
 	for (Equipment* e : Equipments)
 	{
+		if (ArtifactAmplifier* af = dynamic_cast<ArtifactAmplifier*>(e))
+		{
+			af->Modify();
+		}
+	}
+
+	for (Equipment* e : Equipments)
+	{
 		e->Modify();
 	}
 }
@@ -490,10 +498,21 @@ void PlayerController::RevertEquipment()
 		}
 	}
 
+	for (Equipment* e : Equipments)
+	{
+		if (Artifact* a = dynamic_cast<Artifact*>(e))
+		{
+			a->isAmplify = false;
+		}
+	}
+
 	Equipments.clear();
 	Weapons.clear();
 
-	weapon = nullptr;
+	if (weapon != nullptr) {
+		weapon->GetGameObject()->SetActive(false);
+		weapon = nullptr;
+	}
 }
 
 void PlayerController::MultiplyMoveSpeed(float value) 

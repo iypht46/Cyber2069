@@ -23,6 +23,7 @@
 
 class EnemySpawner;
 class UIController;
+class SoundtrackController;
 
 enum POOL_TYPE {
 	BULLET_MG = 0,
@@ -44,12 +45,23 @@ enum GAME_STATE {
 	MAINMENU = 0,
 	LOADOUT,
 	GAMEPLAY,
-	ENDING
+	ENDING,
+	QUIT
 };
 
 enum GAMEPLAY_STATE {
 	NORMAL = 0,
 	QUEEN
+};
+
+enum OPTION {
+	Master_Increase = 0,
+	Master_Decrease,
+	Music_Increase,
+	Music_Decrease,
+	SFX_Increase,
+	SFX_Decrease,
+	RESET_Progress
 };
 
 struct EnemyPreset {
@@ -66,18 +78,20 @@ public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
-			FlyerRatio,
-			BomberRatio,
-			QueenRatio,
-			CocoonRatio,
-			TankRatio,
-			ChargerRatio,
-			SpitterRatio
+			CEREAL_NVP(FlyerRatio),
+			CEREAL_NVP(BomberRatio),
+			CEREAL_NVP(QueenRatio),
+			CEREAL_NVP(CocoonRatio),
+			CEREAL_NVP(TankRatio),
+			CEREAL_NVP(ChargerRatio),
+			CEREAL_NVP(SpitterRatio)
 			);
 	}
 };
 
 struct EnemyAmplifier {
+	float RequiredScore = 0;
+
 	//flyer
 	float FlyerHP = 1;
 	float FlyerSpeed = 200;
@@ -93,6 +107,8 @@ struct EnemyAmplifier {
 	float BomberExplodeRadius = 200;
 
 	//queen
+	//int CocoonNeeded = 5;
+	int CocoonNeeded = 1;
 	//float QueenHP = 500;
 	float QueenHP = 1;
 	float QueenSpeed = 75;
@@ -124,38 +140,65 @@ public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
-			FlyerHP,
-			FlyerSpeed,
-			FlyerDmg,
+			CEREAL_NVP(RequiredScore),
 
-			BomberHP,
-			BomberSpeed,
-			BomberDmg,
-			BomberAimTime,
-			BomberDashSpeed,
-			BomberExplodeDMG,
-			BomberExplodeRadius,
+			CEREAL_NVP(FlyerHP),
+			CEREAL_NVP(FlyerSpeed),
+			CEREAL_NVP(FlyerDmg),
 
-			QueenHP,
-			QueenSpeed,
-			QueenSpawnDelay,
+			CEREAL_NVP(BomberHP),
+			CEREAL_NVP(BomberSpeed),
+			CEREAL_NVP(BomberDmg),
+			CEREAL_NVP(BomberAimTime),
+			CEREAL_NVP(BomberDashSpeed),
+			CEREAL_NVP(BomberExplodeDMG),
+			CEREAL_NVP(BomberExplodeRadius),
 
-			CocoonHP,
+			CEREAL_NVP(CocoonNeeded),
+			CEREAL_NVP(QueenHP),
+			CEREAL_NVP(QueenSpeed),
+			CEREAL_NVP(QueenSpawnDelay),
 
-			TankSpeed,
-			TankHP,
+			CEREAL_NVP(CocoonHP),
 
-			ChargerSpeed,
-			ChargerHP,
-			ChargerDashPauseTime,
-			ChargerDashSpeed,
-			ChragerDashDamage,
+			CEREAL_NVP(TankSpeed),
+			CEREAL_NVP(TankHP),
 
-			SpitterSpeed,
-			SpitterHP,
-			SpitterFireRate,
+			CEREAL_NVP(ChargerSpeed),
+			CEREAL_NVP(ChargerHP),
+			CEREAL_NVP(ChargerDashPauseTime),
+			CEREAL_NVP(ChargerDashSpeed),
+			CEREAL_NVP(ChragerDashDamage),
 
-			EnemySpawnRate
+			CEREAL_NVP(SpitterSpeed),
+			CEREAL_NVP(SpitterHP),
+			CEREAL_NVP(SpitterFireRate),
+
+			CEREAL_NVP(EnemySpawnRate)
+			);
+	}
+};
+
+struct GameConfig {
+	float MasterVolume;
+	float MusicVolume;
+	float SFXVolume;
+
+	//vector<float> scoreCheckpoint;
+	vector<std::shared_ptr<EnemyAmplifier>> Amplifiers;
+	vector<std::shared_ptr<EnemyPreset>> Presets;
+
+
+//serialization
+public:
+	template <class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			CEREAL_NVP(MasterVolume),
+			CEREAL_NVP(MusicVolume),
+			CEREAL_NVP(SFXVolume),
+			CEREAL_NVP(Amplifiers),
+			CEREAL_NVP(Presets)
 			);
 	}
 };
@@ -184,17 +227,15 @@ private:
 	PlayerController* playerControl;
 	HPsystem* PlayerHP;
 
+	SoundtrackController* soundtrackCon;
+
 	glm::vec3 PlayerStartPosition;
 
 	GameObject* Current_Queen = nullptr;
 	GameObject* Current_Cocoon = nullptr;
 
-	int CocoonNeed = 1;
+	//int CocoonNeed = 1;
 	int CocoonCount = 0;
-
-	float MasterVolume = 1.0f;
-	float MusicVolume = 1.0f;
-	float SFXVolume = 1.0f;
 
 	map<int, ObjectPool*> Pools; //added while onawake and init manually, hard coding, collect all pool used in game
 
@@ -209,14 +250,21 @@ private:
 	EnemyPreset* CurrPreset;
 	EnemyAmplifier* CurrAmplifier;
 
-	int currScoreCheckpoint = 0;
+	//int currScoreCheckpoint = 0;
 
-	float scoreCheckpoint[4] = { 0.0f, 10.0f,200.0f,300.0f };
+	//vector<float> scoreCheckpoint = { 0.0f, 10.0f,200.0f,300.0f };
 
 	//void updateHPui();
 	//void updateStaminaUI();
 
+	void updateDifficulty();
+	void updateEnemyPreset();
 	void updateSpawner();
+
+	void SpawnEnemies();
+
+	void LoadGameConfig();
+	void SaveGameConfig();
 
 	//create on runtime, it will generate objects and init them
 	void CreatePool(std::string prefabPath, int poolType, int poolSize);
@@ -236,18 +284,14 @@ private:
 	bool StateChanged = false;
 	bool StateGamplayChanged = false;
 
+	static float stateChangeDelay;
+	float gameStateChangeTimer = 0;
+	float gameplayStateChangeTimer = 0;
+
 	//player data manager
 	void LoadData();
 	void SaveData();
 	void ResetData();
-
-	//sound option
-	void SetMasterVolume(float);
-	void SetMusicVolume(float);
-	void SetSFXVolume(float);
-
-	float AdjustVolumeForSFX(float);
-	float AdjustVolumeForMusic(float);
 
 public:
 	std::weak_ptr<GameObject> player;
@@ -272,7 +316,9 @@ public:
 
 	void SetCombo(float combo);
 
-	void ResetScore();
+	void Restart();
+
+	void ResetPlayerProgress();
 
 	GameObject* SpawnQueen();
 	GameObject* SpawnCocoon();
@@ -297,10 +343,12 @@ public:
 	int GetGameState() { return CurrentState; }
 	int GetGameplayState() { return CurrentGameplayState; }
 
-	void SetGameState(int state) { this->NextState = state; }
-	void SetGameplayState(int state) { this->NextGameplayState = state; }
+	void SetGameState(int state);
+	void SetGameplayState(int state);
 
 	GameObject* GetPlayer() { return playerControl->GetGameObject(); }
+
+	PlayerData* GetPlayerData() { return Data.get(); }
 
 	virtual void OnAwake() override;
 	virtual void OnStart() override;
@@ -312,14 +360,8 @@ public:
 	void serialize(Archive& archive) {
 		archive(
 			cereal::base_class<BehaviourScript>(this),
-			cereal::defer(player),
-			Presets,
-			Amplifiers,
-			ScoreValue,
-			ComboValue
+			cereal::defer(player)
 			);
-
-		ENGINE_INFO("Finished");
 	}
 };
 

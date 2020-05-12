@@ -46,6 +46,8 @@ void ZapperGunBullet::OnUpdate(float dt)
 void ZapperGunBullet::OnAwake()
 {
 	rb = m_gameObject->GetComponent<Rigidbody>();
+	ZappingSound = m_gameObject->GetComponent<SoundPlayer>();
+	ZappingSound->SetSound(SoundPath("SFX_Zapper_Zapping"));
 	cam = Graphic::getCamera();
 }
 
@@ -63,7 +65,7 @@ void ZapperGunBullet::OnTriggerEnter(const Physic::Collision col) {
 			Physic::PhysicScene* ps = Physic::PhysicScene::GetInstance();
 
 			//get all collider in target layers
-			Physic::Colliders colliders;
+			//Physic::Colliders colliders;
 			for (std::string target : TargetLayers) {
 				Physic::Colliders layerColliders = ps->GetColliderLayer(target);
 				colliders.insert(colliders.end(), layerColliders.begin(), layerColliders.end());
@@ -111,7 +113,7 @@ void ZapperGunBullet::OnTriggerEnter(const Physic::Collision col) {
 		}
 	}
 
-	
+	//ZappingSound->PlaySound();
 }
 
 void ZapperGunBullet::OnCollisionEnter(const Physic::Collision col) {
@@ -213,7 +215,6 @@ void ZapperGunBullet::Zap(float dt) {
 			}
 		}
 	}
-
 }
 
 void ZapperGunBullet::enemRelease() 

@@ -5,7 +5,6 @@ void Flyer::OnAwake() {
 	airFollow = GetGameObject()->GetComponent<AirFollowing>();
 
 	rigidbody = GetGameObject()->GetComponent<Rigidbody>();
-
 	Enemy::OnAwake();
 }
 

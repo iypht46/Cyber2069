@@ -17,6 +17,8 @@ enum ARTIFACT_TYPE {
 class Artifact : public Equipment 
 {
 public:
+	bool isAmplify = false;
+
 	virtual void Modify() = 0;
 	virtual void Revert() = 0;
 	virtual void GameTimeBehaviour(float dt) = 0;
@@ -38,11 +40,14 @@ class BulletAmplifier : public Artifact
 private:
 	float multiplier_weapon = 2.0f;
 	float multiplier_speedDecrease = 0.75f;
+
+	float multiplier_amplifier = 2.0f;
 public:
 	BulletAmplifier() { type = ARTIFACT_TYPE::ARTF_BULLETAMP; }
 
 	void Modify();
 	void Revert();
+
 	void GameTimeBehaviour(float dt) {}
 
 //serialization
@@ -52,7 +57,8 @@ public:
 		archive(
 			cereal::base_class<Artifact>(this),
 			multiplier_weapon,
-			multiplier_speedDecrease
+			multiplier_speedDecrease,
+			multiplier_amplifier
 			);
 	}
 };
@@ -62,6 +68,7 @@ class FireRateUP : public Artifact
 {
 private:
 	float multiplier_firerate = 2.0f;
+	float multiplier_amplifier = 2.0f;
 public:
 	FireRateUP() { type = ARTIFACT_TYPE::ARTF_FIRERATEUP; }
 
@@ -75,7 +82,8 @@ public:
 	void serialize(Archive& archive) {
 		archive(
 			cereal::base_class<Artifact>(this),
-			multiplier_firerate
+			multiplier_firerate,
+			multiplier_amplifier
 			);
 	}
 };
@@ -86,6 +94,7 @@ class AttackUP : public Artifact
 {
 private:
 	float multiplier_attack = 2.0f;
+	float multiplier_amplifier = 2.0f;
 public:
 	AttackUP() { type = ARTIFACT_TYPE::ARTF_ATKUP; }
 
@@ -99,7 +108,8 @@ public:
 	void serialize(Archive& archive) {
 		archive(
 			cereal::base_class<Artifact>(this),
-			multiplier_attack
+			multiplier_attack,
+			multiplier_amplifier
 			);
 	}
 };
@@ -110,6 +120,7 @@ class LowGravity : public Artifact
 {
 private:
 	float multiplier_GravityScale = 2.0f;
+	float multiplier_amplifier = 2.0f;
 public:
 	LowGravity() { type = ARTIFACT_TYPE::ARTF_LOWGRAV; }
 
@@ -123,7 +134,8 @@ public:
 	void serialize(Archive& archive) {
 		archive(
 			cereal::base_class<Artifact>(this),
-			multiplier_GravityScale
+			multiplier_GravityScale,
+			multiplier_amplifier
 			);
 	}
 };
@@ -133,6 +145,7 @@ CEREAL_REGISTER_TYPE(LowGravity);
 class SpeedRunner : public Artifact {
 private:
 	float multiplier_moveSpeed = 2.0f;
+	float multiplier_amplifier = 2.0f;
 public:
 	SpeedRunner() { type = ARTIFACT_TYPE::ARTF_SPEEDRUNNER; }
 
@@ -146,7 +159,8 @@ public:
 	void serialize(Archive& archive) {
 		archive(
 			cereal::base_class<Artifact>(this),
-			multiplier_moveSpeed
+			multiplier_moveSpeed,
+			multiplier_amplifier
 			);
 	}
 };
@@ -180,6 +194,7 @@ public:
 
 	void Modify();
 	void Revert();
+
 	void GameTimeBehaviour(float dt) {}
 
 //serialization
