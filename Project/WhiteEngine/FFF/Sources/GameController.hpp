@@ -294,6 +294,8 @@ private:
 	void ResetData();
 
 public:
+	glm::vec3 MenuCamPos;
+
 	std::weak_ptr<GameObject> player;
 	/*std::weak_ptr<GameObject> HPbar;
 	std::weak_ptr<GameObject> Staminabar;*/

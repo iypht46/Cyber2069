@@ -42,6 +42,7 @@
 #include "ItemDrop.hpp"
 #include "Scripts/GameControl/UIController.h"
 #include "Scripts/GameControl/SoundtrackController.h"
+#include "Scripts/GameControl/CameraController.h"
 
 using SceneManagement::Instantiate;
 
@@ -264,6 +265,7 @@ namespace World
 			gamecontroller->GetComponent<GameController>()->SetGameState(GAME_STATE::MAINMENU);
 			gamecontroller->GetComponent<GameController>()->SetGameplayState(GAMEPLAY_STATE::NORMAL);
 
+			gamecontroller->AddComponent<CameraController>();
 
 			gamecontroller->AddComponent<UIController>();
 
@@ -1633,7 +1635,7 @@ namespace World
 
 			//Soundtrack
 			std::shared_ptr<GameObject> soundtrackPlayer = Instantiate();
-			soundtrackPlayer->AddComponent<SoundPlayer>();
+			soundtrackPlayer->AddComponent<SoundPlayer>()->SetSoundType(SOUND_TYPE::SOUND_MUSIC);
 			gamecontroller->AddComponent<SoundtrackController>()->SetSoundChannel(soundtrackPlayer->GetComponent_weak<SoundPlayer>());
 			gamecontroller->GetComponent<SoundtrackController>()->MenuTracks.push_back(MusicPath("synthwave_loop_track_4"));
 			gamecontroller->GetComponent<SoundtrackController>()->GameplayTracks.push_back(MusicPath("Song09"));

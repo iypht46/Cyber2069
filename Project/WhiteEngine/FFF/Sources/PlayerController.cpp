@@ -66,8 +66,6 @@ void PlayerController::OnTriggerExit(const Physic::Collision col)
 
 void PlayerController::OnUpdate(float dt)
 {
-	Graphic::getCamera()->SetPos(glm::vec3(GetGameObject()->m_transform->GetPosition().x, GetGameObject()->m_transform->GetPosition().y, GetGameObject()->m_transform->GetPosition().z));
-
 	cameraZoom(dt);
 
 	if ((rb->GetVelocity().y < -5.0f) && !falling)

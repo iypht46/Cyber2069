@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cereal>
 	<object>
-		<MasterVolume>0</MasterVolume>
-		<MusicVolume>0</MusicVolume>
-		<SFXVolume>0</SFXVolume>
+		<MasterVolume>1</MasterVolume>
+		<MusicVolume>1</MusicVolume>
+		<SFXVolume>1</SFXVolume>
 		<Amplifiers size="dynamic">
 			<value0>
 				<ptr_wrapper>
@@ -12,13 +12,13 @@
 						<RequiredScore>0</RequiredScore>
 						<FlyerHP>1</FlyerHP>
 						<FlyerSpeed>100</FlyerSpeed>
-						<FlyerDmg>10</FlyerDmg>
+						<FlyerDmg>1</FlyerDmg>
 						<BomberHP>1</BomberHP>
 						<BomberSpeed>300</BomberSpeed>
-						<BomberDmg>10</BomberDmg>
+						<BomberDmg>0</BomberDmg>
 						<BomberAimTime>0.5</BomberAimTime>
 						<BomberDashSpeed>700</BomberDashSpeed>
-						<BomberExplodeDMG>30</BomberExplodeDMG>
+						<BomberExplodeDMG>10</BomberExplodeDMG>
 						<BomberExplodeRadius>200</BomberExplodeRadius>
 						<CocoonNeeded>1</CocoonNeeded>
 						<QueenHP>1</QueenHP>
@@ -46,13 +46,13 @@
 						<RequiredScore>0</RequiredScore>
 						<FlyerHP>1</FlyerHP>
 						<FlyerSpeed>300</FlyerSpeed>
-						<FlyerDmg>10</FlyerDmg>
+						<FlyerDmg>1</FlyerDmg>
 						<BomberHP>1</BomberHP>
 						<BomberSpeed>300</BomberSpeed>
-						<BomberDmg>10</BomberDmg>
+						<BomberDmg>1</BomberDmg>
 						<BomberAimTime>0.20000000298023224</BomberAimTime>
 						<BomberDashSpeed>700</BomberDashSpeed>
-						<BomberExplodeDMG>30</BomberExplodeDMG>
+						<BomberExplodeDMG>15</BomberExplodeDMG>
 						<BomberExplodeRadius>200</BomberExplodeRadius>
 						<CocoonNeeded>1</CocoonNeeded>
 						<QueenHP>1</QueenHP>
