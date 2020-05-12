@@ -84,6 +84,9 @@ class DeQueen :public Enemy {
 private:
 	float SpawnDelay;
 
+	float ItemUnlockDropChance = 50.0f;
+	float HealValue = 50.0f;
+
 	float SpawnDelayCount;
 	float SoundCounter;
 protected:

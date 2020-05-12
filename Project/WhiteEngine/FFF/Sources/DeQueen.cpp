@@ -4,6 +4,8 @@
 #include "Graphic/Window.hpp"
 #include "Core/Logger.hpp"
 
+#include "ItemDrop.hpp"
+
 void DeQueen::OnAwake() {
 	airPatrol = GetGameObject()->GetComponent<AirPatrol>();
 	QueenSound = GetGameObject()->GetComponent<SoundPlayer>();
@@ -97,17 +99,37 @@ void DeQueen::SetSpawnDelay(int time) {
 
 void DeQueen::SpawnItem() 
 {
-	if (!GameController::GetInstance()->GetGameObject()->GetComponent<EquipmentManager>()->isAllUnlock()) 
-	{
-		GameObject* item = ItemPool->GetGameObject();
-		if (item != nullptr) {
-			item->GetComponent<Rigidbody>()->SetVelocity(glm::vec3(0));
-			item->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+	GameObject* item = ItemPool->GetGameObject();
 
-			item->SetActive(true);
+	if (item != nullptr) {
+
+		item->GetComponent<Rigidbody>()->SetVelocity(glm::vec3(0));
+		item->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+
+		item->SetActive(true);
+
+		if (!GameController::GetInstance()->GetGameObject()->GetComponent<EquipmentManager>()->isAllUnlock())
+		{
+			int randChance = (rand() % 100) + 1;
+
+			if (randChance < ItemUnlockDropChance) 
+			{
+				item->GetComponent<ItemDrop>()->SetType(Drop_Type::Unlock);
+			}
+			else 
+			{
+				item->GetComponent<ItemDrop>()->SetType(Drop_Type::Heal);
+				item->GetComponent<ItemDrop>()->SetHealValue(HealValue);
+			}
 		}
-		else {
-			ENGINE_ERROR("{} Can't spawn Item", *m_gameObject);
+		else 
+		{
+			item->GetComponent<ItemDrop>()->SetType(Drop_Type::Heal);
+			item->GetComponent<ItemDrop>()->SetHealValue(HealValue);
 		}
+		
+	}
+	else {
+		ENGINE_ERROR("{} Can't spawn Item", *m_gameObject);
 	}
 }

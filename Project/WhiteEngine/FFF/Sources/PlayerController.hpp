@@ -34,6 +34,8 @@ protected:
 
 	Weapon* weapon = nullptr;
 	Transform* weaponTranform = nullptr;
+
+	float yLimit = -1000.0f;
 	
 	//stats===============
 	float max_stamina = 50000000.0f;

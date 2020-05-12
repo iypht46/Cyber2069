@@ -115,6 +115,11 @@ void PlayerController::OnUpdate(float dt)
 			e->GameTimeBehaviour(dt);
 		}
 	}
+
+	if (m_gameObject->m_transform->GetPosition().y < yLimit) 
+	{
+		hpSystem->Dead();
+	}
 }
 
 void PlayerController::OnFixedUpdate(float dt)
