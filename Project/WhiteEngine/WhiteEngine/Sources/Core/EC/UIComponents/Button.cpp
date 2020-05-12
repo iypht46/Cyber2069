@@ -124,7 +124,7 @@ void Button::OnClick()
 			UIController::GetInstance()->AdjustSFXVolume(-0.1f);
 			break;
 		case OPTION::RESET_Progress:
-			GameController::GetInstance()->GetPlayerData()->ResetProgress();
+			GameController::GetInstance()->ResetPlayerProgress();
 
 			UIController::GetInstance()->ToggleUI(UI_GROUP::MainMenu);
 			break;

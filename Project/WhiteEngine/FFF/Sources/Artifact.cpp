@@ -13,10 +13,22 @@ void BulletAmplifier::Modify()
 
 		for (Weapon* w : wps) 
 		{
-			w->MultiplyWeaponAmplifier(multiplier_weapon);
+			if (isAmplify) {
+				w->MultiplyWeaponAmplifier(multiplier_weapon * multiplier_amplifier);
+			}
+			else {
+				w->MultiplyWeaponAmplifier(multiplier_weapon);
+			}
 		}
 
-		p->MultiplyMoveSpeed(multiplier_speedDecrease);
+		if (isAmplify) {
+
+			p->MultiplyMoveSpeed(multiplier_speedDecrease * multiplier_amplifier);
+		}
+		else {
+
+			p->MultiplyMoveSpeed(multiplier_speedDecrease);
+		}
 	}
 }
 
@@ -30,10 +42,22 @@ void BulletAmplifier::Revert()
 
 		for (Weapon* w : wps)
 		{
-			w->MultiplyWeaponAmplifier(1.0f / multiplier_weapon);
+			if (isAmplify) {
+				w->MultiplyWeaponAmplifier(1.0f / (multiplier_weapon * multiplier_amplifier));
+			}
+			else {
+				w->MultiplyWeaponAmplifier(1.0f / multiplier_weapon);
+			}
 		}
 
-		p->MultiplyMoveSpeed(1.0f / multiplier_speedDecrease);
+		if (isAmplify) {
+
+			p->MultiplyMoveSpeed(1.0f / (multiplier_speedDecrease * multiplier_amplifier));
+		}
+		else 
+		{
+			p->MultiplyMoveSpeed(1.0f / multiplier_speedDecrease);
+		}
 	}
 }
 
@@ -77,7 +101,14 @@ void  AttackUP::Modify()
 
 		for (Weapon* w : wps)
 		{
-			w->MultiplyWeaponDamage(multiplier_attack);
+			if (isAmplify) {
+
+				w->MultiplyWeaponDamage(multiplier_attack * multiplier_amplifier);
+			}
+			else 
+			{
+				w->MultiplyWeaponDamage(multiplier_attack);
+			}
 		}
 	}
 }
@@ -92,7 +123,14 @@ void AttackUP::Revert()
 
 		for (Weapon* w : wps)
 		{
-			w->MultiplyWeaponDamage(1.0f / multiplier_attack);
+			if (isAmplify) 
+			{
+				w->MultiplyWeaponDamage(1.0f / (multiplier_attack * multiplier_amplifier));
+			}
+			else {
+
+				w->MultiplyWeaponDamage(1.0f / multiplier_attack);
+			}
 		}
 	}
 }
@@ -101,26 +139,50 @@ void LowGravity::Modify()
 {
 	Rigidbody* rb = modifyObject->GetComponent<Rigidbody>();
 
-	rb->SetGravityScale(rb->GetGravityScale() / multiplier_GravityScale);
+	if (isAmplify) {
+
+		rb->SetGravityScale(rb->GetGravityScale() / (multiplier_GravityScale * multiplier_amplifier));
+	}
+	else {
+		rb->SetGravityScale(rb->GetGravityScale() / multiplier_GravityScale);
+	}
 }
 
 void LowGravity::Revert()
 {
 	Rigidbody* rb = modifyObject->GetComponent<Rigidbody>();
 
-	rb->SetGravityScale(rb->GetGravityScale() * multiplier_GravityScale);
+	if (isAmplify) {
+
+		rb->SetGravityScale(rb->GetGravityScale() * multiplier_GravityScale * multiplier_amplifier);
+	}
+	else {
+		rb->SetGravityScale(rb->GetGravityScale() * multiplier_GravityScale);
+	}
 }
 
 void SpeedRunner::Modify() {
 	PlayerController* p = modifyObject->GetComponent<PlayerController>();
 
-	p->MultiplyMoveSpeed(multiplier_moveSpeed);
+	if (isAmplify) 
+	{
+		p->MultiplyMoveSpeed(multiplier_moveSpeed * multiplier_amplifier);
+	}
+	else {
+		p->MultiplyMoveSpeed(multiplier_moveSpeed);
+	}
 }
 
 void SpeedRunner::Revert() {
 	PlayerController* p = modifyObject->GetComponent<PlayerController>();
 
-	p->MultiplyMoveSpeed(1.0f / multiplier_moveSpeed);
+	if (isAmplify) {
+
+		p->MultiplyMoveSpeed(1.0f / (multiplier_moveSpeed * multiplier_amplifier));
+	}
+	else {
+		p->MultiplyMoveSpeed(1.0f / multiplier_moveSpeed);
+	}
 }
 
 void ArtifactAmplifier::Modify() 
@@ -133,13 +195,9 @@ void ArtifactAmplifier::Modify()
 
 		for (Equipment* e : eq) 
 		{
-			if (ArtifactAmplifier* af = dynamic_cast<ArtifactAmplifier*>(e))
+			if (Artifact* a = dynamic_cast<Artifact*>(e)) 
 			{
-				continue;
-			}
-			else if (Artifact* a = dynamic_cast<Artifact*>(e)) 
-			{
-				a->Modify();
+				a->isAmplify = true;
 			}
 		}
 	}
@@ -147,7 +205,7 @@ void ArtifactAmplifier::Modify()
 
 void ArtifactAmplifier::Revert() 
 {
-	PlayerController* p = modifyObject->GetComponent<PlayerController>();
+	/*PlayerController* p = modifyObject->GetComponent<PlayerController>();
 
 	if (p != nullptr)
 	{
@@ -155,16 +213,12 @@ void ArtifactAmplifier::Revert()
 
 		for (Equipment* e : eq)
 		{
-			if (ArtifactAmplifier* af = dynamic_cast<ArtifactAmplifier*>(e))
+			if (Artifact* a = dynamic_cast<Artifact*>(e))
 			{
-				continue;
-			}
-			else if (Artifact* a = dynamic_cast<Artifact*>(e))
-			{
-				a->Revert();
+				a->isAmplify = false;
 			}
 		}
-	}
+	}*/
 }
 
 void CursedPendant::Modify() 

@@ -4,6 +4,7 @@
 		<MasterVolume>1</MasterVolume>
 		<MusicVolume>1</MusicVolume>
 		<SFXVolume>1</SFXVolume>
+
 		<Amplifiers size="dynamic">
 			<value0>
 				<ptr_wrapper>

@@ -1010,7 +1010,7 @@ namespace World
 				GameOverButton->m_transform->SetScale(glm::vec3(100, 50, 1));
 				GameOverButton->m_transform->SetPosition(glm::vec3(0, -200, 1));
 				GameOverButton->AddComponent<Button>();
-				GameOverButton->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::UICONTROL, UI_GROUP::MainMenu);
+				GameOverButton->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::STATECONTROL, GAME_STATE::MAINMENU);
 				GameOverButton->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(GameOverText);

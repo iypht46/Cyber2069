@@ -89,7 +89,7 @@ void GameController::OnStart() {
 	CreatePool(PrefabPath("Queen"), POOL_TYPE::ENEMY_QUEEN, 1);
 	QueenSpawner = CreateSpawner(POOL_TYPE::ENEMY_QUEEN);
 	QueenSpawner->SetSpawnMode(SPAWN_MODE::RANGE);
-	QueenSpawner->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() * 0.75, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() * 0.75);
+	QueenSpawner->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() * 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() * 2);
 
 	//Cocoon spawner
 	ENGINE_INFO("GameControl Creating Queen");
@@ -254,6 +254,8 @@ void GameController::OnUpdate(float dt)
 			loadoutUI.lock()->SetActive(false);
 
 			Restart();
+
+			SaveGameConfig();
 
 			StateChanged = false;
 		}
@@ -649,12 +651,28 @@ void GameController::LoadData() {
 }
 
 void GameController::SaveData() {
+	EquipmentManager* equipmentManager = m_gameObject->GetComponent<EquipmentManager>();
+	Data->Weapons = equipmentManager->Unlock_Weapons;
+	Data->Artifacts = equipmentManager->Unlock_Artifacts;
+	
 	Serialization::SaveObject(*Data, DataPath("PlayerData"));
 }
 
 void GameController::ResetData() {
 	Data->ResetProgress();
 	Data->ResetLeaderboard();
+}
+
+void GameController::ResetPlayerProgress() 
+{
+	EquipmentManager* equipmentManager = m_gameObject->GetComponent<EquipmentManager>();
+	ResetData();
+
+	equipmentManager->Unlock_Weapons = Data->Weapons;
+	equipmentManager->Unlock_Artifacts = Data->Artifacts;
+
+	SaveData();
+
 }
 
 void GameController::LoadGameConfig() {

@@ -113,6 +113,11 @@ void PlayerController::OnUpdate(float dt)
 			e->GameTimeBehaviour(dt);
 		}
 	}
+
+	if (m_gameObject->m_transform->GetPosition().y < yLimit) 
+	{
+		hpSystem->Dead();
+	}
 }
 
 void PlayerController::OnFixedUpdate(float dt)
@@ -474,6 +479,14 @@ void PlayerController::ModifyFromEquipment()
 {
 	for (Equipment* e : Equipments)
 	{
+		if (ArtifactAmplifier* af = dynamic_cast<ArtifactAmplifier*>(e))
+		{
+			af->Modify();
+		}
+	}
+
+	for (Equipment* e : Equipments)
+	{
 		e->Modify();
 	}
 }
@@ -485,6 +498,14 @@ void PlayerController::RevertEquipment()
 		if (Artifact* a = dynamic_cast<Artifact*>(e)) 
 		{
 			a->Revert();
+		}
+	}
+
+	for (Equipment* e : Equipments)
+	{
+		if (Artifact* a = dynamic_cast<Artifact*>(e))
+		{
+			a->isAmplify = false;
 		}
 	}
 
