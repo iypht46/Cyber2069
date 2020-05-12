@@ -89,7 +89,9 @@ GameObject* EnemySpawner::SpawnEnemy(float posX,float posY)
 					enemy->GetComponent<DeQueen>()->SetStats(
 						SpawnAmplifier->QueenSpeed,
 						SpawnAmplifier->QueenHP,
-						SpawnAmplifier->QueenSpawnDelay
+						SpawnAmplifier->QueenSpawnDelay,
+						SpawnAmplifier->QueenUnlockDropChance,
+						SpawnAmplifier->QueenHealItemValue
 						);
 					break;
 				case POOL_TYPE::ENEMY_TANK:

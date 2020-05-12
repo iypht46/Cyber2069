@@ -113,6 +113,8 @@ struct EnemyAmplifier {
 	float QueenHP = 1;
 	float QueenSpeed = 75;
 	float QueenSpawnDelay = 0.1;
+	float QueenUnlockDropChance = 75;
+	float QueenHealItemValue = 50;
 
 	//cocoon
 	float CocoonHP = 10;

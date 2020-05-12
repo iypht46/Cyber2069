@@ -27,10 +27,12 @@ void DeQueen::OnAwake() {
 	Enemy::OnAwake();
 }
 
-void DeQueen::SetStats(float Speed, float HP, float SpawnDelay) {
+void DeQueen::SetStats(float Speed, float HP, float SpawnDelay, float unlockchance, float healvalue) {
 	airPatrol->SetSpeed(Speed);
 	hpSystem->SetMaxHP(HP);
 	this->SpawnDelay = SpawnDelay;
+	this->HealValue = healvalue;
+	this->ItemUnlockDropChance = unlockchance;
 }
 
 void DeQueen::OnUpdate(float dt) {
@@ -39,6 +41,11 @@ void DeQueen::OnUpdate(float dt) {
 	//Enemy::OnUpdate(dt);
 
 	airPatrol->Patrol();
+
+	if ((m_gameObject->m_transform->GetPosition().x > DespawnPosX) || (m_gameObject->m_transform->GetPosition().x < -DespawnPosX)) 
+	{
+		m_gameObject->SetActive(false);
+	}
 
 	SpawnDelayCount -= dt;
 	if (SpawnDelayCount <= 0)
