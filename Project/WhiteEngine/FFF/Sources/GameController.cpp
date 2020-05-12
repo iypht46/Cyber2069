@@ -30,7 +30,7 @@ void GameController::OnAwake() {
 	this->playerControl = player.lock()->GetComponent<PlayerController>();
 	this->soundtrackCon = m_gameObject->GetComponent<SoundtrackController>();
 
-	//LoadGameConfig();
+	LoadGameConfig();
 
 	LoadData();
 }
@@ -403,6 +403,8 @@ void GameController::OnUpdate(float dt)
 			soundtrackCon->Stop(false);
 
 			Restart();
+
+			SaveData();
 
 			StateChanged = false;
 		}
