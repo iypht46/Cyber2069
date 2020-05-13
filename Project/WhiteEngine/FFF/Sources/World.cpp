@@ -644,7 +644,7 @@ namespace World
 
 				ui_button->AddComponent<MeshRenderer>();
 				ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-				ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/08_Amplifier"));
+				ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/a_BulletAmplifier"));
 				ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 				ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
 				ui_button->AddComponent<LoadoutSelectButton>();
@@ -665,7 +665,7 @@ namespace World
 
 				ui_button->AddComponent<MeshRenderer>();
 				ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-				ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/01_Amplifiler"));
+				ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/a_FireRateAmplifier"));
 				ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 				ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
 				ui_button->AddComponent<LoadoutSelectButton>();
@@ -791,7 +791,7 @@ namespace World
 
 				ui_button->AddComponent<MeshRenderer>();
 				ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-				ui_button->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/MachineGun.png");
+				ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/machinegun_idle"));
 				ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 				ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
 				ui_button->AddComponent<LoadoutSelectButton>();
@@ -1449,12 +1449,12 @@ namespace World
 
 				std::shared_ptr<Animation> falling = std::make_shared<Animation>();
 
-				falling->setStartPosition(3, 3);
-				falling->setEndPosition(3, 3);
+				falling->setStartPosition(0, 7);
+				falling->setEndPosition(3, 7);
 				falling->setSpeedMultiplier(1);
 
 				RabbitController = std::make_shared<AnimationController>();
-				RabbitController->setSheetSize(glm::vec2(7, 5));
+				RabbitController->setSheetSize(glm::vec2(10, 8));
 
 				ENGINE_INFO("making rabbbit animcon");
 				RabbitController->AddState(Idle, true);
@@ -1477,8 +1477,8 @@ namespace World
 				Rabbit->m_transform->SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
 
 				Rabbit->AddComponent<MeshRenderer>();
-				Rabbit->GetComponent<MeshRenderer>()->CreateMesh(7, 5);
-				Rabbit->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_PlayerBody_Vversion03.png");
+				Rabbit->GetComponent<MeshRenderer>()->CreateMesh(10, 8);
+				Rabbit->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Characters/WHITE_spritesheet"));
 				Rabbit->GetComponent<MeshRenderer>()->SetLayer(0);
 
 				Rabbit->AddComponent<Animator>();
@@ -1508,8 +1508,8 @@ namespace World
 
 			std::shared_ptr<GameObject> wp_MachineGun = Instantiate();
 			wp_MachineGun->AddComponent<MeshRenderer>();
-			wp_MachineGun->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
-			wp_MachineGun->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_shoot.png");
+			wp_MachineGun->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
+			wp_MachineGun->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/machinegun_Sheet"));
 			wp_MachineGun->GetComponent<MeshRenderer>()->SetLayer(3);
 
 			wp_MachineGun->AddComponent<MachineGun>()->SetWeaponFireRate(7.0f);
@@ -2091,7 +2091,7 @@ namespace World
 				Bullet->AddComponent<MeshRenderer>();
 				Bullet->GetComponent<MeshRenderer>()->SetLayer(2);
 				Bullet->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
-				Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/machinegun_bullet.png");
+				Bullet->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/machinegun_bullet"));
 
 				Bullet->AddComponent<Rigidbody>();
 				Bullet->GetComponent<Rigidbody>()->Init(7, 7);
@@ -2117,7 +2117,7 @@ namespace World
 				Bullet->Layer = "Bullet";
 				Bullet->AddComponent<MeshRenderer>();
 				Bullet->GetComponent<MeshRenderer>()->CreateMesh(2, 1);
-				Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/grenadeL_bullet.png");
+				Bullet->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/grenadeLaucher_bullet"));
 
 				Bullet->AddComponent<Rigidbody>();
 				Bullet->GetComponent<Rigidbody>()->Init(7, 7);
