@@ -38,6 +38,10 @@ glm::vec3 Transform::GetScale() {
 	return m_scale; //* m_meshScale;
 }
 
+glm::vec3 Transform::GetTrueScale() {
+	return m_scale * m_meshScale;
+}
+
 float Transform::GetRotation() {
 	return m_rotation;
 }
