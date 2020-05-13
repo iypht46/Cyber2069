@@ -9,6 +9,8 @@ int EquipmentManager::maxPlayerArtifact = 2;
 EquipmentManager* EquipmentManager::_instance = nullptr;
 
 EquipmentManager::EquipmentManager() {
+
+	InitData();
 	_instance = this;
 }
 
@@ -23,11 +25,6 @@ EquipmentManager* EquipmentManager::GetInstance() {
 
 void EquipmentManager::OnAwake() 
 {
-	//Read from PlayerData
-
-	//if dont have in player data
-	InitData();
-
 	Artifact_Buffer = new int[maxPlayerArtifact];
 
 	for (int i = 0; i < maxPlayerArtifact; i++) 

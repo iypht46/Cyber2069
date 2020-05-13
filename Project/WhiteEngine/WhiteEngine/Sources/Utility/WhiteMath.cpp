@@ -3,7 +3,12 @@
 
 namespace WhiteMath {
 	int Rand(int min, int max) {
-		return min + (rand() % (max - min));
+		if (max - min > 0) {
+			return min + (rand() % (max - min));
+		}
+		else {
+			return min;
+		}
 	}
 
 	float Rand(float min, float max) {

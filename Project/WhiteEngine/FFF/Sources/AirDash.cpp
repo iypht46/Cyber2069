@@ -12,6 +12,8 @@ void AirDash::OnAwake() {
 	this->m_target = glm::vec3(0);
 	self = m_gameObject->m_transform.get();
 	rb = m_gameObject->GetComponent<Rigidbody>();
+	sp = m_gameObject->GetComponent<SoundPlayer>();
+	sp->SetSoundType(SOUND_SFX);
 
 	Reset();
 }

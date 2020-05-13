@@ -1,5 +1,6 @@
 #include "HPsystem.hpp"
 #include "GameController.hpp"
+#include "Scripts/GameControl/CameraController.h"
 
 void HPsystem::SetMaxHP(float hp) {
 	this->Maxhp = hp;
@@ -38,6 +39,11 @@ void HPsystem::TakeDamage(float damage) {
 		}
 		else 
 		{
+			//shake camera 
+			if (m_gameObject->GetComponent<PlayerController>() != nullptr) {
+				CameraController::GetInstance()->ShakeCamera(30.0f, 10.0f, 0.2f);
+			}
+
 			this->hp -= damage;
 		}
 	}

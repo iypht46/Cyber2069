@@ -22,8 +22,6 @@ private:
 	Rigidbody* rigidbody;
 protected:
 	AirFollowing* airFollow;
-	SoundPlayer* FlyerSound;
-	int SoundCounter;
 public:
 
 	Flyer() {}
@@ -55,8 +53,6 @@ protected:
 	AirFollowing* airFollow = nullptr;
 	AirDash* airDash = nullptr;
 	Explosion* explosion = nullptr;
-	SoundPlayer* BomberSound;
-	int SoundCounter;
 
 public:
 	EnemyState state = EnemyState::Idle;
@@ -88,6 +84,11 @@ class DeQueen :public Enemy {
 private:
 	float SpawnDelay;
 
+	float ItemUnlockDropChance;
+	float HealValue;
+
+	float DespawnPosX = 2000.0f;
+
 	float SpawnDelayCount;
 	float SoundCounter;
 protected:
@@ -98,7 +99,7 @@ protected:
 	SoundPlayer* QueenSound;
 public:
 
-	void SetStats(float Speed, float HP, float SpawnDelay);
+	void SetStats(float Speed, float HP, float SpawnDelay, float unlockchance, float healvalue);
 
 	void SpawnItem();
 
@@ -152,9 +153,6 @@ private:
 	Rigidbody* rigidbody;
 	GroundPatrol* groundPatrol;
 	GroundDash* groundDash;
-	SoundPlayer* ChargerSound;
-
-	int SoundCounter;
 	bool dashingTmp = false;
 
 public:
@@ -183,9 +181,7 @@ private:
 	Rigidbody* rigidbody;
 	GroundPatrol* groundPatrol;
 	ObjectShooter* shooting;
-	SoundPlayer* SpitterSound;
 
-	int SoundCounter;
 
 	void Spit();
 

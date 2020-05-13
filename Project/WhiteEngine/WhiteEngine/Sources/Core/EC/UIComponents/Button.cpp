@@ -31,6 +31,7 @@ void Button::OnAwake()
 	if (text != nullptr) 
 	{
 		DefaultText = text->GetText();
+		DefaultTextColor = text->GetColor();
 	}
 
 }
@@ -102,6 +103,36 @@ void Button::OnClick()
 			}
 		}
 		break;
+	case BUTTON_TYPE::OPTION:
+		switch (onClickType)
+		{
+		case OPTION::Master_Increase:
+			UIController::GetInstance()->AdjustMasterVolume(0.1f);
+			break;
+		case OPTION::Master_Decrease:
+			UIController::GetInstance()->AdjustMasterVolume(-0.1f);
+			break;
+		case OPTION::Music_Increase:
+			UIController::GetInstance()->AdjustMusicVolume(0.1f);
+			break;
+		case OPTION::Music_Decrease:
+			UIController::GetInstance()->AdjustMusicVolume(-0.1f);
+			break;
+		case OPTION::SFX_Increase:
+			UIController::GetInstance()->AdjustSFXVolume(0.1f);
+			break;
+		case OPTION::SFX_Decrease:
+			UIController::GetInstance()->AdjustSFXVolume(-0.1f);
+			break;
+		case OPTION::RESET_Progress:
+			GameController::GetInstance()->ResetPlayerProgress();
+
+			UIController::GetInstance()->ToggleUI(UI_GROUP::MainMenu);
+			break;
+		default:
+			break;
+		}
+		break;
 	default:
 		break;
 	}
@@ -126,9 +157,17 @@ void Button::ModifyOnHover() {
 			//mesh->SetReplaceColor(glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f));
 		}
 
-		if ((text != nullptr) && hoverModifier.ReText != "")
+		if ((text != nullptr))
 		{
-			text->SetText(hoverModifier.ReText);
+			if (hoverModifier.ReText != "") {
+
+				text->SetText(hoverModifier.ReText);
+			}
+
+			if (hoverModifier.ReTextColor.x != -1) 
+			{
+				text->SetColor(hoverModifier.ReTextColor);
+			}
 		}
 	}
 	else 
@@ -146,6 +185,7 @@ void Button::ModifyOnHover() {
 		if ((text != nullptr))
 		{
 			text->SetText(DefaultText);
+			text->SetColor(DefaultTextColor);
 		}
 	}
 }

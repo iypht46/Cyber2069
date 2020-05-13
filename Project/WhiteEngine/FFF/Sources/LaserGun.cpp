@@ -14,6 +14,9 @@ LaserGun::LaserGun()
 
 	this->type = WEAPON_TYPE::WEAPON_LASER;
 
+	TargetLayers.insert("Enemy");
+	TargetLayers.insert("GroundEnemy");
+
 	/*weaponObj = new GameObject();
 	weaponObj->AddComponent<MeshRenderer>();
 	weaponObj->GetComponent<MeshRenderer>()->CreateMesh(5, 1);
@@ -29,15 +32,14 @@ LaserGun::LaserGun()
 
 void LaserGun::OnAwake() {
 
-	weaponObj->AddComponent<SoundPlayer>();
-	weaponObj->GetComponent<SoundPlayer>()->CreateSoundPlayer();
-	weaponObj->GetComponent<SoundPlayer>()->SetSound(SoundPath("SFX_Laser_Shoot"));
-	weaponObj->GetComponent<SoundPlayer>()->SetLoop(false);
+	m_gameObject->GetComponent<SoundPlayer>()->CreateSoundPlayer();
+	m_gameObject->GetComponent<SoundPlayer>()->SetSound(SoundPath("SFX_Laser_Shoot"));
+	m_gameObject->GetComponent<SoundPlayer>()->SetLoop(false);
 
 	weapon_damage = 10.0f;
 	//weapon_firerate = 1.0f;
 
-	laser_size = 25.0f;
+	laser_size = 10.0f;
 	laser_duration = 1.0f;
 
 	m_gameObject->SetActive(false);
@@ -56,18 +58,26 @@ void LaserGun::GameTimeBehaviour(float dt)
 {
 	laserObj->SetActive(false);
 
-	if (Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT)) {
-		weaponObj->GetComponent<SoundPlayer>()->PlaySound();
-	}
+	/*if (Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT)) {
+		m_gameObject->GetComponent<SoundPlayer>()->PlaySound();
+	}*/
+
+	weapon_delay_count += dt;
 
 	if (Input::GetMouseHold(Input::MouseKeyCode::MOUSE_LEFT) ||
 		Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT))
 	{
 		Physic::PhysicScene* PhySc = Physic::PhysicScene::GetInstance();
 
-		weapon_delay_count += dt;
+
 		if (weapon_delay_count >= (1.0f / weapon_firerate)) {
-			
+
+
+			if (laser_duration_count == 0.0f)
+			{
+				m_gameObject->GetComponent<SoundPlayer>()->PlaySound();
+			}
+
 			laser_duration_count += dt;
 			if (laser_duration_count > laser_duration) 
 			{

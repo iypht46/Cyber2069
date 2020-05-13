@@ -3,6 +3,7 @@
 #include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/GameObject.hpp"
 #include "Core/EC/Components/Rigidbody.hpp"
+#include "Core/EC/Components/SoundPlayer.hpp"
 #include "Character.hpp"
 
 #include <cereal/types/base_class.hpp>
@@ -23,6 +24,7 @@ protected:
 	glm::vec3 m_target;
 	Transform* self;
 	Rigidbody* rb;
+	SoundPlayer* sp;
 
 	float m_dashSpeed = 700.f;
 	float m_aimTime = 1.0f;
