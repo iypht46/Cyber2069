@@ -73,15 +73,15 @@ void PlayerController::OnUpdate(float dt)
 		falling = true;
 	}
 
-	if (falling)
+	//if (falling)
+	//{
+	if (checkGround())
 	{
-		if (checkGround())
-		{
-			jumping = false;
-			falling = false;
-			onGround = true;
-		}
+		jumping = false;
+		falling = false;
+		onGround = true;
 	}
+	//}
 
 	if (onGround && (stamina < max_stamina)) 
 	{
