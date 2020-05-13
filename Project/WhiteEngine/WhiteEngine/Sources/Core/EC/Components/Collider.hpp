@@ -88,7 +88,7 @@
 	private:
 		float m_halfWidth = 1.0f;
 		float m_halfHeight = 1.0f;
-		/*unused var*/glm::vec3 m_colliderScale; //Scale multiplier in halfwidth and halfheight
+		/*unused var*/glm::vec3 m_colliderScale = glm::vec3(1); //Scale multiplier in halfwidth and halfheight
 	public:
 		//Constructor
 		BoxCollider();
@@ -96,7 +96,9 @@
 
 		virtual void Init();
 		void Init(float sizeX, float sizeY, Rigidbody*);
+		//set the actual size of the collider
 		void ReSize(float sizeX, float sizeY);
+		//set the relative size of the collider
 		void ReScale(float scaleX, float scaleY);
 		void ComputeAABB(Physic::AABB&);
 

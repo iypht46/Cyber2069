@@ -210,7 +210,7 @@ void GLRenderer::Render(Graphic::CameraObject* cam)
 		{
 			//If object is flag as UI then reder with projection matrix
 			if (obj->IsUI())
-				obj->Render(cam->GetProjectionMatrix());
+				obj->Render(GetprojectionMatrix());
 			//Else render with projection * view matrix
 			else
 				obj->Render(cam->GetProjViewMatrix());

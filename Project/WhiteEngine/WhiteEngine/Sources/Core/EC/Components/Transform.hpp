@@ -52,6 +52,7 @@ public:
 	glm::vec3 GetPosition();
 	glm::vec3 GetLocalPosition();
 	glm::vec3 GetScale();
+	glm::vec3 GetTrueScale();
 	//glm::vec3 GetLocalScale();
 	float GetRotation();
 	float GetLocalRotation();
