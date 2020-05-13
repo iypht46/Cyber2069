@@ -1,12 +1,16 @@
 #include "GameController.hpp"
 #include "Scripts/GameControl/UIController.h"
 #include "Scripts/GameControl/SoundtrackController.h"
+#include "Scripts/GameControl/CameraController.h"
 
 #include "Input/Input.hpp"
 
 GameController* GameController::instance = nullptr;
+float GameController::stateChangeDelay = 3.0f;
 
 GameController::GameController() {
+	MenuCamPos = glm::vec3(0, 2000, 0);
+
 	if (instance == nullptr) 
 	{
 		instance = this;
@@ -28,13 +32,8 @@ void GameController::OnAwake() {
 	this->PlayerHP = player.lock()->GetComponent<HPsystem>();
 	this->playerControl = player.lock()->GetComponent<PlayerController>();
 	this->soundtrackCon = m_gameObject->GetComponent<SoundtrackController>();
-	//startHPscaleX = HPbar.lock()->m_transform->GetScale().x;
-	//startHPscaleY = HPbar.lock()->m_transform->GetScale().y;
-	//startHPposX = HPbar.lock()->m_transform->GetPosition().x;
 
-	//startStaminascaleX = Staminabar.lock()->m_transform->GetScale().x;
-	//startStaminascaleY = Staminabar.lock()->m_transform->GetScale().y;
-	//startStaminaposX = Staminabar.lock()->m_transform->GetPosition().x;
+	LoadGameConfig();
 
 	LoadData();
 }
@@ -90,7 +89,7 @@ void GameController::OnStart() {
 	CreatePool(PrefabPath("Queen"), POOL_TYPE::ENEMY_QUEEN, 1);
 	QueenSpawner = CreateSpawner(POOL_TYPE::ENEMY_QUEEN);
 	QueenSpawner->SetSpawnMode(SPAWN_MODE::RANGE);
-	QueenSpawner->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() * 0.75, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() * 0.75);
+	QueenSpawner->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() * 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() * 2);
 
 	//Cocoon spawner
 	ENGINE_INFO("GameControl Creating Queen");
@@ -101,7 +100,7 @@ void GameController::OnStart() {
 
 
 	//difficulty ting needs to go out side---------------------------
-	shared_ptr<EnemyAmplifier> a = std::make_shared<EnemyAmplifier>();
+	/*shared_ptr<EnemyAmplifier> a = std::make_shared<EnemyAmplifier>();
 	a->EnemySpawnRate = 1.0f;
 	a->FlyerHP = 1.0f;
 	a->FlyerSpeed = 100.0f;
@@ -139,6 +138,7 @@ void GameController::OnStart() {
 
 	CurrAmplifier = Amplifiers[0].get();
 	CurrPreset = Presets[0].get();
+	*/
 
 	SetSpawningAllSpawner(false);
 	playerControl->GetGameObject()->SetActive(false);
@@ -161,6 +161,9 @@ void GameController::OnStart() {
 	m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_ARTIFACTAMP);
 	m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_CURSEDPENDANT);
 
+	StateChanged = true;
+
+	Graphic::getCamera()->SetPos(MenuCamPos);
 }
 
 void GameController::CreatePool(std::string prefabPath, int poolType, int poolSize) {
@@ -182,7 +185,6 @@ EnemySpawner* GameController::CreateSpawner(int enemyType) {
 
 void GameController::OnUpdate(float dt)
 {
-
 	//update enemy spawner, since they're not created in system
 	for (EnemySpawner* sp: Spawners) {
 		sp->OnUpdate(dt);
@@ -190,14 +192,48 @@ void GameController::OnUpdate(float dt)
 
 	if (CurrentState != NextState) 
 	{
-		CurrentState = NextState;
-		StateChanged = true;
+		switch (NextState)
+		{
+		case GAMEPLAY:
+			gameStateChangeTimer += dt;
+			break;
+
+		case MAINMENU:
+		case LOADOUT:
+		case ENDING:
+			gameStateChangeTimer = stateChangeDelay;
+			break;
+
+		default:
+			break;
+		}
+
+		if (gameStateChangeTimer >= stateChangeDelay) {
+			CurrentState = NextState;
+			StateChanged = true;
+		}
 	}
 
 	if (CurrentGameplayState != NextGameplayState)
 	{
-		CurrentGameplayState = NextGameplayState;
-		StateGamplayChanged = true;
+		switch (NextGameplayState)
+		{
+		case NORMAL:
+			gameplayStateChangeTimer += dt;
+			break;
+
+		case QUEEN:
+			gameplayStateChangeTimer += dt;
+			break;
+
+		default:
+			break;
+		}
+
+		if (gameplayStateChangeTimer >= stateChangeDelay) {
+			CurrentGameplayState = NextGameplayState;
+			StateGamplayChanged = true;
+		}
 	}
 
 	switch (CurrentState)
@@ -206,13 +242,20 @@ void GameController::OnUpdate(float dt)
 		//Do only once after state changed
 		if (StateChanged) 
 		{
+			CameraController::GetInstance()->SetTarget(MenuCamPos);
 			UIController::GetInstance()->ToggleUI(UI_GROUP::MainMenu);
+			soundtrackCon->PlayState(SOUNDTRACK_STATE::MENU, true);
 
+			UIController::GetInstance()->UpdateVolumeTexts();
+
+			this->GetGameObject()->GetComponent<EquipmentManager>()->ResetPlayerEquipment();
 			playerControl->GetGameObject()->SetActive(false);
 
 			loadoutUI.lock()->SetActive(false);
 
-			ResetScore();
+			Restart();
+
+			SaveGameConfig();
 
 			StateChanged = false;
 		}
@@ -237,11 +280,10 @@ void GameController::OnUpdate(float dt)
 		//Do only once after state changed
 		if (StateChanged)
 		{
+			CameraController::GetInstance()->SetTarget(MenuCamPos);
 			UIController::GetInstance()->ToggleUI(UI_GROUP::Loadout);
 
 			loadoutUI.lock()->SetActive(true);
-
-			soundtrackCon->PlayState(SOUNDTRACK_STATE::MENU, true);
 
 			StateChanged = false;
 		}
@@ -251,6 +293,7 @@ void GameController::OnUpdate(float dt)
 		//Do only once after state changed
 		if (StateChanged) 
 		{
+			CameraController::GetInstance()->SetTarget((player.lock()->m_transform).get());
 			UIController::GetInstance()->ToggleUI(UI_GROUP::Gameplay);
 
 			ScoreValue = 0;
@@ -258,8 +301,6 @@ void GameController::OnUpdate(float dt)
 			playerControl->GetGameObject()->m_transform->SetPosition(PlayerStartPosition);
 
 			loadoutUI.lock()->SetActive(false);
-
-			soundtrackCon->PlayState(SOUNDTRACK_STATE::GAMEPLAY_NORMAL, true);
 
 			StateChanged = false;
 			StateGamplayChanged = true;
@@ -273,7 +314,6 @@ void GameController::OnUpdate(float dt)
 		UIController::GetInstance()->updateHPUI();
 		UIController::GetInstance()->updateStaminaUI();
 		UIController::GetInstance()->updateScoreUI();
-		updateSpawner();
 
 		switch (CurrentGameplayState)
 		{
@@ -287,6 +327,7 @@ void GameController::OnUpdate(float dt)
 					Current_Cocoon = CocoonSpawner->SpawnEnemy();
 				}
 
+				soundtrackCon->Stop(true);
 				soundtrackCon->PlayState(SOUNDTRACK_STATE::GAMEPLAY_NORMAL, true);
 
 				StateGamplayChanged = false;
@@ -299,13 +340,16 @@ void GameController::OnUpdate(float dt)
 				{
 					CocoonCount++;
 
-					if (CocoonCount == CocoonNeed)
+					if (CocoonCount == CurrAmplifier->CocoonNeeded)
 					{
 						CocoonCount = 0;
 						SetGameplayState(GAMEPLAY_STATE::QUEEN);
-						StateGamplayChanged = true;
+
+						soundtrackCon->Stop(true);
+
+						//StateGamplayChanged = true;
 					}
-					else 
+					else if (NextGameplayState != GAMEPLAY_STATE::QUEEN)
 					{
 						Current_Cocoon = CocoonSpawner->SpawnEnemy();
 					}
@@ -339,6 +383,7 @@ void GameController::OnUpdate(float dt)
 				//if Queen Dead go back to normal state
 				if (!Current_Queen->Active()) 
 				{
+					soundtrackCon->Stop(true);
 					SetGameplayState(GAMEPLAY_STATE::NORMAL);
 				}
 			}
@@ -352,8 +397,6 @@ void GameController::OnUpdate(float dt)
 
 		if (playerControl->GetGameObject()->GetComponent<HPsystem>()->isDead()) 
 		{
-			this->GetGameObject()->GetComponent<EquipmentManager>()->ResetPlayerEquipment();
-			
 			CocoonCount = 0;
 			SetGameplayState(GAMEPLAY_STATE::NORMAL);
 			SetGameState(GAME_STATE::ENDING);
@@ -367,23 +410,41 @@ void GameController::OnUpdate(float dt)
 			//update score
 			Data->AddLeaderboardEntry("whoite", ScoreValue);
 
+			CameraController::GetInstance()->StopFollowing();
 			UIController::GetInstance()->ToggleUI(UI_GROUP::GameOver);
 
 			SetSpawningAllSpawner(false);
 			SetActiveAllObjectInPool(false);
 			playerControl->GetGameObject()->SetActive(false);
 
-			currScoreCheckpoint = 0;
-
 			soundtrackCon->Stop(false);
 
+			Restart();
+
+			SaveData();
+
 			StateChanged = false;
+
+			string scoreText = "Score: ";
+
+			scoreText += to_string((int)ScoreValue);
+			UIController::GetInstance()->GameOverScoreText.lock()->GetComponent<TextRenderer>()->SetText(scoreText);
 		}
 
 		if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE))
 		{
 			SetGameState(GAME_STATE::MAINMENU);
 		}
+
+		break;
+	case GAME_STATE::QUIT:
+		//Do only once after state changed
+		if (StateChanged)
+		{
+			
+		}
+
+		GAME_INFO("QUIT");
 
 		break;
 	default:
@@ -421,6 +482,8 @@ void GameController::SetScore(float score) {
 
 void GameController::AddScoreValue(float baseScore) {
 	this->ScoreValue += baseScore * ComboValue;
+
+	updateDifficulty();
 }
 
 void GameController::AddComboValue(float value) {
@@ -431,9 +494,14 @@ void GameController::SetCombo(float combo) {
 	ComboValue = combo;
 }
 
-void GameController::ResetScore() {
+void GameController::Restart() {
 	this->ScoreValue = 0;
 	this->ComboValue = 1;
+
+	updateDifficulty();
+	updateEnemyPreset();
+
+	updateSpawner();
 }
 
 void GameController::AssignPlayer(std::weak_ptr<GameObject> player) {
@@ -449,27 +517,46 @@ ObjectPool* GameController::GetPool(int type) {
 	return Pools[type];
 }
 
-void GameController::updateSpawner() 
+void GameController::updateDifficulty() 
 {
-	if ((currScoreCheckpoint) < (Amplifiers.size())) {
+	CurrAmplifier = Amplifiers[0].get();
 
-		if (ScoreValue >= scoreCheckpoint[currScoreCheckpoint])
-		{
-			int randPreset = rand() % Presets.size();
-
-			CurrAmplifier = Amplifiers[currScoreCheckpoint].get();
-			CurrPreset = Presets[randPreset].get();
-
-			for (EnemySpawner* spawner : Spawners) {
-				spawner->SpawnAmplifier = CurrAmplifier;
-				spawner->SpawnPreset = CurrPreset;
-				spawner->updateSpawner();
-			}
-
-			currScoreCheckpoint += 1;
-
-			ENGINE_INFO("update difficulty");
+	for (std::shared_ptr<EnemyAmplifier> amp : Amplifiers) {
+		if (ScoreValue >= amp->RequiredScore) {
+			CurrAmplifier = amp.get();
 		}
+		else {
+			break;
+		}
+	}
+
+	ENGINE_INFO("update difficulty");
+}
+
+void GameController::updateEnemyPreset()
+{
+	CurrPreset = Presets[0].get();
+
+	int randPreset = rand() % Presets.size();
+
+	CurrPreset = Presets[randPreset].get();
+
+	ENGINE_INFO("update preset");
+}
+
+void GameController::SpawnEnemies() {
+	for (EnemySpawner* spawner : Spawners) {
+		spawner->SpawnEnemy();
+	}
+}
+
+void GameController::updateSpawner()
+{
+	for (EnemySpawner* spawner : Spawners) {
+		spawner->SpawnAmplifier = CurrAmplifier;
+		spawner->SpawnPreset = CurrPreset;
+
+		spawner->updateSpawner();
 	}
 }
 
@@ -507,11 +594,53 @@ void GameController::SetActiveAllObjectInPool(bool active)
 	}
 }
 
+void GameController::SetGameState(int state) {
+	if (NextState != state) {
+		this->NextState = state;
+
+		switch (NextState)
+		{
+		case MAINMENU:
+			gameStateChangeTimer = stateChangeDelay;
+			break;
+		case LOADOUT:
+			gameStateChangeTimer = stateChangeDelay;
+			break;
+		case GAMEPLAY:
+			gameStateChangeTimer = 0;
+			break;
+		case ENDING:
+			gameStateChangeTimer = stateChangeDelay;
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+void GameController::SetGameplayState(int state){
+	if (NextGameplayState != state) {
+		this->NextGameplayState = state;
+
+		switch (NextGameplayState)
+		{
+		case NORMAL:
+			gameplayStateChangeTimer = 0;
+			break;
+		case QUEEN:
+			gameplayStateChangeTimer = 0;
+			break;
+		default:
+			break;
+		}
+	}
+}
+
 void GameController::LoadData() {
 	EquipmentManager* equipmentManager = m_gameObject->GetComponent<EquipmentManager>();
 	if (equipmentManager != nullptr) {
 		Data = std::make_unique<PlayerData>();
-		Serialization::LoadObject(*Data.get(), DataPath);
+		Serialization::LoadObject(*Data.get(), DataPath("PlayerData"));
 
 		equipmentManager->SetWeaponUnlockData(Data->Weapons);
 		equipmentManager->SetArtifactUnlockData(Data->Artifacts);
@@ -522,10 +651,51 @@ void GameController::LoadData() {
 }
 
 void GameController::SaveData() {
-	Serialization::SaveObject(*Data, DataPath);
+	EquipmentManager* equipmentManager = m_gameObject->GetComponent<EquipmentManager>();
+	Data->Weapons = equipmentManager->Unlock_Weapons;
+	Data->Artifacts = equipmentManager->Unlock_Artifacts;
+	
+	Serialization::SaveObject(*Data, DataPath("PlayerData"));
 }
 
 void GameController::ResetData() {
 	Data->ResetProgress();
 	Data->ResetLeaderboard();
+}
+
+void GameController::ResetPlayerProgress() 
+{
+	EquipmentManager* equipmentManager = m_gameObject->GetComponent<EquipmentManager>();
+	ResetData();
+
+	equipmentManager->Unlock_Weapons = Data->Weapons;
+	equipmentManager->Unlock_Artifacts = Data->Artifacts;
+
+	SaveData();
+
+}
+
+void GameController::LoadGameConfig() {
+	std::unique_ptr<GameConfig> config = std::make_unique<GameConfig>();
+	Serialization::LoadObjectXML(*config, XMLConfigPath("gameconfig"));
+
+	Amplifiers = config->Amplifiers;
+	Presets = config->Presets;
+
+	SoundPlayer::SetMasterVolume(config->MasterVolume);
+	SoundPlayer::SetMusicVolume(config->MusicVolume);
+	SoundPlayer::SetSFXVolume(config->SFXVolume);
+}
+
+void GameController::SaveGameConfig() {
+	std::unique_ptr<GameConfig> config = std::make_unique<GameConfig>();
+
+	config->Amplifiers = Amplifiers;
+	config->Presets = Presets;
+
+	config->MasterVolume = SoundPlayer::GetMasterVolume();
+	config->MusicVolume = SoundPlayer::GetMusicVolume();
+	config->SFXVolume = SoundPlayer::GetSFXVolume();
+
+	Serialization::SaveObjectXML(*config, XMLConfigPath("gameconfig"));
 }

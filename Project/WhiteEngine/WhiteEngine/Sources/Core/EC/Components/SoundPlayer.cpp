@@ -1,6 +1,14 @@
 #include "SoundPlayer.hpp"
+
 #include <glm/glm.hpp>
+
+#include "Core/Factory.h"
+
 #include "Core/Logger.hpp"
+
+float SoundPlayer::MasterVolume = 1.0f;
+float SoundPlayer::MusicVolume = 1.0f;
+float SoundPlayer::SFXVolume = 1.0f;
 
 SoundPlayer::SoundPlayer() {
 	//isLooping = false;
@@ -33,6 +41,7 @@ void SoundPlayer::PlaySound() {
 	}
 
 	soundVolume = soundPlayer->play2D(soundSource, isLooping, false, true);
+	UpdateVolume();
 }
 
 void SoundPlayer::StopSound() {
@@ -57,7 +66,7 @@ void SoundPlayer::UpdateVolume() {
 			soundVolume->setVolume(volumeValue * SoundPlayer::SFXVolume * SoundPlayer::MasterVolume);
 			break;
 		case SOUND_MUSIC:
-			soundVolume->setVolume(volumeValue * SoundPlayer::MusicVolume * SoundPlayer::MasterVolume;
+			soundVolume->setVolume(volumeValue * SoundPlayer::MusicVolume * SoundPlayer::MasterVolume);
 			break;
 		}
 	}
@@ -70,6 +79,7 @@ void SoundPlayer::SetVolume(float value) {
 
 void SoundPlayer::SetSoundType(int type) {
 	sound_type = type;
+	UpdateVolume();
 }
 
 void SoundPlayer::IncreaseVolume() {
@@ -88,4 +98,11 @@ void SoundPlayer::AdjustVolume(float diff) {
 	volumeValue += diff;
 	volumeValue = glm::clamp(volumeValue, 0.0f, 1.0f);
 	UpdateVolume();
+}
+
+void SoundPlayer::UpdateVolumeAll() {
+	//update sound
+	for (std::pair<int, SoundPlayer*> sound : Factory<Component, SoundPlayer>::getCollection()) {
+		sound.second->UpdateVolume();
+	}
 }

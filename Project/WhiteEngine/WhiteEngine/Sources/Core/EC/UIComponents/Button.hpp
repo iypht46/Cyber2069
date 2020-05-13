@@ -5,8 +5,12 @@
 #include "Core/EC/UIComponents/TextRenderer.hpp"
 #include "Core/Logger.hpp"
 #include "Input/Input.hpp"
+<<<<<<< HEAD
 #include "Core/EC/Components/SoundPlayer.hpp"
 
+=======
+#include "Graphic/Texture.hpp"
+>>>>>>> 53329bead465253c7d27f15242c76f6a4c2c59ad
 #include <memory>
 
 #include <cereal/types/base_class.hpp>
@@ -15,7 +19,8 @@
 enum BUTTON_TYPE {
 	UICONTROL = 0,
 	STATECONTROL,
-	LOADOUTSELECT
+	LOADOUTSELECT,
+	OPTION
 };
 
 
@@ -23,13 +28,15 @@ struct OnHoverModifier {
 	glm::vec3 ReColor = glm::vec3(1, 1, 1);
 	string ReTexturePath = "";
 	string ReText = "";
+	glm::vec3 ReTextColor = glm::vec3(-1, 0, 0);
 public:
 	template<class Archive>
 	void serialize(Archive& archive) {
 		archive(
 			ReColor,
 			ReTexturePath,
-			ReText
+			ReText,
+			ReTextColor
 		);
 	}
 };
@@ -43,10 +50,16 @@ private:
 
 	int DefaultTexture = -1;
 	string DefaultText = "";
+	glm::vec3 DefaultTextColor;
 	
 	int OnHoverTex = -1;
+<<<<<<< HEAD
 	bool playEnd = false;
 
+=======
+	Graphic::Texture OnHoverTexObj;
+	Graphic::Texture DefaultTexObj;
+>>>>>>> 53329bead465253c7d27f15242c76f6a4c2c59ad
 public:
 	OnHoverModifier hoverModifier;
 	bool isOnHover = false;

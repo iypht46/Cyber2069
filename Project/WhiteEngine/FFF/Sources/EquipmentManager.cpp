@@ -9,6 +9,8 @@ int EquipmentManager::maxPlayerArtifact = 2;
 EquipmentManager* EquipmentManager::_instance = nullptr;
 
 EquipmentManager::EquipmentManager() {
+
+	InitData();
 	_instance = this;
 }
 
@@ -23,11 +25,6 @@ EquipmentManager* EquipmentManager::GetInstance() {
 
 void EquipmentManager::OnAwake() 
 {
-	//Read from PlayerData
-
-	//if dont have in player data
-	InitData();
-
 	Artifact_Buffer = new int[maxPlayerArtifact];
 
 	for (int i = 0; i < maxPlayerArtifact; i++) 
@@ -35,10 +32,11 @@ void EquipmentManager::OnAwake()
 		Artifact_Buffer[i] = -1;
 	}
 
-	weaponItemTex = new int[totalWeapon];
-	artifactItemTex = new int[totalArtifact];
 
-	for (int i = 0; i < totalWeapon; i++)
+	weaponItemTex = new Graphic::Texture[totalWeapon];
+	artifactItemTex = new Graphic::Texture[totalArtifact];
+
+	/*for (int i = 0; i < totalWeapon; i++)
 	{
 		weaponItemTex[i] = -1;
 	}
@@ -46,7 +44,7 @@ void EquipmentManager::OnAwake()
 	for (int i = 0; i < totalArtifact; i++)
 	{
 		artifactItemTex[i] = -1;
-	}
+	}*/
 
 }
 

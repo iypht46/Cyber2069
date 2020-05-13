@@ -21,11 +21,13 @@ void Explosion::Explode() {
 	}
 
 	for (Collider* c : targetColliders) {
-		float distance = glm::length(c->GetGameObject()->m_transform->GetPosition() - thisTransform->GetPosition());
-		if (distance <= m_radius) {
-			HPsystem* hp = c->GetGameObject()->GetComponent<HPsystem>();
-			if (hp != nullptr) {
-				hp->TakeDamage(m_damage);
+		if (c->GetGameObject()->Active()) {
+			float distance = glm::length(c->GetGameObject()->m_transform->GetPosition() - thisTransform->GetPosition());
+			if (distance <= m_radius) {
+				HPsystem* hp = c->GetGameObject()->GetComponent<HPsystem>();
+				if (hp != nullptr) {
+					hp->TakeDamage(m_damage);
+				}
 			}
 		}
 	}

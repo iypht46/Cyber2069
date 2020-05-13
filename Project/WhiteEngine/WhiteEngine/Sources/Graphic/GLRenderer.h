@@ -1,23 +1,28 @@
 #pragma once
-
-#include <iostream>
-#include <GL\glew.h>
+//White Engine
 #include "Graphic/Shader.h"
+#include "Graphic/SquareMeshVbo.h"
+#include "Graphic/Framebuffer.hpp"
+#include "Graphic/CameraObject.hpp"
+#include "Graphic/Texture.hpp"
+#include "Core/EC/Components/MeshRenderer.hpp"
+#include "Core/EC/Components/Collider.hpp"
+//Third Party Library
+#include <GL\glew.h>
+#include <glm/glm.hpp>
+#include <SDL_surface.h>
+#include <SDL_image.h>
+//Standard Library
+#include <iostream>
 #include <map>
 #include <vector>
 #include <string>
 #include <set>
 #include <queue>
-#include "glm/glm.hpp"
-#include "SDL_surface.h"
-#include "SDL_image.h"
-#include "Graphic/SquareMeshVbo.h"
-
-#include "Core/EC/Components/MeshRenderer.hpp"
-#include "Core/EC/Components/Collider.hpp"
 
 using namespace std;
 
+enum FBO_STATE {MAIN, SUB};
 #ifndef LAYERCOMP
 #define LAYERCOMP
 struct LayerComparator
@@ -32,7 +37,7 @@ struct LayerComparator
 class LineVertex {
 public:
 	float x1, y1, x2, y2, r, g, b;
-	LineVertex(float x1, float y1, float x2, float y2,float r,float g,float b) 
+	LineVertex(float x1, float y1, float x2, float y2,float r,float g,float b)
 	{
 		this->x1 = x1; this->y1 = y1; this->x2 = x2; this->y2 = y2; this->r = r;this->g = g; this->b = b;
 	}
@@ -53,7 +58,7 @@ protected:
 	multiset <MeshRenderer*, LayerComparator > MeshSet;
 	queue <LineVertex*> Lineq;
 	queue <CircleVertex*> Circleq;
-	
+
 	GLRenderer(int w, int h);
 
 	int winWidth;
@@ -82,13 +87,14 @@ protected:
 	bool Initialize(string vertexShaderFile, string fragmentShaderFile);
 	bool AsgnLayer = false;
 
-	Shader *vertexShader;
-	Shader *fragmentShader;
-	
-	Shader *vertexShaderT;
-	Shader *fragmentShaderT;
+	Shader *vertexShader = nullptr;
+	Shader *fragmentShader = nullptr;
+	Shader *vertexShaderT = nullptr;
+	Shader *fragmentShaderT = nullptr;
+	glm::vec4* viewPort = nullptr;
 public:
-	void Render();
+	void Render(Graphic::CameraObject* cam);
+	void Render(glm::mat4 globalModelTransform);
 	static GLRenderer* GetInstance();
 	bool InitGL(string vertexShaderFile, string fragmentShaderFile);
 	bool drawDebug = false;
@@ -102,13 +108,15 @@ public:
 	void SetViewPort(int x, int y, int w, int h);
 	void SetClearColor(float r, float g, float b);
 	void SetClearColor(float r, float g, float b, float w);
-	
+	void SetDefaultViewport();
+
 	void AssignLayer();
+	void ResetAssignLayer();
 	void SetAsgnLayer(bool asgn);
 
 	void AddMeshToSet(MeshRenderer* mesh);
 
-	void RenderDebugCollider(BoxCollider* col);
+	void RenderDebugCollider(BoxCollider* col, glm::mat4 mat);
 	void RenderLine(LineVertex* vertex);
 	void RenderCircle(CircleVertex* vertex);
 
@@ -125,13 +133,15 @@ public:
 	GLuint GetvModeUniformId();
 	GLuint GetOffsetXUniformId();
 	GLuint GetOffsetYUniformId();
+	//GLuint GetProgramID();
 
 	int GetgTex2DLocation();
 	int GetgPos2DLocation();
-	
+
 	GLuint GetProgramId();
 
 	GLuint LoadTexture(string path);
+	Graphic::Texture LoadTextureNew(std::string path);
 
 	//MeshRenderer* test;
 

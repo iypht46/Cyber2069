@@ -67,7 +67,7 @@ public:
 	void SetWeaponDamage(float value) { this->weapon_damage = value; }
 
 	void MultiplyweaponBulletSpeed(float value) { this->bullet_speed = this->bullet_speed * value; }
-	void MultiplyWeaponFireRate(float value) { this->weapon_firerate = this->weapon_firerate / value; }
+	void MultiplyWeaponFireRate(float value) { this->weapon_firerate = this->weapon_firerate * value; }
 	void MultiplyWeaponDamage(float value) { this->weapon_damage = this->weapon_damage * value; }
 	virtual void MultiplyWeaponAmplifier(float value) = 0;
 

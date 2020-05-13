@@ -12,38 +12,53 @@ void ItemDrop::OnStart()
 	eqManager = GameController::GetInstance()->GetGameObject()->GetComponent<EquipmentManager>();
 	player = GameController::GetInstance()->GetPlayer()->GetComponent<PlayerController>();
 
-	defaultTex = m_gameObject->GetComponent<MeshRenderer>()->GetTexture();
+	defaultTex = m_gameObject->GetComponent<MeshRenderer>()->GetTextureObj();
 }
 
 void ItemDrop::OnEnable() 
 {
-	itemtype = eqManager->GetRandomType();
+	
+}
 
-	if (itemtype.first != -1 && itemtype.second != -1) 
-	{
-		switch (itemtype.first)
+void ItemDrop::SetType(int dropType) 
+{
+
+	if (dropType == Drop_Type::Unlock) {
+
+		this->dropType = dropType;
+
+		itemtype = eqManager->GetRandomType();
+
+		if (itemtype.first != -1 && itemtype.second != -1)
 		{
-		case ITEM_TYPE::WEAPON:
-			if (eqManager->weaponItemTex[itemtype.second] != -1) 
+			switch (itemtype.first)
 			{
-				m_gameObject->GetComponent<MeshRenderer>()->SetTexture(eqManager->weaponItemTex[itemtype.second]);
+			case ITEM_TYPE::WEAPON:
+				if (/*eqManager->weaponItemTex[itemtype.second] != -1*/ itemtype.second != -1)
+				{
+					m_gameObject->GetComponent<MeshRenderer>()->SetTexture(eqManager->weaponItemTex[itemtype.second]);
+				}
+				else {
+					m_gameObject->GetComponent<MeshRenderer>()->SetTexture(defaultTex);
+				}
+				break;
+			case ITEM_TYPE::ARTIFACT:
+				if (/*eqManager->artifactItemTex[itemtype.second] != -1*/itemtype.second != -1)
+				{
+					m_gameObject->GetComponent<MeshRenderer>()->SetTexture(eqManager->artifactItemTex[itemtype.second]);
+				}
+				else {
+					m_gameObject->GetComponent<MeshRenderer>()->SetTexture(defaultTex);
+				}
+				break;
+			default:
+				break;
 			}
-			else {
-				m_gameObject->GetComponent<MeshRenderer>()->SetTexture(defaultTex);
-			}
-			break;
-		case ITEM_TYPE::ARTIFACT:
-			if (eqManager->artifactItemTex[itemtype.second] != -1) 
-			{
-				m_gameObject->GetComponent<MeshRenderer>()->SetTexture(eqManager->artifactItemTex[itemtype.second]);
-			}
-			else {
-				m_gameObject->GetComponent<MeshRenderer>()->SetTexture(defaultTex);
-			}
-			break;
-		default:
-			break;
 		}
+	}
+	else if (dropType == Drop_Type::Heal) 
+	{
+		this->dropType = dropType;
 	}
 }
 
@@ -65,10 +80,19 @@ void ItemDrop::OnUpdate(float dt) {
 
 void ItemDrop::OnTriggerEnter(const Physic::Collision col)
 {
-	if (itemtype.first != -1 && itemtype.second != -1)
+	if (dropType == Drop_Type::Unlock) 
 	{
-		GAME_INFO("UNLOCK {}, {}", itemtype.first, itemtype.second);
-		eqManager->Unlock(itemtype.first, itemtype.second);
+		if (itemtype.first != -1 && itemtype.second != -1)
+		{
+			GAME_INFO("UNLOCK {}, {}", itemtype.first, itemtype.second);
+			eqManager->Unlock(itemtype.first, itemtype.second);
+		}
+	}
+	else if (dropType == Drop_Type::Heal) 
+	{
+		HPsystem* playerHP = player->GetGameObject()->GetComponent<HPsystem>();
+		
+		playerHP->SetHp(playerHP->GetHP() + HealValue);
 	}
 
 	m_gameObject->SetActive(false);

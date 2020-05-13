@@ -67,8 +67,6 @@ void PlayerController::OnTriggerExit(const Physic::Collision col)
 
 void PlayerController::OnUpdate(float dt)
 {
-	Graphic::getCamera()->SetPos(glm::vec3(GetGameObject()->m_transform->GetPosition().x, GetGameObject()->m_transform->GetPosition().y, GetGameObject()->m_transform->GetPosition().z));
-
 	cameraZoom(dt);
 
 	if ((rb->GetVelocity().y < -5.0f) && !falling)
@@ -76,15 +74,15 @@ void PlayerController::OnUpdate(float dt)
 		falling = true;
 	}
 
-	if (falling)
+	//if (falling)
+	//{
+	if (checkGround())
 	{
-		if (checkGround())
-		{
-			jumping = false;
-			falling = false;
-			onGround = true;
-		}
+		jumping = false;
+		falling = false;
+		onGround = true;
 	}
+	//}
 
 	if (onGround && (stamina < max_stamina)) 
 	{
@@ -115,6 +113,11 @@ void PlayerController::OnUpdate(float dt)
 		else {
 			e->GameTimeBehaviour(dt);
 		}
+	}
+
+	if (m_gameObject->m_transform->GetPosition().y < yLimit) 
+	{
+		hpSystem->Dead();
 	}
 }
 
@@ -506,6 +509,14 @@ void PlayerController::ModifyFromEquipment()
 {
 	for (Equipment* e : Equipments)
 	{
+		if (ArtifactAmplifier* af = dynamic_cast<ArtifactAmplifier*>(e))
+		{
+			af->Modify();
+		}
+	}
+
+	for (Equipment* e : Equipments)
+	{
 		e->Modify();
 	}
 }
@@ -520,11 +531,21 @@ void PlayerController::RevertEquipment()
 		}
 	}
 
+	for (Equipment* e : Equipments)
+	{
+		if (Artifact* a = dynamic_cast<Artifact*>(e))
+		{
+			a->isAmplify = false;
+		}
+	}
+
 	Equipments.clear();
 	Weapons.clear();
 
-	weapon->GetGameObject()->SetActive(false);
-	weapon = nullptr;
+	if (weapon != nullptr) {
+		weapon->GetGameObject()->SetActive(false);
+		weapon = nullptr;
+	}
 }
 
 void PlayerController::MultiplyMoveSpeed(float value) 

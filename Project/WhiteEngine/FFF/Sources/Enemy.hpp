@@ -40,7 +40,7 @@ protected:
 	void OnDead();
 public:
 	float baseScore = 1.0f;
-	float CollideDamage = 1.0f;
+	float CollideDamage = 0.0f;
 	float targetDetectionRange = 2000.0f;
 
 	virtual void OnAwake() override;

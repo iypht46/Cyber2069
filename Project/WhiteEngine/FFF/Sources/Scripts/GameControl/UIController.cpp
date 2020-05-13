@@ -64,14 +64,17 @@ void UIController::ToggleUI(int openGroup) {
 
 void UIController::AdjustMasterVolume(float diff) {
 	SoundPlayer::SetMasterVolume(SoundPlayer::GetMasterVolume() + diff);
+	UpdateVolumeTexts();
 }
 
 void UIController::AdjustMusicVolume(float diff) {
 	SoundPlayer::SetMusicVolume(SoundPlayer::GetMusicVolume() + diff);
+	UpdateVolumeTexts();
 }
 
 void UIController::AdjustSFXVolume(float diff) {
 	SoundPlayer::SetSFXVolume(SoundPlayer::GetSFXVolume() + diff);
+	UpdateVolumeTexts();
 }
 
 void UIController::UpdateEquipmentDisplay() {
@@ -79,13 +82,23 @@ void UIController::UpdateEquipmentDisplay() {
 	if (em != nullptr) {
 		for (int i = 0; i < EquipmentManager::maxPlayerWeapon; ++i) {
 			if (i < EquippedWeaponDisplay.size() && !EquippedWeaponDisplay[i].expired()) {
-				EquippedWeaponDisplay[i].lock()->GetComponent<MeshRenderer>()->SetTexture(em->weaponItemTex[em->Weapon_Buffer]);
+				if (em->Weapon_Buffer != -1) {
+					EquippedWeaponDisplay[i].lock()->GetComponent<MeshRenderer>()->SetTexture(em->weaponItemTex[em->Weapon_Buffer]);
+				}
+				else {
+					EquippedWeaponDisplay[i].lock()->GetComponent<MeshRenderer>()->SetTexture(TexturePath("BLANK"));
+				}
 			}
 		}
 
 		for (int i = 0; i < EquipmentManager::maxPlayerArtifact; ++i) {
 			if (i < EquippedArtifactDisplay.size() && !EquippedArtifactDisplay[i].expired()) {
-				EquippedArtifactDisplay[i].lock()->GetComponent<MeshRenderer>()->SetTexture(em->artifactItemTex[em->Artifact_Buffer[i]]);
+				if (em->Artifact_Buffer[i] != -1) {
+					EquippedArtifactDisplay[i].lock()->GetComponent<MeshRenderer>()->SetTexture(em->artifactItemTex[em->Artifact_Buffer[i]]);
+				}
+				else {
+					EquippedArtifactDisplay[i].lock()->GetComponent<MeshRenderer>()->SetTexture(TexturePath("BLANK"));
+				}
 			}
 		}
 	}
@@ -200,14 +213,35 @@ void UIController::UpdateVolumeTexts() {
 	int maxValue = 100;
 
 	if (!MasterVolumeText.expired()) {
-		MasterVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)(SoundPlayer::GetMasterVolume() * maxValue)));
+
+		int master = SoundPlayer::GetMasterVolume() * maxValue;
+
+		if (master % 10 == 9) {
+			master += 1;
+		}
+
+		MasterVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string(master));
 	}
 
 	if (!MusicVolumeText.expired()) {
-		MusicVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)(SoundPlayer::GetMusicVolume() * maxValue)));
+
+		int music = SoundPlayer::GetMusicVolume() * maxValue;
+
+		if (music % 10 == 9) {
+			music += 1;
+		}
+
+		MusicVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string(music));
 	}
 
 	if (!SFXVolumeText.expired()) {
-		SFXVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)(SoundPlayer::GetSFXVolume() * maxValue)));
+
+		int sfx = SoundPlayer::GetSFXVolume() * maxValue;
+
+		if (sfx % 10 == 9) {
+			sfx += 1;
+		}
+
+		SFXVolumeText.lock()->GetComponent<TextRenderer>()->SetText(to_string(sfx));
 	}
 }

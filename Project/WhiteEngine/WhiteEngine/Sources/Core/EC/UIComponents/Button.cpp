@@ -3,7 +3,7 @@
 #include "../../FFF/Sources/GameController.hpp"
 #include "../../FFF/Sources/Scripts/GameControl/UIController.h"
 
-
+#include <iostream>
 #include "Graphic/GLRenderer.h"
 
 Button::Button() {
@@ -20,17 +20,20 @@ void Button::OnAwake()
 
 	if (mesh != nullptr) 
 	{
-		DefaultTexture = mesh->GetTexture();
+		//DefaultTexture = mesh->GetTexture();
+		DefaultTexObj = mesh->GetTextureObj();
 
 		if (hoverModifier.ReTexturePath != "")
 		{
-			OnHoverTex = GLRenderer::GetInstance()->LoadTexture(hoverModifier.ReTexturePath);
+			//OnHoverTex = GLRenderer::GetInstance()->LoadTexture(hoverModifier.ReTexturePath);
+			OnHoverTexObj = GLRenderer::GetInstance()->LoadTextureNew(hoverModifier.ReTexturePath);
 		}
 	}
 
 	if (text != nullptr) 
 	{
 		DefaultText = text->GetText();
+		DefaultTextColor = text->GetColor();
 	}
 
 }
@@ -40,7 +43,7 @@ void Button::OnUpdate(float dt) {
 	isOnHover = false;
 
 	if (mesh != nullptr) {
-		if (mesh->isUI) 
+		if (mesh->IsUI()) 
 		{
 			m_pos = Input::GetMouseScreenPosition();
 		}
@@ -57,11 +60,14 @@ void Button::OnUpdate(float dt) {
 		glm::abs(diff.y) <= glm::abs((m_gameObject->m_transform->GetScale().y * 0.5f))) 
 	{
 		isOnHover = true;
+<<<<<<< HEAD
 		if (isOnHover && !playEnd) {
 			sp->PlaySound();
 			playEnd = true;
 		}
 
+=======
+>>>>>>> 53329bead465253c7d27f15242c76f6a4c2c59ad
 		if (Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT)) {
 			OnClick();
 		}
@@ -111,6 +117,36 @@ void Button::OnClick()
 			}
 		}
 		break;
+	case BUTTON_TYPE::OPTION:
+		switch (onClickType)
+		{
+		case OPTION::Master_Increase:
+			UIController::GetInstance()->AdjustMasterVolume(0.1f);
+			break;
+		case OPTION::Master_Decrease:
+			UIController::GetInstance()->AdjustMasterVolume(-0.1f);
+			break;
+		case OPTION::Music_Increase:
+			UIController::GetInstance()->AdjustMusicVolume(0.1f);
+			break;
+		case OPTION::Music_Decrease:
+			UIController::GetInstance()->AdjustMusicVolume(-0.1f);
+			break;
+		case OPTION::SFX_Increase:
+			UIController::GetInstance()->AdjustSFXVolume(0.1f);
+			break;
+		case OPTION::SFX_Decrease:
+			UIController::GetInstance()->AdjustSFXVolume(-0.1f);
+			break;
+		case OPTION::RESET_Progress:
+			GameController::GetInstance()->ResetPlayerProgress();
+
+			UIController::GetInstance()->ToggleUI(UI_GROUP::MainMenu);
+			break;
+		default:
+			break;
+		}
+		break;
 	default:
 		break;
 	}
@@ -127,16 +163,25 @@ void Button::ModifyOnHover() {
 		if (mesh != nullptr) {
 			if (OnHoverTex != -1)
 			{
-				mesh->SetTexture(OnHoverTex);
+				//mesh->SetTexture(OnHoverTex);
+				mesh->SetTexture(OnHoverTexObj);
 			}
 
 			mesh->SetReplaceColor(hoverModifier.ReColor);
 			//mesh->SetReplaceColor(glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f));
 		}
 
-		if ((text != nullptr) && hoverModifier.ReText != "")
+		if ((text != nullptr))
 		{
-			text->SetText(hoverModifier.ReText);
+			if (hoverModifier.ReText != "") {
+
+				text->SetText(hoverModifier.ReText);
+			}
+
+			if (hoverModifier.ReTextColor.x != -1) 
+			{
+				text->SetColor(hoverModifier.ReTextColor);
+			}
 		}
 	}
 	else 
@@ -144,7 +189,8 @@ void Button::ModifyOnHover() {
 		if (mesh != nullptr) {
 			if (DefaultTexture != -1 && OnHoverTex != -1)
 			{
-				mesh->SetTexture(DefaultTexture);
+				//mesh->SetTexture(DefaultTexture);
+				mesh->SetTexture(DefaultTexObj);
 			}
 
 			mesh->RemoveReplaceColor();
@@ -153,6 +199,7 @@ void Button::ModifyOnHover() {
 		if ((text != nullptr))
 		{
 			text->SetText(DefaultText);
+			text->SetColor(DefaultTextColor);
 		}
 	}
 }

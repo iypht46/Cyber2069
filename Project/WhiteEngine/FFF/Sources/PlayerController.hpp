@@ -36,6 +36,8 @@ protected:
 
 	Weapon* weapon = nullptr;
 	Transform* weaponTranform = nullptr;
+
+	float yLimit = -1000.0f;
 	
 	//stats===============
 	float max_stamina = 200.0f;
@@ -57,7 +59,7 @@ protected:
 	float camSmall = 1.5f;
 	float camLarge = 0.65f;
 
-	float GunDistance = 0.45f;
+	float GunDistance = 1.0f;//0.45f;
 	//======================
 
 	//runtime var===========

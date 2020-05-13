@@ -1,6 +1,6 @@
 
 #include "SquareMeshVbo.h"
-
+#include <iostream>
 string const SquareMeshVbo::MESH_NAME = "square";
 
 void SquareMeshVbo::LoadData(float NumframeX, float NumFrameY)
@@ -30,12 +30,31 @@ void SquareMeshVbo::LoadData(float NumframeX, float NumFrameY)
 	glGenBuffers(1, &(this->posVboId));
 	glGenBuffers(1, &(this->texVboId));
 
+	glBindVertexArray(this->posVaoId);
 	//Create VBO
 	glBindBuffer(GL_ARRAY_BUFFER, this->posVboId);
 	glBufferData(GL_ARRAY_BUFFER, 2 * 4 * sizeof(GLfloat), vertexData, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, this->texVboId);
 	glBufferData(GL_ARRAY_BUFFER, 2 * 4 * sizeof(GLfloat), texData, GL_STATIC_DRAW);
 
+}
+
+void SquareMeshVbo::ReloadTextureData(float NumframeX, float NumFrameY)
+{
+	float StartX = 1.0f / NumframeX;
+	float StartY = (NumFrameY - 1.0f) / NumFrameY;
+
+	GLfloat texData[] =
+	{
+	  0.0f, StartY,
+	  StartX, StartY,
+	  StartX, 1.0f,
+	  0.0f, 1.0f
+	};
+
+	glBindVertexArray(this->posVaoId);
+	glBindBuffer(GL_ARRAY_BUFFER, this->texVboId);
+	glBufferData(GL_ARRAY_BUFFER, 2 * 4 * sizeof(GLfloat), texData, GL_STATIC_DRAW);
 }
 
 SquareMeshVbo::SquareMeshVbo()
@@ -50,7 +69,7 @@ string SquareMeshVbo::GetMeshName()
 void SquareMeshVbo::Render()
 {
 	glBindVertexArray(this->posVaoId);
-
+	
 	if (this->posAttribId != -1) {
 		glBindBuffer(GL_ARRAY_BUFFER, this->posVboId);
 		glVertexAttribPointer(this->posAttribId, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), NULL);

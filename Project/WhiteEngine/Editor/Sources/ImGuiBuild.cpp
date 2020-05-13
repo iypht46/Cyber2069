@@ -9,4 +9,5 @@
 #include "examples/imgui_impl_opengl3.cpp"
 #include "imgui_widgets.cpp"
 #include "imgui_draw.cpp"
+#include "misc/cpp/imgui_stdlib.cpp"
 #include "imgui_demo.cpp" //Remove Later

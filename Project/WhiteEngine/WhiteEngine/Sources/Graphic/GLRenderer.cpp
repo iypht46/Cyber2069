@@ -11,7 +11,7 @@
 #include "Core/EC/Components/MeshRenderer.hpp"
 #include "Core/EC/GameObject.hpp"
 #include "Graphic/Camera.hpp"
-
+#include <glm/gtx/string_cast.hpp>
 using namespace std;
 
 GLRenderer *GLRenderer::instance = nullptr;
@@ -39,6 +39,7 @@ bool GLRenderer::InitGL(string vertexShaderFile, string fragmentShaderFile)
 		cout << "Unable to initialize OpenGL! " << endl;
 		return false;
 	}
+
 	return true;
 }
 
@@ -158,7 +159,7 @@ bool GLRenderer::Initialize(string vertexShaderFile, string fragmentShaderFile)
 	  0.5f,  0.5f,
 	  -0.5f,  0.5f
 	};
-	
+
 	glGenVertexArrays(1, &(this->colVAO));
 	glGenBuffers(1, &(this->colVBO));
 
@@ -189,26 +190,30 @@ bool GLRenderer::Initialize(string vertexShaderFile, string fragmentShaderFile)
 
 }
 
-void GLRenderer::Render()
+void GLRenderer::Render(Graphic::CameraObject* cam)
 {
 	AssignLayer();
 
 	// Clear color buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_BLEND);
-	// Update window with OpenGL rendering
 
-	glUseProgram(gProgramId);
+	// Update window with OpenGL rendering
+	glUseProgram(gProgramId); //Use gameobject shader program
 
 	this->PrintProgramLog(gProgramId);
-	glm::mat4 camera = glm::mat4(1.0);
 
 	//--------Render Object Here--------
-	for (MeshRenderer *obj : MeshSet) {
+	for (MeshRenderer* obj : MeshSet) {
 
-		if (obj->GetGameObject()->Active())
+		if (obj->GetGameObject()->Active() && obj->enabled)
 		{
-			obj->Render(camera);
+			//If object is flag as UI then reder with projection matrix
+			if (obj->IsUI())
+				obj->Render(GetprojectionMatrix());
+			//Else render with projection * view matrix
+			else
+				obj->Render(cam->GetProjViewMatrix());
 		}
 	}
 
@@ -225,7 +230,7 @@ void GLRenderer::Render()
 		{
 			if (obj.second->GetGameObject()->Active())
 			{
-				RenderDebugCollider(obj.second);
+				RenderDebugCollider(obj.second, cam->GetProjViewMatrix());
 			}
 		}
 
@@ -235,7 +240,7 @@ void GLRenderer::Render()
 			Lineq.pop();
 		}
 
-		while (!Circleq.empty()) 
+		while (!Circleq.empty())
 		{
 			RenderCircle(Circleq.front());
 			Circleq.pop();
@@ -247,24 +252,89 @@ void GLRenderer::Render()
 		Lineq.pop();
 	}
 
-	while (!Circleq.empty()) 
+	while (!Circleq.empty())
 	{
 		Circleq.pop();
 	}
 
-	//Unbind program
-	glUseProgram(NULL);
 }
 
-void GLRenderer::AssignLayer() 
+void GLRenderer::Render(glm::mat4 globalModelTransform)
 {
-	for (auto obj : Factory<Component, MeshRenderer>::getCollection()) 
+	AssignLayer();
+
+	// Clear color buffer
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_BLEND);
+
+	// Update window with OpenGL rendering
+	glUseProgram(gProgramId); //Use gameobject shader program
+
+	this->PrintProgramLog(gProgramId);
+
+	//Set up matrix uniform
+	glm::mat4 camera = glm::mat4(1.0f);
+
+	//--------Render Object Here--------
+	for (MeshRenderer *obj : MeshSet) {
+
+		if (obj->GetGameObject()->Active())
+		{
+			obj->Render(globalModelTransform);
+		}
+	}
+
+	for (auto obj : Factory<Component, TextRenderer>::getCollection()) {
+
+		if (obj.second->GetGameObject()->Active())
+		{
+			obj.second->Render();
+		}
+	}
+
+	if (drawDebug) {
+		for (auto obj : Factory<Component, BoxCollider>::getCollection())
+		{
+			if (obj.second->GetGameObject()->Active())
+			{
+				RenderDebugCollider(obj.second, globalModelTransform);
+			}
+		}
+
+		while (!Lineq.empty())
+		{
+			RenderLine(Lineq.front());
+			Lineq.pop();
+		}
+
+		while (!Circleq.empty())
+		{
+			RenderCircle(Circleq.front());
+			Circleq.pop();
+		}
+	}
+
+	while (!Lineq.empty())
+	{
+		Lineq.pop();
+	}
+
+	while (!Circleq.empty())
+	{
+		Circleq.pop();
+	}
+
+}
+
+void GLRenderer::AssignLayer()
+{
+	for (auto obj : Factory<Component, MeshRenderer>::getCollection())
 	{
 		if (obj.second->inSet == false) 
 		{
 			obj.second->inSet = true;
 
-			//if (obj->layer == -1) 
+			//if (obj->layer == -1)
 			//{
 				//ENGINE_WARN("GameObjectMeshLayer unassigned (set Layer to 0)");
 				//obj->SetLayer(0);
@@ -275,7 +345,19 @@ void GLRenderer::AssignLayer()
 	}
 }
 
-void GLRenderer::SetAsgnLayer(bool asgn) 
+void GLRenderer::ResetAssignLayer()
+{
+	
+
+	for (auto mesh : MeshSet)
+	{
+		mesh->inSet = false;
+	}
+	MeshSet.clear();
+	AssignLayer();
+}
+
+void GLRenderer::SetAsgnLayer(bool asgn)
 {
 	this->AsgnLayer = asgn;
 }
@@ -323,6 +405,7 @@ GLRenderer::~GLRenderer()
 	if (gPos2DLocation != -1) {
 		glDisableVertexAttribArray(gPos2DLocation);
 	}
+
 }
 
 void GLRenderer::SetOrthoProjection(float left, float right, float bottom, float top)
@@ -340,6 +423,16 @@ void GLRenderer::SetClearColor(float r, float g, float b)
 	glClearColor(r, g, b, 1.0);
 }
 
+void GLRenderer::SetClearColor(float r, float g, float b, float w)
+{
+	glClearColor(r, g, b, w);
+}
+
+void GLRenderer::SetDefaultViewport()
+{
+	this->SetViewPort(0, 0, Graphic::Window::GetWidth(), Graphic::Window::GetHeight());
+}
+
 void GLRenderer::AddMeshToSet(MeshRenderer* mesh)
 {
 	//MeshSet.erase(mesh);
@@ -348,7 +441,7 @@ void GLRenderer::AddMeshToSet(MeshRenderer* mesh)
 
 }
 
-glm::mat4 GLRenderer::GetprojectionMatrix() 
+glm::mat4 GLRenderer::GetprojectionMatrix()
 {
 	return projectionMatrix;
 }
@@ -378,7 +471,7 @@ GLuint GLRenderer::GetvModeUniformId()
 	return this->vmodeUniformId;
 }
 
-GLuint GLRenderer::GetOffsetXUniformId() 
+GLuint GLRenderer::GetOffsetXUniformId()
 {
 	return this->offSetXId;
 }
@@ -404,6 +497,7 @@ GLuint GLRenderer::LoadTexture(string path)
 {
 	glActiveTexture(GL_TEXTURE0);
 	SDL_Surface *image = IMG_Load(path.c_str());
+
 
 	if (image == NULL)
 	{
@@ -435,7 +529,42 @@ GLuint GLRenderer::LoadTexture(string path)
 	return texture;
 }
 
-void GLRenderer::RenderDebugCollider(BoxCollider* col) 
+Graphic::Texture GLRenderer::LoadTextureNew(std::string path)
+{
+	glActiveTexture(GL_TEXTURE0);
+	SDL_Surface* image = IMG_Load(path.c_str());
+
+
+	if (image == NULL)
+	{
+		cerr << "IMG_Load: " << SDL_GetError() << endl;
+		return Graphic::Texture();
+	}
+
+	GLuint texture;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	Graphic::Texture textureObject(texture, image->w, image->h);
+
+	int Mode = GL_RGB;
+	if (image->format->BytesPerPixel == 4)
+	{
+		Mode = GL_RGBA;
+	}
+
+	glTexImage2D(GL_TEXTURE_2D, 0, Mode, image->w, image->h, 0, Mode, GL_UNSIGNED_BYTE, image->pixels);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	SDL_FreeSurface(image);
+
+	return textureObject;
+}
+
+void GLRenderer::RenderDebugCollider(BoxCollider* col, glm::mat4 projViewMat)
 {
 	GameObject* obj = col->GetGameObject();
 
@@ -443,10 +572,10 @@ void GLRenderer::RenderDebugCollider(BoxCollider* col)
 	glm::mat4 tMat = glm::translate(glm::mat4(1.0f), obj->m_transform->GetLocalPosition());
 	glm::mat4 transformMat = tMat * sMat;
 
-	glm::mat4 projectionMatrix = Graphic::getCamera()->GetProjectionMatrix();
-	glm::mat4 viewMatrix = Graphic::getCamera()->GetViewMatrix();
+	//glm::mat4 projectionMatrix = Graphic::getCamera()->GetProjectionMatrix();
+	//glm::mat4 viewMatrix = Graphic::getCamera()->GetViewMatrix();
 
-	glm::mat4 currentMatrix = projectionMatrix * viewMatrix * transformMat;
+	glm::mat4 currentMatrix = projViewMat * transformMat;//projectionMatrix * viewMatrix * transformMat;
 
 	glUniform1i(modeUniformId, 0);
 	glUniformMatrix4fv(mMatrixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
@@ -463,7 +592,7 @@ void GLRenderer::RenderDebugCollider(BoxCollider* col)
 
 }
 
-void GLRenderer::RenderLine(LineVertex* vertex) 
+void GLRenderer::RenderLine(LineVertex* vertex)
 {
 	float x1 = vertex->x1;
 	float y1 = vertex->y1;

@@ -159,6 +159,7 @@
     <ClCompile Include="Sources\main.cpp" />
     <ClCompile Include="Sources\ObjectShooter.cpp" />
     <ClCompile Include="Sources\PlayerController.cpp" />
+    <ClCompile Include="Sources\Scripts\GameControl\CameraController.cpp" />
     <ClCompile Include="Sources\Scripts\GameControl\PlayerData.cpp" />
     <ClCompile Include="Sources\Scripts\GameControl\SoundtrackController.cpp" />
     <ClCompile Include="Sources\Scripts\GameControl\UIController.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="Sources\LoadoutUI.hpp" />
     <ClInclude Include="Sources\ObjectShooter.h" />
     <ClInclude Include="Sources\PlayerController.hpp" />
+    <ClInclude Include="Sources\Scripts\GameControl\CameraController.h" />
     <ClInclude Include="Sources\Scripts\GameControl\PlayerData.hpp" />
     <ClInclude Include="Sources\Scripts\GameControl\SoundtrackController.h" />
     <ClInclude Include="Sources\Scripts\GameControl\UIController.h" />

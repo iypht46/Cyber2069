@@ -5,6 +5,7 @@
 #include "Graphic/GLRenderer.h"
 
 #include "Enemy.hpp"
+#include "EnemyBehaviours.h"
 
 void BlackholeGunBullet::OnUpdate(float dt)
 {
@@ -59,7 +60,7 @@ void BlackholeGunBullet::OnEnable() {
 }
 
 void BlackholeGunBullet::OnTriggerEnter(const Physic::Collision col) {
-	ENGINE_INFO("Bullet Hit " + col.m_otherCollider->GetGameObject()->Name);
+	ENGINE_INFO("Bullet Hit " + col.m_otherCollider->GetGameObject()->GetName());
 
 	BhSound->SetSound(SoundPath("SFX_BlackHole_Sucking"));
 	Enemy* enemy = col.m_otherCollider->GetGameObject()->GetComponent<Enemy>();
@@ -103,7 +104,7 @@ void BlackholeGunBullet::DragEnemy(float dt)
 		}
 		else {
 			Enemy* enemy = c->GetGameObject()->GetComponent<Enemy>();
-			if (enemy != nullptr && (enemy->GetGameObject()->Active())) {
+			if (enemy != nullptr && (enemy->GetGameObject()->Active()) && c->GetGameObject()->GetComponent<Cocoon>() == nullptr) {
 
 				enemRb = enemy->GetGameObject()->GetComponent<Rigidbody>();
 
@@ -113,11 +114,11 @@ void BlackholeGunBullet::DragEnemy(float dt)
 				enemRb->SetVelocity(glm::vec3(ToCenterSpeed * cos(angle), ToCenterSpeed * sin(angle), 0.0f));
 
 
-				if (distance < 10) 
+				if (distance < 10)
 				{
 					enemRb->SetVelocity(glm::vec3(0.0f));
 
-					if (Dot_count >= 1.0f) 
+					if (Dot_count >= 1.0f)
 					{
 						enemy->TakeDamage(bulletDmg);
 					}

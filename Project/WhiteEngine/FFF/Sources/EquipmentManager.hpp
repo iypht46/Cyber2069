@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Graphic/Texture.hpp"
 #include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/GameObject.hpp"
 #include "EnemySpawner.hpp"
@@ -47,8 +47,10 @@ public:
 	std::vector<bool> Unlock_Weapons;
 	std::vector<bool> Unlock_Artifacts;
 	
-	int* weaponItemTex;
-	int* artifactItemTex;
+	/*int* weaponItemTex;
+	int* artifactItemTex;*/
+	Graphic::Texture* weaponItemTex;
+	Graphic::Texture* artifactItemTex;
 
 	int Weapon_Buffer = -1;
 	int* Artifact_Buffer;

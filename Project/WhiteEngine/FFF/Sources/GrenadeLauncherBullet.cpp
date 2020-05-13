@@ -77,15 +77,16 @@ void GrenadeLauncherBullet::Explode() {
 	}
 
 	for (Collider* c : targetColliders) {
+		if (c->GetGameObject()->Active()) {
+			float distance = glm::length(c->GetGameObject()->m_transform->GetPosition() - m_gameObject->m_transform->GetPosition());
 
-		float distance = glm::length(c->GetGameObject()->m_transform->GetPosition() - m_gameObject->m_transform->GetPosition());
-		
-		if (distance <= radius) {
-			
-			//check for enemy anyway
-			Enemy* enemy = c->GetGameObject()->GetComponent<Enemy>();
-			if (enemy != nullptr) {
-				enemy->TakeDamage(bulletDmg);
+			if (distance <= radius) {
+
+				//check for enemy anyway
+				Enemy* enemy = c->GetGameObject()->GetComponent<Enemy>();
+				if (enemy != nullptr) {
+					enemy->TakeDamage(bulletDmg);
+				}
 			}
 		}
 	}

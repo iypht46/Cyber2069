@@ -1,5 +1,8 @@
 #include "Transform.hpp"
-#include "../../Logger.hpp"
+#include "Core/Logger.hpp"
+#include "Core/EC/GameObject.hpp"
+#include "MeshRenderer.hpp"
+#include "Graphic/Texture.hpp"
 #include <iostream>
 #include <memory>
 using namespace glm;
@@ -25,14 +28,18 @@ Transform::~Transform() {
 
 glm::vec3 Transform::GetPosition() {
 	return m_position;
-}		  
+}
 
 glm::vec3 Transform::GetLocalPosition() {
 	return m_localPosition;
 }
 
 glm::vec3 Transform::GetScale() {
-	return m_scale;
+	return m_scale; //* m_meshScale;
+}
+
+glm::vec3 Transform::GetTrueScale() {
+	return m_scale * m_meshScale;
 }
 
 float Transform::GetRotation() {
@@ -60,7 +67,6 @@ glm::mat4 Transform::GetModelMatrix() {
 	glm::mat4 sMat = glm::scale(glm::mat4(1.0f), m_localScale);
 	glm::mat4 tMat = glm::translate(glm::mat4(1.0f), glm::vec3(m_localPosition.x, m_localPosition.y, 0));
 	glm::mat4 transformMat = tMat * rMat * sMat;
-
 	if (!parent.expired()) {
 		transformMat = parent.lock()->GetModelMatrix() * transformMat;
 	}
@@ -73,8 +79,18 @@ void Transform::SetParent(std::weak_ptr<Transform> newParent) {
 	parent.lock()->children.push_back(weak_from_this());
 }
 
+bool Transform::HasParent()
+{
+	return !parent.expired();
+}
+
 Transform* Transform::GetChild(int index) {
 	return (children.at(index)).lock().get();
+}
+
+unsigned int Transform::GetChildCount()
+{
+	return children.size();
 }
 
 /*
@@ -160,7 +176,7 @@ void Transform::SetPosition(glm::vec3 position) {
 
 void Transform::SetLocalPosition(glm::vec3 localposition) {
 	m_localPosition = localposition;
-	
+
 	//update world position and child position
 	UpdateWorldPosition();
 }
@@ -223,4 +239,9 @@ void Transform::SetLocalRotation(float localrotation) {
 
 void Transform::Rotate(float rotation) {
 	SetRotation(m_rotation + rotation);
+}
+
+void Transform::SetMeshScale(glm::vec3 meshScale)
+{
+	m_meshScale = meshScale;
 }
