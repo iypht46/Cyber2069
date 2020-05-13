@@ -249,8 +249,8 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 		else 
 		{
 			textureScale = textureScale / glm::vec2(sr_NumFrameX, sr_NumFrameY);
-			glUniform1f(offsetXId, 0.0f);
-			glUniform1f(offsetYId, 0.0f);
+			glUniform1f(offsetXId, meshUV.x);
+			glUniform1f(offsetYId, meshUV.y);
 		}
 
 		//ENGINE_INFO("Texture Scale : {}, {}", textureScale.x, textureScale.y);
