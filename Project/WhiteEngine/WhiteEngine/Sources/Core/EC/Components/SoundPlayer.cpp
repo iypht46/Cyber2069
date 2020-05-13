@@ -1,5 +1,9 @@
 #include "SoundPlayer.hpp"
+
 #include <glm/glm.hpp>
+
+#include "Core/Factory.h"
+
 #include "Core/Logger.hpp"
 
 float SoundPlayer::MasterVolume = 1.0f;
@@ -29,6 +33,7 @@ void SoundPlayer::SetSound(std::string path) {
 }
 
 void SoundPlayer::PlaySound() {
+	UpdateVolume();
 	if(!soundPlayer->getSoundSource(&(sr_soundpath[0]))){
 		soundSource = soundPlayer->addSoundSourceFromFile(&(sr_soundpath[0]));
 	}
@@ -92,4 +97,11 @@ void SoundPlayer::AdjustVolume(float diff) {
 	volumeValue += diff;
 	volumeValue = glm::clamp(volumeValue, 0.0f, 1.0f);
 	UpdateVolume();
+}
+
+void SoundPlayer::UpdateVolumeAll() {
+	//update sound
+	for (std::pair<int, SoundPlayer*> sound : Factory<Component, SoundPlayer>::getCollection()) {
+		sound.second->UpdateVolume();
+	}
 }

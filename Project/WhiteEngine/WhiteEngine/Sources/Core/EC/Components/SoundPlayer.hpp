@@ -64,9 +64,11 @@ public:
 	static float GetMusicVolume() { return SoundPlayer::MusicVolume; }
 	static float GetSFXVolume() { return SoundPlayer::SFXVolume; }
 
-	static void SetMasterVolume(float vol) { SoundPlayer::MasterVolume = glm::clamp(vol, 0.0f, 1.0f); }
-	static void SetMusicVolume(float vol) { SoundPlayer::MusicVolume = glm::clamp(vol, 0.0f, 1.0f); }
-	static void SetSFXVolume(float vol) { SoundPlayer::SFXVolume = glm::clamp(vol, 0.0f, 1.0f); }
+	static void SetMasterVolume(float vol) { SoundPlayer::MasterVolume = glm::clamp(vol, 0.0f, 1.0f); UpdateVolumeAll(); }
+	static void SetMusicVolume(float vol) { SoundPlayer::MusicVolume = glm::clamp(vol, 0.0f, 1.0f); UpdateVolumeAll(); }
+	static void SetSFXVolume(float vol) { SoundPlayer::SFXVolume = glm::clamp(vol, 0.0f, 1.0f); UpdateVolumeAll(); }
+
+	static void UpdateVolumeAll();
 
 //serialization
 public:

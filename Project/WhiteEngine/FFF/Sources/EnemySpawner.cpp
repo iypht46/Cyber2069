@@ -3,7 +3,7 @@
 void EnemySpawner::OnUpdate(float dt)
 {
 	if (Spawning) {
-		ENGINE_INFO("Spawner type: {}, interval: {}/{}", SpawnType, SpawnRateCount, 1.0f / SpawnRate);
+		//ENGINE_INFO("Spawner type: {}, interval: {}/{}", SpawnType, SpawnRateCount, 1.0f / SpawnRate);
 		SpawnRateCount += dt;
 
 		if (SpawnRateCount > 1.0f / SpawnRate)
