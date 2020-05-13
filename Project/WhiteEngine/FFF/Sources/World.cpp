@@ -1661,7 +1661,7 @@ namespace World
 			platform->GetComponent<MeshRenderer>()->SetLayer(3);
 			//platform->m_transform->SetScale(glm::vec3(800, 20, 1));
 			//platform->m_transform->SetParent(Rabbit->m_transform);
-			platform->AddComponent<BoxCollider>()->ReScale(310, 28);
+			platform->AddComponent<BoxCollider>()->ReScale(1, 1);
 
 			platform = Instantiate().get();
 			platform->Layer = "Platform";
@@ -1671,7 +1671,7 @@ namespace World
 			platform->GetComponent<MeshRenderer>()->SetLayer(3);
 			//platform->m_transform->SetScale(glm::vec3(800, 20, 1));
 			platform->m_transform->SetPosition(glm::vec3(500, 500, 1));
-			platform->AddComponent<BoxCollider>()->ReScale(325, 28);
+			platform->AddComponent<BoxCollider>()->ReScale(1, 1);
 
 			//Soundtrack
 			std::shared_ptr<GameObject> soundtrackPlayer = Instantiate();

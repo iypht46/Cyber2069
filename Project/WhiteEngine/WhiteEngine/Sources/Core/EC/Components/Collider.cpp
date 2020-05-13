@@ -116,8 +116,8 @@
 	void BoxCollider::ReSize(float hW, float hH) {
 		m_halfWidth = hW;
 		m_halfHeight = hH;
-		m_colliderScale.x = hW / m_gameObject->m_transform->GetScale().x;
-		m_colliderScale.y = hH / m_gameObject->m_transform->GetScale().y;
+		m_colliderScale.x = hW / m_gameObject->m_transform->GetTrueScale().x;
+		m_colliderScale.y = hH / m_gameObject->m_transform->GetTrueScale().y;
 
 		if (m_rigidbody)
 		{
@@ -135,8 +135,8 @@
 	}
 
 	void BoxCollider::ReScale(float scaleX, float scaleY) {
-		m_halfWidth = (m_gameObject->m_transform->GetScale().x * scaleX) / 2;
-		m_halfHeight = (m_gameObject->m_transform->GetScale().y * scaleY) / 2;
+		m_halfWidth = (m_gameObject->m_transform->GetTrueScale().x * scaleX) / 2;
+		m_halfHeight = (m_gameObject->m_transform->GetTrueScale().y * scaleY) / 2;
 		m_colliderScale.x = scaleX;
 		m_colliderScale.y = scaleY;
 
@@ -164,8 +164,8 @@
 		//Set Box Size
 		m_halfWidth = hW;
 		m_halfHeight = hH;
-		m_colliderScale.x = hW / m_gameObject->m_transform->GetScale().x;
-		m_colliderScale.y = hH / m_gameObject->m_transform->GetScale().y;
+		m_colliderScale.x = hW / m_gameObject->m_transform->GetTrueScale().x;
+		m_colliderScale.y = hH / m_gameObject->m_transform->GetTrueScale().y;
 
 		ComputeMass(m_rigidbody);
 		//Set Static

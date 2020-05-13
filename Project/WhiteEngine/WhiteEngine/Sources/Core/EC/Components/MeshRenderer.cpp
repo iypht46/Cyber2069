@@ -85,7 +85,7 @@ void MeshRenderer::SetTexture(Graphic::Texture tex)
 	{
 		delete m_texture;
 		m_texture = new Graphic::Texture(tex);
-		GetGameObject()->m_transform->SetMeshScale(glm::vec3(tex.m_size, 1.0f));
+		GetGameObject()->m_transform->SetMeshScale(glm::vec3(tex.m_size / glm::vec2(sr_NumFrameX, sr_NumFrameY), 1.0f));
 	}
 }
 
