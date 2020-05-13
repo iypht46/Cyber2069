@@ -19,7 +19,6 @@ namespace Tools
 	void GameplayWindow::OnRender()
 	{
 		
-		auto tex = GLRenderer::GetInstance()->GetFrameBuffer();
 
 		// Get the current cursor position (where your window is)
 		ImVec2 pos = ImGui::GetCursorScreenPos();
@@ -42,9 +41,9 @@ namespace Tools
 		// Ask ImGui to draw it as an image:
 		// Under OpenGL the ImGUI image type is GLuint
 		// So make sure to use "(void *)tex" but not "&tex"
-		ImGui::GetWindowDrawList()->AddImage(
+		/*ImGui::GetWindowDrawList()->AddImage(
 		(void *)tex->m_texID, 
-			pos, ImVec2(pos.x + m_width - 10, pos.y + m_height - 30), ImVec2(0, 1), ImVec2(1, 0));
+			pos, ImVec2(pos.x + m_width - 10, pos.y + m_height - 30), ImVec2(0, 1), ImVec2(1, 0));*/
 	}
 
 	void GameplayWindow::Terminate()

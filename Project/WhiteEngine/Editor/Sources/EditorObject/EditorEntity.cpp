@@ -366,10 +366,6 @@ namespace Tools
 		{
 			type = "AnimatorEC";
 		}
-		else if (CHECK_TYPE(SoundPlayer, comp))
-		{
-			type = "SoundPlayerEC";
-		}
 		/*else if (CHECK_TYPE(BehaviourScript, comp))
 		{
 
