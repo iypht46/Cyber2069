@@ -160,6 +160,8 @@ public:
 			CEREAL_NVP(QueenHP),
 			CEREAL_NVP(QueenSpeed),
 			CEREAL_NVP(QueenSpawnDelay),
+			CEREAL_NVP(QueenUnlockDropChance),
+			CEREAL_NVP(QueenHealItemValue),
 
 			CEREAL_NVP(CocoonHP),
 
