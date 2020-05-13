@@ -1,16 +1,18 @@
 #pragma once
-
-
-#include "../../Animation/Animation.hpp"
-#include "../../Animation/AnimationController.hpp"
+//White Engine
+#include "Core/Animation/Animation.hpp"
+#include "Core/Animation/AnimationController.hpp"
 #include "Core/Factory.h"
-
+//Third Party
 #include <cereal/types/string.hpp>
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/base_class.hpp>
 
+namespace Tools { class AnimatorEC; }
+
 class Animator : public Component
 {
+	friend class Tools::AnimatorEC;
 private:
 	//serialized data
 	float framePerSec = 12;
@@ -24,12 +26,15 @@ private:
 	glm::vec2 m_currentUVFrames;
 
 public:
-	std::string sr_controllerPath;
+	std::string sr_controllerPath = "none";
 
 	Animator();
 
 	virtual void Init();
+	bool SetControllerPath(std::string path);
+	std::string GetControllerPath();
 	void AssignController(std::shared_ptr <AnimationController> animControl);
+	std::shared_ptr <AnimationController> GetController();
 
 	//queue in next animation to play
 	void setNextState(int state);
@@ -42,6 +47,7 @@ public:
 	void animUpdate(float dt);
 
 	void setFramePerSec(float frame);
+	float GetFramePerSec();
 
 	glm::vec2 GetCurrentUVFrame();
 	~Animator();

@@ -8,6 +8,8 @@
 #include <cereal/types/base_class.hpp>
 #include <cereal/types/string.hpp>
 
+namespace Tools { class SoundPlayerEC; }
+
 using namespace irrklang;
 
 enum SOUND_TYPE {
@@ -16,6 +18,7 @@ enum SOUND_TYPE {
 };
 
 class SoundPlayer : public Component {
+	friend class Tools::SoundPlayerEC;
 private:
 	bool isLooping = false;
 	float volumeValue = 1.0f;

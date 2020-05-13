@@ -1,7 +1,9 @@
 #include "AnimationController.hpp"
 #include "Core/Logger.hpp"
+#include <algorithm>
 
-AnimationState::AnimationState() {
+AnimationState::AnimationState() 
+{
 
 }
 
@@ -54,6 +56,16 @@ std::shared_ptr<AnimationState> AnimationController::GetState(int state)
 	else {
 		ENGINE_WARN("Animation state {} not exist", state);
 		return nullptr;
+	}
+}
+
+void AnimationController::SwapState(int host, int target)
+{
+	if (host >= 0 && host < m_states.size() 
+		&& target >= 0 && target < m_states.size() 
+		&& host != target)
+	{
+		std::iter_swap(m_states.begin() + host, m_states.begin() + target);
 	}
 }
 

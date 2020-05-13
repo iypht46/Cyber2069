@@ -55,7 +55,7 @@
 			break;
 		}
 
-		
+
 	}
 
 	void Collider::HandleMessage(const Core::Trigger& msg)
@@ -104,7 +104,7 @@
 			m_isStatic = false;
 
 			if (m_rigidbody->automass) {
-				ComputeMass();
+				ComputeMass(m_rigidbody);
 			}
 		}
 		else
@@ -125,7 +125,7 @@
 			m_isStatic = false;
 
 			if (m_rigidbody->automass) {
-				ComputeMass();
+				ComputeMass(m_rigidbody);
 			}
 		}
 		else
@@ -146,7 +146,7 @@
 			m_isStatic = false;
 
 			if (m_rigidbody->automass) {
-				ComputeMass();
+				ComputeMass(m_rigidbody);
 			}
 		}
 		else
@@ -167,7 +167,7 @@
 		m_colliderScale.x = hW / m_gameObject->m_transform->GetScale().x;
 		m_colliderScale.y = hH / m_gameObject->m_transform->GetScale().y;
 
-		ComputeMass();
+		ComputeMass(m_rigidbody);
 		//Set Static
 		m_isStatic = false;
 	}
@@ -181,10 +181,10 @@
 
 	}
 
-	void BoxCollider::ComputeMass()
+	void BoxCollider::ComputeMass(Rigidbody* rigid)
 	{
-		m_rigidbody->m_mass = ((m_halfWidth*2) * (m_halfHeight*2)) * m_density;
-		m_rigidbody->m_invMass = 1.0 / m_rigidbody->m_mass;
+		rigid->m_mass = ((m_halfWidth*2) * (m_halfHeight*2)) * m_density;
+		rigid->m_invMass = 1.0f / m_rigidbody->m_mass;
 	}
 
 	glm::vec3 BoxCollider::GetColliderScale()
@@ -195,7 +195,3 @@
 
 
 	//////////////Circle Collider///////////
-
-
-
-

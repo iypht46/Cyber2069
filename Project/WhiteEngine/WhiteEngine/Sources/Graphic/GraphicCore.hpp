@@ -16,5 +16,4 @@ namespace Graphic
 	void Render(void);
 
 	void Terminate(void);
-
 }

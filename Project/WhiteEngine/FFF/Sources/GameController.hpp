@@ -21,9 +21,13 @@
 #include <cereal/types/base_class.hpp>
 #include <cereal/types/polymorphic.hpp>
 
+namespace Tools { class GameControllerScriptEC; }
+
+
 class EnemySpawner;
 class UIController;
 class SoundtrackController;
+
 
 enum POOL_TYPE {
 	BULLET_MG = 0,
@@ -210,7 +214,7 @@ public:
 class GameController : public BehaviourScript {
 private:
 	friend class UIController;
-
+	friend class Tools::GameControllerScriptEC;
 	static GameController* instance;
 	float ScoreValue = 0;
 	float ComboValue = 1;

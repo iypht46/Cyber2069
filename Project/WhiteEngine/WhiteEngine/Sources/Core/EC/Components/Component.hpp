@@ -21,7 +21,7 @@ public:
 	Component();
 	int getComponentID();
 	GameObject* GetGameObject();
-
+	void SetEnable(bool enable);
 	virtual void Init();
 	void SetGameObject(GameObject* obj);
 

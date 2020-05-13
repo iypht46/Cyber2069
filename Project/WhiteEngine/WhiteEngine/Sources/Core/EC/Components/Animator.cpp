@@ -2,6 +2,7 @@
 
 #include "Core/GameInfo.h"
 #include "Core/Logger.hpp"
+#include "Utility/Filesystem.hpp"
 #include <Serialization/Serialization.h>
 
 Animator::Animator()
@@ -32,8 +33,35 @@ void Animator::Init() {
 	m_currentState = m_controller->m_defaultState;
 }
 
+bool Animator::SetControllerPath(std::string path)
+{
+	Utility::fs::path pathToCheck(path);
+	if (pathToCheck.has_filename() && Utility::fs::is_regular_file(pathToCheck))
+	{
+		sr_controllerPath = path;
+		return true;
+	}
+	else
+	{
+		ENGINE_ERROR("ERROR: Controller path is invalid!!");
+		return false;
+	}
+}
+
+std::string Animator::GetControllerPath()
+{
+	return sr_controllerPath;
+}
+
+
 void Animator::AssignController(std::shared_ptr <AnimationController> animControl) {
 	m_controller = animControl;
+	m_currentState = m_controller->m_defaultState;
+}
+
+std::shared_ptr<AnimationController> Animator::GetController()
+{
+	return m_controller;
 }
 
 glm::vec2 Animator::GetCurrentUVFrame() {
@@ -111,6 +139,11 @@ void Animator::animUpdate(float dt)
 
 void Animator::setFramePerSec(float frame) {
 	framePerSec = frame;
+}
+
+float Animator::GetFramePerSec()
+{
+	return framePerSec;
 }
 
 Animator::~Animator()

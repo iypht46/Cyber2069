@@ -12,7 +12,7 @@ void ItemDrop::OnStart()
 	eqManager = GameController::GetInstance()->GetGameObject()->GetComponent<EquipmentManager>();
 	player = GameController::GetInstance()->GetPlayer()->GetComponent<PlayerController>();
 
-	defaultTex = m_gameObject->GetComponent<MeshRenderer>()->GetTexture();
+	defaultTex = m_gameObject->GetComponent<MeshRenderer>()->GetTextureObj();
 }
 
 void ItemDrop::OnEnable() 
@@ -34,7 +34,7 @@ void ItemDrop::SetType(int dropType)
 			switch (itemtype.first)
 			{
 			case ITEM_TYPE::WEAPON:
-				if (eqManager->weaponItemTex[itemtype.second] != -1)
+				if (/*eqManager->weaponItemTex[itemtype.second] != -1*/ itemtype.second != -1)
 				{
 					m_gameObject->GetComponent<MeshRenderer>()->SetTexture(eqManager->weaponItemTex[itemtype.second]);
 				}
@@ -43,7 +43,7 @@ void ItemDrop::SetType(int dropType)
 				}
 				break;
 			case ITEM_TYPE::ARTIFACT:
-				if (eqManager->artifactItemTex[itemtype.second] != -1)
+				if (/*eqManager->artifactItemTex[itemtype.second] != -1*/itemtype.second != -1)
 				{
 					m_gameObject->GetComponent<MeshRenderer>()->SetTexture(eqManager->artifactItemTex[itemtype.second]);
 				}

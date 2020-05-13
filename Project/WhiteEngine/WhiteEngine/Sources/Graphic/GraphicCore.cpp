@@ -1,7 +1,7 @@
 #include "Graphic/GraphicCore.hpp"
-
+#include "Camera.hpp"
 #include "Core/Logger.hpp"
-#include "Graphic/Camera.hpp"
+
 
 namespace Graphic
 {
@@ -12,12 +12,11 @@ namespace Graphic
 
 		////////////OpenGL////////////
 		g_renderer = GLRenderer::GetInstance();
-
 		g_renderer->InitGL("Sources/Shader/vertext.shd", "Sources/Shader/fragment.shd");
 		g_renderer->SetOrthoProjection(-Window::GetWidth() / 2, Window::GetWidth() / 2, -Window::GetHeight() / 2, Window::GetHeight() / 2);
 		g_renderer->SetClearColor(72.0f/255.0f, 42.0f / 255.0f, 109.0f / 255.0f);
-
-		Graphic::getCamera()->ResetCam();
+		
+		getCamera()->ResetCam();
 
 		ENGINE_WARN("Graphic System Initialized");
 
@@ -30,7 +29,9 @@ namespace Graphic
 		//ENGINE_WARN("Render");
 		if (!Window::ShouldClose())
 		{
-			g_renderer->Render();
+			//glm::mat4 globalMatrix = getCamera()->GetProjectionMatrix() * getCamera()->GetViewMatrix();
+			g_renderer->Render(getCamera());
+			//g_renderer->Render(globalMatrix);
 			Window::SwapBuffer();
 			glfwPollEvents();
 		}

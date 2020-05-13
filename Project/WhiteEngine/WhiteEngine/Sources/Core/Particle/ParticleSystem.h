@@ -20,7 +20,7 @@
 
 class ParticleSystem :public Component {
 public:
-	enum class DirectionType
+	enum class DirectionType : int
 	{
 		AwayFromSpawn = 0,
 		ToSpawn,
@@ -47,6 +47,8 @@ public:
 		float lifetime = 0;
 
 	public:
+		ParticleBehaviour();
+		~ParticleBehaviour();
 		//create partcle object and translate value from serialization
 		virtual void Init();
 		virtual void OnEnable();
@@ -55,7 +57,7 @@ public:
 
 	class ParticleModule {
 	public:
-		bool isEnabled = false;
+		bool isEnabled = true;
 
 		//serialization
 	public:
@@ -97,6 +99,8 @@ public:
 			sr_EmissionShapeAsInt = (int)emitterShape;
 		}
 
+		EmitterShape GetEmitterShape() { return emitterShape; }
+
 	private:
 		friend class ParticleSystem;
 		EmitterShape emitterShape;
@@ -133,10 +137,12 @@ public:
 		//=================================
 		bool fixedScale = true;	//randomized size will keep the scale of the object, will use X size to determin the whole scale
 		//random---------------------------
-		float minXSize = 1.0f;
-		float maxXSize = 1.0f;
-		float minYSize = 1.0f;
-		float maxYSize = 1.0f;
+		float minXSize = 0.1f;//1.0f;
+		float maxXSize = 0.1f;//1.0f;
+		float minYSize = 0.1f;//1.0f;
+		float maxYSize = 0.1f;//1.0f;
+		//not random-----------------------
+		//float defaultSize;
 		//lifetime modifier----------------
 		bool usingLifetimeScaleModifier = false;
 		float scale_ModStart = 0.0f; //at what point will modifier take effect
@@ -158,6 +164,8 @@ public:
 			this->rotationType = rotationType;
 			sr_rotationTypeAsInt = (int)rotationType;
 		}
+
+		DirectionType GetRotationType() { return rotationType; }
 
 	private:
 		friend class ParticleSystem;
@@ -250,6 +258,7 @@ public:
 		float minSpeed = 50.0f;
 		float maxSpeed = 50.0f;
 		void SetDirectiontype(DirectionType type) { directionType = type; sr_directionTypeAsInt = static_cast<int>(type); };
+		DirectionType GetDirectionType() { return directionType; }
 		//custom direction-----------------
 		glm::vec2 customDirection;
 		//=================================
@@ -296,7 +305,9 @@ public:
 
 	class ParticleAnimation :public ParticleModule {
 	public:
-		std::string controllerPath = "";
+		std::string controllerPath = "none";
+
+		ParticleAnimation() { isEnabled = false; }
 
 		//serialization
 	public:
@@ -317,25 +328,28 @@ public:
 	std::shared_ptr<ParticleAnimation> animation;
 
 	int RenderLayer = 1;
-	std::string texturePath = "Sources/Assets/white_square.png";
+	std::string texturePath = "none";//"Sources/Assets/white_square.png";
 
 	//create default modules create objpool (assign partice number), init objpool (instatiate objects), modify particle objject in obj pool according to data
 	virtual void Init();
 
 	void SpawnParticle(GameObject*);
+	void UpdateMesh();
+	void UpdateRigidbody();
 
 	void TriggerBurstEmission(); //only works when set to burst mode
 	void ConstantEmit(float dt); //constantly called from update loop
 
 	void LifeTimeModification(float dt); ///+++++++++++ call thi in fac cl too
-
+	std::set<GameObject*>& GetSpawnedParticles();
+	void Reset();
 	ParticleSystem();
 	~ParticleSystem();
 
 private:
 	float emitTimer = 0;
 	std::set<GameObject*> SpawnedParticles; //used for updating all active particle
-	
+
 	std::vector<std::shared_ptr<GameObject>> Particles; //just to keep reference of all existing particle
 
 	//serialization

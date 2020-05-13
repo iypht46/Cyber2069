@@ -5,7 +5,7 @@
 #include "GameController.hpp"
 #include "EquipmentManager.hpp"
 #include "PlayerController.hpp"
-
+#include "Graphic/Texture.hpp"
 
 #include "Graphic/Camera.hpp"
 
@@ -28,7 +28,9 @@ private:
 
 	float HealValue;
 
-	unsigned int defaultTex;
+	//unsigned int defaultTex;
+	Graphic::Texture defaultTex;
+
 public:
 	void SetType(int dropType);
 	void SetHealValue(float value) { this->HealValue = value; }
