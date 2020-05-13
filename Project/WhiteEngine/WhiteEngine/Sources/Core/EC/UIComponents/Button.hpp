@@ -5,12 +5,9 @@
 #include "Core/EC/UIComponents/TextRenderer.hpp"
 #include "Core/Logger.hpp"
 #include "Input/Input.hpp"
-<<<<<<< HEAD
 #include "Core/EC/Components/SoundPlayer.hpp"
-
-=======
 #include "Graphic/Texture.hpp"
->>>>>>> 53329bead465253c7d27f15242c76f6a4c2c59ad
+
 #include <memory>
 
 #include <cereal/types/base_class.hpp>
@@ -53,13 +50,10 @@ private:
 	glm::vec3 DefaultTextColor;
 	
 	int OnHoverTex = -1;
-<<<<<<< HEAD
 	bool playEnd = false;
 
-=======
 	Graphic::Texture OnHoverTexObj;
 	Graphic::Texture DefaultTexObj;
->>>>>>> 53329bead465253c7d27f15242c76f6a4c2c59ad
 public:
 	OnHoverModifier hoverModifier;
 	bool isOnHover = false;

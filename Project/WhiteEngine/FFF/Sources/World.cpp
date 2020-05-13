@@ -1103,6 +1103,7 @@ namespace World
 				MasterUP->GetComponent<MeshRenderer>()->SetLayer(10);
 				MasterUP->m_transform->SetScale(glm::vec3(20, 20, 1));
 				MasterUP->m_transform->SetPosition(glm::vec3(150, 50, 1));
+				MasterUP->AddComponent<SoundPlayer>();
 				MasterUP->AddComponent<Button>();
 				MasterUP->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::OPTION, OPTION::Master_Increase);
 				MasterUP->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -1116,6 +1117,7 @@ namespace World
 				MasterDown->GetComponent<MeshRenderer>()->SetLayer(10);
 				MasterDown->m_transform->SetScale(glm::vec3(20, 20, 1));
 				MasterDown->m_transform->SetPosition(glm::vec3(50, 50, 1));
+				MasterDown->AddComponent<SoundPlayer>();
 				MasterDown->AddComponent<Button>();
 				MasterDown->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::OPTION, OPTION::Master_Decrease);
 				MasterDown->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -1148,6 +1150,7 @@ namespace World
 				MusicUP->GetComponent<MeshRenderer>()->SetLayer(10);
 				MusicUP->m_transform->SetScale(glm::vec3(20, 20, 1));
 				MusicUP->m_transform->SetPosition(glm::vec3(150, 30, 1));
+				MusicUP->AddComponent<SoundPlayer>();
 				MusicUP->AddComponent<Button>();
 				MusicUP->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::OPTION, OPTION::Music_Increase);
 				MusicUP->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -1161,6 +1164,7 @@ namespace World
 				MusicDown->GetComponent<MeshRenderer>()->SetLayer(10);
 				MusicDown->m_transform->SetScale(glm::vec3(20, 20, 1));
 				MusicDown->m_transform->SetPosition(glm::vec3(50, 30, 1));
+				MusicDown->AddComponent<SoundPlayer>();
 				MusicDown->AddComponent<Button>();
 				MusicDown->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::OPTION, OPTION::Music_Decrease);
 				MusicDown->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -1195,6 +1199,7 @@ namespace World
 				SFXUP->GetComponent<MeshRenderer>()->SetLayer(10);
 				SFXUP->m_transform->SetScale(glm::vec3(20, 20, 1));
 				SFXUP->m_transform->SetPosition(glm::vec3(150, 10, 1));
+				SFXUP->AddComponent<SoundPlayer>();
 				SFXUP->AddComponent<Button>();
 				SFXUP->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::OPTION, OPTION::SFX_Increase);
 				SFXUP->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -1208,6 +1213,7 @@ namespace World
 				SFXDown->GetComponent<MeshRenderer>()->SetLayer(10);
 				SFXDown->m_transform->SetScale(glm::vec3(20, 20, 1));
 				SFXDown->m_transform->SetPosition(glm::vec3(50, 10, 1));
+				SFXDown->AddComponent<SoundPlayer>();
 				SFXDown->AddComponent<Button>();
 				SFXDown->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::OPTION, OPTION::SFX_Decrease);
 				SFXDown->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -1221,6 +1227,7 @@ namespace World
 				ResetProgressButton->GetComponent<MeshRenderer>()->SetLayer(10);
 				ResetProgressButton->m_transform->SetScale(glm::vec3(100, 50, 1));
 				ResetProgressButton->m_transform->SetPosition(glm::vec3(-200, -100, 1));
+				ResetProgressButton->AddComponent<SoundPlayer>();
 				ResetProgressButton->AddComponent<Button>();
 				ResetProgressButton->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::UICONTROL, UI_GROUP::ResetProgressWarn);
 				ResetProgressButton->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -1288,6 +1295,7 @@ namespace World
 				WarnResetYesButton->GetComponent<MeshRenderer>()->SetLayer(10);
 				WarnResetYesButton->m_transform->SetScale(glm::vec3(100, 50, 1));
 				WarnResetYesButton->m_transform->SetPosition(glm::vec3(-50, -100, 1));
+				WarnResetYesButton->AddComponent<SoundPlayer>();
 				WarnResetYesButton->AddComponent<Button>();
 				WarnResetYesButton->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::OPTION, OPTION::RESET_Progress);
 				WarnResetYesButton->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -1302,6 +1310,7 @@ namespace World
 				WarnResetNoButton->GetComponent<MeshRenderer>()->SetLayer(10);
 				WarnResetNoButton->m_transform->SetScale(glm::vec3(100, 50, 1));
 				WarnResetNoButton->m_transform->SetPosition(glm::vec3(50, -100, 1));
+				WarnResetNoButton->AddComponent<SoundPlayer>();
 				WarnResetNoButton->AddComponent<Button>();
 				WarnResetNoButton->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::UICONTROL, UI_GROUP::Option);
 				WarnResetNoButton->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -1325,6 +1334,7 @@ namespace World
 				WarnQuitYesButton->GetComponent<MeshRenderer>()->SetLayer(10);
 				WarnQuitYesButton->m_transform->SetScale(glm::vec3(100, 50, 1));
 				WarnQuitYesButton->m_transform->SetPosition(glm::vec3(-50, -100, 1));
+				WarnQuitYesButton->AddComponent<SoundPlayer>();
 				WarnQuitYesButton->AddComponent<Button>();
 				WarnQuitYesButton->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::STATECONTROL, GAME_STATE::QUIT);
 				WarnQuitYesButton->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -1339,6 +1349,7 @@ namespace World
 				WarnQuitNoButton->GetComponent<MeshRenderer>()->SetLayer(10);
 				WarnQuitNoButton->m_transform->SetScale(glm::vec3(100, 50, 1));
 				WarnQuitNoButton->m_transform->SetPosition(glm::vec3(50, -100, 1));
+				WarnQuitNoButton->AddComponent<SoundPlayer>();
 				WarnQuitNoButton->AddComponent<Button>();
 				WarnQuitNoButton->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::UICONTROL, UI_GROUP::MainMenu);
 				WarnQuitNoButton->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -1668,433 +1679,6 @@ namespace World
 			gamecontroller->GetComponent<EquipmentManager>()->InitData();
 
 			//gamecontroller->GetComponent<EquipmentManager>()->AddPlayerWeapon(WEAPON_TYPE::WEAPON_MACHINEGUN);
-<<<<<<< HEAD
-
-			std::shared_ptr<GameObject> logo = Instantiate();
-			logo->AddComponent<MeshRenderer>();
-			logo->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/WhiteLogo"));
-			logo->GetComponent<MeshRenderer>()->SetUI(true);
-			logo->GetComponent<MeshRenderer>()->SetLayer(10);
-			logo->m_transform->SetScale(glm::vec3(68*3, 55*3, 1));
-			logo->AddComponent<SoundPlayer>();
-			logo->AddComponent<Button>();
-			logo->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::STATECONTROL, GAME_STATE::LOADOUT);
-			logo->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
-
-			gamecontroller->AddComponent<UIController>();
-			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::MainMenu].push_back(logo);
-
-			logo = Instantiate();
-			logo->AddComponent<MeshRenderer>();
-			logo->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/WhiteLogo"));
-			logo->GetComponent<MeshRenderer>()->SetUI(true);
-			logo->GetComponent<MeshRenderer>()->SetLayer(10);
-			logo->m_transform->SetScale(glm::vec3(68 , 55, 1));
-			logo->m_transform->SetPosition(glm::vec3(300.0f, -250.0f, 1.0f));
-			logo->AddComponent<SoundPlayer>();
-			logo->AddComponent<Button>();
-			logo->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::STATECONTROL, GAME_STATE::GAMEPLAY);
-			logo->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
-			logo->SetActive(false);
-
-			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Loadout].push_back(logo);
-			gamecontroller->GetComponent<UIController>()->ScoreText = ui_ScoreText;
-			gamecontroller->GetComponent<UIController>()->ComboText = ui_ComboText;
-			gamecontroller->GetComponent<UIController>()->HPbar = ui_HPbar;
-			gamecontroller->GetComponent<UIController>()->Staminabar = ui_StaminaBar;
-			gamecontroller->GetComponent<UIController>()->HPText = ui_HPtext;
-			gamecontroller->GetComponent<UIController>()->QueenHPText = ui_BossHPtext;
-			gamecontroller->GetComponent<UIController>()->EquippedWeaponDisplay.push_back(ui_Weapongp);
-			gamecontroller->GetComponent<UIController>()->EquippedArtifactDisplay.push_back(ui_Artifactgp1);
-			gamecontroller->GetComponent<UIController>()->EquippedArtifactDisplay.push_back(ui_Artifactgp2);
-
-			std::shared_ptr<GameObject> ui_LoadOut = Instantiate();
-			std::shared_ptr<GameObject> ui_button = Instantiate();
-
-			ui_LoadOut->AddComponent<LoadoutUI>();
-			ui_LoadOut->AddComponent<MeshRenderer>();
-			ui_LoadOut->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			ui_LoadOut->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/black.png");
-			ui_LoadOut->GetComponent<MeshRenderer>()->SetUI(true);
-			ui_LoadOut->GetComponent<MeshRenderer>()->SetLayer(5);
-
-			ui_LoadOut->m_transform->SetScale(glm::vec3(800.0f, 600.0f, 1.0f));
-
-			ui_button->AddComponent<MeshRenderer>();
-			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			ui_button->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/White.jpg");
-			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
-			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
-			ui_button->AddComponent<SoundPlayer>();
-			ui_button->AddComponent<LoadoutSelectButton>();
-			ui_button->AddComponent<Button>();
-			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
-			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
-
-			ui_button->m_transform->SetScale(glm::vec3(100.0f,100.0f,1.0f));
-			ui_button->m_transform->SetPosition(glm::vec3(-300.0f, -100.0f, 1.0f));
-			
-			ui_LoadOut->GetComponent<LoadoutUI>()->AssignArtifactDisplaySlot(ui_button);
-
-			ui_button = Instantiate();
-
-			ui_button->AddComponent<MeshRenderer>();
-			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			ui_button->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/White.jpg");
-			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
-			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
-			ui_button->AddComponent<SoundPlayer>();
-			ui_button->AddComponent<LoadoutSelectButton>();
-			ui_button->AddComponent<Button>();
-			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
-			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
-
-			ui_button->m_transform->SetScale(glm::vec3(100.0f, 100.0f, 1.0f));
-			ui_button->m_transform->SetPosition(glm::vec3(-100.0f, -100.0f, 1.0f));
-
-			ui_LoadOut->GetComponent<LoadoutUI>()->AssignArtifactDisplaySlot(ui_button);
-
-			ui_button = Instantiate();
-
-			ui_button->AddComponent<MeshRenderer>();
-			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			ui_button->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/White.jpg");
-			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
-			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
-			ui_button->AddComponent<SoundPlayer>();
-			ui_button->AddComponent<LoadoutSelectButton>();
-			ui_button->AddComponent<Button>();
-			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
-			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
-
-			ui_button->m_transform->SetScale(glm::vec3(200.0f, 100.0f, 1.0f));
-			ui_button->m_transform->SetPosition(glm::vec3(-200.0f, 100.0f, 1.0f));
-
-			ui_LoadOut->GetComponent<LoadoutUI>()->AssignWeaponDisplaySlot(ui_button);
-
-			ui_button = Instantiate();
-
-			ui_button->AddComponent<MeshRenderer>();
-			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/08_Amplifier"));
-			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
-			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
-			ui_button->AddComponent<SoundPlayer>();
-			ui_button->AddComponent<LoadoutSelectButton>();
-			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
-			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(ARTIFACT_TYPE::ARTF_BULLETAMP);
-			ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "Bullet Amplifier";
-			ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Make bullet more powerful";
-			ui_button->AddComponent<Button>();
-			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
-			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
-
-			ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
-			ui_button->m_transform->SetPosition(glm::vec3(80.0f, 20.0f, 1.0f));
-
-			ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
-
-			ui_button = Instantiate();
-
-			ui_button->AddComponent<MeshRenderer>();
-			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/01_Amplifiler"));
-			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
-			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
-			ui_button->AddComponent<SoundPlayer>();
-			ui_button->AddComponent<LoadoutSelectButton>();
-			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
-			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(ARTIFACT_TYPE::ARTF_FIRERATEUP);
-			ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "FireRate UP";
-			ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Make weapon shoot faster";
-			ui_button->AddComponent<Button>();
-			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
-			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
-
-			ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
-			ui_button->m_transform->SetPosition(glm::vec3(180.0f, 20.0f, 1.0f));
-
-			ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
-
-			ui_button = Instantiate();
-
-			ui_button->AddComponent<MeshRenderer>();
-			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/04_Speed"));
-			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
-			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
-			ui_button->AddComponent<SoundPlayer>();
-			ui_button->AddComponent<LoadoutSelectButton>();
-			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
-			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(ARTIFACT_TYPE::ARTF_SPEEDRUNNER);
-			ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "SpeedRunner";
-			ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Make player move faster";
-			ui_button->AddComponent<Button>();
-			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
-			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
-
-			ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
-			ui_button->m_transform->SetPosition(glm::vec3(280.0f, 20.0f, 1.0f));
-
-			ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
-
-			ui_button = Instantiate();
-
-			ui_button->AddComponent<MeshRenderer>();
-			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/02_Buffer"));
-			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
-			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
-			ui_button->AddComponent<SoundPlayer>();
-			ui_button->AddComponent<LoadoutSelectButton>();
-			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
-			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(ARTIFACT_TYPE::ARTF_ATKUP);
-			ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "Attack UP";
-			ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Make weapon to deal more damage";
-			ui_button->AddComponent<Button>();
-			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
-			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
-
-			ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
-			ui_button->m_transform->SetPosition(glm::vec3(380.0f, 20.0f, 1.0f));
-
-			ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
-
-			ui_button = Instantiate();
-
-			ui_button->AddComponent<MeshRenderer>();
-			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/03_Gravity"));
-			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
-			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
-			ui_button->AddComponent<SoundPlayer>();
-			ui_button->AddComponent<LoadoutSelectButton>();
-			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
-			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(ARTIFACT_TYPE::ARTF_LOWGRAV);
-			ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "LowGravity";
-			ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Make player fall slower";
-			ui_button->AddComponent<Button>();
-			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
-			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
-
-			ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
-			ui_button->m_transform->SetPosition(glm::vec3(80.0f, -50.0f, 1.0f));
-
-			ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
-
-			ui_button = Instantiate();
-
-			ui_button->AddComponent<MeshRenderer>();
-			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/05_Amplifier"));
-			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
-			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
-			ui_button->AddComponent<SoundPlayer>();
-			ui_button->AddComponent<LoadoutSelectButton>();
-			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
-			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(ARTIFACT_TYPE::ARTF_ARTIFACTAMP);
-			ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "Artifact Amplifier";
-			ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Double the artifact power";
-			ui_button->AddComponent<Button>();
-			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
-			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
-
-			ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
-			ui_button->m_transform->SetPosition(glm::vec3(180.0f, -50.0f, 1.0f));
-
-			ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
-
-			ui_button = Instantiate();
-
-			ui_button->AddComponent<MeshRenderer>();
-			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/07_Curse"));
-			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
-			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
-			ui_button->AddComponent<SoundPlayer>();
-			ui_button->AddComponent<LoadoutSelectButton>();
-			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
-			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(ARTIFACT_TYPE::ARTF_CURSEDPENDANT);
-			ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "Curse Pendant";
-			ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "One shot kill everything, including player";
-			ui_button->AddComponent<Button>();
-			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
-			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
-
-			ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
-			ui_button->m_transform->SetPosition(glm::vec3(280.0f, -50.0f, 1.0f));
-
-			ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
-
-			ui_button = Instantiate();
-
-			ui_button->AddComponent<MeshRenderer>();
-			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			ui_button->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/MachineGun.png");
-			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
-			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
-			ui_button->AddComponent<SoundPlayer>();
-			ui_button->AddComponent<LoadoutSelectButton>();
-			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::WEAPON);
-			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(WEAPON_TYPE::WEAPON_MACHINEGUN);
-			ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "Machine Gun";
-			ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Shoot bullet";
-			ui_button->AddComponent<Button>();
-			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
-			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
-
-			ui_button->m_transform->SetScale(glm::vec3(70.0f, 35.0f, 1.0f));
-			ui_button->m_transform->SetPosition(glm::vec3(100.0f, 100.0f, 1.0f));
-
-			ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
-
-			ui_button = Instantiate();
-
-			ui_button->AddComponent<MeshRenderer>();
-			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/laser_idle-01"));
-			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
-			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
-			ui_button->AddComponent<SoundPlayer>();
-			ui_button->AddComponent<LoadoutSelectButton>();
-			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::WEAPON);
-			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(WEAPON_TYPE::WEAPON_LASER);
-			ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "Laser Gun";
-			ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Shoot laser";
-			ui_button->AddComponent<Button>();
-			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
-			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
-
-			ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
-			ui_button->m_transform->SetPosition(glm::vec3(200.0f, 100.0f, 1.0f));
-
-			ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
-
-			ui_button = Instantiate();
-
-			ui_button->AddComponent<MeshRenderer>();
-			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/grenadeLaucher_idle-01"));
-			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
-			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
-			ui_button->AddComponent<SoundPlayer>();
-			ui_button->AddComponent<LoadoutSelectButton>();
-			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::WEAPON);
-			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(WEAPON_TYPE::WEAPON_GRENADELAUNCHER);
-			ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "GrenadeLauncher";
-			ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Shoot Grenade";
-			ui_button->AddComponent<Button>();
-			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
-			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
-
-			ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
-			ui_button->m_transform->SetPosition(glm::vec3(300.0f, 100.0f, 1.0f));
-
-			ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
-
-			ui_button = Instantiate();
-
-			ui_button->AddComponent<MeshRenderer>();
-			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/zapper_idle-01"));
-			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
-			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
-			ui_button->AddComponent<SoundPlayer>();
-			ui_button->AddComponent<LoadoutSelectButton>();
-			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::WEAPON);
-			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(WEAPON_TYPE::WEAPON_ZAPPER);
-			ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "ZapperGun";
-			ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Shoot ZapBullet";
-			ui_button->AddComponent<Button>();
-			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
-			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
-
-			ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
-			ui_button->m_transform->SetPosition(glm::vec3(400.0f, 100.0f, 1.0f));
-
-			ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
-
-			ui_button = Instantiate();
-
-			ui_button->AddComponent<MeshRenderer>();
-			ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/blackhole_idle-04"));
-			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
-			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
-			ui_button->AddComponent<SoundPlayer>();
-			ui_button->AddComponent<LoadoutSelectButton>();
-			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::WEAPON);
-			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(WEAPON_TYPE::WEAPON_BLACKHOLE);
-			ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "Blackhole Gun";
-			ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Shoot blackhole";
-			ui_button->AddComponent<Button>();
-			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
-			ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
-
-			ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
-			ui_button->m_transform->SetPosition(glm::vec3(500.0f, 100.0f, 1.0f));
-
-			ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
-
-			std::shared_ptr<GameObject> LoadoutText;
-			LoadoutText = Instantiate();
-
-			LoadoutText->AddComponent<TextRenderer>();
-			LoadoutText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 50);
-			LoadoutText->GetComponent<TextRenderer>()->SetText("Test/n Test");
-			LoadoutText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-			LoadoutText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
-			LoadoutText->m_transform->SetPosition(glm::vec3(100.0f, -100.0f, 1.0f));
-
-			ui_LoadOut->GetComponent<LoadoutUI>()->eqNameObj = LoadoutText;
-
-			LoadoutText = Instantiate();
-
-			LoadoutText->AddComponent<TextRenderer>();
-			LoadoutText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 30);
-			LoadoutText->GetComponent<TextRenderer>()->SetText("Test/n Test");
-			LoadoutText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-			LoadoutText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
-			LoadoutText->m_transform->SetPosition(glm::vec3(100.0f, -150.0f, 1.0f));
-
-			ui_LoadOut->GetComponent<LoadoutUI>()->eqDescriptionObj = LoadoutText;
-
-			gamecontroller->GetComponent<GameController>()->loadoutUI = ui_LoadOut;
-
-			std::shared_ptr<GameObject> ui_highscore = Instantiate();
-			ui_highscore->AddComponent<HighScoreUI>();
-
-			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(ui_highscore);
-
-			std::shared_ptr<GameObject> ScoreText;
-			
-			ScoreText = Instantiate();
-
-			ScoreText->AddComponent<TextRenderer>();
-			ScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 30);
-			ScoreText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-
-			ScoreText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
-			ScoreText->m_transform->SetPosition(glm::vec3(300.0f, 50.0f, 1.0f));
-
-			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(ScoreText);
-
-			ui_highscore->GetComponent<HighScoreUI>()->ScoreText = ScoreText;
-
-			ScoreText = Instantiate();
-
-			ScoreText->AddComponent<TextRenderer>();
-			ScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 30);
-			ScoreText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-
-			ScoreText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
-			ScoreText->m_transform->SetPosition(glm::vec3(100.0f, 50.0f, 1.0f));
-
-			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(ScoreText);
-
-			ui_highscore->GetComponent<HighScoreUI>()->NameText = ScoreText;
-=======
->>>>>>> 53329bead465253c7d27f15242c76f6a4c2c59ad
 			
 
 			//test parent/child------------------------------------------------

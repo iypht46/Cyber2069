@@ -60,14 +60,11 @@ void Button::OnUpdate(float dt) {
 		glm::abs(diff.y) <= glm::abs((m_gameObject->m_transform->GetScale().y * 0.5f))) 
 	{
 		isOnHover = true;
-<<<<<<< HEAD
 		if (isOnHover && !playEnd) {
 			sp->PlaySound();
 			playEnd = true;
 		}
 
-=======
->>>>>>> 53329bead465253c7d27f15242c76f6a4c2c59ad
 		if (Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT)) {
 			OnClick();
 		}
