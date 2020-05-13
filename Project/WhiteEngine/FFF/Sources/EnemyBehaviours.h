@@ -205,6 +205,9 @@ public:
 CEREAL_REGISTER_TYPE(Spitter);
 
 class Cocoon : public Enemy {
+public:
+	virtual void OnUpdate(float dt);
+	
 	//serialization
 public:
 	template <class Archive>
