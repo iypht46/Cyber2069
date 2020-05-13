@@ -7,6 +7,7 @@
 #include "Window.hpp"
 #include <vector>
 #include <glm/glm.hpp>
+#include <glm/gtx/matrix_interpolation.hpp>
 #include "Core/EC/UIComponents/TextRenderer.hpp"
 #include "Core/EC/Components/MeshRenderer.hpp"
 #include "Core/EC/GameObject.hpp"
@@ -214,6 +215,9 @@ void GLRenderer::Render(Graphic::CameraObject* cam)
 			//Else render with projection * view matrix
 			else
 				obj->Render(cam->GetProjViewMatrix());
+
+				//for parallax
+				//obj->Render(glm::interpolate(cam->GetProjViewMatrix(), GetprojectionMatrix(), obj->GetGameObject()->m_transform->GetParallaxValue()));
 		}
 	}
 

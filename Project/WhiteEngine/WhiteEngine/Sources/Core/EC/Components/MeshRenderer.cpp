@@ -86,7 +86,7 @@ void MeshRenderer::SetTexture(Graphic::Texture tex)
 	{
 		delete m_texture;
 		m_texture = new Graphic::Texture(tex);
-		GetGameObject()->m_transform->SetMeshScale(glm::vec3(tex.m_size, 1.0f));
+		GetGameObject()->m_transform->SetMeshScale(glm::vec3(tex.m_size / glm::vec2(sr_NumFrameX, sr_NumFrameY), 1.0f));
 	}
 }
 
@@ -250,8 +250,8 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 		else 
 		{
 			textureScale = textureScale / glm::vec2(sr_NumFrameX, sr_NumFrameY);
-			glUniform1f(offsetXId, 0.0f);
-			glUniform1f(offsetYId, 0.0f);
+			glUniform1f(offsetXId, meshUV.x);
+			glUniform1f(offsetYId, meshUV.y);
 		}
 
 		//ENGINE_INFO("Texture Scale : {}, {}", textureScale.x, textureScale.y);
@@ -259,7 +259,7 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 		{
 			auto meshMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(textureScale, 1.0f));
 			
-			modelMatrix *= meshMatrix;
+			modelMatrix *= glm::interpolate(glm::mat4(1.0f), glm::translate(glm::mat4(1.0f), glm::vec3(Graphic::getCamera()->GetCampos().x, Graphic::getCamera()->GetCampos().y, 0)), GetGameObject()->m_transform->GetParallaxValue()) * meshMatrix;
 			
 		}
 			
