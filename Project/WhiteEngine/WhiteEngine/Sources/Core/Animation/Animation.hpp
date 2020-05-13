@@ -6,15 +6,18 @@
 #include <Serialization/glmCereal.h>
 #include <cereal/types/string.hpp>
 
+namespace Tools { class EditorAC; }
+
 class Animation
 {
-protected:
+	friend class Tools::EditorAC;
+public:
 	std::string stateName;
 	glm::vec2 m_StartPosition;
 	glm::vec2 m_EndPosition;
 	int speedMultiplier = 1;
 
-public:
+
 	Animation();
 	glm::vec2 getStartPosition();
 	glm::vec2 getEndPosition();
@@ -29,7 +32,7 @@ public:
 public:
 	template<class Archive>
 	void serialize(Archive& archive) {
-		archive( 
+		archive(
 			stateName,
 			m_StartPosition,
 			m_EndPosition,

@@ -42,6 +42,7 @@
 #include "ItemDrop.hpp"
 #include "Scripts/GameControl/UIController.h"
 #include "Scripts/GameControl/SoundtrackController.h"
+#include "Scripts/GameControl/CameraController.h"
 
 using SceneManagement::Instantiate;
 
@@ -54,7 +55,7 @@ namespace World
 
 	//Game Info Var
 	static GameInfo* g_gameInfo;
-	static Graphic::CameraObject* cam = Graphic::getCamera();
+	//static Graphic::CameraObject* cam = Graphic::getCamera();
 
 	std::unique_ptr<GameObject> mouseCursor;
 
@@ -120,12 +121,12 @@ namespace World
 
 		if (Input::GetKeyHold(Input::KeyCode::KEY_I))
 		{
-			cam->Zoom(1.0f * dt);
+			Graphic::getCamera()->Zoom(1.0f * dt);
 		}
 
 		if (Input::GetKeyHold(Input::KeyCode::KEY_O))
 		{
-			cam->Zoom(-1.0f * dt);
+			Graphic::getCamera()->Zoom(-1.0f * dt);
 		}
 
 		if (Input::GetKeyHold(Input::KeyCode::KEY_Q))
@@ -184,13 +185,13 @@ namespace World
 		//Runtime
 		Core::Logger::Init();
 		Graphic::Init();
-
+		GLRenderer::GetInstance()->drawDebug = true;
 		//Input
 		//Bool for debugging
 		Input::Init(false);
 
 		mouseCursor = std::make_unique<GameObject>();
-		mouseCursor->m_transform->SetScale(glm::vec3(50, 50, 1));
+		mouseCursor->m_transform->SetScale(glm::vec3(32.0f, 32.0f, 1.0f));
 		mouseCursor->AddComponent<MeshRenderer>();
 		mouseCursor->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/Cursor"));
 		mouseCursor->GetComponent<MeshRenderer>()->SetLayer(9999);
@@ -230,14 +231,18 @@ namespace World
 
 		
 		title = new GameObject();
+		title->SetName("Title");
 		title->AddComponent<MeshRenderer>();
 		title->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 		title->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/mockup_title.jpg");
 		title->GetComponent<MeshRenderer>()->SetLayer(-1);
+		//title->GetComponent<MeshRenderer>()->SetUI(true);
 		
-		title->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth(), Graphic::Window::GetHeight(), 1.0f));
+		auto meshSize = glm::vec3(Graphic::Window::GetWidth()/ title->GetComponent<MeshRenderer>()->GetTextureObj().m_size.x, Graphic::Window::GetHeight() / title->GetComponent<MeshRenderer>()->GetTextureObj().m_size.y, 1.0f);//glm::vec3(title->GetComponent<MeshRenderer>()->GetTextureObj().m_size,1.0f) / glm::vec3(Graphic::Window::GetWidth(), Graphic::Window::GetHeight(), 1.0f);
+		title->m_transform->SetScale(meshSize);
 		
-		while (!Input::GetKeyDown(Input::KeyCode::KEY_SPACE))
+		bool start = false;
+		while (!start)
 		{
 			Input::Update();
 		
@@ -246,7 +251,15 @@ namespace World
 			if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE))
 			{
 				title->SetActive(false);
+				start = true;
 			}
+
+			if (Input::GetKeyDown(Input::KeyCode::KEY_ESCAPE))
+			{
+				start = true;
+				g_gameInfo->GameShouldClose();
+			}
+				
 		}
 
 		//Serialization::LoadObject(*SceneManagement::ActiveScene, ScenePath("SerializationTest"));
@@ -264,6 +277,7 @@ namespace World
 			gamecontroller->GetComponent<GameController>()->SetGameState(GAME_STATE::MAINMENU);
 			gamecontroller->GetComponent<GameController>()->SetGameplayState(GAMEPLAY_STATE::NORMAL);
 
+			gamecontroller->AddComponent<CameraController>();
 
 			gamecontroller->AddComponent<UIController>();
 
@@ -1387,7 +1401,7 @@ namespace World
 			Bg2->GetComponent<MeshRenderer>()->SetLayer(-5);
 			Bg2->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 			Bg2->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer2.png");
-			Bg2->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
+			//Bg2->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
 			Bg2->m_transform->SetPosition(glm::vec3(0, -300, 3000));
 
 
@@ -1396,7 +1410,7 @@ namespace World
 			Bg1->GetComponent<MeshRenderer>()->SetLayer(-4);
 			Bg1->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 			Bg1->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer1.png");
-			Bg1->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
+			//Bg1->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
 			Bg1->m_transform->SetPosition(glm::vec3(0, -300, 2000));
 
 			std::shared_ptr<GameObject> Bg0 = Instantiate();
@@ -1405,7 +1419,7 @@ namespace World
 			Bg0->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 			Bg0->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer1.png");
 			Bg0->GetComponent<MeshRenderer>()->SetReplaceColor(glm::vec3(0.2, 0.2, 0.8));
-			Bg0->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * -2.0f, Graphic::Window::GetHeight() * 1.5f, 1));
+			//Bg0->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * -2.0f, Graphic::Window::GetHeight() * 1.5f, 1));
 			Bg0->m_transform->SetPosition(glm::vec3(0, -500, 1000));
 
 			std::shared_ptr<GameObject> Bg00 = Instantiate();
@@ -1414,7 +1428,7 @@ namespace World
 			Bg00->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 			Bg00->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer1.png");
 			Bg00->GetComponent<MeshRenderer>()->SetReplaceColor(glm::vec3(0.8, 0.8, 0.8));
-			Bg00->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 1.0f, 1));
+			//Bg00->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 1.0f, 1));
 			Bg00->m_transform->SetPosition(glm::vec3(0, -700, 50));
 
 
@@ -1471,7 +1485,7 @@ namespace World
 				Rabbit->Layer = "Player";
 
 				//Set Transform
-				Rabbit->m_transform->SetScale(glm::vec3(CHAR_SIZE, CHAR_SIZE, 1));
+				//Rabbit->m_transform->SetScale(glm::vec3(1, 1, 1));
 				Rabbit->m_transform->SetPosition(glm::vec3(0.0f, 100.0f, 0.0f));
 
 				Rabbit->AddComponent<MeshRenderer>();
@@ -1490,7 +1504,7 @@ namespace World
 				Rabbit->GetComponent<Rigidbody>()->SetDrag(0.01f);
 
 				Rabbit->GetComponent<BoxCollider>()->m_rigidbody = Rabbit->GetComponent<Rigidbody>();
-				Rabbit->GetComponent<BoxCollider>()->ReSize(25, 25);
+				Rabbit->GetComponent<BoxCollider>()->ReSize(7, 18);
 
 				//Behavior Script
 				Rabbit->AddComponent<HPsystem>();
@@ -1512,7 +1526,7 @@ namespace World
 
 			wp_MachineGun->AddComponent<MachineGun>()->SetWeaponFireRate(7.0f);
 			wp_MachineGun->m_transform->SetParent(Rabbit->m_transform);
-			wp_MachineGun->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
+			//wp_MachineGun->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
 			
 			wp_MachineGun->AddComponent<SoundPlayer>();
 
@@ -1535,10 +1549,38 @@ namespace World
 			laser->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/laser_bullet_sheet"));
 
 			wp_LaserGun->GetComponent<LaserGun>()->AssignLaserObj(laser);
-
 			wp_LaserGun->AddComponent<SoundPlayer>();
 
 			Serialization::SaveObject(*wp_LaserGun, PrefabPath("Weapons/LaserGun"));
+
+
+			/*std::shared_ptr<GameObject> logo = Instantiate();
+			logo->AddComponent<MeshRenderer>();
+			logo->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/WhiteLogo"));
+			logo->GetComponent<MeshRenderer>()->SetUI(true);
+			logo->GetComponent<MeshRenderer>()->SetLayer(10);
+			logo->m_transform->SetScale(glm::vec3(68 , 55, 1));
+			logo->m_transform->SetPosition(glm::vec3(300.0f, -250.0f, 1.0f));
+			logo->AddComponent<Button>();
+			logo->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::STATECONTROL, GAME_STATE::GAMEPLAY);
+			logo->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
+			logo->SetActive(false);
+
+			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::MainMenu].push_back(logo);
+
+			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Loadout].push_back(logo);*/
+			/*
+			gamecontroller->GetComponent<UIController>()->ScoreText = ui_ScoreText;
+			gamecontroller->GetComponent<UIController>()->ComboText = ui_ComboText;
+			gamecontroller->GetComponent<UIController>()->HPbar = ui_HPbar;
+			gamecontroller->GetComponent<UIController>()->Staminabar = ui_StaminaBar;
+			gamecontroller->GetComponent<UIController>()->HPText = ui_HPtext;
+			gamecontroller->GetComponent<UIController>()->QueenHPText = ui_BossHPtext;
+			gamecontroller->GetComponent<UIController>()->EquippedWeaponDisplay.push_back(ui_Weapongp);
+			gamecontroller->GetComponent<UIController>()->EquippedArtifactDisplay.push_back(ui_Artifactgp1);
+			gamecontroller->GetComponent<UIController>()->EquippedArtifactDisplay.push_back(ui_Artifactgp2);
+			*/
+
 
 			std::shared_ptr<GameObject> wp_GrenadeLauncher = Instantiate();
 
@@ -1617,9 +1659,9 @@ namespace World
 			platform->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 			platform->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
 			platform->GetComponent<MeshRenderer>()->SetLayer(3);
-			platform->m_transform->SetScale(glm::vec3(800, 20, 1));
+			//platform->m_transform->SetScale(glm::vec3(800, 20, 1));
 			//platform->m_transform->SetParent(Rabbit->m_transform);
-			platform->AddComponent<BoxCollider>()->ReScale(1, 1);
+			platform->AddComponent<BoxCollider>()->ReScale(310, 28);
 
 			platform = Instantiate().get();
 			platform->Layer = "Platform";
@@ -1627,13 +1669,13 @@ namespace World
 			platform->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 			platform->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
 			platform->GetComponent<MeshRenderer>()->SetLayer(3);
-			platform->m_transform->SetScale(glm::vec3(800, 20, 1));
+			//platform->m_transform->SetScale(glm::vec3(800, 20, 1));
 			platform->m_transform->SetPosition(glm::vec3(500, 500, 1));
-			platform->AddComponent<BoxCollider>()->ReScale(1, 1);
+			platform->AddComponent<BoxCollider>()->ReScale(325, 28);
 
 			//Soundtrack
 			std::shared_ptr<GameObject> soundtrackPlayer = Instantiate();
-			soundtrackPlayer->AddComponent<SoundPlayer>();
+			soundtrackPlayer->AddComponent<SoundPlayer>()->SetSoundType(SOUND_TYPE::SOUND_MUSIC);
 			gamecontroller->AddComponent<SoundtrackController>()->SetSoundChannel(soundtrackPlayer->GetComponent_weak<SoundPlayer>());
 			gamecontroller->GetComponent<SoundtrackController>()->MenuTracks.push_back(MusicPath("synthwave_loop_track_4"));
 			gamecontroller->GetComponent<SoundtrackController>()->GameplayTracks.push_back(MusicPath("Song09"));
@@ -1672,7 +1714,7 @@ namespace World
 			{
 				GameObject* flyer = Instantiate().get();
 				flyer->Layer = "Enemy";
-				flyer->m_transform->SetScale(glm::vec3(50, 50, 1));
+				//flyer->m_transform->SetScale(glm::vec3(2, 2, 1));
 
 				flyer->AddComponent<MeshRenderer>();
 				flyer->GetComponent<MeshRenderer>()->SetLayer(1);
@@ -1742,7 +1784,7 @@ namespace World
 
 				GameObject* bomber = Instantiate().get();
 				bomber->Layer = "Enemy";
-				bomber->m_transform->SetScale(glm::vec3(50, 50, 1));
+				//bomber->m_transform->SetScale(glm::vec3(50, 50, 1));
 
 				bomber->AddComponent<MeshRenderer>();
 				bomber->GetComponent<MeshRenderer>()->CreateMesh(12, 4);
@@ -1794,7 +1836,7 @@ namespace World
 
 				GameObject* flyer = Instantiate().get();
 				flyer->Layer = "GroundEnemy";
-				flyer->m_transform->SetScale(glm::vec3(200, 200, 1));
+				//flyer->m_transform->SetScale(glm::vec3(200, 200, 1));
 
 				flyer->AddComponent<MeshRenderer>();
 				flyer->GetComponent<MeshRenderer>()->SetLayer(1);
@@ -1862,7 +1904,7 @@ namespace World
 
 				GameObject* flyer = Instantiate().get();
 				flyer->Layer = "GroundEnemy";
-				flyer->m_transform->SetScale(glm::vec3(50, 50, 1));
+				//flyer->m_transform->SetScale(glm::vec3(50, 50, 1));
 
 				flyer->AddComponent<MeshRenderer>();
 				flyer->GetComponent<MeshRenderer>()->SetLayer(1);
@@ -1924,7 +1966,7 @@ namespace World
 
 				GameObject* flyer = Instantiate().get();
 				flyer->Layer = "GroundEnemy";
-				flyer->m_transform->SetScale(glm::vec3(100, 100, 1));
+				//flyer->m_transform->SetScale(glm::vec3(100, 100, 1));
 
 				flyer->AddComponent<MeshRenderer>();
 				flyer->GetComponent<MeshRenderer>()->SetLayer(1);
@@ -1982,7 +2024,7 @@ namespace World
 				queen = Instantiate().get();
 				queen->Layer = "Enemy";
 
-				queen->m_transform->SetScale(glm::vec3(CHAR_SIZE * 10, CHAR_SIZE * 10, 1.0f));
+				//queen->m_transform->SetScale(glm::vec3(CHAR_SIZE * 10, CHAR_SIZE * 10, 1.0f));
 				queen->m_transform->SetPosition(glm::vec3(-(Graphic::Window::GetWidth()), (Graphic::Window::GetHeight() * 2 / 3) + 700.0f, 1.0f));
 
 				queen->AddComponent<MeshRenderer>();
@@ -2013,7 +2055,7 @@ namespace World
 				GameObject* cocoon = Instantiate().get();
 
 				cocoon->Layer = "Enemy";
-				cocoon->m_transform->SetScale(glm::vec3(100.0f, 100.0f, 1.0f));
+				//cocoon->m_transform->SetScale(glm::vec3(100.0f, 100.0f, 1.0f));
 
 				cocoon->AddComponent<MeshRenderer>();
 				cocoon->GetComponent<MeshRenderer>()->SetLayer(1);
@@ -2052,10 +2094,10 @@ namespace World
 				particle->velocity->gravityScale = 2;
 				particle->lifetime->minLifeTime = 0.2f;
 				particle->lifetime->maxLifeTime = 0.2f;
-				particle->shape->minXSize = 4.5f;
-				particle->shape->maxXSize = 4.5f;
-				particle->shape->minYSize = 4.5f;
-				particle->shape->maxYSize = 4.5f;
+				//particle->shape->minXSize = 0.1f;//4.5f;
+				//particle->shape->maxXSize = 0.1f; //4.5f;
+				//particle->shape->minYSize = 0.1f; //4.5f;
+				//particle->shape->maxYSize = 0.1f; //4.5f;
 				particle->color->usingLifeTimeModifier = true;
 				particle->color->InterpolationEnd = 0.5f;
 				particle->color->Color_Start = glm::vec3(1, 0, 0);
@@ -2102,7 +2144,7 @@ namespace World
 
 				Bullet->AddComponent<MachineGunBullet>();
 
-				Bullet->m_transform->SetScale(glm::vec3(10, 10, 1));
+				//Bullet->m_transform->SetScale(glm::vec3(0.1, 0.1, 1.0f));
 
 				Bullet->SetActive(false);
 
@@ -2123,7 +2165,7 @@ namespace World
 
 				Bullet->AddComponent<SoundPlayer>();
 
-				Bullet->m_transform->SetScale(glm::vec3(30, 30, 1));
+				//Bullet->m_transform->SetScale(glm::vec3(0.1, 0.1, 1));
 
 				Bullet->AddComponent<GrenadeLauncherBullet>();
 
@@ -2146,7 +2188,7 @@ namespace World
 
 				Bullet->AddComponent<SoundPlayer>();
 
-				Bullet->m_transform->SetScale(glm::vec3(10, 10, 1));
+				//Bullet->m_transform->SetScale(glm::vec3(0.1, 0.1, 1));
 
 				Bullet->AddComponent<ZapperGunBullet>();
 
@@ -2172,7 +2214,7 @@ namespace World
 				Bullet->AddComponent<ParticleSystem>();
 				Bullet->GetComponent<ParticleSystem>()->emitter->isEnabled = true;
 
-				Bullet->m_transform->SetScale(glm::vec3(30, 30, 1));
+				//Bullet->m_transform->SetScale(glm::vec3(0.3f, 0.3f, 1.0f));
 
 				Bullet->AddComponent<BlackholeGunBullet>();
 
@@ -2186,7 +2228,7 @@ namespace World
 				GameObject* Bullet = Instantiate().get();
 				Bullet->Layer = "EnemyBullet";
 
-				Bullet->m_transform->SetScale(glm::vec3(10, 10, 1));
+				//Bullet->m_transform->SetScale(glm::vec3(0.1f, 0.1f, 1));
 
 
 				Bullet->AddComponent<MeshRenderer>();
@@ -2218,7 +2260,7 @@ namespace World
 				GameObject* Item = Instantiate().get();
 
 				Item->Layer = "Item";
-				Item->m_transform->SetScale(glm::vec3(50, 50, 1));
+				//Item->m_transform->SetScale(glm::vec3(50, 50, 1));
 
 				Item->AddComponent<MeshRenderer>();
 				Item->GetComponent<MeshRenderer>()->CreateMesh(1, 1);

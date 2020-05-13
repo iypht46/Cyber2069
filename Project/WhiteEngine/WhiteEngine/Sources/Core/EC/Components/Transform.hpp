@@ -5,7 +5,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 //#include <glm/gtc/quaternion.hpp>
 //#include <glm/gtx/quaternion.hpp>
-
+#include "Core/LogCustomType.hpp"
 #include "Core/Factory.h"
 
 //serialization
@@ -18,7 +18,8 @@
 
 using namespace std;
 
-class Transform : public Component, public std::enable_shared_from_this<Transform> {
+class Transform : public Component, public std::enable_shared_from_this<Transform> 
+{
 private:
 	std::weak_ptr<Transform> parent;
 	std::vector<weak_ptr<Transform>> children;
@@ -30,6 +31,7 @@ private:
 
 	glm::vec3 m_localPosition;
 	glm::vec3 m_localScale;
+	glm::vec3 m_meshScale = glm::vec3(1.0f);
 	float m_localRotation = 0.0f;
 
 	static float maxParallaxDistance;
@@ -50,6 +52,7 @@ public:
 	glm::vec3 GetPosition();
 	glm::vec3 GetLocalPosition();
 	glm::vec3 GetScale();
+	glm::vec3 GetTrueScale();
 	//glm::vec3 GetLocalScale();
 	float GetRotation();
 	float GetLocalRotation();
@@ -60,8 +63,10 @@ public:
 	glm::mat4 GetModelMatrix();
 
 	void SetParent(std::weak_ptr<Transform> newParent);
+	bool HasParent();
 
 	Transform* GetChild(int index);
+	unsigned int GetChildCount();
 
 	void SetPosition(glm::vec3 position);
 	void SetLocalPosition(glm::vec3 localposition);
@@ -71,7 +76,9 @@ public:
 	void SetRotation(float rotation);
 	void SetLocalRotation(float localrotation);
 	void Rotate(float rotation);
+	void SetMeshScale(glm::vec3 meshScale);
 
+	LogCustomType_DC(Transform);
 	//serialization
 public:
 	template<class Archive>
@@ -89,5 +96,10 @@ public:
 			);
 	}
 };
+
+LogCustomType_DF(Transform)
+{
+	return os << "Scale: " << obj.m_scale.x << ", " << obj.m_scale.y;
+}
 
 CEREAL_REGISTER_TYPE(Transform);

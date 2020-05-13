@@ -84,6 +84,11 @@ class DeQueen :public Enemy {
 private:
 	float SpawnDelay;
 
+	float ItemUnlockDropChance;
+	float HealValue;
+
+	float DespawnPosX = 2000.0f;
+
 	float SpawnDelayCount;
 	float SoundCounter;
 protected:
@@ -94,7 +99,7 @@ protected:
 	SoundPlayer* QueenSound;
 public:
 
-	void SetStats(float Speed, float HP, float SpawnDelay);
+	void SetStats(float Speed, float HP, float SpawnDelay, float unlockchance, float healvalue);
 
 	void SpawnItem();
 

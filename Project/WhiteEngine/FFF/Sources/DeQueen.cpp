@@ -4,6 +4,8 @@
 #include "Graphic/Window.hpp"
 #include "Core/Logger.hpp"
 
+#include "ItemDrop.hpp"
+
 void DeQueen::OnAwake() {
 	airPatrol = GetGameObject()->GetComponent<AirPatrol>();
 	QueenSound = GetGameObject()->GetComponent<SoundPlayer>();
@@ -25,10 +27,12 @@ void DeQueen::OnAwake() {
 	Enemy::OnAwake();
 }
 
-void DeQueen::SetStats(float Speed, float HP, float SpawnDelay) {
+void DeQueen::SetStats(float Speed, float HP, float SpawnDelay, float unlockchance, float healvalue) {
 	airPatrol->SetSpeed(Speed);
 	hpSystem->SetMaxHP(HP);
 	this->SpawnDelay = SpawnDelay;
+	this->HealValue = healvalue;
+	this->ItemUnlockDropChance = unlockchance;
 }
 
 void DeQueen::OnUpdate(float dt) {
@@ -37,6 +41,11 @@ void DeQueen::OnUpdate(float dt) {
 	//Enemy::OnUpdate(dt);
 
 	airPatrol->Patrol();
+
+	if ((m_gameObject->m_transform->GetPosition().x > DespawnPosX) || (m_gameObject->m_transform->GetPosition().x < -DespawnPosX)) 
+	{
+		m_gameObject->SetActive(false);
+	}
 
 	SpawnDelayCount -= dt;
 	if (SpawnDelayCount <= 0)
@@ -97,17 +106,37 @@ void DeQueen::SetSpawnDelay(int time) {
 
 void DeQueen::SpawnItem() 
 {
-	if (!GameController::GetInstance()->GetGameObject()->GetComponent<EquipmentManager>()->isAllUnlock()) 
-	{
-		GameObject* item = ItemPool->GetGameObject();
-		if (item != nullptr) {
-			item->GetComponent<Rigidbody>()->SetVelocity(glm::vec3(0));
-			item->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+	GameObject* item = ItemPool->GetGameObject();
 
-			item->SetActive(true);
+	if (item != nullptr) {
+
+		item->GetComponent<Rigidbody>()->SetVelocity(glm::vec3(0));
+		item->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+
+		item->SetActive(true);
+
+		if (!GameController::GetInstance()->GetGameObject()->GetComponent<EquipmentManager>()->isAllUnlock())
+		{
+			int randChance = (rand() % 100) + 1;
+
+			if (randChance < ItemUnlockDropChance) 
+			{
+				item->GetComponent<ItemDrop>()->SetType(Drop_Type::Unlock);
+			}
+			else 
+			{
+				item->GetComponent<ItemDrop>()->SetType(Drop_Type::Heal);
+				item->GetComponent<ItemDrop>()->SetHealValue(HealValue);
+			}
 		}
-		else {
-			ENGINE_ERROR("{} Can't spawn Item", *m_gameObject);
+		else 
+		{
+			item->GetComponent<ItemDrop>()->SetType(Drop_Type::Heal);
+			item->GetComponent<ItemDrop>()->SetHealValue(HealValue);
 		}
+		
+	}
+	else {
+		ENGINE_ERROR("{} Can't spawn Item", *m_gameObject);
 	}
 }

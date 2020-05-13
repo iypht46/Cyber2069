@@ -21,9 +21,13 @@
 #include <cereal/types/base_class.hpp>
 #include <cereal/types/polymorphic.hpp>
 
+namespace Tools { class GameControllerScriptEC; }
+
+
 class EnemySpawner;
 class UIController;
 class SoundtrackController;
+
 
 enum POOL_TYPE {
 	BULLET_MG = 0,
@@ -113,6 +117,8 @@ struct EnemyAmplifier {
 	float QueenHP = 1;
 	float QueenSpeed = 75;
 	float QueenSpawnDelay = 0.1;
+	float QueenUnlockDropChance = 75;
+	float QueenHealItemValue = 50;
 
 	//cocoon
 	float CocoonHP = 10;
@@ -158,6 +164,8 @@ public:
 			CEREAL_NVP(QueenHP),
 			CEREAL_NVP(QueenSpeed),
 			CEREAL_NVP(QueenSpawnDelay),
+			CEREAL_NVP(QueenUnlockDropChance),
+			CEREAL_NVP(QueenHealItemValue),
 
 			CEREAL_NVP(CocoonHP),
 
@@ -206,7 +214,7 @@ public:
 class GameController : public BehaviourScript {
 private:
 	friend class UIController;
-
+	friend class Tools::GameControllerScriptEC;
 	static GameController* instance;
 	float ScoreValue = 0;
 	float ComboValue = 1;
@@ -294,6 +302,8 @@ private:
 	void ResetData();
 
 public:
+	glm::vec3 MenuCamPos;
+
 	std::weak_ptr<GameObject> player;
 	/*std::weak_ptr<GameObject> HPbar;
 	std::weak_ptr<GameObject> Staminabar;*/

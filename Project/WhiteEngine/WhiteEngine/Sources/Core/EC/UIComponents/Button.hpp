@@ -5,7 +5,7 @@
 #include "Core/EC/UIComponents/TextRenderer.hpp"
 #include "Core/Logger.hpp"
 #include "Input/Input.hpp"
-
+#include "Graphic/Texture.hpp"
 #include <memory>
 
 #include <cereal/types/base_class.hpp>
@@ -47,7 +47,8 @@ private:
 	glm::vec3 DefaultTextColor;
 	
 	int OnHoverTex = -1;
-
+	Graphic::Texture OnHoverTexObj;
+	Graphic::Texture DefaultTexObj;
 public:
 	OnHoverModifier hoverModifier;
 	bool isOnHover = false;

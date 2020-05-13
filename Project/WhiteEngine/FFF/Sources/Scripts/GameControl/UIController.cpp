@@ -64,14 +64,17 @@ void UIController::ToggleUI(int openGroup) {
 
 void UIController::AdjustMasterVolume(float diff) {
 	SoundPlayer::SetMasterVolume(SoundPlayer::GetMasterVolume() + diff);
+	UpdateVolumeTexts();
 }
 
 void UIController::AdjustMusicVolume(float diff) {
 	SoundPlayer::SetMusicVolume(SoundPlayer::GetMusicVolume() + diff);
+	UpdateVolumeTexts();
 }
 
 void UIController::AdjustSFXVolume(float diff) {
 	SoundPlayer::SetSFXVolume(SoundPlayer::GetSFXVolume() + diff);
+	UpdateVolumeTexts();
 }
 
 void UIController::UpdateEquipmentDisplay() {

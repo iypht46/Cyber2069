@@ -87,6 +87,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)\WhiteEngine\Vendors\cereal-1.3.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -108,6 +109,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>_ENABLE_EXTENDED_ALIGNED_STORAGE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -129,8 +131,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Container\String.hpp" />
+    <ClInclude Include="Sources\Core\EC\Components\CoreComponents.hpp" />
     <ClInclude Include="Sources\Core\EC\Components\BehaviourScript.h" />
     <ClInclude Include="Sources\Core\EC\Components\SoundPlayer.hpp" />
+    <ClInclude Include="Sources\Core\Handle.hpp" />
+    <ClInclude Include="Sources\Graphic\Camera.hpp" />
+    <ClInclude Include="Sources\Graphic\Framebuffer.hpp" />
+    <ClInclude Include="Sources\Graphic\Shader.hpp" />
+    <ClInclude Include="Sources\Graphic\Texture.hpp" />
+    <ClInclude Include="Sources\Utility\Filesystem.hpp" />
+    <ClInclude Include="Sources\Utility\Macros.hpp" />
+    <ClInclude Include="Sources\Utility\Reflection.hpp" />
+    <ClInclude Include="Sources\Utility\Serialization.hpp" />
     <ClInclude Include="Sources\Core\EC\UIComponents\TextRenderer.hpp" />
     <ClInclude Include="Sources\Core\EC\UIComponents\Button.hpp" />
     <ClInclude Include="Sources\Core\FactoryCollection.h" />
@@ -155,7 +168,7 @@
     <ClInclude Include="Sources\Core\Message\Message.hpp" />
     <ClInclude Include="Sources\Core\Message\MessageObjects.hpp" />
     <ClInclude Include="Sources\Core\Message\MessageType.hpp" />
-    <ClInclude Include="Sources\Graphic\Camera.hpp" />
+    <ClInclude Include="Sources\Graphic\CameraObject.hpp" />
     <ClInclude Include="Sources\Graphic\GLRenderer.h" />
     <ClInclude Include="Sources\Graphic\GraphicCore.hpp" />
     <ClInclude Include="Sources\Graphic\MeshVbo.h" />
@@ -173,6 +186,8 @@
   <ItemGroup>
     <ClCompile Include="Sources\Core\EC\Components\BehaviourScript.cpp" />
     <ClCompile Include="Sources\Core\EC\Components\SoundPlayer.cpp" />
+    <ClCompile Include="Sources\Graphic\Camera.cpp" />
+    <ClCompile Include="Sources\Graphic\Framebuffer.cpp" />
     <ClCompile Include="Sources\Core\EC\UIComponents\TextRenderer.cpp" />
     <ClCompile Include="Sources\Core\EC\UIComponents\Button.cpp" />
     <ClCompile Include="Sources\Core\FactoryCollection.cpp" />
@@ -192,7 +207,7 @@
     <ClCompile Include="Sources\Core\GameInfo.cpp" />
     <ClCompile Include="Sources\Core\Message\IMessageHandler.cpp" />
     <ClCompile Include="Sources\Core\Message\MessageObjects.cpp" />
-    <ClCompile Include="Sources\Graphic\Camera.cpp" />
+    <ClCompile Include="Sources\Graphic\CameraObject.cpp" />
     <ClCompile Include="Sources\Graphic\GLRenderer.cpp" />
     <ClCompile Include="Sources\Graphic\GraphicCore.cpp" />
     <ClCompile Include="Sources\Graphic\MeshVbo.cpp" />
@@ -207,6 +222,8 @@
     <ClCompile Include="Sources\Utility\WhiteMath.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Sources\Graphic\Shader\fbo_frag.shd" />
+    <None Include="Sources\Graphic\Shader\fbo_ver.shd" />
     <None Include="Sources\Graphic\Shader\fragment.shd" />
     <None Include="Sources\Graphic\Shader\vertext.shd" />
   </ItemGroup>

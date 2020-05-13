@@ -13,13 +13,27 @@ void AirPatrol::OnAwake() {
 }
 
 void AirPatrol::Patrol() {
+
+	rb->SetVelocity(glm::vec3(-m_speed, 0, 0));
+
 	if (queen->GetPosition().x <= m_pointAX) {
 		rb->SetVelocity(glm::vec3(m_speed, 0, 0));
-		queen->SetScale(glm::vec3(glm::abs(queen->GetScale().x) * -1, queen->GetScale().y, 1.0f));
 	}
 	else if (queen->GetPosition().x >= m_pointBX) {
 		rb->SetVelocity(glm::vec3(-m_speed, 0, 0));
-		queen->SetScale(glm::vec3(glm::abs(queen->GetScale().x), queen->GetScale().y, 1.0f));
+	}
+
+	if (rb->GetVelocity().x < 0) {
+		if (m_gameObject->GetComponent<Character>()->facingRight) 
+		{
+			m_gameObject->GetComponent<Character>()->flip();
+		}
+	}
+	else {
+		if (!m_gameObject->GetComponent<Character>()->facingRight)
+		{
+			m_gameObject->GetComponent<Character>()->flip();
+		}
 	}
 }
 

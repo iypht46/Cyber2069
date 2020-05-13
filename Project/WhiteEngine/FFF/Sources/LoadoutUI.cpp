@@ -73,14 +73,14 @@ void LoadoutUI::OnAwake()
 }
 
 void LoadoutUI::OnStart() {
-	defaultWeaponDisplayTex = WeaponDisplaySlot->GetComponent<MeshRenderer>()->GetTexture();
-	defaultArtfDisplayTex = ArtifactDisplaySlot[0]->GetComponent<MeshRenderer>()->GetTexture();
+	defaultWeaponDisplayTex = WeaponDisplaySlot->GetComponent<MeshRenderer>()->GetTextureObj();
+	defaultArtfDisplayTex = ArtifactDisplaySlot[0]->GetComponent<MeshRenderer>()->GetTextureObj();
 
 	for (int i = 0; i < EquipmentManager::totalWeapon; i++) 
 	{
 		if (WeaponSelectButtons[i] != nullptr) 
 		{
-			eqManager->weaponItemTex[i] = WeaponSelectButtons[i]->GetComponent<MeshRenderer>()->GetTexture();
+			eqManager->weaponItemTex[i] = WeaponSelectButtons[i]->GetComponent<MeshRenderer>()->GetTextureObj();
 		}
 	}
 
@@ -88,7 +88,7 @@ void LoadoutUI::OnStart() {
 	{
 		if (ArtifactSelectButtons[i] != nullptr)
 		{
-			eqManager->artifactItemTex[i] = ArtifactSelectButtons[i]->GetComponent<MeshRenderer>()->GetTexture();
+			eqManager->artifactItemTex[i] = ArtifactSelectButtons[i]->GetComponent<MeshRenderer>()->GetTextureObj();
 		}
 	}
 
@@ -236,7 +236,7 @@ void LoadoutUI::UpdateDisplaySlotTexture()
 {
 	if (eqManager->GetWeaponBuffer() != -1) 
 	{
-		unsigned int tex = WeaponSelectButtons[eqManager->GetWeaponBuffer()]->GetComponent<MeshRenderer>()->GetTexture();
+		auto tex = WeaponSelectButtons[eqManager->GetWeaponBuffer()]->GetComponent<MeshRenderer>()->GetTextureObj();
 		WeaponDisplaySlot->GetComponent<MeshRenderer>()->SetTexture(tex);
 	}
 	else 
@@ -249,7 +249,7 @@ void LoadoutUI::UpdateDisplaySlotTexture()
 	{
 		if (eqManager->GetArtifactBuffer()[i] != -1) 
 		{
-			unsigned int tex = ArtifactSelectButtons[eqManager->GetArtifactBuffer()[i]]->GetComponent<MeshRenderer>()->GetTexture();
+			auto tex = ArtifactSelectButtons[eqManager->GetArtifactBuffer()[i]]->GetComponent<MeshRenderer>()->GetTextureObj();
 
 			ArtifactDisplaySlot[i]->GetComponent<MeshRenderer>()->SetTexture(tex);
 		}

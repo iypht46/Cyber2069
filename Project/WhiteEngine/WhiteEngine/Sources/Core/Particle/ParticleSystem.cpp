@@ -1,6 +1,15 @@
 #include "ParticleSystem.h"
 #include "Utility/WhiteMath.h"
 
+//Particle Behaviour
+ParticleSystem::ParticleBehaviour::ParticleBehaviour() {
+	Factory<Component, ParticleSystem::ParticleBehaviour>::Add(this);
+}
+
+ParticleSystem::ParticleBehaviour::~ParticleBehaviour() {
+	Factory<Component, ParticleSystem::ParticleBehaviour>::Remove(this);
+}
+
 //Partice System ==============================================================================
 ParticleSystem::ParticleSystem() {
 	//add to factory
@@ -64,7 +73,8 @@ void ParticleSystem::Init() {
 		}
 
 		//add collider (if used)
-		if (velocity->colliding) {
+		if (velocity->colliding) 
+		{
 			//set physics layer
 			particle->Layer = velocity->PhysicsLayer;
 
@@ -95,6 +105,8 @@ void ParticleSystem::Init() {
 }
 
 void ParticleSystem::SpawnParticle(GameObject* p) {
+	/*if (!p)
+		return;*/
 	ParticleBehaviour* particle = p->GetComponent<ParticleBehaviour>();
 
 	//set spawn position =========================================================
@@ -245,6 +257,29 @@ void ParticleSystem::SpawnParticle(GameObject* p) {
 	p->SetActive(true);
 }
 
+void ParticleSystem::UpdateMesh()
+{
+	for (auto gameObj : Particles)
+	{
+		auto mesh = gameObj->GetComponent<MeshRenderer>();
+		if (mesh)
+			mesh->SetReplaceColor(color->Color);
+	}
+}
+
+void ParticleSystem::UpdateRigidbody()
+{
+	for (auto gameObj : Particles)
+	{
+		auto rigid = gameObj->GetComponent<Rigidbody>();
+		if (rigid)
+		{
+			rigid->SetGravityScale(velocity->gravityScale);
+			rigid->SetDrag(velocity->drag);
+		}
+	}
+}
+
 void ParticleSystem::ConstantEmit(float dt) {
 	if (emitter->isEnabled && emitter->constantParticle) {
 		emitTimer += dt;
@@ -280,6 +315,8 @@ void ParticleSystem::LifeTimeModification(float dt) {
 	std::set<GameObject*> removelist;
 
 	for (GameObject* particle : SpawnedParticles) {
+		/*if (!particle)
+			continue;*/
 		ParticleBehaviour* p = particle->GetComponent<ParticleBehaviour>();
 
 		//if expired
@@ -293,10 +330,10 @@ void ParticleSystem::LifeTimeModification(float dt) {
 		else {
 			//modify shape ============================================
 			if (shape->isEnabled) {
-				if (shape->usingLifetimeScaleModifier) {
+				if (shape->usingLifetimeScaleModifier && (p->lifetime / p->maxLifetime) >= shape->scale_ModStart) {
 					p->transform->SetScale(p->transform->GetScale() * shape->scaleModifierPerFrame);
 				}
-				if (shape->usingLifetimeRotationModifier && (p->lifetime / p->maxLifetime) >= shape->scale_ModStart) {
+				if (shape->usingLifetimeRotationModifier && (p->lifetime / p->maxLifetime) >= shape->rotation_ModStart) {
 					p->transform->Rotate(shape->rotationSpeed * dt);
 				}
 			}
@@ -321,6 +358,19 @@ void ParticleSystem::LifeTimeModification(float dt) {
 	for (GameObject* rm : removelist) {
 		SpawnedParticles.erase(rm);
 	}
+}
+
+std::set<GameObject*>& ParticleSystem::GetSpawnedParticles()
+{
+	return SpawnedParticles;
+}
+
+void ParticleSystem::Reset()
+{
+	emitter->particlePool.reset();
+	emitter->particleInstanceCount = 0;
+	Particles.clear();
+	SpawnedParticles.clear();
 }
 
 

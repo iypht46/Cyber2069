@@ -3,7 +3,7 @@
 void EnemySpawner::OnUpdate(float dt)
 {
 	if (Spawning) {
-		ENGINE_INFO("Spawner type: {}, interval: {}/{}", SpawnType, SpawnRateCount, 1.0f / SpawnRate);
+		//ENGINE_INFO("Spawner type: {}, interval: {}/{}", SpawnType, SpawnRateCount, 1.0f / SpawnRate);
 		SpawnRateCount += dt;
 
 		if (SpawnRateCount > 1.0f / SpawnRate)
@@ -89,7 +89,9 @@ GameObject* EnemySpawner::SpawnEnemy(float posX,float posY)
 					enemy->GetComponent<DeQueen>()->SetStats(
 						SpawnAmplifier->QueenSpeed,
 						SpawnAmplifier->QueenHP,
-						SpawnAmplifier->QueenSpawnDelay
+						SpawnAmplifier->QueenSpawnDelay,
+						SpawnAmplifier->QueenUnlockDropChance,
+						SpawnAmplifier->QueenHealItemValue
 						);
 					break;
 				case POOL_TYPE::ENEMY_TANK:

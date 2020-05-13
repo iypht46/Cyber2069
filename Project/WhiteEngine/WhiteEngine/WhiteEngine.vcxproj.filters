@@ -42,9 +42,6 @@
     <ClInclude Include="Sources\Graphic\GraphicCore.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Graphic\Camera.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Graphic\GLRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -96,6 +93,42 @@
     <ClInclude Include="Sources\Core\EC\Components\BehaviourScript.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sources\Core\Handle.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utility\Serialization.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utility\Reflection.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Graphic\Framebuffer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Graphic\Shader.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Core\EC\Components\CoreComponents.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Graphic\CameraObject.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Graphic\Camera.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Container\String.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utility\Filesystem.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Core\Message\Observer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Core\LogCustomType.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Sources\Core\FactoryCollection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -115,6 +148,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sources\SceneManagement\SceneManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Utility\Macros.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Graphic\Texture.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sources\Core\Particle\ParticleSystem.h">
@@ -191,9 +230,6 @@
     <ClCompile Include="Sources\Core\EC\Components\Rigidbody.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Graphic\Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Sources\Physic\PhysicScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -210,6 +246,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Core\EC\Components\BehaviourScript.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Graphic\Framebuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Graphic\CameraObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Graphic\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Physic\Raycast.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Core\FactoryCollection.cpp">
@@ -249,5 +297,7 @@
   <ItemGroup>
     <None Include="Sources\Graphic\Shader\fragment.shd" />
     <None Include="Sources\Graphic\Shader\vertext.shd" />
+    <None Include="Sources\Graphic\Shader\fbo_frag.shd" />
+    <None Include="Sources\Graphic\Shader\fbo_ver.shd" />
   </ItemGroup>
 </Project>

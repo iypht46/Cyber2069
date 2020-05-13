@@ -1,6 +1,7 @@
 #include "GameController.hpp"
 #include "Scripts/GameControl/UIController.h"
 #include "Scripts/GameControl/SoundtrackController.h"
+#include "Scripts/GameControl/CameraController.h"
 
 #include "Input/Input.hpp"
 
@@ -8,6 +9,8 @@ GameController* GameController::instance = nullptr;
 float GameController::stateChangeDelay = 3.0f;
 
 GameController::GameController() {
+	MenuCamPos = glm::vec3(0, 2000, 0);
+
 	if (instance == nullptr) 
 	{
 		instance = this;
@@ -86,7 +89,7 @@ void GameController::OnStart() {
 	CreatePool(PrefabPath("Queen"), POOL_TYPE::ENEMY_QUEEN, 1);
 	QueenSpawner = CreateSpawner(POOL_TYPE::ENEMY_QUEEN);
 	QueenSpawner->SetSpawnMode(SPAWN_MODE::RANGE);
-	QueenSpawner->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() * 0.75, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() * 0.75);
+	QueenSpawner->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() * 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() * 2);
 
 	//Cocoon spawner
 	ENGINE_INFO("GameControl Creating Queen");
@@ -159,6 +162,8 @@ void GameController::OnStart() {
 	m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_CURSEDPENDANT);
 
 	StateChanged = true;
+
+	Graphic::getCamera()->SetPos(MenuCamPos);
 }
 
 void GameController::CreatePool(std::string prefabPath, int poolType, int poolSize) {
@@ -180,7 +185,6 @@ EnemySpawner* GameController::CreateSpawner(int enemyType) {
 
 void GameController::OnUpdate(float dt)
 {
-
 	//update enemy spawner, since they're not created in system
 	for (EnemySpawner* sp: Spawners) {
 		sp->OnUpdate(dt);
@@ -238,7 +242,11 @@ void GameController::OnUpdate(float dt)
 		//Do only once after state changed
 		if (StateChanged) 
 		{
+			CameraController::GetInstance()->SetTarget(MenuCamPos);
 			UIController::GetInstance()->ToggleUI(UI_GROUP::MainMenu);
+			soundtrackCon->PlayState(SOUNDTRACK_STATE::MENU, true);
+
+			UIController::GetInstance()->UpdateVolumeTexts();
 
 			this->GetGameObject()->GetComponent<EquipmentManager>()->ResetPlayerEquipment();
 			playerControl->GetGameObject()->SetActive(false);
@@ -251,8 +259,6 @@ void GameController::OnUpdate(float dt)
 
 			StateChanged = false;
 		}
-
-		UIController::GetInstance()->UpdateVolumeTexts();
 
 		if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE)) 
 		{
@@ -274,11 +280,10 @@ void GameController::OnUpdate(float dt)
 		//Do only once after state changed
 		if (StateChanged)
 		{
+			CameraController::GetInstance()->SetTarget(MenuCamPos);
 			UIController::GetInstance()->ToggleUI(UI_GROUP::Loadout);
 
 			loadoutUI.lock()->SetActive(true);
-
-			soundtrackCon->PlayState(SOUNDTRACK_STATE::MENU, true);
 
 			StateChanged = false;
 		}
@@ -288,6 +293,7 @@ void GameController::OnUpdate(float dt)
 		//Do only once after state changed
 		if (StateChanged) 
 		{
+			CameraController::GetInstance()->SetTarget((player.lock()->m_transform).get());
 			UIController::GetInstance()->ToggleUI(UI_GROUP::Gameplay);
 
 			ScoreValue = 0;
@@ -404,6 +410,7 @@ void GameController::OnUpdate(float dt)
 			//update score
 			Data->AddLeaderboardEntry("whoite", ScoreValue);
 
+			CameraController::GetInstance()->StopFollowing();
 			UIController::GetInstance()->ToggleUI(UI_GROUP::GameOver);
 
 			SetSpawningAllSpawner(false);

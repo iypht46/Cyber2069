@@ -5,9 +5,14 @@
 #include "GameController.hpp"
 #include "EquipmentManager.hpp"
 #include "PlayerController.hpp"
-
+#include "Graphic/Texture.hpp"
 
 #include "Graphic/Camera.hpp"
+
+enum Drop_Type {
+	Unlock = 0,
+	Heal
+};
 
 class ItemDrop : public BehaviourScript 
 {
@@ -18,10 +23,18 @@ private:
 	EquipmentManager* eqManager = nullptr;
 	PlayerController* player = nullptr;
 
+	int dropType = 0;
 	pair<int, int> itemtype;
 
-	unsigned int defaultTex;
+	float HealValue;
+
+	//unsigned int defaultTex;
+	Graphic::Texture defaultTex;
+
 public:
+	void SetType(int dropType);
+	void SetHealValue(float value) { this->HealValue = value; }
+
 	virtual void OnAwake(); 
 	virtual void OnStart();
 	virtual void OnEnable();
