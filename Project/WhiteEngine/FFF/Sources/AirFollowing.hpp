@@ -15,16 +15,17 @@ private:
 	Rigidbody* rb;
 	Transform* t;
 	Transform* m_target;
+
+	float velocityOrientation;
+
 protected:
 	float m_speed = 300.0f;
-	float rotAngle = 15.0f;
-	float rotRate = 5.0f;
+	float rotRate = 15.0f;
 public:
 	AirFollowing();
 	~AirFollowing() {}
 	void SetPlayer(Transform*);
 	void SetFlySpeed(float value);
-	void SetRotAngle(float value);
 	void SetRotRate(float value);
 	void FollowPlayer(float dt);
 	virtual void OnAwake();
@@ -36,7 +37,6 @@ public:
 		archive(
 			cereal::base_class<BehaviourScript>(this),
 			m_speed,
-			rotAngle,
 			rotRate
 		);
 	}

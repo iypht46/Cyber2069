@@ -26,7 +26,7 @@ void FlakBullet::OnUpdate(float dt)
 	}
 
 	//if reach destination
-	if (glm::length((glm::vec2)m_gameObject->m_transform->GetPosition() - Destination) <= destinationMargin) {
+	if (glm::length((glm::vec2)m_gameObject->m_transform->GetPosition() - Destination) <= glm::length(rb->GetVelocity()) * dt * 2) {
 		Explode();
 	}
 }

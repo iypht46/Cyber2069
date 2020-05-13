@@ -516,7 +516,7 @@ namespace World
 				ui_BossHP->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Red.jpg");
 				ui_BossHP->GetComponent<MeshRenderer>()->SetUI(true);
 				ui_BossHP->m_transform->SetScale(glm::vec3(100.0f, 20.0f, 1.0f));
-				ui_BossHP->m_transform->SetPosition(glm::vec3(0, (Graphic::Window::GetHeight() / 2) - 100, 1.0f));
+				ui_BossHP->m_transform->SetPosition(glm::vec3(0, (Graphic::Window::GetHeight() / 2) - 100.0f, 1.0f));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_BossHP);
 
@@ -561,7 +561,7 @@ namespace World
 				ui_BossHPtext->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 10);
 				ui_BossHPtext->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 				ui_BossHPtext->m_transform->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
-				ui_BossHPtext->m_transform->SetPosition(glm::vec3(0.0f, (Graphic::Window::GetHeight() / 2) - 100, 1.0f));
+				ui_BossHPtext->m_transform->SetPosition(glm::vec3(0, (Graphic::Window::GetHeight() / 2) - 100.0f, 1.0f));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_BossHPtext);
 			}
@@ -1390,7 +1390,6 @@ namespace World
 			gamecontroller->GetComponent<UIController>()->HPbar = ui_HPbar;
 			gamecontroller->GetComponent<UIController>()->Staminabar = ui_StaminaBar;
 			gamecontroller->GetComponent<UIController>()->HPText = ui_HPtext;
-			gamecontroller->GetComponent<UIController>()->QueenHPbar = ui_BossHP;
 			gamecontroller->GetComponent<UIController>()->QueenHPText = ui_BossHPtext;
 			gamecontroller->GetComponent<UIController>()->EquippedWeaponDisplay.push_back(ui_Weapongp);
 			gamecontroller->GetComponent<UIController>()->EquippedArtifactDisplay.push_back(ui_Artifactgp1);
@@ -1726,6 +1725,8 @@ namespace World
 
 				//og flyer
 				flyer->AddComponent<AirFollowing>();
+				flyer->AddComponent<AirDash>()->SetAimTime(0.1f);
+				flyer->GetComponent<AirDash>()->SetDashSpeed(500.0f);
 				flyer->AddComponent<Flyer>();
 				flyer->GetComponent<Rigidbody>()->SetGravityScale(0.00000001f);
 

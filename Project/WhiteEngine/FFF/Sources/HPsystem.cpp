@@ -8,7 +8,7 @@ void HPsystem::SetMaxHP(float hp) {
 }
 
 void HPsystem::SetHp(float hp) {
-	this->hp = hp;
+	this->hp = glm::clamp(hp, 0.0f, Maxhp);
 }
 
 void HPsystem::SetInvincible(bool inv) 
@@ -50,6 +50,12 @@ void HPsystem::TakeDamage(float damage) {
 			}
 
 			this->hp -= damage;
+
+			if (!dead && hp <= 0)
+			{
+				hp = 0;
+				Dead();
+			}
 		}
 	}
 }

@@ -22,7 +22,7 @@ void Bomber::OnUpdate(float dt) {
 
 		if (glm::length(target->GetPosition() - GetGameObject()->m_transform->GetPosition()) < DashTriggerRadius) {
 
-			GLRenderer::GetInstance()->DrawDebug_Circle(m_gameObject->m_transform->GetPosition().x, m_gameObject->m_transform->GetPosition().y, DashTriggerRadius, 1.0f, 0.0f, 0.0f);
+			GLRenderer::GetInstance()->DrawDebug_Circle(m_gameObject->m_transform->GetPosition().x, m_gameObject->m_transform->GetPosition().y, explosion->m_radius, 1.0f, 0.0f, 0.0f);
 			airDash->TargetLock(target->GetPosition());
 			state = EnemyState::Active;
 			

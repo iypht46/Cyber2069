@@ -20,14 +20,19 @@
 class Flyer :public Enemy {
 private:
 	Rigidbody* rigidbody;
+
+	float dashDelay = 1.0f;
+	float dashDelayTimer = 0;
+
 protected:
 	AirFollowing* airFollow;
+	AirDash* airDash;
 public:
 
 	Flyer() {}
 	~Flyer() {}
 
-	void SetStats(float Speed, float HP, float Dmg);
+	void SetStats(float Speed, float rotateSpeed, float aimtime, float dashspeed, float HP, float Dmg);
 
 	virtual void OnAwake() override;
 	virtual void OnUpdate(float dt);

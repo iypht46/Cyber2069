@@ -70,6 +70,9 @@ GameObject* EnemySpawner::SpawnEnemy(float posX,float posY)
 				case POOL_TYPE::ENEMY_FLYER:
 					enemy->GetComponent<Flyer>()->SetStats(
 						SpawnAmplifier->FlyerSpeed,
+						SpawnAmplifier->FlyerRotationSpeed,
+						SpawnAmplifier->FlyerAimTime,
+						SpawnAmplifier->FlyerDashSpeed,
 						SpawnAmplifier->FlyerHP,
 						SpawnAmplifier->FlyerDmg
 						);
