@@ -73,6 +73,7 @@ public:
 	void Translate(glm::vec3 translation);
 	void SetScale(glm::vec3 scale);
 	void SetLocalScale(glm::vec3 localscale);
+	void SetTrueScale(glm::vec3 trueScale);
 	void SetRotation(float rotation);
 	void SetLocalRotation(float localrotation);
 	void Rotate(float rotation);

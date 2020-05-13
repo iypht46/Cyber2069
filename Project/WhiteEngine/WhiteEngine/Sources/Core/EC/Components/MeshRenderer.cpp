@@ -259,7 +259,7 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 		{
 			auto meshMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(textureScale, 1.0f));
 			
-			modelMatrix *= meshMatrix;
+			modelMatrix *= glm::interpolate(glm::mat4(1.0f), glm::translate(glm::mat4(1.0f), glm::vec3(Graphic::getCamera()->GetCampos().x, Graphic::getCamera()->GetCampos().y, 0)), GetGameObject()->m_transform->GetParallaxValue()) * meshMatrix;
 			
 		}
 			
