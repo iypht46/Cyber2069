@@ -65,8 +65,9 @@ void MeshRenderer::SetTexture(std::string path)
 	if (newTexture.m_textureID != -1)
 	{
 		SetTexture(newTexture);
-		sr_texturePath = path;
 	}
+
+	sr_texturePath = path;
 
 	////save data
 	//sr_texturePath = path;
