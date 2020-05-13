@@ -5,6 +5,7 @@
 #include "Core/EC/UIComponents/TextRenderer.hpp"
 #include "Core/Logger.hpp"
 #include "Input/Input.hpp"
+#include "Core/EC/Components/SoundPlayer.hpp"
 
 #include <memory>
 
@@ -37,12 +38,14 @@ class Button : public BehaviourScript {
 private:
 	TextRenderer* text;
 	MeshRenderer* mesh;
+	SoundPlayer* sp;
 	glm::vec2 m_pos;
 
 	int DefaultTexture = -1;
 	string DefaultText = "";
 	
 	int OnHoverTex = -1;
+	bool playEnd = false;
 
 public:
 	OnHoverModifier hoverModifier;

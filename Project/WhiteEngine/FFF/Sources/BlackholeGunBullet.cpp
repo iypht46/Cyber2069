@@ -11,8 +11,6 @@ void BlackholeGunBullet::OnUpdate(float dt)
 	int winWidth;
 	int winHeight;
 
-	//BhSound->PlaySound();
-
 	glm::vec3 camPos = cam->GetCampos();
 
 	winWidth = Graphic::Window::GetWidth() * cam->GetZoom();
@@ -52,18 +50,24 @@ void BlackholeGunBullet::OnAwake()
 {
 	rb = m_gameObject->GetComponent<Rigidbody>();
 	BhSound = m_gameObject->GetComponent<SoundPlayer>();
-	BhSound->SetSound(SoundPath("SFX_BlackHole_Travelling"));
 	cam = Graphic::getCamera();
+}
+
+void BlackholeGunBullet::OnEnable() {
+	BhSound->SetSound(SoundPath("SFX_BlackHole_Travelling"));
+	BhSound->PlaySound();
 }
 
 void BlackholeGunBullet::OnTriggerEnter(const Physic::Collision col) {
 	ENGINE_INFO("Bullet Hit " + col.m_otherCollider->GetGameObject()->Name);
 
+	BhSound->SetSound(SoundPath("SFX_BlackHole_Sucking"));
 	Enemy* enemy = col.m_otherCollider->GetGameObject()->GetComponent<Enemy>();
 	if (enemy != nullptr && (enemy->GetGameObject()->Active())) {
 		if (!isTriggerEnemy) {
 			isTriggerEnemy = true;
 			DurationCount = 0.0f;
+			BhSound->PlaySound();
 		}
 	}
 }
@@ -127,8 +131,7 @@ void BlackholeGunBullet::DragEnemy(float dt)
 		Dot_count = 0.0f;
 	}
 
-	BhSound->SetSound(SoundPath("SFX_BlackHole_Sucking"));
-	//BhSound->PlaySound();
+
 }
 
 void BlackholeGunBullet::ReleaseEnemy() {

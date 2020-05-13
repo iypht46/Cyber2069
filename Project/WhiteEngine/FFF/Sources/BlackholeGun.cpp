@@ -24,8 +24,6 @@ void BlackholeGun::OnAwake() {
 
 	m_gameObject->SetActive(false);
 
-	SoundTimer = 0.25f;
-	SoundCounter = SoundTimer;
 }
 
 void BlackholeGun::Modify() {
@@ -44,11 +42,6 @@ void BlackholeGun::GameTimeBehaviour(float dt) {
 	if (Input::GetMouseHold(Input::MouseKeyCode::MOUSE_LEFT) ||
 		Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT))
 	{
-		/*SoundCounter -= dt;
-		if (SoundCounter <= 0) {
-			m_gameObject->GetComponent<SoundPlayer>()->PlaySound();
-			SoundCounter = SoundTimer;
-		}*/
 
 		if (weapon_delay_count >= (1.0f / weapon_firerate))
 		{

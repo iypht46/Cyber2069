@@ -216,8 +216,6 @@ CEREAL_REGISTER_TYPE(LaserGun);
 class GrenadeLauncher : public Weapon {
 private:
 	float grenade_radius;
-	float SoundCounter;
-	float SoundTimer;
 public:
 	GrenadeLauncher();
 	void Modify();
@@ -283,8 +281,6 @@ private:
 	float zapDistance;
 	float zapDuration;
 	float zapRate;
-	float SoundCounter;
-	float SoundTimer;
 public:
 	ZapperGun();
 	void Modify();
@@ -372,8 +368,6 @@ private:
 	float bullet_Duration;
 	float bullet_Radius;
 	float bullet_ToCenterSpeed;
-	float SoundCounter;
-	float SoundTimer;
 public:
 	BlackholeGun();
 	void Modify();
@@ -423,6 +417,7 @@ public:
 
 	virtual void OnAwake();
 	virtual void OnUpdate(float dt);
+	virtual void OnEnable();
 	virtual void OnTriggerEnter(const Physic::Collision col) override;
 	virtual void OnCollisionEnter(const Physic::Collision col) override;
 
@@ -449,6 +444,7 @@ protected:
 	Graphic::CameraObject* cam;
 	Rigidbody* rb;
 	Explosion* explosion;
+	SoundPlayer* sp;
 	ParticleSystem* particle;
 
 	void Explode();

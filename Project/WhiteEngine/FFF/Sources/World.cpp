@@ -445,6 +445,7 @@ namespace World
 				//Behavior Script
 				Rabbit->AddComponent<HPsystem>();
 				Rabbit->GetComponent<HPsystem>()->SetMaxHP(100);
+				Rabbit->AddComponent<SoundPlayer>();
 				Rabbit->AddComponent<PlayerController>();
 
 				//platform->m_transform->SetParent(Rabbit->m_transform);
@@ -567,6 +568,7 @@ namespace World
 			logo->GetComponent<MeshRenderer>()->SetUI(true);
 			logo->GetComponent<MeshRenderer>()->SetLayer(10);
 			logo->m_transform->SetScale(glm::vec3(68*3, 55*3, 1));
+			logo->AddComponent<SoundPlayer>();
 			logo->AddComponent<Button>();
 			logo->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::STATECONTROL, GAME_STATE::LOADOUT);
 			logo->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -581,6 +583,7 @@ namespace World
 			logo->GetComponent<MeshRenderer>()->SetLayer(10);
 			logo->m_transform->SetScale(glm::vec3(68 , 55, 1));
 			logo->m_transform->SetPosition(glm::vec3(300.0f, -250.0f, 1.0f));
+			logo->AddComponent<SoundPlayer>();
 			logo->AddComponent<Button>();
 			logo->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::STATECONTROL, GAME_STATE::GAMEPLAY);
 			logo->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -614,6 +617,7 @@ namespace World
 			ui_button->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/White.jpg");
 			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<SoundPlayer>();
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->AddComponent<Button>();
 			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
@@ -631,6 +635,7 @@ namespace World
 			ui_button->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/White.jpg");
 			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<SoundPlayer>();
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->AddComponent<Button>();
 			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
@@ -648,6 +653,7 @@ namespace World
 			ui_button->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/White.jpg");
 			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<SoundPlayer>();
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->AddComponent<Button>();
 			ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
@@ -665,6 +671,7 @@ namespace World
 			ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/08_Amplifier"));
 			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<SoundPlayer>();
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
 			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(ARTIFACT_TYPE::ARTF_BULLETAMP);
@@ -686,6 +693,7 @@ namespace World
 			ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/01_Amplifiler"));
 			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<SoundPlayer>();
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
 			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(ARTIFACT_TYPE::ARTF_FIRERATEUP);
@@ -707,6 +715,7 @@ namespace World
 			ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/04_Speed"));
 			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<SoundPlayer>();
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
 			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(ARTIFACT_TYPE::ARTF_SPEEDRUNNER);
@@ -728,6 +737,7 @@ namespace World
 			ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/02_Buffer"));
 			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<SoundPlayer>();
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
 			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(ARTIFACT_TYPE::ARTF_ATKUP);
@@ -749,6 +759,7 @@ namespace World
 			ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/03_Gravity"));
 			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<SoundPlayer>();
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
 			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(ARTIFACT_TYPE::ARTF_LOWGRAV);
@@ -770,6 +781,7 @@ namespace World
 			ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/05_Amplifier"));
 			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<SoundPlayer>();
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
 			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(ARTIFACT_TYPE::ARTF_ARTIFACTAMP);
@@ -791,6 +803,7 @@ namespace World
 			ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/07_Curse"));
 			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<SoundPlayer>();
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
 			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(ARTIFACT_TYPE::ARTF_CURSEDPENDANT);
@@ -812,6 +825,7 @@ namespace World
 			ui_button->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/MachineGun.png");
 			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<SoundPlayer>();
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::WEAPON);
 			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(WEAPON_TYPE::WEAPON_MACHINEGUN);
@@ -833,6 +847,7 @@ namespace World
 			ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/laser_idle-01"));
 			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<SoundPlayer>();
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::WEAPON);
 			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(WEAPON_TYPE::WEAPON_LASER);
@@ -854,6 +869,7 @@ namespace World
 			ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/grenadeLaucher_idle-01"));
 			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<SoundPlayer>();
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::WEAPON);
 			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(WEAPON_TYPE::WEAPON_GRENADELAUNCHER);
@@ -875,6 +891,7 @@ namespace World
 			ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/zapper_idle-01"));
 			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<SoundPlayer>();
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::WEAPON);
 			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(WEAPON_TYPE::WEAPON_ZAPPER);
@@ -896,6 +913,7 @@ namespace World
 			ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/blackhole_idle-04"));
 			ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 			ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
+			ui_button->AddComponent<SoundPlayer>();
 			ui_button->AddComponent<LoadoutSelectButton>();
 			ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::WEAPON);
 			ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(WEAPON_TYPE::WEAPON_BLACKHOLE);
@@ -1387,6 +1405,7 @@ namespace World
 				cocoon->GetComponent<Rigidbody>()->SetGravityScale(0.00001);
 				cocoon->AddComponent<Enemy>();
 
+				cocoon->AddComponent<SoundPlayer>();
 				cocoon->AddComponent<HPsystem>();
 				cocoon->GetComponent<HPsystem>()->SetMaxHP(10.0f);
 
@@ -1559,6 +1578,7 @@ namespace World
 				Bullet->AddComponent<Rigidbody>();
 				//Bullet->GetComponent<Rigidbody>()->Init(7, 7);
 				Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0000001f);
+				Bullet->AddComponent<SoundPlayer>();
 
 				Bullet->AddComponent<BoxCollider>()->ReScale(1, 1);
 				//add fume bullet component

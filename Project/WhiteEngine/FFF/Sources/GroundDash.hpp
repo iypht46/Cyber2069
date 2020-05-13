@@ -2,6 +2,7 @@
 #include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/GameObject.hpp"
 #include "Core/EC/Components/Rigidbody.hpp"
+#include "Core/EC/Components/SoundPlayer.hpp"
 
 #include "GroundPatrol.hpp"
 
@@ -20,6 +21,7 @@ protected:
 	Transform* thisTransform = nullptr;
 	Transform* m_target = nullptr;
 	Rigidbody* rb = nullptr;
+	SoundPlayer* sp = nullptr;
 	GroundPatrol* patrol = nullptr;
 
 	float m_dashSpeed = 700.0f;

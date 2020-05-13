@@ -10,6 +10,8 @@ void Bomber::OnAwake() {
 	airFollow = m_gameObject->GetComponent<AirFollowing>();
 	airDash = m_gameObject->GetComponent<AirDash>();
 	explosion = m_gameObject->GetComponent<Explosion>();
+	sp = m_gameObject->GetComponent<SoundPlayer>();
+
 
 	rigidbody = GetGameObject()->GetComponent<Rigidbody>();
 
@@ -54,6 +56,8 @@ void Bomber::OnFixedUpdate(float dt) {
 			case EnemyState::Active:
 				airDash->Dash(dt);
 				if (airDash->DashEnd()) {
+					sp->SetSound(SoundPath("SFX_Bomber_Explode"));
+					sp->PlaySound();
 					explosion->Explode();
 					hpSystem->Dead();
 

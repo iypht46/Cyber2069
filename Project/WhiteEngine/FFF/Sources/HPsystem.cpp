@@ -39,7 +39,15 @@ void HPsystem::TakeDamage(float damage) {
 		else 
 		{
 			this->hp -= damage;
+			if (m_gameObject->GetComponent<PlayerController>() != nullptr) {
+				sp->SetSound(SoundPath("SFX_Player_TakingDamage2"));
+				
+			}
+			else {
+				sp->SetSound(SoundPath("SFX_Enemy_TakingDamage"));
+			}
 		}
+		sp->PlaySound();
 	}
 }
 
@@ -54,11 +62,19 @@ bool HPsystem::isInvicible() {
 void HPsystem::Dead() 
 {
 	this->dead = true;
+	if (m_gameObject->GetComponent<PlayerController>() != nullptr) {
+		sp->SetSound(SoundPath("SFX_Player_Killed"));
+
+	}
+	else {
+		sp->SetSound(SoundPath("SFX_Enemy_Killed"));
+	}
+	sp->PlaySound();
 	this->GetGameObject()->SetActive(false);
 }
 
 void HPsystem::OnAwake() {
-
+	sp = m_gameObject->GetComponent<SoundPlayer>();
 }
 
 void HPsystem::OnEnable() {

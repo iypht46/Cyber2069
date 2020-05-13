@@ -38,6 +38,8 @@ void FlakBullet::OnAwake()
 	explosion = m_gameObject->GetComponent<Explosion>();
 	explosion->TargetLayers = TargetLayers;
 	particle = m_gameObject->GetComponent<ParticleSystem>();
+	sp = m_gameObject->GetComponent<SoundPlayer>();
+	sp->SetSound(SoundPath("SFX_SpitterBullet_Explode"));
 }
 
 void FlakBullet::OnCollisionEnter(const Physic::Collision col) {
@@ -53,7 +55,8 @@ void FlakBullet::Explode() {
 	particle->TriggerBurstEmission();
 
 	//sound
-	
+	sp->PlaySound();
+
 	//deal damage
 	explosion->Explode();
 
