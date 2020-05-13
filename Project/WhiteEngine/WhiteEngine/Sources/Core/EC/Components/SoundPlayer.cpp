@@ -33,7 +33,6 @@ void SoundPlayer::SetSound(std::string path) {
 }
 
 void SoundPlayer::PlaySound() {
-	UpdateVolume();
 	if(!soundPlayer->getSoundSource(&(sr_soundpath[0]))){
 		soundSource = soundPlayer->addSoundSourceFromFile(&(sr_soundpath[0]));
 	}
@@ -42,6 +41,7 @@ void SoundPlayer::PlaySound() {
 	}
 
 	soundVolume = soundPlayer->play2D(soundSource, isLooping, false, true);
+	UpdateVolume();
 }
 
 void SoundPlayer::StopSound() {
@@ -79,6 +79,7 @@ void SoundPlayer::SetVolume(float value) {
 
 void SoundPlayer::SetSoundType(int type) {
 	sound_type = type;
+	UpdateVolume();
 }
 
 void SoundPlayer::IncreaseVolume() {

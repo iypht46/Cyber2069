@@ -1541,7 +1541,6 @@ namespace World
 
 			wp_LaserGun->AddComponent<LaserGun>()->SetWeaponFireRate(1.0f);
 			wp_LaserGun->m_transform->SetParent(Rabbit->m_transform);
-			wp_LaserGun->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
 
 			std::shared_ptr<GameObject> laser = Instantiate();
 			laser->AddComponent<MeshRenderer>();
@@ -1591,7 +1590,6 @@ namespace World
 			
 			wp_GrenadeLauncher->AddComponent<GrenadeLauncher>()->SetWeaponFireRate(1.0f);
 			wp_GrenadeLauncher->m_transform->SetParent(Rabbit->m_transform);
-			wp_GrenadeLauncher->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
 			
 			wp_GrenadeLauncher->AddComponent<SoundPlayer>();
 
@@ -1606,7 +1604,6 @@ namespace World
 
 			wp_ZapperGun->AddComponent<ZapperGun>()->SetWeaponFireRate(1.0f);
 			wp_ZapperGun->m_transform->SetParent(Rabbit->m_transform);
-			wp_ZapperGun->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
 
 			wp_ZapperGun->AddComponent<SoundPlayer>();
 
@@ -1621,7 +1618,6 @@ namespace World
 			
 			wp_Blackhole->AddComponent<BlackholeGun>()->SetWeaponFireRate(1.0f);
 			wp_Blackhole->m_transform->SetParent(Rabbit->m_transform);
-			wp_Blackhole->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
 
 			Serialization::SaveObject(*wp_Blackhole, PrefabPath("Weapons/Blackhole"));
 			
@@ -2065,7 +2061,7 @@ namespace World
 				cocoon->AddComponent<Rigidbody>();
 				cocoon->AddComponent<BoxCollider>()->ReScale(1, 1);
 				cocoon->GetComponent<Rigidbody>()->SetGravityScale(0.00001);
-				cocoon->AddComponent<Enemy>();
+				cocoon->AddComponent<Cocoon>();
 
 				cocoon->AddComponent<HPsystem>();
 				cocoon->GetComponent<HPsystem>()->SetMaxHP(10.0f);
@@ -2146,6 +2142,8 @@ namespace World
 
 				//Bullet->m_transform->SetScale(glm::vec3(0.1, 0.1, 1.0f));
 
+
+
 				Bullet->SetActive(false);
 
 				Serialization::SaveObject(*Bullet, PrefabPath("Bullet_MG"));
@@ -2166,6 +2164,7 @@ namespace World
 				Bullet->AddComponent<SoundPlayer>();
 
 				//Bullet->m_transform->SetScale(glm::vec3(0.1, 0.1, 1));
+
 
 				Bullet->AddComponent<GrenadeLauncherBullet>();
 
@@ -2189,6 +2188,7 @@ namespace World
 				Bullet->AddComponent<SoundPlayer>();
 
 				//Bullet->m_transform->SetScale(glm::vec3(0.1, 0.1, 1));
+
 
 				Bullet->AddComponent<ZapperGunBullet>();
 
@@ -2228,7 +2228,7 @@ namespace World
 				GameObject* Bullet = Instantiate().get();
 				Bullet->Layer = "EnemyBullet";
 
-				//Bullet->m_transform->SetScale(glm::vec3(0.1f, 0.1f, 1));
+				//Bullet->m_transform->SetScale(glm::vec3(10, 10, 1));
 
 
 				Bullet->AddComponent<MeshRenderer>();

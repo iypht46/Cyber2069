@@ -112,7 +112,7 @@ void LaserGun::GameTimeBehaviour(float dt)
 
 			float laser_length = glm::sqrt(((end_x - gun_x) * (end_x - gun_x)) + ((end_y - gun_y) * (end_y - gun_y)));
 			laserObj->m_transform->SetPosition(glm::vec3((end_x + gun_x) / 2, (end_y + gun_y) / 2, 1.0f));
-			laserObj->m_transform->SetScale(glm::vec3(laser_length, laser_size, 1.0f));
+			laserObj->m_transform->SetTrueScale(glm::vec3(laser_length, laser_size, 1.0f));
 			laserObj->m_transform->SetRotation(*angle);
 
 			//DamageEnemyInRange();

@@ -194,7 +194,7 @@ void Transform::SetScale(glm::vec3 scale) {
 		m_localScale = m_scale / parent.lock()->m_scale;
 	}
 	else {
-		m_localScale = scale;
+		m_localScale = m_scale;
 	}
 
 	//update child scale
@@ -208,6 +208,23 @@ void Transform::SetLocalScale(glm::vec3 localScale) {
 
 	//update world scale and child scale
 	UpdateScale();
+}
+
+void Transform::SetTrueScale(glm::vec3 trueScale) {
+	m_scale = trueScale / m_meshScale;
+
+	//update local scale
+	if (!parent.expired()) {
+		m_localScale = m_scale / parent.lock()->m_scale;
+	}
+	else {
+		m_localScale = m_scale;
+	}
+
+	//update child scale
+	for (std::weak_ptr<Transform> child : children) {
+		child.lock()->UpdateScale();
+	}
 }
 
 void Transform::SetRotation(float rotation) {
