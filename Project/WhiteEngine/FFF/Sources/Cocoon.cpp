@@ -4,7 +4,14 @@
 
 void Cocoon::OnUpdate(float dt) 
 {
+
 	int spriteIndex = 20 - ((hpSystem->GetHP() * 20) / hpSystem->GetMaxHP());
+
+	if (spriteIndex >= 20) 
+	{
+		spriteIndex = 19;
+	}
+
 
 	float offSetY = (spriteIndex / 5.0f);
 
@@ -18,9 +25,6 @@ void Cocoon::OnUpdate(float dt)
 	}
 
 	m_gameObject->GetComponent<MeshRenderer>()->SetMeshUV(glm::vec2((int)offSetX, (int)offSetY));
-
-	GAME_INFO("Sprite index is {}", spriteIndex);
-	GAME_INFO("Sprite offset is {} , {}", offSetX, offSetY);
 
 	auto animation = GetGameObject()->GetComponent<Animator>();
 }

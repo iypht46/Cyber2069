@@ -12,6 +12,9 @@ protected:
 
 	float hp = 1;
 	bool dead = false;
+
+	float deadDelay = 2.0f;
+	float deadDelayCount = 0.0f;
 public:
 	HPsystem() {}
 	~HPsystem() {}

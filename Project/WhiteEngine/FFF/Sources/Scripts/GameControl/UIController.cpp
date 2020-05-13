@@ -191,6 +191,7 @@ void UIController::updateScoreUI() {
 }
 
 void UIController::updateQueenHPUI() {
+	
 	float queenHP = QueenHP->GetHP();
 
 	if (queenHP < 0)
@@ -198,7 +199,7 @@ void UIController::updateQueenHPUI() {
 		queenHP = 0;
 	}
 
-	float currentX = (queenHP * startHPscaleX) / PlayerHP->GetMaxHP();
+	float currentX = (queenHP * startHPscaleX) / QueenHP->GetMaxHP();
 	//float hpDiff = QueenHP->GetMaxHP() - queenHP;
 	if (!QueenHPbar.expired()) {
 		QueenHPbar.lock()->m_transform->SetScale(glm::vec3(currentX, startHPscaleY, 1.0f));
@@ -207,6 +208,12 @@ void UIController::updateQueenHPUI() {
 	if (!QueenHPText.expired()) {
 		QueenHPText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)queenHP) + "/" + to_string((int)QueenHP->GetMaxHP()));
 	}
+}
+
+void UIController::SetActiveQueenUI(bool active) {
+
+	QueenHPbar.lock()->SetActive(active);
+	QueenHPText.lock()->SetActive(active);
 }
 
 void UIController::UpdateVolumeTexts() {

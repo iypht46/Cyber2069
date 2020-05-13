@@ -29,6 +29,11 @@ void HPsystem::ResetHP() {
 	this->dead = false;
 }
 
+void HPsystem::OnEnable() 
+{
+	ResetHP();
+}
+
 void HPsystem::TakeDamage(float damage) {
 	if (!this->invincible) 
 	{
@@ -59,16 +64,11 @@ bool HPsystem::isInvicible() {
 
 void HPsystem::Dead() 
 {
-	this->dead = true;
 	this->GetGameObject()->SetActive(false);
 }
 
 void HPsystem::OnAwake() {
 
-}
-
-void HPsystem::OnEnable() {
-	ResetHP();
 }
 
 void HPsystem::OnStart() {
@@ -83,7 +83,19 @@ void HPsystem::OnFixedUpdate(float dt) {
 	if (!dead && hp <= 0)
 	{
 		hp = 0;
-		Dead();
+
+		this->dead = true;
+	}
+
+	if (dead) 
+	{
+		deadDelayCount += dt;
+
+		if (deadDelayCount >= deadDelay) 
+		{
+			deadDelayCount = 0;
+			Dead();
+		}
 	}
 }
 
