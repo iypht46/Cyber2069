@@ -147,7 +147,7 @@ void Button::ModifyOnHover() {
 	if (isOnHover) {
 
 		if (mesh != nullptr) {
-			if (OnHoverTex != -1)
+			if (OnHoverTexObj.m_textureID != -1)
 			{
 				//mesh->SetTexture(OnHoverTex);
 				mesh->SetTexture(OnHoverTexObj);
@@ -173,7 +173,7 @@ void Button::ModifyOnHover() {
 	else 
 	{
 		if (mesh != nullptr) {
-			if (DefaultTexture != -1 && OnHoverTex != -1)
+			if (DefaultTexObj.m_textureID != -1 && OnHoverTexObj.m_textureID != -1)
 			{
 				//mesh->SetTexture(DefaultTexture);
 				mesh->SetTexture(DefaultTexObj);
