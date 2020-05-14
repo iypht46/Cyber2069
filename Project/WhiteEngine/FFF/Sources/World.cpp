@@ -273,6 +273,7 @@ namespace World
 			ui_HPbar = Instantiate();
 			ui_StaminaBar = Instantiate();
 			
+			gamecontroller->AddComponent<SoundPlayer>();
 			gamecontroller->AddComponent<GameController>();
 			gamecontroller->GetComponent<GameController>()->SetGameState(GAME_STATE::MAINMENU);
 			gamecontroller->GetComponent<GameController>()->SetGameplayState(GAMEPLAY_STATE::NORMAL);

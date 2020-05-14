@@ -46,7 +46,7 @@ void HPsystem::TakeDamage(float damage) {
 		//shake camera 
 		if (m_gameObject->GetComponent<PlayerController>() != nullptr) {
 			CameraController::GetInstance()->ShakeCamera(30.0f, 10.0f, 0.2f);
-
+			
 			sp->SetSound(SoundPath("SFX_Player_TakingDamage2"));
 
 		}

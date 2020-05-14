@@ -31,6 +31,7 @@ GameController* GameController::GetInstance()
 void GameController::OnAwake() {
 	this->PlayerHP = player.lock()->GetComponent<HPsystem>();
 	this->playerControl = player.lock()->GetComponent<PlayerController>();
+	this->sp = m_gameObject->GetComponent<SoundPlayer>();
 	this->soundtrackCon = m_gameObject->GetComponent<SoundtrackController>();
 
 	LoadGameConfig();
@@ -410,6 +411,9 @@ void GameController::OnUpdate(float dt)
 		//Do only once after state changed
 		if (StateChanged) 
 		{
+			sp->SetSound(SoundPath("SFX_Game_GameOver"));
+			sp->PlaySound();
+			
 			//update score
 			Data->AddLeaderboardEntry("whoite", ScoreValue);
 
