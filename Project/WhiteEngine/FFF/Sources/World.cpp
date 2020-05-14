@@ -1390,6 +1390,7 @@ namespace World
 			gamecontroller->GetComponent<UIController>()->HPbar = ui_HPbar;
 			gamecontroller->GetComponent<UIController>()->Staminabar = ui_StaminaBar;
 			gamecontroller->GetComponent<UIController>()->HPText = ui_HPtext;
+			gamecontroller->GetComponent<UIController>()->QueenHPbar = ui_BossHP;
 			gamecontroller->GetComponent<UIController>()->QueenHPText = ui_BossHPtext;
 			gamecontroller->GetComponent<UIController>()->EquippedWeaponDisplay.push_back(ui_Weapongp);
 			gamecontroller->GetComponent<UIController>()->EquippedArtifactDisplay.push_back(ui_Artifactgp1);

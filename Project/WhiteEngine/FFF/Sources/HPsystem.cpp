@@ -54,7 +54,7 @@ void HPsystem::TakeDamage(float damage) {
 			if (!dead && hp <= 0)
 			{
 				hp = 0;
-				Dead();
+				this->dead = true;
 			}
 		}
 	}
