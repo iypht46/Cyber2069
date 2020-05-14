@@ -366,14 +366,10 @@ namespace Tools
 		{
 			type = "AnimatorEC";
 		}
-		else if (CHECK_TYPE(SoundPlayer, comp))
+		else if (CHECK_TYPE(ParticleSystem, comp))
 		{
-			type = "SoundPlayerEC";
+			type = "ParticleComponentEC";
 		}
-		/*else if (CHECK_TYPE(BehaviourScript, comp))
-		{
-
-		}*/
 
 		if (type != "none")
 		{

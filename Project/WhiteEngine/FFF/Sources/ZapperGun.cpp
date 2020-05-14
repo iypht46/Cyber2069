@@ -23,8 +23,6 @@ void ZapperGun::OnAwake(){
 
 	m_gameObject->SetActive(false);
 
-	SoundTimer = 0.20f;
-	SoundCounter = SoundTimer;
 }
 
 void ZapperGun::Modify() {
@@ -42,13 +40,6 @@ void ZapperGun::GameTimeBehaviour(float dt) {
 	if (Input::GetMouseHold(Input::MouseKeyCode::MOUSE_LEFT) ||
 		Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT))
 	{
-		/*SoundCounter -= dt;
-		if (SoundCounter <= 0) {
-			m_gameObject->GetComponent<SoundPlayer>()->PlaySound();
-			SoundCounter = SoundTimer;
-		}*/
-
-
 		if (weapon_delay_count >= (1.0f / weapon_firerate))
 		{
 			m_gameObject->GetComponent<SoundPlayer>()->PlaySound();

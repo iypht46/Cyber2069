@@ -5,7 +5,9 @@
 #include "Core/EC/UIComponents/TextRenderer.hpp"
 #include "Core/Logger.hpp"
 #include "Input/Input.hpp"
+#include "Core/EC/Components/SoundPlayer.hpp"
 #include "Graphic/Texture.hpp"
+
 #include <memory>
 
 #include <cereal/types/base_class.hpp>
@@ -40,6 +42,7 @@ class Button : public BehaviourScript {
 private:
 	TextRenderer* text;
 	MeshRenderer* mesh;
+	SoundPlayer* sp;
 	glm::vec2 m_pos;
 
 	int DefaultTexture = -1;
@@ -47,6 +50,8 @@ private:
 	glm::vec3 DefaultTextColor;
 	
 	int OnHoverTex = -1;
+	bool playEnd = false;
+
 	Graphic::Texture OnHoverTexObj;
 	Graphic::Texture DefaultTexObj;
 public:

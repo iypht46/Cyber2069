@@ -63,10 +63,10 @@ void SoundPlayer::UpdateVolume() {
 		{
 		default:
 		case SOUND_SFX:
-			soundVolume->setVolume(volumeValue * SoundPlayer::SFXVolume * SoundPlayer::MasterVolume);
+			soundPlayer->setSoundVolume(volumeValue * SoundPlayer::SFXVolume * SoundPlayer::MasterVolume);
 			break;
 		case SOUND_MUSIC:
-			soundVolume->setVolume(volumeValue * SoundPlayer::MusicVolume * SoundPlayer::MasterVolume);
+			soundPlayer->setSoundVolume(volumeValue * SoundPlayer::MusicVolume * SoundPlayer::MasterVolume);
 			break;
 		}
 	}
