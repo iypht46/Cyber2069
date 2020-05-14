@@ -22,6 +22,7 @@ private:
 
 	EquipmentManager* eqManager = nullptr;
 	PlayerController* player = nullptr;
+	SoundPlayer* sp = nullptr;
 
 	int dropType = 0;
 	pair<int, int> itemtype;

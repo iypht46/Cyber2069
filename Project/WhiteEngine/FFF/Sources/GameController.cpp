@@ -31,6 +31,7 @@ GameController* GameController::GetInstance()
 void GameController::OnAwake() {
 	this->PlayerHP = player.lock()->GetComponent<HPsystem>();
 	this->playerControl = player.lock()->GetComponent<PlayerController>();
+	this->sp = m_gameObject->GetComponent<SoundPlayer>();
 	this->soundtrackCon = m_gameObject->GetComponent<SoundtrackController>();
 
 	LoadGameConfig();
@@ -296,6 +297,9 @@ void GameController::OnUpdate(float dt)
 			CameraController::GetInstance()->SetTarget((player.lock()->m_transform).get());
 			UIController::GetInstance()->ToggleUI(UI_GROUP::Gameplay);
 
+			sp->SetSound(SoundPath("SFX_Game_SessionStart"));
+			sp->PlaySound();
+
 			ScoreValue = 0;
 			playerControl->GetGameObject()->SetActive(true);
 			playerControl->GetGameObject()->m_transform->SetPosition(PlayerStartPosition);
@@ -410,6 +414,9 @@ void GameController::OnUpdate(float dt)
 		//Do only once after state changed
 		if (StateChanged) 
 		{
+			sp->SetSound(SoundPath("SFX_Game_GameOver"));
+			sp->PlaySound();
+			
 			//update score
 			Data->AddLeaderboardEntry("whoite", ScoreValue);
 
@@ -495,6 +502,12 @@ void GameController::AddComboValue(float value) {
 
 void GameController::SetCombo(float combo) {
 	ComboValue = combo;
+}
+
+void GameController::ResetCombo() {
+	this->ComboValue = 1;
+	sp->SetSound(SoundPath("SFX_Game_LoseCombo"));
+	sp->PlaySound();
 }
 
 void GameController::Restart() {

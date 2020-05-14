@@ -3,7 +3,7 @@
 	<object>
 		<MasterVolume>1</MasterVolume>
 		<MusicVolume>0.60000002384185791</MusicVolume>
-		<SFXVolume>0.20000001788139343</SFXVolume>
+		<SFXVolume>0.80000007152557373</SFXVolume>
 		<Amplifiers size="dynamic">
 			<value0>
 				<ptr_wrapper>

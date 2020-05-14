@@ -325,6 +325,7 @@ void LoadoutSelectButton::OnUpdate(float dt)
 
 void LoadoutSelectButton::AddEquipment() 
 {
+	sp = GetGameObject()->GetComponent<SoundPlayer>();
 	switch (type)
 	{
 	case ITEM_TYPE::WEAPON:
@@ -342,6 +343,10 @@ void LoadoutSelectButton::AddEquipment()
 	default:
 		break;
 	}
+	
+	sp->SetSound(SoundPath("SFX_UI_ArtifactEquiping"));
+	sp->PlaySound();
+	
 }
 
 void LoadoutSelectButton::RemoveWeapon() 
