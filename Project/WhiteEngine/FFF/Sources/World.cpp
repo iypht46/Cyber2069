@@ -262,7 +262,7 @@ namespace World
 				
 		}
 
-		//Serialization::LoadObject(*SceneManagement::ActiveScene, ScenePath("SerializationTest"));
+		//Serialization::LoadObject(*SceneManagement::ActiveScene, ScenePath("CrossVersionTestScene"));
 
 		//700 lines is in here
 		{
@@ -600,7 +600,7 @@ namespace World
 			{
 				ui_ScoreText = Instantiate();
 				ui_ScoreText->AddComponent<TextRenderer>();
-				ui_ScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 50);
+				ui_ScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 50);
 				ui_ScoreText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 				ui_ScoreText->m_transform->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
 				ui_ScoreText->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 50.0f, (Graphic::Window::GetHeight() / -2) + 50.0f, 1.0f));
@@ -609,7 +609,7 @@ namespace World
 
 				ui_ComboText = Instantiate();
 				ui_ComboText->AddComponent<TextRenderer>();
-				ui_ComboText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 50);
+				ui_ComboText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 50);
 				ui_ComboText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 				ui_ComboText->m_transform->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
 				ui_ComboText->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 50.0f, (Graphic::Window::GetHeight() / -2) + 150.0f, 1.0f));
@@ -676,7 +676,7 @@ namespace World
 
 				ui_HPtext = Instantiate();
 				ui_HPtext->AddComponent<TextRenderer>();
-				ui_HPtext->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 10);
+				ui_HPtext->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 10);
 				ui_HPtext->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 				ui_HPtext->m_transform->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
 				ui_HPtext->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 280.0f, (Graphic::Window::GetHeight() / 2) - 40.0f, 1.0f));
@@ -685,7 +685,7 @@ namespace World
 
 				ui_BossHPtext = Instantiate();
 				ui_BossHPtext->AddComponent<TextRenderer>();
-				ui_BossHPtext->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 10);
+				ui_BossHPtext->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 10);
 				ui_BossHPtext->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 				ui_BossHPtext->m_transform->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
 				ui_BossHPtext->m_transform->SetPosition(glm::vec3(0, (Graphic::Window::GetHeight() / 2) - 100.0f, 1.0f));
@@ -713,7 +713,7 @@ namespace World
 
 				std::shared_ptr<GameObject> startButtonText = Instantiate();
 				startButtonText->AddComponent<TextRenderer>();
-				startButtonText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 20);
+				startButtonText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 20);
 				startButtonText->GetComponent<TextRenderer>()->SetText("Start");
 				startButtonText->m_transform->SetPosition(glm::vec3(-300.0f, -250.0f, 1));
 
@@ -1051,7 +1051,7 @@ namespace World
 				LoadoutText = Instantiate();
 
 				LoadoutText->AddComponent<TextRenderer>();
-				LoadoutText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 50);
+				LoadoutText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 50);
 				LoadoutText->GetComponent<TextRenderer>()->SetText("Test/n Test");
 				LoadoutText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 				LoadoutText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
@@ -1062,7 +1062,7 @@ namespace World
 				LoadoutText = Instantiate();
 
 				LoadoutText->AddComponent<TextRenderer>();
-				LoadoutText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 30);
+				LoadoutText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 30);
 				LoadoutText->GetComponent<TextRenderer>()->SetText("Test/n Test");
 				LoadoutText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 				LoadoutText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
@@ -1143,7 +1143,7 @@ namespace World
 				std::shared_ptr<GameObject> GameOverText = Instantiate();
 				
 				GameOverText->AddComponent<TextRenderer>();
-				GameOverText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 50);
+				GameOverText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 50);
 				GameOverText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 				GameOverText->GetComponent<TextRenderer>()->SetText("GameOver!");
 				GameOverText->m_transform->SetPosition(glm::vec3(-100, 200, 1));
@@ -1151,7 +1151,7 @@ namespace World
 				std::shared_ptr<GameObject> GameOverScoreText = Instantiate();
 
 				GameOverScoreText->AddComponent<TextRenderer>();
-				GameOverScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 50);
+				GameOverScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 50);
 				GameOverScoreText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 				GameOverScoreText->GetComponent<TextRenderer>()->SetText("GameOver!");
 				GameOverScoreText->m_transform->SetPosition(glm::vec3(-100, 100, 1));
@@ -1179,7 +1179,7 @@ namespace World
 			{
 				std::shared_ptr<GameObject> HighScoreText = Instantiate();
 				HighScoreText->AddComponent<TextRenderer>();
-				HighScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 20);
+				HighScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 20);
 				HighScoreText->GetComponent<TextRenderer>()->SetText("Highscore");
 				HighScoreText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
 				HighScoreText->m_transform->SetPosition(glm::vec3(0, 0, 1));
@@ -1191,7 +1191,7 @@ namespace World
 			{
 				std::shared_ptr<GameObject> OptionText = Instantiate();
 				OptionText->AddComponent<TextRenderer>();
-				OptionText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 20);
+				OptionText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 20);
 				OptionText->GetComponent<TextRenderer>()->SetText("Option");
 				OptionText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
 				OptionText->m_transform->SetPosition(glm::vec3(0, 200, 1));
@@ -1200,7 +1200,7 @@ namespace World
 
 				std::shared_ptr<GameObject> MasterVolumeText = Instantiate();
 				MasterVolumeText->AddComponent<TextRenderer>();
-				MasterVolumeText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 20);
+				MasterVolumeText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 20);
 				MasterVolumeText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
 				MasterVolumeText->m_transform->SetPosition(glm::vec3(100, 50, 1));
 
@@ -1210,7 +1210,7 @@ namespace World
 
 				std::shared_ptr<GameObject> MasterText = Instantiate();
 				MasterText->AddComponent<TextRenderer>();
-				MasterText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 20);
+				MasterText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 20);
 				MasterText->GetComponent<TextRenderer>()->SetText("Master Volume");
 				MasterText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
 				MasterText->m_transform->SetPosition(glm::vec3(-300, 50, 1));
@@ -1247,7 +1247,7 @@ namespace World
 
 				std::shared_ptr<GameObject> MusicVolumeText = Instantiate();
 				MusicVolumeText->AddComponent<TextRenderer>();
-				MusicVolumeText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 20);
+				MusicVolumeText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 20);
 				MusicVolumeText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
 				MusicVolumeText->m_transform->SetPosition(glm::vec3(100, 30, 1));
 
@@ -1257,7 +1257,7 @@ namespace World
 
 				std::shared_ptr<GameObject> MusicText = Instantiate();
 				MusicText->AddComponent<TextRenderer>();
-				MusicText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 20);
+				MusicText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 20);
 				MusicText->GetComponent<TextRenderer>()->SetText("Music Volume");
 				MusicText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
 				MusicText->m_transform->SetPosition(glm::vec3(-300, 30, 1));
@@ -1295,7 +1295,7 @@ namespace World
 
 				std::shared_ptr<GameObject> SFXVolumeText = Instantiate();
 				SFXVolumeText->AddComponent<TextRenderer>();
-				SFXVolumeText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 20);
+				SFXVolumeText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 20);
 				SFXVolumeText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
 				SFXVolumeText->m_transform->SetPosition(glm::vec3(100, 10, 1));
 
@@ -1306,7 +1306,7 @@ namespace World
 
 				std::shared_ptr<GameObject> SFXText = Instantiate();
 				SFXText->AddComponent<TextRenderer>();
-				SFXText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 20);
+				SFXText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 20);
 				SFXText->GetComponent<TextRenderer>()->SetText("SFX Volume");
 				SFXText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
 				SFXText->m_transform->SetPosition(glm::vec3(-300, 10, 1));
@@ -1358,7 +1358,7 @@ namespace World
 
 				std::shared_ptr<GameObject> ResetProgressText = Instantiate();
 				ResetProgressText->AddComponent<TextRenderer>();
-				ResetProgressText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 20);
+				ResetProgressText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 20);
 				ResetProgressText->GetComponent<TextRenderer>()->SetText("Reset Progress");
 				ResetProgressText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
 				ResetProgressText->m_transform->SetPosition(glm::vec3(-200, -100, 1));
@@ -1382,7 +1382,7 @@ namespace World
 
 				std::shared_ptr<GameObject> YesText = Instantiate();
 				YesText->AddComponent<TextRenderer>();
-				YesText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 20);
+				YesText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 20);
 				YesText->GetComponent<TextRenderer>()->SetText("Yes");
 				YesText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
 				YesText->m_transform->SetPosition(glm::vec3(-50, -100, 1));
@@ -1392,7 +1392,7 @@ namespace World
 
 				std::shared_ptr<GameObject> NoText = Instantiate();
 				NoText->AddComponent<TextRenderer>();
-				NoText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 20);
+				NoText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 20);
 				NoText->GetComponent<TextRenderer>()->SetText("No");
 				NoText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
 				NoText->m_transform->SetPosition(glm::vec3(50, -100, 1));
@@ -1402,7 +1402,7 @@ namespace World
 
 				std::shared_ptr<GameObject> WarnResetProgressText = Instantiate();
 				WarnResetProgressText->AddComponent<TextRenderer>();
-				WarnResetProgressText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 20);
+				WarnResetProgressText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 20);
 				WarnResetProgressText->GetComponent<TextRenderer>()->SetText("Warning: Reset Progress");
 				WarnResetProgressText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
 				WarnResetProgressText->m_transform->SetPosition(glm::vec3(-100, 100, 1));
@@ -1441,7 +1441,7 @@ namespace World
 
 				std::shared_ptr<GameObject> WarnQuitText = Instantiate();
 				WarnQuitText->AddComponent<TextRenderer>();
-				WarnQuitText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 20);
+				WarnQuitText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 20);
 				WarnQuitText->GetComponent<TextRenderer>()->SetText("Warning: Quit game");
 				WarnQuitText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
 				WarnQuitText->m_transform->SetPosition(glm::vec3(-100, 100, 1));
@@ -1485,19 +1485,19 @@ namespace World
 			{
 				std::shared_ptr<GameObject> CreditText = Instantiate();
 				CreditText->AddComponent<TextRenderer>();
-				CreditText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 20);
+				CreditText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Pixeled.ttf", 20);
 				CreditText->GetComponent<TextRenderer>()->SetText("Credit");
 				CreditText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
-				CreditText->m_transform->SetPosition(glm::vec3(0, 0, 1));
+				CreditText->m_transform->SetPosition(glm::vec3(400, 275, 1));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Credit].push_back(CreditText);
 
 				std::shared_ptr<GameObject> CreditContentText = Instantiate();
 				CreditContentText->AddComponent<TextRenderer>();
-				CreditContentText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 20);
-				CreditContentText->GetComponent<TextRenderer>()->SetText("Credit");
+				CreditContentText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Pixeled.ttf", 20);
+				CreditContentText->GetComponent<TextRenderer>()->SetText("Programmer:\n\nRatchanon Prapassornpong\n\nEiyaphat Suntiwong\n\nKanitpong Tang\n\nPuh-Zang Liu\n\n\n\nArtist:\n\nPimpaka Lertjittikun\n\nKirana Tanburana\n\nMassarin Pathompongpan");
 				CreditContentText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
-				CreditContentText->m_transform->SetPosition(glm::vec3(0, -100, 1));
+				CreditContentText->m_transform->SetPosition(glm::vec3(20, 190, 1));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Credit].push_back(CreditContentText);
 			}
@@ -1513,7 +1513,7 @@ namespace World
 			ScoreText = Instantiate();
 
 			ScoreText->AddComponent<TextRenderer>();
-			ScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 30);
+			ScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 30);
 			ScoreText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 
 			ScoreText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
@@ -1527,7 +1527,7 @@ namespace World
 			ScoreText = Instantiate();
 
 			ScoreText->AddComponent<TextRenderer>();
-			ScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 30);
+			ScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 30);
 			ScoreText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 
 			ScoreText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
