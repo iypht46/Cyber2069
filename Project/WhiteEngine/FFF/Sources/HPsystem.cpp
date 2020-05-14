@@ -72,9 +72,6 @@ void HPsystem::Dead()
 		sp->SetSound(SoundPath("SFX_Player_Killed"));
 
 	}
-	else {
-		sp->SetSound(SoundPath("SFX_Enemy_Killed"));
-	}
 	sp->PlaySound();
 	this->GetGameObject()->SetActive(false);
 }

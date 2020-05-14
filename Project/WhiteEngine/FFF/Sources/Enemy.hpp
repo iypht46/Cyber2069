@@ -23,6 +23,7 @@ protected:
 	HPsystem* hpSystem;
 	Animator* animator;
 	Transform* target;
+	SoundPlayer* sp;
 	bool foundTarget;
 
 	bool isDead = false;

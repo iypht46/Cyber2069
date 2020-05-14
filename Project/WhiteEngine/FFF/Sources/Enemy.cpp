@@ -4,6 +4,7 @@
 void Enemy::OnAwake() {
 	hpSystem = GetGameObject()->GetComponent<HPsystem>();
 	animator = GetGameObject()->GetComponent<Animator>();
+	sp = GetGameObject()->GetComponent<SoundPlayer>();
 }
 
 void Enemy::OnTakeDamage() {
@@ -18,6 +19,15 @@ void Enemy::OnDead() {
 	state = EnemyState::Idle;
 	affectedByWeapon = false;
 	GotZap = false;
+
+	if (m_gameObject->GetComponent<Cocoon>() != nullptr) {
+	sp->SetSound(SoundPath("SFX_Game_Cocoon_Killed"));
+	}
+	else {
+	sp->SetSound(SoundPath("SFX_Enemy_Killed"));
+	}
+
+	sp->PlaySound();
 
 	DeQueen* queen = m_gameObject->GetComponent<DeQueen>();
 

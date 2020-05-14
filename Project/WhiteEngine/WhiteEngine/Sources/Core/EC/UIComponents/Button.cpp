@@ -15,7 +15,6 @@ void Button::OnAwake()
 	mesh = m_gameObject->GetComponent<MeshRenderer>();
 	text = m_gameObject->GetComponent<TextRenderer>();
 	sp = m_gameObject->GetComponent<SoundPlayer>();
-	sp->SetSound(SoundPath("SFX_UI_Selection"));
 
 
 	if (mesh != nullptr) 
@@ -61,6 +60,7 @@ void Button::OnUpdate(float dt) {
 	{
 		isOnHover = true;
 		if (isOnHover && !playEnd) {
+			sp->SetSound(SoundPath("SFX_UI_Selection"));
 			sp->PlaySound();
 			playEnd = true;
 		}
@@ -82,7 +82,7 @@ void Button::OnClick()
 	ENGINE_INFO("Click");
 
 	LoadoutSelectButton* lsb = m_gameObject->GetComponent<LoadoutSelectButton>();
-
+	sp->SetSound(SoundPath("SFX_UI_Pressed"));
 	switch (buttonType)
 	{
 	case BUTTON_TYPE::UICONTROL:
@@ -147,6 +147,8 @@ void Button::OnClick()
 	default:
 		break;
 	}
+
+	sp->PlaySound();
 }
 
 Button::~Button() {
