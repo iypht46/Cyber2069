@@ -139,7 +139,7 @@ namespace World
 			Rabbit->m_transform->Rotate(-1.0f);
 		}
 
-		if (Input::GetKeyHold(Input::KeyCode::KEY_Y))
+		/*if (Input::GetKeyHold(Input::KeyCode::KEY_Y))
 		{
 			Bg1->m_transform->SetPosition(Bg1->m_transform->GetPosition() + glm::vec3(0, 0, 5));
 			ENGINE_INFO("Increased 1Zpos to {}", Bg1->m_transform->GetPosition().z);
@@ -161,7 +161,7 @@ namespace World
 		{
 			Bg2->m_transform->SetPosition(Bg2->m_transform->GetPosition() + glm::vec3(0, 0, -5));
 			ENGINE_INFO("Decreased 2Zpos to {}", Bg2->m_transform->GetPosition().z);
-		}
+		}*/
 
 		//if (Input::GetKeyHold(Input::KeyCode::KEY_N))
 		//{
@@ -1575,40 +1575,40 @@ namespace World
 			gamecontroller->GetComponent<UIController>()->EquippedArtifactDisplay.push_back(ui_Artifactgp2);
 
 
-			Bg2 = Instantiate().get();
-			Bg2->AddComponent<MeshRenderer>();
-			Bg2->GetComponent<MeshRenderer>()->SetLayer(-5);
-			Bg2->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			Bg2->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer2.png");
-			//Bg2->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
-			Bg2->m_transform->SetPosition(glm::vec3(0, -300, 3000));
+			//Bg2 = Instantiate().get();
+			//Bg2->AddComponent<MeshRenderer>();
+			//Bg2->GetComponent<MeshRenderer>()->SetLayer(-5);
+			//Bg2->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			//Bg2->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer2.png");
+			////Bg2->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
+			//Bg2->m_transform->SetPosition(glm::vec3(0, -300, 3000));
 
 
-			Bg1 = Instantiate().get();
-			Bg1->AddComponent<MeshRenderer>();
-			Bg1->GetComponent<MeshRenderer>()->SetLayer(-4);
-			Bg1->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			Bg1->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer1.png");
-			//Bg1->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
-			Bg1->m_transform->SetPosition(glm::vec3(0, -300, 2000));
+			//Bg1 = Instantiate().get();
+			//Bg1->AddComponent<MeshRenderer>();
+			//Bg1->GetComponent<MeshRenderer>()->SetLayer(-4);
+			//Bg1->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			//Bg1->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer1.png");
+			////Bg1->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 2.0f, 1));
+			//Bg1->m_transform->SetPosition(glm::vec3(0, -300, 2000));
 
-			std::shared_ptr<GameObject> Bg0 = Instantiate();
-			Bg0->AddComponent<MeshRenderer>();
-			Bg0->GetComponent<MeshRenderer>()->SetLayer(-3);
-			Bg0->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			Bg0->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer1.png");
-			Bg0->GetComponent<MeshRenderer>()->SetReplaceColor(glm::vec3(0.2, 0.2, 0.8));
-			//Bg0->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * -2.0f, Graphic::Window::GetHeight() * 1.5f, 1));
-			Bg0->m_transform->SetPosition(glm::vec3(0, -500, 1000));
+			//std::shared_ptr<GameObject> Bg0 = Instantiate();
+			//Bg0->AddComponent<MeshRenderer>();
+			//Bg0->GetComponent<MeshRenderer>()->SetLayer(-3);
+			//Bg0->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			//Bg0->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer1.png");
+			//Bg0->GetComponent<MeshRenderer>()->SetReplaceColor(glm::vec3(0.2, 0.2, 0.8));
+			////Bg0->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * -2.0f, Graphic::Window::GetHeight() * 1.5f, 1));
+			//Bg0->m_transform->SetPosition(glm::vec3(0, -500, 1000));
 
-			std::shared_ptr<GameObject> Bg00 = Instantiate();
-			Bg00->AddComponent<MeshRenderer>();
-			Bg00->GetComponent<MeshRenderer>()->SetLayer(-2);
-			Bg00->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			Bg00->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer1.png");
-			Bg00->GetComponent<MeshRenderer>()->SetReplaceColor(glm::vec3(0.8, 0.8, 0.8));
-			//Bg00->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 1.0f, 1));
-			Bg00->m_transform->SetPosition(glm::vec3(0, -700, 50));
+			//std::shared_ptr<GameObject> Bg00 = Instantiate();
+			//Bg00->AddComponent<MeshRenderer>();
+			//Bg00->GetComponent<MeshRenderer>()->SetLayer(-2);
+			//Bg00->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			//Bg00->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Background_Layer1.png");
+			//Bg00->GetComponent<MeshRenderer>()->SetReplaceColor(glm::vec3(0.8, 0.8, 0.8));
+			////Bg00->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * 2.0f, Graphic::Window::GetHeight() * 1.0f, 1));
+			//Bg00->m_transform->SetPosition(glm::vec3(0, -700, 50));
 
 
 			//Player animation controller
@@ -1848,26 +1848,26 @@ namespace World
 			//test parent/child------------------------------------------------
 			//Bg2->m_transform->SetParent(Rabbit->m_transform);
 
-			//platform
-			platform = Instantiate().get();
-			platform->Layer = "Platform";
-			platform->AddComponent<MeshRenderer>();
-			platform->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			platform->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
-			platform->GetComponent<MeshRenderer>()->SetLayer(3);
-			//platform->m_transform->SetScale(glm::vec3(800, 20, 1));
-			//platform->m_transform->SetParent(Rabbit->m_transform);
-			platform->AddComponent<BoxCollider>()->ReScale(1, 1);
+			////platform
+			//platform = Instantiate().get();
+			//platform->Layer = "Platform";
+			//platform->AddComponent<MeshRenderer>();
+			//platform->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			//platform->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
+			//platform->GetComponent<MeshRenderer>()->SetLayer(3);
+			////platform->m_transform->SetScale(glm::vec3(800, 20, 1));
+			////platform->m_transform->SetParent(Rabbit->m_transform);
+			//platform->AddComponent<BoxCollider>()->ReScale(1, 1);
 
-			platform = Instantiate().get();
-			platform->Layer = "Platform";
-			platform->AddComponent<MeshRenderer>();
-			platform->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-			platform->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
-			platform->GetComponent<MeshRenderer>()->SetLayer(3);
-			//platform->m_transform->SetScale(glm::vec3(800, 20, 1));
-			platform->m_transform->SetPosition(glm::vec3(500, 500, 1));
-			platform->AddComponent<BoxCollider>()->ReScale(1, 1);
+			//platform = Instantiate().get();
+			//platform->Layer = "Platform";
+			//platform->AddComponent<MeshRenderer>();
+			//platform->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			//platform->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/platform01.png");
+			//platform->GetComponent<MeshRenderer>()->SetLayer(3);
+			////platform->m_transform->SetScale(glm::vec3(800, 20, 1));
+			//platform->m_transform->SetPosition(glm::vec3(500, 500, 1));
+			//platform->AddComponent<BoxCollider>()->ReScale(1, 1);
 
 			//Soundtrack
 			std::shared_ptr<GameObject> soundtrackPlayer = Instantiate();
@@ -1910,7 +1910,7 @@ namespace World
 			{
 				GameObject* flyer = Instantiate().get();
 				flyer->Layer = "Enemy";
-				//flyer->m_transform->SetScale(glm::vec3(2, 2, 1));
+				flyer->m_transform->SetScale(glm::vec3(1.5, 1.5, 1));
 
 				flyer->AddComponent<MeshRenderer>();
 				flyer->GetComponent<MeshRenderer>()->SetLayer(1);
@@ -1982,7 +1982,7 @@ namespace World
 
 				GameObject* bomber = Instantiate().get();
 				bomber->Layer = "Enemy";
-				//bomber->m_transform->SetScale(glm::vec3(50, 50, 1));
+				bomber->m_transform->SetScale(glm::vec3(1.5, 1.5, 1));
 
 				bomber->AddComponent<MeshRenderer>();
 				bomber->GetComponent<MeshRenderer>()->CreateMesh(12, 4);
@@ -2379,7 +2379,7 @@ namespace World
 				Bullet->Layer = "Bullet";
 				Bullet->AddComponent<MeshRenderer>();
 				Bullet->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-				Bullet->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/blue.jpg");
+				Bullet->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/zapper_bullet-01"));
 
 				Bullet->AddComponent<Rigidbody>();
 				Bullet->GetComponent<Rigidbody>()->Init(7, 7);
@@ -2479,14 +2479,6 @@ namespace World
 			}
 
 
-			//Add Sound
-			Bg2->AddComponent<SoundPlayer>();
-			Bg2->GetComponent<SoundPlayer>()->SetSound("Sources/Assets/BGMPrototype.mp3");
-			Bg2->GetComponent<SoundPlayer>()->SetLoop(true);
-			Bg2->GetComponent<SoundPlayer>()->SetVolume(0.5);
-			//Bg2->GetComponent<SoundPlayer>()->PlaySound();
-
-
 			GAME_INFO(*Rabbit);
 			
 			Serialization::SaveObject(*(SceneManagement::ActiveScene), ScenePath("SerializationTest"));
@@ -2499,10 +2491,6 @@ namespace World
 
 	void FixedUpdate(float dt)
 	{
-
-		//Bg1->m_transform->SetPosition(Graphic::getCamera()->m_position * parlx1);
-		//Bg2->m_transform->SetPosition(Graphic::getCamera()->m_position * parlx2);
-
 		//Update Physics Scene
 		static float accumulator = 0.0f;
 		accumulator += dt;
@@ -2524,9 +2512,6 @@ namespace World
 
 	void Update(float dt)
 	{
-		//Update Sound
-		//Bg2->GetComponent<SoundPlayer>()->UpdateVolume();
-
 		//Update All Systems
 		//Update Input
 		Input::Update();
