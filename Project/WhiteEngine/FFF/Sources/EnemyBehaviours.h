@@ -107,6 +107,12 @@ protected:
 	ObjectPool* FlyerPool;
 	ObjectPool* BomberPool;
 	ObjectPool* ItemPool;
+	SoundPlayer* QueenSound;
+
+	GameObject* queenDeadFluidPtcl = nullptr;
+	GameObject* queenDeadSmokePtcl = nullptr;
+
+	bool setParticle = false;
 public:
 
 	void SetStats(float Speed, float HP, float SpawnDelay, float unlockchance, float healvalue);
@@ -119,6 +125,7 @@ public:
 	virtual void OnAwake();
 	virtual void OnUpdate(float dt);
 	virtual void OnEnable();
+	virtual void OnDisable();
 	virtual void OnFixedUpdate(float dt);
 
 	DeQueen() {}

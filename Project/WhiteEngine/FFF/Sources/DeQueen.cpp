@@ -22,7 +22,21 @@ void DeQueen::OnAwake() {
 
 void DeQueen::OnEnable() 
 {
+	setParticle = false;
 	Enemy::OnEnable();
+}
+
+void DeQueen::OnDisable() 
+{
+	if (queenDeadFluidPtcl != nullptr) 
+	{
+		queenDeadFluidPtcl->SetActive(false);
+	}
+
+	if (queenDeadSmokePtcl != nullptr) {
+
+		queenDeadSmokePtcl->SetActive(false);
+	}
 }
 
 void DeQueen::SetStats(float Speed, float HP, float SpawnDelay, float unlockchance, float healvalue) {
@@ -86,6 +100,23 @@ void DeQueen::OnUpdate(float dt) {
 		}
 	}
 
+	if (isDead && !setParticle) 
+	{
+		setParticle = true;
+		queenDeadFluidPtcl = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_KILLED_QUEEN_FLUID)->GetGameObject();
+		queenDeadFluidPtcl->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+		queenDeadFluidPtcl->SetActive(true);
+
+		queenDeadSmokePtcl = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_KILLED_QUEEN_SMOKE)->GetGameObject();
+		queenDeadSmokePtcl->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+		queenDeadSmokePtcl->SetActive(true);
+	}
+	else if (isDead) 
+	{
+		queenDeadFluidPtcl->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+		queenDeadSmokePtcl->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+	}
+
 }
 
 void DeQueen::OnFixedUpdate(float dt) {
@@ -107,13 +138,14 @@ void DeQueen::SetSpawnDelay(int time) {
 void DeQueen::SpawnItem() 
 {
 	GameObject* item = ItemPool->GetGameObject();
+	GameObject* healItem = ItemPool->GetGameObject();
 
-	if (item != nullptr) {
+	if (item != nullptr && healItem != nullptr) {
+
+		healItem->GetComponent<Rigidbody>()->SetVelocity(glm::vec3(0));
+		healItem->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
 
 		item->GetComponent<Rigidbody>()->SetVelocity(glm::vec3(0));
-		item->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
-
-		item->SetActive(true);
 
 		if (!GameController::GetInstance()->GetGameObject()->GetComponent<EquipmentManager>()->isAllUnlock())
 		{
@@ -121,18 +153,30 @@ void DeQueen::SpawnItem()
 
 			if (randChance < ItemUnlockDropChance) 
 			{
+				item->SetActive(true);
 				item->GetComponent<ItemDrop>()->SetType(Drop_Type::Unlock);
+
+				item->m_transform->SetPosition(m_gameObject->m_transform->GetPosition() - glm::vec3(50.0f, 0.0f, 0.0f));
+
+
+				healItem->SetActive(true);
+				healItem->GetComponent<ItemDrop>()->SetType(Drop_Type::Heal);
+				healItem->GetComponent<ItemDrop>()->SetHealValue(HealValue);
+
+				healItem->m_transform->SetPosition(m_gameObject->m_transform->GetPosition() + glm::vec3(50.0f, 0.0f, 0.0f));
 			}
 			else 
 			{
-				item->GetComponent<ItemDrop>()->SetType(Drop_Type::Heal);
-				item->GetComponent<ItemDrop>()->SetHealValue(HealValue);
+				healItem->SetActive(true);
+				healItem->GetComponent<ItemDrop>()->SetType(Drop_Type::Heal);
+				healItem->GetComponent<ItemDrop>()->SetHealValue(HealValue);
 			}
 		}
 		else 
 		{
-			item->GetComponent<ItemDrop>()->SetType(Drop_Type::Heal);
-			item->GetComponent<ItemDrop>()->SetHealValue(HealValue);
+			healItem->SetActive(true);
+			healItem->GetComponent<ItemDrop>()->SetType(Drop_Type::Heal);
+			healItem->GetComponent<ItemDrop>()->SetHealValue(HealValue);
 		}
 		
 	}

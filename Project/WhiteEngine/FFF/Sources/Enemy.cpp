@@ -1,5 +1,6 @@
 #include "Enemy.hpp"
 #include "GameController.hpp"
+#include "Core/Particle/ParticleSystem.h"
 
 void Enemy::OnAwake() {
 	hpSystem = GetGameObject()->GetComponent<HPsystem>();
@@ -43,6 +44,7 @@ void Enemy::OnDead() {
 	DeQueen* queen = m_gameObject->GetComponent<DeQueen>();
 
 	if (queen != nullptr) {
+
 		queen->SpawnItem();
 	}
 }

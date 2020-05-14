@@ -2316,7 +2316,9 @@ namespace World
 
 				Item->AddComponent<MeshRenderer>();
 				Item->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-				Item->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/White.jpg");
+				Item->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/white_square.png");
+
+				//Item->m_transform->SetScale(glm::vec3(0.1f, 0.1f, 1.0f));
 
 				Item->AddComponent<Rigidbody>();
 				Item->GetComponent<Rigidbody>()->SetGravityScale(0.25f);
