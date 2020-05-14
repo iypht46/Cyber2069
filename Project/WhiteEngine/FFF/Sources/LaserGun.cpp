@@ -9,6 +9,8 @@
 
 #include <glm/gtx/rotate_vector.hpp>
 
+#include "Core/Particle/ParticleSystem.h"
+
 LaserGun::LaserGun() 
 {
 
@@ -67,6 +69,10 @@ void LaserGun::GameTimeBehaviour(float dt)
 	if (Input::GetMouseHold(Input::MouseKeyCode::MOUSE_LEFT) ||
 		Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT))
 	{
+		if (!initparticle) {
+			getParticles();
+		}
+
 		Physic::PhysicScene* PhySc = Physic::PhysicScene::GetInstance();
 
 
@@ -149,6 +155,7 @@ void LaserGun::GameTimeBehaviour(float dt)
 			int winWidth = Graphic::Window::GetWidth() * Graphic::getCamera()->GetZoom();
 			int winHeight = Graphic::Window::GetHeight() * Graphic::getCamera()->GetZoom();
 
+			int particleIter = 0;
 			for (Physic::RayHit h : Hits)
 			{
 				Enemy* enemy = h.collider->GetGameObject()->GetComponent<Enemy>();
@@ -170,10 +177,20 @@ void LaserGun::GameTimeBehaviour(float dt)
 
 				if (enemy != nullptr)
 				{
+					//particle
+					if (particleIter >= particles.size()) {
+						particles[particleIter]->SetActive(true);
+						particles[particleIter]->m_transform->SetPosition(enemTransform->GetPosition());
+						particles[particleIter]->m_transform->SetRotation(*angle);
+						++particleIter;
+					}
 					enemy->TakeDamage(weapon_damage);
 				}
 			}
 		}
+	}
+	else if (Input::GetMouseUp(Input::MouseKeyCode::MOUSE_LEFT)) {
+		stopParticles();
 	}
 }
 
@@ -226,5 +243,24 @@ void LaserGun::OnDisable()
 	if (laserObj != nullptr) {
 
 		laserObj->SetActive(false);
+	}
+}
+
+void LaserGun::getParticles() {
+	if (!initparticle) {
+		for (int i = 0; i < GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_LASER_HIT)->GetPoolSize(); ++i) {
+			GameObject* p = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_LASER_HIT)->GetGameObject();
+			p->SetActive(false);
+			p->GetComponent<ParticleSystem>()->emitter->isEnabled = true;
+			particles.push_back(p);
+		}
+
+		initparticle = true;
+	}
+}
+
+void LaserGun::stopParticles() {
+	for (GameObject* p : particles) {
+		p->SetActive(false);
 	}
 }

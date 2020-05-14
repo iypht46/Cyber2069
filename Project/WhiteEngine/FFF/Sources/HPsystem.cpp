@@ -1,5 +1,7 @@
 #include "HPsystem.hpp"
 #include "GameController.hpp"
+
+#include "Core/Particle/ParticleSystem.h"
 #include "Scripts/GameControl/CameraController.h"
 
 void HPsystem::SetMaxHP(float hp) {
@@ -14,6 +16,10 @@ void HPsystem::SetHp(float hp) {
 void HPsystem::SetInvincible(bool inv) 
 {
 	this->invincible = inv;
+}
+
+void HPsystem::SetInactiveDelay(float delay) {
+	deadDelay = delay;
 }
 
 float HPsystem::GetMaxHP() {
@@ -84,7 +90,12 @@ void HPsystem::Dead()
 	if (m_gameObject->GetComponent<PlayerController>() != nullptr) {
 		sp->SetSound(SoundPath("SFX_Player_Killed"));
 
+		//particle
+		GameObject* killed = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_PLAYER_KILLED)->GetGameObject();
+		killed->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+		killed->GetComponent<ParticleSystem>()->TriggerBurstEmission();
 	}
+
 	sp->PlaySound();
 }
 

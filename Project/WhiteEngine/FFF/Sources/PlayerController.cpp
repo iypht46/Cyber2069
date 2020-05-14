@@ -5,6 +5,10 @@
 #include "Core/Logger.hpp"
 #include <math.h>
 
+#include "GameController.hpp"
+#include "Core/Particle/ParticleSystem.h"
+
+
 PlayerController::PlayerController() {
 
 }
@@ -127,7 +131,7 @@ void PlayerController::OnUpdate(float dt)
 
 	if (m_gameObject->m_transform->GetPosition().y < yLimit) 
 	{
-		hpSystem->Dead();
+		hpSystem->TakeDamage(hpSystem->GetMaxHP());
 	}
 
 	if (hpSystem->isDead() && !setDieAnim)
@@ -250,6 +254,11 @@ void PlayerController::move()
 		sp->SetSound(SoundPath("SFX_Player_Jump2"));
 		sp->PlaySound();
 
+		//particle
+		GameObject* jumpptc = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_PLAYER_JUMP)->GetGameObject();
+		jumpptc->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+		jumpptc->GetComponent<ParticleSystem>()->TriggerBurstEmission();
+
 		GetGameObject()->GetComponent<Animator>()->setCurrentState(3);
 	}
 
@@ -284,6 +293,12 @@ void PlayerController::move()
 		delay = 0.1f;
 		sp->SetSound(SoundPath("SFX_Player_Dash"));
 		sp->PlaySound();
+
+		//particle
+		dashPtc = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_PLAYER_DASH)->GetGameObject();
+		dashPtc->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+		dashPtc->SetActive(true);
+		dashPtc->GetComponent<ParticleSystem>()->emitter->isEnabled = true;
 	}
 
 	if (Input::GetKeyDown(Input::KeyCode::KEY_LEFT_SHIFT) && !Dash && !checkGround() && (stamina <= 0))
@@ -311,6 +326,10 @@ void PlayerController::dash(float dt)
 		running = false;
 		GetGameObject()->GetComponent<Animator>()->setCurrentState(4);
 		Dash = false;
+
+		//particle
+		dashPtc->SetActive(false);
+		dashPtc->GetComponent<ParticleSystem>()->emitter->isEnabled = false;
 	}
 	else
 	{

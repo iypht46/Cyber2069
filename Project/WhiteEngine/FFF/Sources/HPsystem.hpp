@@ -24,6 +24,7 @@ public:
 	void SetMaxHP(float hp);
 	void SetHp(float hp);
 	void SetInvincible(bool inv);
+	void SetInactiveDelay(float);
 
 	float GetMaxHP();
 	float GetHP();
