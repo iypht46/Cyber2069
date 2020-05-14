@@ -1466,6 +1466,12 @@ namespace World
 				falling->setEndPosition(3, 7);
 				falling->setSpeedMultiplier(1);
 
+				std::shared_ptr<Animation> Die = std::make_shared<Animation>();
+
+				Die->setStartPosition(0, 2);
+				Die->setEndPosition(6, 2);
+				Die->setSpeedMultiplier(1);
+
 				RabbitController = std::make_shared<AnimationController>();
 				RabbitController->setSheetSize(glm::vec2(10, 8));
 
@@ -1474,7 +1480,8 @@ namespace World
 				RabbitController->AddState(Running, true);
 				RabbitController->AddState(Dashing, false);
 				RabbitController->AddState(Jumping, false);
-				RabbitController->AddState(falling, false);
+				RabbitController->AddState(falling, true);
+				RabbitController->AddState(Die, false);
 
 				Serialization::SaveObject(*RabbitController, AnimationControllerPath("Player"));
 			}
@@ -1787,7 +1794,7 @@ namespace World
 
 				bomber->AddComponent<MeshRenderer>();
 				bomber->GetComponent<MeshRenderer>()->CreateMesh(12, 4);
-				bomber->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Mockup_Enemy_Bomber_V[version01].png");
+				bomber->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Characters/Enemy_Bomber"));
 
 				bomber->AddComponent<Animator>();
 				bomber->GetComponent<Animator>()->sr_controllerPath = AnimationControllerPath("Bomber");

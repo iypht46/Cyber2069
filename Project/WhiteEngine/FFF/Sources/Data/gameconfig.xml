@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cereal>
 	<object>
-		<MasterVolume>0</MasterVolume>
-		<MusicVolume>0</MusicVolume>
+		<MasterVolume>0.5</MasterVolume>
+		<MusicVolume>0.5</MusicVolume>
 		<SFXVolume>0</SFXVolume>
 		<Amplifiers size="dynamic">
 			<value0>

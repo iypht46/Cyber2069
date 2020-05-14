@@ -16,7 +16,18 @@ void Enemy::OnDead() {
 	GameController::GetInstance()->AddScoreValue(baseScore);
 	GameController::GetInstance()->AddComboValue(1.0);
 
-	m_gameObject->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
+	if (m_gameObject->GetComponent<Bomber>() == nullptr) {
+
+		m_gameObject->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
+	}
+	else
+	{
+		if (!m_gameObject->GetComponent<Bomber>()->explode) {
+
+			m_gameObject->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
+		}
+	}
+
 	m_gameObject->GetComponent<Rigidbody>()->SetVelocity(glm::vec3(0.0f));
 
 	DeQueen* queen = m_gameObject->GetComponent<DeQueen>();
@@ -32,6 +43,9 @@ void Enemy::OnEnable()
 	GotZap = false;
 	affectedByWeapon = false;
 	isDead = false;
+
+	setAnimDash = false;
+	setAnimDead = false;
 
 	if (m_gameObject->GetComponent<AirFollowing>() || m_gameObject->GetComponent<AirPatrol>() || m_gameObject->GetComponent<Cocoon>())
 	{

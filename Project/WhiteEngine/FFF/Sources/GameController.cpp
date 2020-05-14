@@ -422,16 +422,17 @@ void GameController::OnUpdate(float dt)
 
 			soundtrackCon->Stop(false);
 
+			string scoreText = "Score: ";
+
+			scoreText += to_string((int)ScoreValue);
+			UIController::GetInstance()->GameOverScoreText.lock()->GetComponent<TextRenderer>()->SetText(scoreText);
+
 			Restart();
 
 			SaveData();
 
 			StateChanged = false;
 
-			string scoreText = "Score: ";
-
-			scoreText += to_string((int)ScoreValue);
-			UIController::GetInstance()->GameOverScoreText.lock()->GetComponent<TextRenderer>()->SetText(scoreText);
 		}
 
 		if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE))

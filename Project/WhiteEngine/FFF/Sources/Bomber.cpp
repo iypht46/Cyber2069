@@ -16,8 +16,13 @@ void Bomber::OnAwake() {
 	Enemy::OnAwake();
 }
 
+void Bomber::OnEnable() {
+	animator->setCurrentState(0);
+	explode = false;
+}
+
 void Bomber::OnUpdate(float dt) {
-	if (GetGameObject()->Active()) {
+	if (GetGameObject()->Active() && !isDead) {
 		Enemy::OnUpdate(dt);
 
 		if (glm::length(target->GetPosition() - GetGameObject()->m_transform->GetPosition()) < DashTriggerRadius) {
@@ -28,6 +33,7 @@ void Bomber::OnUpdate(float dt) {
 			
 		}
 		else if (foundTarget && state != EnemyState::Active) {
+			airFollow->SetPlayer(target);
 			state = EnemyState::Chase;
 		}
 		else if (state != EnemyState::Active) {
@@ -52,10 +58,20 @@ void Bomber::OnFixedUpdate(float dt) {
 				airFollow->FollowPlayer(dt);
 				break;
 			case EnemyState::Active:
+				if (!setAnimDash)
+				{
+					setAnimDash = true;
+					animator->setCurrentState(2);
+				}
+				
 				airDash->Dash(dt);
-				if (airDash->DashEnd()) {
+				if (airDash->DashEnd()) 
+				{
 					explosion->Explode();
-					hpSystem->Dead();
+					//hpSystem->Dead();
+					explode = true;
+
+					m_gameObject->GetComponent<Enemy>()->TakeDamage(hpSystem->GetMaxHP());
 
 					state = EnemyState::Idle;
 				}
@@ -63,6 +79,18 @@ void Bomber::OnFixedUpdate(float dt) {
 			default:
 				break;
 			}
+		}
+	}
+
+	if (isDead && !setAnimDead) {
+		setAnimDead = true;
+		
+		if (explode) {
+			animator->setCurrentState(3);
+		}
+		else {
+
+			animator->setCurrentState(4);
 		}
 	}
 }
