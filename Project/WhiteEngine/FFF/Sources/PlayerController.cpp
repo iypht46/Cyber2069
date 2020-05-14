@@ -65,12 +65,18 @@ void PlayerController::OnTriggerExit(const Physic::Collision col)
 	//GAME_INFO("Collider Exit");
 }
 
+void PlayerController::OnEnable() 
+{
+	setDieAnim = false;
+}
+
 void PlayerController::OnUpdate(float dt)
 {
 	cameraZoom(dt);
 
 	if ((rb->GetVelocity().y < -5.0f) && !falling)
 	{
+		GetGameObject()->GetComponent<Animator>()->setCurrentState(4);
 		falling = true;
 	}
 
@@ -88,37 +94,48 @@ void PlayerController::OnUpdate(float dt)
 	{
 		stamina += staminaRegenRate;
 	}
-
-	DebugInput();
-	move();
-
-	if (Dash) {
-		dash(dt);
-	}
-
-	if (weapon != nullptr) {
-
-		mouseAim();
-	}
-
-	for (Equipment* e : Equipments)
+	
+	if (!hpSystem->isDead()) 
 	{
-		if (Weapon* w = dynamic_cast<Weapon*>(e)) 
+		DebugInput();
+		move();
+
+		if (Dash) {
+			dash(dt);
+		}
+
+		if (weapon != nullptr) {
+
+			mouseAim();
+		}
+
+		for (Equipment* e : Equipments)
 		{
-			if (w->GetWeapon()->Active()) 
+			if (Weapon* w = dynamic_cast<Weapon*>(e))
 			{
-				w->GameTimeBehaviour(dt);
+				if (w->GetWeapon()->Active())
+				{
+					w->GameTimeBehaviour(dt);
+				}
+			}
+			else {
+				e->GameTimeBehaviour(dt);
 			}
 		}
-		else {
-			e->GameTimeBehaviour(dt);
-		}
 	}
+	
 
 	if (m_gameObject->m_transform->GetPosition().y < yLimit) 
 	{
 		hpSystem->Dead();
 	}
+
+	if (hpSystem->isDead() && !setDieAnim)
+	{
+		setDieAnim = true;
+		GetGameObject()->GetComponent<Animator>()->setCurrentState(5);
+	}
+
 }
 
 void PlayerController::OnFixedUpdate(float dt)

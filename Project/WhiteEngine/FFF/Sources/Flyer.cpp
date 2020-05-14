@@ -9,8 +9,13 @@ void Flyer::OnAwake() {
 	Enemy::OnAwake();
 }
 
+void Flyer::OnEnable() 
+{
+	animator->setCurrentState(0);
+}
+
 void Flyer::OnUpdate(float dt) {
-	if (GetGameObject()->Active()) {
+	if (GetGameObject()->Active() && !isDead) {
 		Enemy::OnUpdate(dt);
 
 		if (dashDelayTimer >= dashDelay && glm::length(target->GetPosition() - GetGameObject()->m_transform->GetPosition()) < 100.0f) {
@@ -32,6 +37,7 @@ void Flyer::OnUpdate(float dt) {
 }
 
 void Flyer::OnFixedUpdate(float dt) {
+
 	if (!affectedByWeapon) {
 		switch (state)
 		{
@@ -45,9 +51,18 @@ void Flyer::OnFixedUpdate(float dt) {
 			break;
 		case Active:
 			if (dashDelayTimer >= dashDelay) {
+				
+				if (!setAnimDash) 
+				{
+					setAnimDash = true;
+					animator->setCurrentState(1);
+				}
+
 				airDash->Dash(dt);
 				if (airDash->DashEnd()) {
+					setAnimDash = false;
 					state = EnemyState::Idle;
+					animator->setCurrentState(0);
 					dashDelayTimer = 0;
 				}
 			}
@@ -57,6 +72,11 @@ void Flyer::OnFixedUpdate(float dt) {
 		default:
 			break;
 		}
+	}
+
+	if (isDead && !setAnimDead) {
+		setAnimDead = true;
+		animator->setCurrentState(2);
 	}
 }
 
