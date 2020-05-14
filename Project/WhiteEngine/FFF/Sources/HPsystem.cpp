@@ -35,34 +35,35 @@ void HPsystem::OnEnable()
 }
 
 void HPsystem::TakeDamage(float damage) {
-	if (!this->invincible)
-	{
-		if (GameController::GetInstance()->isCursedMode() && (m_gameObject->GetComponent<DeQueen>() == nullptr))
+	if (!this->invincible && !dead) {
 		{
-			hp = 0;
-			Dead();
+			if (GameController::GetInstance()->isCursedMode() && (m_gameObject->GetComponent<DeQueen>() == nullptr))
+			{
+				hp = 0;
+				Dead();
+			}
+
+			//shake camera 
+			if (m_gameObject->GetComponent<PlayerController>() != nullptr) {
+				CameraController::GetInstance()->ShakeCamera(30.0f, 10.0f, 0.2f);
+
+				sp->SetSound(SoundPath("SFX_Player_TakingDamage2"));
+
+			}
+			else {
+				sp->SetSound(SoundPath("SFX_Enemy_TakingDamage"));
+			}
+
+			this->hp -= damage;
+
+			if (!dead && hp <= 0)
+			{
+				hp = 0;
+				Dead();
+			}
+
+			sp->PlaySound();
 		}
-
-		//shake camera 
-		if (m_gameObject->GetComponent<PlayerController>() != nullptr) {
-			CameraController::GetInstance()->ShakeCamera(30.0f, 10.0f, 0.2f);
-
-			sp->SetSound(SoundPath("SFX_Player_TakingDamage2"));
-
-		}
-		else {
-			sp->SetSound(SoundPath("SFX_Enemy_TakingDamage"));
-		}
-
-		this->hp -= damage;
-
-		if (!dead && hp <= 0)
-		{
-			hp = 0;
-			Dead();
-		}
-
-		sp->PlaySound();
 	}
 }
 
