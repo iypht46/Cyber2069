@@ -29,7 +29,21 @@ void DeQueen::OnAwake() {
 
 void DeQueen::OnEnable() 
 {
+	setParticle = false;
 	Enemy::OnEnable();
+}
+
+void DeQueen::OnDisable() 
+{
+	if (queenDeadFluidPtcl != nullptr) 
+	{
+		queenDeadFluidPtcl->SetActive(false);
+	}
+
+	if (queenDeadSmokePtcl != nullptr) {
+
+		queenDeadSmokePtcl->SetActive(false);
+	}
 }
 
 void DeQueen::SetStats(float Speed, float HP, float SpawnDelay, float unlockchance, float healvalue) {
@@ -89,6 +103,23 @@ void DeQueen::OnUpdate(float dt) {
 			SoundCounter = 0.30f;
 		}
 		
+	}
+
+	if (isDead && !setParticle) 
+	{
+		setParticle = true;
+		queenDeadFluidPtcl = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_KILLED_QUEEN_FLUID)->GetGameObject();
+		queenDeadFluidPtcl->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+		queenDeadFluidPtcl->SetActive(true);
+
+		queenDeadSmokePtcl = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_KILLED_QUEEN_SMOKE)->GetGameObject();
+		queenDeadSmokePtcl->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+		queenDeadSmokePtcl->SetActive(true);
+	}
+	else if (isDead) 
+	{
+		queenDeadFluidPtcl->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+		queenDeadSmokePtcl->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
 	}
 
 }
