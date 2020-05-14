@@ -445,7 +445,6 @@ protected:
 	Rigidbody* rb;
 	Explosion* explosion;
 	SoundPlayer* sp;
-	ParticleSystem* particle;
 
 	void Explode();
 

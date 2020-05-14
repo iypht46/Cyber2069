@@ -3,12 +3,12 @@
 #include "Graphic/Camera.hpp"
 #include "Graphic/Window.hpp"
 #include "Core/Logger.hpp"
+#include "Core/Particle/ParticleSystem.h"
 
 #include "ItemDrop.hpp"
 
 void DeQueen::OnAwake() {
 	airPatrol = GetGameObject()->GetComponent<AirPatrol>();
-	QueenSound = GetGameObject()->GetComponent<SoundPlayer>();
 	
 	SpawnDelay = 0.2f;
 	SpawnDelayCount = SpawnDelay;
@@ -16,13 +16,6 @@ void DeQueen::OnAwake() {
 	FlyerPool = GameController::GetInstance()->GetPool(POOL_TYPE::ENEMY_FLYER);
 	BomberPool = GameController::GetInstance()->GetPool(POOL_TYPE::ENEMY_BOMBER);
 	ItemPool = GameController::GetInstance()->GetPool(POOL_TYPE::ITEM_DROP);
-
-	QueenSound = GetGameObject()->GetComponent<SoundPlayer>();
-
-	SoundCounter = 0.30f;
-
-	QueenSound->SetSound(SoundPath("SFX_Queen_SpawningEnemy"));
-	QueenSound->SetLoop(false);
 
 	Enemy::OnAwake();
 }
@@ -46,6 +39,7 @@ void DeQueen::OnUpdate(float dt) {
 	//Enemy::OnUpdate(dt);
 
 	airPatrol->Patrol();
+	GameObject* spawn = nullptr;
 
 	if ((m_gameObject->m_transform->GetPosition().x > DespawnPosX) || (m_gameObject->m_transform->GetPosition().x < -DespawnPosX)) 
 	{
@@ -68,6 +62,8 @@ void DeQueen::OnUpdate(float dt) {
 
 				flyer->m_transform->SetPosition(glm::vec3(spawnPosX, spawnPosY, 1.0f));
 
+				spawn = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_ENEMYSPAWN1)->GetGameObject();
+
 				flyer->GetComponent<Enemy>()->SetTarget(GameController::GetInstance()->GetPlayer()->m_transform.get());
 			}
 		}
@@ -79,16 +75,15 @@ void DeQueen::OnUpdate(float dt) {
 
 				bomber->m_transform->SetPosition(glm::vec3(spawnPosX, spawnPosY, 1.0f));
 
+				spawn = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_ENEMYSPAWN2)->GetGameObject();
+
 				bomber->GetComponent<Enemy>()->SetTarget(GameController::GetInstance()->GetPlayer()->m_transform.get());
 			}
 		}
-
-		SoundCounter -= dt;
-		if (SoundCounter <= 0.0f) {
-			QueenSound->PlaySound();
-			SoundCounter = 0.30f;
+		if (spawn != nullptr) {
+			spawn->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+			spawn->GetComponent<ParticleSystem>()->TriggerBurstEmission();
 		}
-		
 	}
 
 }

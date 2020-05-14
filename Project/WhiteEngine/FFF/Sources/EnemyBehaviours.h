@@ -102,13 +102,11 @@ private:
 	float DespawnPosX = 2000.0f;
 
 	float SpawnDelayCount;
-	float SoundCounter;
 protected:
 	AirPatrol* airPatrol;
 	ObjectPool* FlyerPool;
 	ObjectPool* BomberPool;
 	ObjectPool* ItemPool;
-	SoundPlayer* QueenSound;
 public:
 
 	void SetStats(float Speed, float HP, float SpawnDelay, float unlockchance, float healvalue);
