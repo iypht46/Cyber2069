@@ -55,6 +55,9 @@ private:
 	float DashTriggerRadius = 300.0f;
 	float ExplodeTriggerRadius = 300.0f;
 	Rigidbody* rigidbody = nullptr;
+
+	void Explode();
+
 protected:
 	AirFollowing* airFollow = nullptr;
 	AirDash* airDash = nullptr;

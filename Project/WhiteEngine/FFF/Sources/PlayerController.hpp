@@ -23,9 +23,13 @@
 
 #define PI 3.14159265358979323846
 
+class GameObject;
+
 class PlayerController : public Character {
 private:
 	bool playEnd = false;	//use for check stamina deplettion
+
+	GameObject* dashPtc;
 
 protected:
 	HPsystem* hpSystem = nullptr;

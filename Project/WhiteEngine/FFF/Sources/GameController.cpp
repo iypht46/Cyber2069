@@ -110,13 +110,13 @@ void GameController::OnStart() {
 	{
 		//player
 		CreatePool(ParticlePrefabPath("PTCL_Player_Dash"), POOL_TYPE::PTCL_PLAYER_DASH, 1);
-		CreatePool(ParticlePrefabPath("PTCL_Player_Jump"), POOL_TYPE::PTCL_PLAYER_JUMP, 1);
+		CreatePool(ParticlePrefabPath("PTCL_Player_Jump"), POOL_TYPE::PTCL_PLAYER_JUMP, 3);
 		CreatePool(ParticlePrefabPath("PTCL_Player_Killed"), POOL_TYPE::PTCL_PLAYER_KILLED, 1);
 
 		//weapon
 		CreatePool(ParticlePrefabPath("PTCL_Blackhole"), POOL_TYPE::PTCL_BLACKHOLE, 5);
 		CreatePool(ParticlePrefabPath("PTCL_Bullet_Hit_Armor"), POOL_TYPE::PTCL_BULLET_HIT_ARMOR, 15);
-		CreatePool(ParticlePrefabPath("PTCL_Bullet_Hit_SoftBody"), POOL_TYPE::PTCL_BULLET_HIT_ENEMY, 10);
+		CreatePool(ParticlePrefabPath("PTCL_Bullet_Hit_SoftBody"), POOL_TYPE::PTCL_BULLET_HIT_ENEMY, 15);
 		CreatePool(ParticlePrefabPath("PTCL_Zapper_Zap"), POOL_TYPE::PTCL_ZAPPER_ZAP, 6);
 		CreatePool(ParticlePrefabPath("PTCL_Laser_Hit"), POOL_TYPE::PTCL_LASER_HIT, 10);
 		CreatePool(ParticlePrefabPath("PTCL_Explosion_Grenade"), POOL_TYPE::PTCL_EXPLOSION_GRENADE, 5);

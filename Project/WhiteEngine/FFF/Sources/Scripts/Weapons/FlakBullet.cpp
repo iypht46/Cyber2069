@@ -50,12 +50,10 @@ void FlakBullet::OnCollisionEnter(const Physic::Collision col) {
 
 void FlakBullet::Explode() {
 	rb->SetVelocity(glm::vec3(0));
-
 	//particle
 	GameObject* explode = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_EXPLOSION_SPITTER)->GetGameObject();
 	explode->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
 	explode->GetComponent<ParticleSystem>()->TriggerBurstEmission();
-
 	//sound
 	sp->PlaySound();
 

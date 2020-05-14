@@ -2337,7 +2337,8 @@ namespace World
 				Bullet->GetComponent<Rigidbody>()->SetGravityScale(0.0000001f);
 
 				Bullet->AddComponent<SoundPlayer>();
-
+				//Bullet->AddComponent<ParticleSystem>();
+				//Serialization::LoadObject(*Bullet->GetComponent<ParticleSystem>(), ParticlePath("Bullet_Hit_Example"));
 				Bullet->AddComponent<MachineGunBullet>();
 
 				//Bullet->m_transform->SetScale(glm::vec3(0.1, 0.1, 1.0f));
@@ -2410,6 +2411,8 @@ namespace World
 
 				Bullet->AddComponent<SoundPlayer>();
 
+				//Bullet->AddComponent<ParticleSystem>();
+				//Bullet->GetComponent<ParticleSystem>()->emitter->isEnabled = true;
 				//Bullet->m_transform->SetScale(glm::vec3(0.3f, 0.3f, 1.0f));
 
 				Bullet->AddComponent<BlackholeGunBullet>();
@@ -2444,7 +2447,8 @@ namespace World
 
 				Bullet->AddComponent<Explosion>()->m_radius = 100.0f;
 				Bullet->GetComponent<Explosion>()->m_damage = 5.0f;
-
+				//Bullet->AddComponent<ParticleSystem>();
+				//Serialization::LoadObject(*Bullet->GetComponent<ParticleSystem>(), ParticlePath("Bullet_Fume_Traverse"));
 				Bullet->SetActive(false);
 
 				Serialization::SaveObject(*Bullet, PrefabPath("Bullet_Fume"));

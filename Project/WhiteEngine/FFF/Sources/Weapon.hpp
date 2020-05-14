@@ -2,6 +2,7 @@
 #include "Equipment.hpp"
 #include <memory>
 #include <set>
+#include <vector>
 #include <string>
 
 #include "Core/EC/Components/BehaviourScript.h"
@@ -175,6 +176,11 @@ private:
 	float laser_duration;
 	float laser_duration_count = 0.0f;
 
+	bool initparticle = false;
+	std::vector<GameObject*> particles;
+
+	void getParticles();
+	void stopParticles();
 
 	glm::vec2 Lstart;
 	glm::vec2 Lend;
@@ -391,6 +397,9 @@ public:
 CEREAL_REGISTER_TYPE(BlackholeGun);
 
 class BlackholeGunBullet : public Bullet {
+private:
+	GameObject* particle;
+
 protected:
 	Graphic::CameraObject* cam;
 

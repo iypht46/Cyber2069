@@ -1,4 +1,5 @@
 #include "Enemy.hpp"
+#include "EnemyBehaviours.h"
 #include "GameController.hpp"
 #include "Core/Particle/ParticleSystem.h"
 
@@ -33,10 +34,25 @@ void Enemy::OnDead() {
 	m_gameObject->GetComponent<Rigidbody>()->SetVelocity(glm::vec3(0.0f));
 
 	if (m_gameObject->GetComponent<Cocoon>() != nullptr) {
-	sp->SetSound(SoundPath("SFX_Game_Cocoon_Killed"));
+		sp->SetSound(SoundPath("SFX_Game_Cocoon_Killed"));
+
+		//particle
+		GameObject* killed = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_KILLED_COCOON)->GetGameObject();
+		killed->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+		killed->GetComponent<ParticleSystem>()->TriggerBurstEmission();
+	}
+	else if (m_gameObject->GetComponent<DeQueen>() != nullptr) {
+		sp->SetSound(SoundPath("SFX_Enemy_Killed"));
+
+		//particle
 	}
 	else {
-	sp->SetSound(SoundPath("SFX_Enemy_Killed"));
+		sp->SetSound(SoundPath("SFX_Enemy_Killed"));
+
+		//particle
+		GameObject* killed = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_KILLED_ENEMY)->GetGameObject();
+		killed->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+		killed->GetComponent<ParticleSystem>()->TriggerBurstEmission();
 	}
 
 	sp->PlaySound();

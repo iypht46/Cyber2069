@@ -1,4 +1,7 @@
 #include "EnemyBehaviours.h"
+#include "GameController.hpp"
+#include "Core/Particle/ParticleSystem.h"
+
 #include "Core/Logger.hpp"
 #include "Graphic/GLRenderer.h"
 
@@ -70,14 +73,7 @@ void Bomber::OnFixedUpdate(float dt) {
 				airDash->Dash(dt);
 
 				if (airDash->DashEnd()) {
-					sp->SetSound(SoundPath("SFX_Bomber_Explode"));
-					sp->PlaySound();
-
-					explosion->Explode();
-					//hpSystem->Dead();
-					explode = true;
-
-					m_gameObject->GetComponent<Enemy>()->TakeDamage(hpSystem->GetMaxHP());
+					Explode();
 
 					state = EnemyState::Idle;
 				}
@@ -99,6 +95,21 @@ void Bomber::OnFixedUpdate(float dt) {
 			animator->setCurrentState(4);
 		}
 	}
+}
+
+void Bomber::Explode() {
+	sp->SetSound(SoundPath("SFX_Bomber_Explode"));
+	sp->PlaySound();
+
+	GameObject* expl = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_EXPLOSION_BOMBER)->GetGameObject();
+	expl->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+	expl->GetComponent<ParticleSystem>()->TriggerBurstEmission();
+
+	explosion->Explode();
+	//hpSystem->Dead();
+	explode = true;
+
+	m_gameObject->GetComponent<Enemy>()->TakeDamage(hpSystem->GetMaxHP());
 }
 
 void Bomber::SetStats(float Speed, float HP, float Dmg, float AimTime, float DashSpeed, float ExplodeDmg, float ExplodeRadius) {

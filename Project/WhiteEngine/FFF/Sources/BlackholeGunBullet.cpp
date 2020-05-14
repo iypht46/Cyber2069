@@ -6,6 +6,9 @@
 
 #include "Enemy.hpp"
 #include "EnemyBehaviours.h"
+#include "GameController.hpp"
+
+#include "Core/Particle/ParticleSystem.h"
 
 void BlackholeGunBullet::OnUpdate(float dt)
 {
@@ -40,6 +43,12 @@ void BlackholeGunBullet::OnUpdate(float dt)
 		if (DurationCount >= Duration) 
 		{
 			ReleaseEnemy();
+
+			if (particle != nullptr) {
+				particle->SetActive(false);
+				particle->GetComponent<ParticleSystem>()->emitter->isEnabled = false;
+			}
+
 			isTriggerEnemy = false;
 			m_gameObject->SetActive(false);
 		}
@@ -69,6 +78,12 @@ void BlackholeGunBullet::OnTriggerEnter(const Physic::Collision col) {
 			isTriggerEnemy = true;
 			DurationCount = 0.0f;
 			BhSound->PlaySound();
+
+			//particle
+			particle = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_BLACKHOLE)->GetGameObject();
+			particle->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+			particle->SetActive(true);
+			particle->GetComponent<ParticleSystem>()->emitter->isEnabled = true;
 		}
 	}
 }
