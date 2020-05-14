@@ -2,7 +2,7 @@
 #include <filesystem>
 #include "MainEditor.hpp"
 
-
+#include "FFFScript.hpp"
 namespace Tools
 {
 	MainEditor::MainEditor()

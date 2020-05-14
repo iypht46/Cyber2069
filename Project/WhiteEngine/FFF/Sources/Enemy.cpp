@@ -13,12 +13,12 @@ void Enemy::OnTakeDamage() {
 
 void Enemy::OnDead() {
 	//call all funct from events vector
-	GetGameObject()->SetActive(false);
+	//GetGameObject()->SetActive(false);
 	GameController::GetInstance()->AddScoreValue(baseScore);
 	GameController::GetInstance()->AddComboValue(1.0);
-	state = EnemyState::Idle;
-	affectedByWeapon = false;
-	GotZap = false;
+
+	m_gameObject->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
+	m_gameObject->GetComponent<Rigidbody>()->SetVelocity(glm::vec3(0.0f));
 
 	if (m_gameObject->GetComponent<Cocoon>() != nullptr) {
 	sp->SetSound(SoundPath("SFX_Game_Cocoon_Killed"));
@@ -33,6 +33,19 @@ void Enemy::OnDead() {
 
 	if (queen != nullptr) {
 		queen->SpawnItem();
+	}
+}
+
+void Enemy::OnEnable() 
+{
+	state = EnemyState::Idle;
+	GotZap = false;
+	affectedByWeapon = false;
+	isDead = false;
+
+	if (m_gameObject->GetComponent<AirFollowing>() || m_gameObject->GetComponent<AirPatrol>() || m_gameObject->GetComponent<Cocoon>())
+	{
+		m_gameObject->GetComponent<Rigidbody>()->SetGravityScale(0.00000001f);
 	}
 }
 
@@ -52,7 +65,14 @@ void Enemy::TakeDamage(float damage) {
 	OnTakeDamage();
 
 	//if dead
-	if (hpSystem->GetHP() <= 0) {
-		OnDead();
+	if (hpSystem->isDead()) 
+	{
+		if (!isDead) 
+		{
+			isDead = true;
+			affectedByWeapon = true;
+
+			OnDead();
+		}
 	}
 }

@@ -99,6 +99,9 @@ struct EnemyAmplifier {
 	//flyer
 	float FlyerHP = 1;
 	float FlyerSpeed = 200;
+	float FlyerRotationSpeed = 15.0f;
+	float FlyerAimTime = 0.3f;
+	float FlyerDashSpeed = 300.0f;
 	float FlyerDmg = 1;
 
 	//bomber
@@ -150,6 +153,9 @@ public:
 
 			CEREAL_NVP(FlyerHP),
 			CEREAL_NVP(FlyerSpeed),
+			CEREAL_NVP(FlyerRotationSpeed),
+			CEREAL_NVP(FlyerAimTime),
+			CEREAL_NVP(FlyerDashSpeed),
 			CEREAL_NVP(FlyerDmg),
 
 			CEREAL_NVP(BomberHP),

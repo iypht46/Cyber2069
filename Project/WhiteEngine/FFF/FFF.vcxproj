@@ -134,6 +134,7 @@
     <ClCompile Include="Sources\BlackholeGunBullet.cpp" />
     <ClCompile Include="Sources\Character.cpp" />
     <ClCompile Include="Sources\Charger.cpp" />
+    <ClCompile Include="Sources\Cocoon.cpp" />
     <ClCompile Include="Sources\GrenadeLauncher.cpp" />
     <ClCompile Include="Sources\GrenadeLauncherBullet.cpp" />
     <ClCompile Include="Sources\GroundDash.cpp" />

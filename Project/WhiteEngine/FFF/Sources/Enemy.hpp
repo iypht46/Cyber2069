@@ -45,6 +45,8 @@ public:
 	float targetDetectionRange = 2000.0f;
 
 	virtual void OnAwake() override;
+	virtual void OnEnable() override;
+
 	virtual void OnUpdate(float dt) override;
 
 	void SetTarget(Transform*);

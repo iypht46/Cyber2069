@@ -31,19 +31,23 @@ void Spitter::OnUpdate(float dt) {
 }
 
 void Spitter::OnFixedUpdate(float dt) {
-	switch (state)
-	{
-	case EnemyState::Idle:
-		groundPatrol->Patrol(dt);
-		break;
-	case EnemyState::Active:
-		if (shooting->CooledDown()) {
-			animator->setCurrentState(1);
-			Spit();
+	
+	if (!affectedByWeapon) {
+
+		switch (state)
+		{
+		case EnemyState::Idle:
+			groundPatrol->Patrol(dt);
+			break;
+		case EnemyState::Active:
+			if (shooting->CooledDown()) {
+				animator->setCurrentState(1);
+				Spit();
+			}
+			break;
+		default:
+			break;
 		}
-		break;
-	default:
-		break;
 	}
 }
 

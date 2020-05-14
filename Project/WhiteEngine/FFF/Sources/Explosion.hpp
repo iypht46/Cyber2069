@@ -33,7 +33,9 @@ public:
 	void SetLayer(std::string layer);
 	void SetDamage(float val);
 	void SetRadius(float val);
-	virtual void OnAwake();
+
+	virtual void OnAwake() override;
+	virtual void OnUpdate(float) override;
 
 //serialization
 public:
