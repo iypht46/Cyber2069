@@ -1,6 +1,7 @@
 #pragma once
 #include "Core/EC/Components/BehaviourScript.h"
 #include "Core/EC/GameObject.hpp"
+#include "Core/EC/Components/SoundPlayer.hpp"
 
 #include <cereal/types/base_class.hpp>
 #include <cereal/types/polymorphic.hpp>
@@ -9,6 +10,7 @@ class HPsystem : public BehaviourScript {
 protected:
 	float Maxhp = 1;
 	bool invincible = false;
+	SoundPlayer* sp = nullptr;
 
 	float hp = 1;
 	bool dead = false;
@@ -33,6 +35,7 @@ public:
 	bool isInvicible();
 
 	void Dead();
+	void TurnOff();
 
 	virtual void OnAwake();
 	virtual void OnEnable();

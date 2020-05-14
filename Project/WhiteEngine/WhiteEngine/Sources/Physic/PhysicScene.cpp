@@ -413,8 +413,6 @@ namespace Physic
 			m_bodies.erase(it);
 			return;
 		}
-
-
 	}
 
 	void PhysicScene::SetLayerCollisions(Layer layer, Layer layerToCollide, RESOLVE_TYPE type)

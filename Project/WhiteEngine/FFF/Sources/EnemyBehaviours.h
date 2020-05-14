@@ -59,6 +59,7 @@ protected:
 	AirFollowing* airFollow = nullptr;
 	AirDash* airDash = nullptr;
 	Explosion* explosion = nullptr;
+	SoundPlayer* sp = nullptr;
 
 public:
 

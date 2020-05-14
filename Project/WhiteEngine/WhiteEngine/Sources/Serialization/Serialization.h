@@ -10,6 +10,7 @@
 #define ScenePath(path) "Sources/Assets/Scenes/" path ".scene"
 #define AnimationControllerPath(path) "Sources/Assets/AnimationControllers/" path ".animcon"
 #define PrefabPath(path) "Sources/Assets/Prefabs/" path ".prefab"
+#define ParticlePrefabPath(path) "Sources/Assets/Prefabs/ParticleObjects/" path ".prefab"
 
 #define ParticlePath(path) "Sources/Assets/ParticleConfigs/" path ".ptcl"
 #define TexturePath(path) "Sources/Assets/Sprites/" path ".png" 

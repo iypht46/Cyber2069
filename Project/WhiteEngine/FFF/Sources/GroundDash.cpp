@@ -22,6 +22,7 @@ void GroundDash::OnAwake() {
 	m_target = nullptr;
 	thisTransform = m_gameObject->m_transform.get();
 	rb = m_gameObject->GetComponent<Rigidbody>();
+	sp = m_gameObject->GetComponent<SoundPlayer>();
 	patrol = m_gameObject->GetComponent<GroundPatrol>();
 }
 
@@ -42,7 +43,8 @@ void GroundDash::LockTarget(Transform* target) {
 		this->m_target = target;
 		targetLocked = true;
 		dashEnd = false;
-
+		sp->SetSound(SoundPath("SFX_Charger_Alert"));
+		sp->PlaySound();
 
 		dashDestinationX = m_target->GetPosition().x;
 		if (glm::abs(dashDestinationX - thisTransform->GetPosition().x) < m_minDashDistance) {
@@ -64,12 +66,14 @@ bool GroundDash::DashEnd() {
 void GroundDash::Dash(float dt) {
 
 	//if not dashing, wait until timer end then begin dashing
+	sp->SetSound(SoundPath("SFX_Charger_Dash"));
 	if (!dashing && !dashEnd) {
 		pauseTimer -= dt;
 		if (pauseTimer > 0) {
 			rb->SetVelocity(glm::vec3(0, rb->GetVelocity().y, 0));
 		}
 		else {
+			sp->PlaySound();
 			dashing = true;
 		}
 	}
