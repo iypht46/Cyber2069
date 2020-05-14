@@ -27,6 +27,11 @@ void DeQueen::OnAwake() {
 	Enemy::OnAwake();
 }
 
+void DeQueen::OnEnable() 
+{
+	Enemy::OnEnable();
+}
+
 void DeQueen::SetStats(float Speed, float HP, float SpawnDelay, float unlockchance, float healvalue) {
 	airPatrol->SetSpeed(Speed);
 	hpSystem->SetMaxHP(HP);

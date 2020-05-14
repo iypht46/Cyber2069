@@ -30,6 +30,9 @@ protected:
 	bool affectedByWeapon = false;
 	bool GotZap = false;
 
+	bool setAnimDash = false;
+	bool setAnimDead = false;
+
 
 	EnemyState state = EnemyState::Idle;
 
@@ -44,6 +47,8 @@ public:
 	float targetDetectionRange = 2000.0f;
 
 	virtual void OnAwake() override;
+	virtual void OnEnable() override;
+
 	virtual void OnUpdate(float dt) override;
 
 	void SetTarget(Transform*);

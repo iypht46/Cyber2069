@@ -1,6 +1,6 @@
 #include "Explosion.hpp"
 
-
+#include "Graphic/GLRenderer.h"
 
 Explosion::Explosion()
 {
@@ -12,8 +12,11 @@ void Explosion::OnAwake() {
 	ps = Physic::PhysicScene::GetInstance();
 }
 
-void Explosion::Explode() {
+void Explosion::OnUpdate(float dt) {
+	GLRenderer::GetInstance()->DrawDebug_Circle(m_gameObject->m_transform->GetPosition().x, m_gameObject->m_transform->GetPosition().y, m_radius, 1.0f, 0.0f, 0.0f);
+}
 
+void Explosion::Explode() {
 	//get all collider in target layers
 	Physic::Colliders targetColliders;
 	for (std::string target : TargetLayers) {
@@ -32,6 +35,7 @@ void Explosion::Explode() {
 			}
 		}
 	}
+	
 }
 
 void Explosion::SetDamage(float val) {

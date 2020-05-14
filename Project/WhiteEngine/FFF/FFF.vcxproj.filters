@@ -42,6 +42,7 @@
     <ClCompile Include="Sources\HighScoreUI.cpp" />
     <ClCompile Include="Sources\Scripts\GameControl\SoundtrackController.cpp" />
     <ClCompile Include="Sources\Scripts\GameControl\CameraController.cpp" />
+    <ClCompile Include="Sources\Cocoon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Artifact.hpp" />

@@ -13,7 +13,7 @@ void AirDash::OnAwake() {
 	self = m_gameObject->m_transform.get();
 	rb = m_gameObject->GetComponent<Rigidbody>();
 	sp = m_gameObject->GetComponent<SoundPlayer>();
-	sp->SetSoundType(SOUND_SFX);
+	//sp->SetSoundType(SOUND_SFX);
 
 	Reset();
 }
@@ -32,6 +32,7 @@ void AirDash::SetAimSpeed(float value) {
 
 void AirDash::Dash(float dt) {
 	
+	sp->SetSound(SoundPath("SFX_Bomber_Dash"));
 	glm::vec3 dir = m_target - self->GetPosition();
 	float distance = glm::length(dir);
 	m_angle = glm::atan(dir.y, dir.x);
@@ -41,21 +42,23 @@ void AirDash::Dash(float dt) {
 		timer -= dt;
 		if (timer > 0) {
 			rb->SetVelocity(glm::vec3(0, 0, 0));
-			self->SetRotation(m_angle);
+			self->SetRotation(glm::degrees(m_angle));
 		}
 		else {
+			sp->PlaySound();
 			dashState = true;
 			
 		}
 	}else if (dashState) {
-		if (distance <= 10.0f) {
+		if (distance <= m_dashSpeed * dt * 2) {
 			Reset();
 		}
 		else 
 		{
-			rb->SetVelocity(glm::vec3(m_dashSpeed * glm::cos(self->GetRotation()), m_dashSpeed * glm::sin(self->GetRotation()), 0));
+			rb->SetVelocity(glm::vec3(glm::cos(m_angle), glm::sin(m_angle), 0) * m_dashSpeed);
 		}
 	}
+
 }
 
 bool AirDash::DashEnd() {
@@ -66,6 +69,8 @@ void AirDash::TargetLock(glm::vec3 pos) {
 	if (!targetLocked) {
 		this->m_target = pos;
 		targetLocked = true;
+		sp->SetSound(SoundPath("SFX_Bomber_Alert"));
+		sp->PlaySound();
 	}
 }
 

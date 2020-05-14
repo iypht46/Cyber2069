@@ -12,17 +12,45 @@ void Enemy::OnTakeDamage() {
 
 void Enemy::OnDead() {
 	//call all funct from events vector
-	GetGameObject()->SetActive(false);
+	//GetGameObject()->SetActive(false);
 	GameController::GetInstance()->AddScoreValue(baseScore);
 	GameController::GetInstance()->AddComboValue(1.0);
-	state = EnemyState::Idle;
-	affectedByWeapon = false;
-	GotZap = false;
+
+	if (m_gameObject->GetComponent<Bomber>() == nullptr) {
+
+		m_gameObject->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
+	}
+	else
+	{
+		if (!m_gameObject->GetComponent<Bomber>()->explode) {
+
+			m_gameObject->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
+		}
+	}
+
+	m_gameObject->GetComponent<Rigidbody>()->SetVelocity(glm::vec3(0.0f));
 
 	DeQueen* queen = m_gameObject->GetComponent<DeQueen>();
 
 	if (queen != nullptr) {
 		queen->SpawnItem();
+	}
+}
+
+void Enemy::OnEnable() 
+{
+	state = EnemyState::Idle;
+	GotZap = false;
+	affectedByWeapon = false;
+	isDead = false;
+	foundTarget = false;
+
+	setAnimDash = false;
+	setAnimDead = false;
+
+	if ((m_gameObject->GetComponent<AirFollowing>() != nullptr) || (m_gameObject->GetComponent<AirPatrol>() != nullptr) || (m_gameObject->GetComponent<Cocoon>() != nullptr))
+	{
+		m_gameObject->GetComponent<Rigidbody>()->SetGravityScale(0.00000001f);
 	}
 }
 
@@ -38,11 +66,20 @@ void Enemy::SetTarget(Transform* target) {
 }
 
 void Enemy::TakeDamage(float damage) {
-	hpSystem->TakeDamage(damage);
-	OnTakeDamage();
+	if (!hpSystem->isDead()) {
+		hpSystem->TakeDamage(damage);
+		OnTakeDamage();
 
-	//if dead
-	if (hpSystem->GetHP() <= 0) {
-		OnDead();
+		//if dead
+		if (hpSystem->isDead())
+		{
+			if (!isDead)
+			{
+				isDead = true;
+				affectedByWeapon = true;
+
+				OnDead();
+			}
+		}
 	}
 }

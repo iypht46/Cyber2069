@@ -330,6 +330,8 @@ void GameController::OnUpdate(float dt)
 				soundtrackCon->Stop(true);
 				soundtrackCon->PlayState(SOUNDTRACK_STATE::GAMEPLAY_NORMAL, true);
 
+				UIController::GetInstance()->SetActiveQueenUI(false);
+
 				StateGamplayChanged = false;
 			}
 			
@@ -370,6 +372,7 @@ void GameController::OnUpdate(float dt)
 			{
 				Current_Queen = SpawnQueen();
 				UIController::GetInstance()->QueenHP = Current_Queen->GetComponent<HPsystem>();
+				UIController::GetInstance()->SetActiveQueenUI(true);
 
 				soundtrackCon->PlayState(SOUNDTRACK_STATE::GAMEPLAY_BOSS, true);
 
@@ -395,7 +398,7 @@ void GameController::OnUpdate(float dt)
 		}
 
 
-		if (playerControl->GetGameObject()->GetComponent<HPsystem>()->isDead()) 
+		if (!playerControl->GetGameObject()->Active()) 
 		{
 			CocoonCount = 0;
 			SetGameplayState(GAMEPLAY_STATE::NORMAL);
@@ -419,16 +422,17 @@ void GameController::OnUpdate(float dt)
 
 			soundtrackCon->Stop(false);
 
+			string scoreText = "Score: ";
+
+			scoreText += to_string((int)ScoreValue);
+			UIController::GetInstance()->GameOverScoreText.lock()->GetComponent<TextRenderer>()->SetText(scoreText);
+
 			Restart();
 
 			SaveData();
 
 			StateChanged = false;
 
-			string scoreText = "Score: ";
-
-			scoreText += to_string((int)ScoreValue);
-			UIController::GetInstance()->GameOverScoreText.lock()->GetComponent<TextRenderer>()->SetText(scoreText);
 		}
 
 		if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE))

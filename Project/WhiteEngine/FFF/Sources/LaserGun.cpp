@@ -86,18 +86,38 @@ void LaserGun::GameTimeBehaviour(float dt)
 			}
 
 			laserObj->SetActive(true);
-			laser_length = (Graphic::Window::GetWidth() / 1.75f) * Graphic::getCamera()->GetZoom();
+			laser_length = (Graphic::Window::GetWidth() / 1.5f) * Graphic::getCamera()->GetZoom();
 
 			if ((*angle > 60 && *angle < 120) || (*angle > 250) || (*angle < -60))
 			{
-				laser_length = (Graphic::Window::GetHeight() / 1.75f) * Graphic::getCamera()->GetZoom();
+				laser_length = (Graphic::Window::GetHeight() / 1.5f) * Graphic::getCamera()->GetZoom();
 			}
 
-			float gun_x = m_gameObject->m_transform->GetPosition().x + (50.0f * glm::cos(glm::radians(*angle)));
-			float gun_y = m_gameObject->m_transform->GetPosition().y + (50.0f * glm::sin(glm::radians(*angle)));
+			/*float gun_x = m_gameObject->m_transform->GetPosition().x + (50.0f * glm::cos(glm::radians(*angle)));
+			float gun_y = m_gameObject->m_transform->GetPosition().y + (50.0f * glm::sin(glm::radians(*angle)));*/
 
-			float end_x = m_gameObject->m_transform->GetPosition().x + (laser_length * glm::cos(glm::radians(*angle)));
-			float end_y = m_gameObject->m_transform->GetPosition().y + (laser_length * glm::sin(glm::radians(*angle)));
+			float gun_x = m_gameObject->m_transform->GetPosition().x;
+			float gun_y = m_gameObject->m_transform->GetPosition().y;
+				
+			Transform* player = modifyObject->m_transform.get();
+
+			if (player->GetScale().x < 0) {
+
+				float dist = glm::abs(m_gameObject->m_transform->GetPosition().x - player->GetPosition().x);
+
+				GAME_INFO("dist is {}", dist);
+
+				if (*angle > 90)
+				{
+					gun_x = m_gameObject->m_transform->GetPosition().x - (dist * 2.0f);
+				}
+				else {
+					gun_x = m_gameObject->m_transform->GetPosition().x + (dist * 2.0f);
+				}
+			}
+
+			float end_x = gun_x + (laser_length * glm::cos(glm::radians(*angle)));
+			float end_y = gun_y + (laser_length * glm::sin(glm::radians(*angle)));
 
 			Physic::RayHit platHit = PhySc->Raycast(Physic::Ray(gun_x, gun_y, end_x, end_y), PhySc->GetLayerFromString("Platform"));
 
@@ -112,7 +132,7 @@ void LaserGun::GameTimeBehaviour(float dt)
 
 			float laser_length = glm::sqrt(((end_x - gun_x) * (end_x - gun_x)) + ((end_y - gun_y) * (end_y - gun_y)));
 			laserObj->m_transform->SetPosition(glm::vec3((end_x + gun_x) / 2, (end_y + gun_y) / 2, 1.0f));
-			laserObj->m_transform->SetScale(glm::vec3(laser_length, laser_size, 1.0f));
+			laserObj->m_transform->SetTrueScale(glm::vec3(laser_length, laser_size, 1.0f));
 			laserObj->m_transform->SetRotation(*angle);
 
 			//DamageEnemyInRange();
@@ -126,9 +146,27 @@ void LaserGun::GameTimeBehaviour(float dt)
 				Hits.insert(Hits.end(), thislayerHit.begin(), thislayerHit.end());
 			}
 
+			int winWidth = Graphic::Window::GetWidth() * Graphic::getCamera()->GetZoom();
+			int winHeight = Graphic::Window::GetHeight() * Graphic::getCamera()->GetZoom();
+
 			for (Physic::RayHit h : Hits)
 			{
 				Enemy* enemy = h.collider->GetGameObject()->GetComponent<Enemy>();
+
+				Transform* enemTransform = enemy->GetGameObject()->m_transform.get();
+
+				if ((enemTransform->GetPosition().x > (Graphic::getCamera()->GetCampos().x + (winWidth / 2)))
+					|| (enemTransform->GetPosition().x < (Graphic::getCamera()->GetCampos().x - (winWidth / 2)))
+					|| (enemTransform->GetPosition().y > (Graphic::getCamera()->GetCampos().y + (winHeight / 2)))
+					|| (enemTransform->GetPosition().y < (Graphic::getCamera()->GetCampos().y - (winHeight / 2))))
+				{
+					continue;
+				}
+
+				if (!enemy->GetGameObject()->Active()) 
+				{
+					continue;
+				}
 
 				if (enemy != nullptr)
 				{

@@ -20,17 +20,23 @@
 class Flyer :public Enemy {
 private:
 	Rigidbody* rigidbody;
+
+	float dashDelay = 1.0f;
+	float dashDelayTimer = 0;
+
 protected:
 	AirFollowing* airFollow;
+	AirDash* airDash;
 public:
 
 	Flyer() {}
 	~Flyer() {}
 
-	void SetStats(float Speed, float HP, float Dmg);
+	void SetStats(float Speed, float rotateSpeed, float aimtime, float dashspeed, float HP, float Dmg);
 
 	virtual void OnAwake() override;
 	virtual void OnUpdate(float dt);
+	virtual void OnEnable();
 	virtual void OnFixedUpdate(float dt);
 
 	//serialization
@@ -46,15 +52,20 @@ CEREAL_REGISTER_TYPE(Flyer);
 
 class Bomber :public Enemy {
 private:
-	float DashTriggerRadius = 1000.0f;
+	float DashTriggerRadius = 300.0f;
 	float ExplodeTriggerRadius = 300.0f;
 	Rigidbody* rigidbody = nullptr;
 protected:
 	AirFollowing* airFollow = nullptr;
 	AirDash* airDash = nullptr;
 	Explosion* explosion = nullptr;
+	SoundPlayer* sp = nullptr;
 
 public:
+
+	bool explode = false;
+	bool charging = false;
+
 	EnemyState state = EnemyState::Idle;
 
 	Bomber();
@@ -63,6 +74,7 @@ public:
 public:
 	void SetStats(float Speed, float HP, float Dmg, float AimTime, float DashSpeed, float ExplodeDmg, float ExplodeRadius);
 
+	virtual void OnEnable();
 	virtual void OnAwake();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
@@ -108,6 +120,7 @@ public:
 	void SetSpawnDelay(int time);
 	virtual void OnAwake();
 	virtual void OnUpdate(float dt);
+	virtual void OnEnable();
 	virtual void OnFixedUpdate(float dt);
 
 	DeQueen() {}
@@ -135,6 +148,7 @@ public:
 
 	virtual void OnAwake();
 	virtual void OnUpdate(float dt);
+	virtual void OnEnable();
 	virtual void OnFixedUpdate(float dt);
 
 	//serialization
@@ -162,6 +176,7 @@ public:
 
 	virtual void OnAwake();
 	virtual void OnUpdate(float dt);
+	virtual void OnEnable();
 	virtual void OnFixedUpdate(float dt);
 
 //serialization
@@ -191,6 +206,7 @@ public:
 
 	virtual void OnAwake();
 	virtual void OnUpdate(float dt);
+	virtual void OnEnable();
 	virtual void OnFixedUpdate(float dt);
 
 	//serialization
@@ -205,6 +221,9 @@ public:
 CEREAL_REGISTER_TYPE(Spitter);
 
 class Cocoon : public Enemy {
+public:
+	virtual void OnUpdate(float dt);
+	
 	//serialization
 public:
 	template <class Archive>

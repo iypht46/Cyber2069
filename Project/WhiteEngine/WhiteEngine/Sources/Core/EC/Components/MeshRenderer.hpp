@@ -29,6 +29,8 @@ private:
 	float sr_NumFrameX = 1.0f;
 	float sr_NumFrameY = 1.0f;
 
+	glm::vec2 meshUV = glm::vec2(0.0f);
+
 	bool isReplaceColor = false;
 	MeshVbo* mesh = nullptr;
 	Animator* anim = nullptr;
@@ -59,6 +61,9 @@ public:
 	glm::vec3 GetReplaceColor();
 	bool IsReplaceColor();
 	void RemoveReplaceColor();
+
+	glm::vec2 GetMeshUV() { return meshUV; }
+	void SetMeshUV(glm::vec2 uv) { this->meshUV = uv; }
 
 	unsigned int GetTexture();
 	Graphic::Texture GetTextureObj();

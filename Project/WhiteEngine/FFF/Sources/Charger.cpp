@@ -9,6 +9,11 @@ void Charger::OnAwake() {
 	Enemy::OnAwake();
 }
 
+void Charger::OnEnable() {
+	Enemy::OnEnable();
+	animator->setCurrentState(0);
+}
+
 void Charger::SetStats(float Speed, float HP, float DashPauseTime, float DashSpeed, float Dmg) {
 	groundPatrol->SetSpeed(Speed);
 	hpSystem->SetMaxHP(HP);
@@ -33,29 +38,38 @@ void Charger::OnUpdate(float dt) {
 }
 
 void Charger::OnFixedUpdate(float dt) {
-	switch (state)
-	{
-	case Idle:
-		groundPatrol->Patrol(dt);
+	if (!affectedByWeapon) {
+
+		switch (state)
+		{
+		case Idle:
+			groundPatrol->Patrol(dt);
+			break;
+
+		case Dash:
+		{
+			groundDash->Dash(dt);
+
+			if (!dashingTmp && groundDash->Dashing()) {
+				animator->setCurrentState(2);
+			}
+
+			if (groundDash->DashEnd()) {
+				state = EnemyState::Idle;
+			}
+
+			dashingTmp = groundDash->Dashing();
+		}
 		break;
 
-	case Dash:
-	{
-		groundDash->Dash(dt);
-
-		if (!dashingTmp && groundDash->Dashing()) {
-			animator->setCurrentState(2);
+		default:
+			break;
 		}
-
-		if (groundDash->DashEnd()) {
-			state = EnemyState::Idle;
-		}
-
-		dashingTmp = groundDash->Dashing();
 	}
-	break;
 
-	default:
-		break;
+	if (isDead && !setAnimDead) {
+		setAnimDead = true;
+		animator->setCurrentState(3);
 	}
+	
 }

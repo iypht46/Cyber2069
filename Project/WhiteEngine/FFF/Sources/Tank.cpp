@@ -7,6 +7,12 @@ void Tank::OnAwake() {
 	Enemy::OnAwake();
 }
 
+void Tank::OnEnable() 
+{
+	Enemy::OnEnable();
+	animator->setCurrentState(0);
+}
+
 void Tank::SetStats(float Speed, float HP) {
 	groundPatrol->SetSpeed(Speed);
 	hpSystem->SetMaxHP(HP);
@@ -19,12 +25,20 @@ void Tank::OnUpdate(float dt) {
 }
 
 void Tank::OnFixedUpdate(float dt) {
-	switch (state)
-	{
-	case Idle:
-		groundPatrol->Patrol(dt);
-		break;
-	default:
-		break;
+	
+	if (!affectedByWeapon) {
+		switch (state)
+		{
+		case Idle:
+			groundPatrol->Patrol(dt);
+			break;
+		default:
+			break;
+		}
+	}
+
+	if (isDead && !setAnimDead) {
+		setAnimDead = true;
+		animator->setCurrentState(1);
 	}
 }

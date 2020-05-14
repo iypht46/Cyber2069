@@ -72,6 +72,8 @@ public:
 
 	virtual void OnAwake() override;
 
+	void SetActiveQueenUI(bool active);
+
 private:
 	friend class GameController;
 	static UIController* _instance;

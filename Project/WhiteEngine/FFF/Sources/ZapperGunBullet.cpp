@@ -113,7 +113,6 @@ void ZapperGunBullet::OnTriggerEnter(const Physic::Collision col) {
 		}
 	}
 
-	//ZappingSound->PlaySound();
 }
 
 void ZapperGunBullet::OnCollisionEnter(const Physic::Collision col) {
@@ -195,8 +194,9 @@ void ZapperGunBullet::Zap(float dt) {
 
 			rb->SetVelocity(glm::vec3(0.0f));
 
-			if (zapDurationCount > zapDuration) 
+			if (zapDurationCount >= zapDuration) 
 			{
+				ZappingSound->PlaySound();
 				e->TakeDamage(bulletDmg);
 			}
 
@@ -222,9 +222,11 @@ void ZapperGunBullet::enemRelease()
 	for (int i = 0; i < Targets.size(); i++) {
 
 		if (Targets.at(i) != nullptr) {
-
-			Targets.at(i)->SetAffectedByWeapon(false);
-			Targets.at(i)->SetGotZap(false);
+			if (!Targets.at(i)->GetGameObject()->GetComponent<HPsystem>()->isDead()) 
+			{
+				Targets.at(i)->SetAffectedByWeapon(false);
+				Targets.at(i)->SetGotZap(false);
+			}
 			Targets.at(i)->SetState(EnemyState::Idle);
 		}
 	}

@@ -26,7 +26,7 @@ void FlakBullet::OnUpdate(float dt)
 	}
 
 	//if reach destination
-	if (glm::length((glm::vec2)m_gameObject->m_transform->GetPosition() - Destination) <= destinationMargin) {
+	if (glm::length((glm::vec2)m_gameObject->m_transform->GetPosition() - Destination) <= glm::length(rb->GetVelocity()) * dt * 2) {
 		Explode();
 	}
 }
@@ -38,6 +38,8 @@ void FlakBullet::OnAwake()
 	explosion = m_gameObject->GetComponent<Explosion>();
 	explosion->TargetLayers = TargetLayers;
 	particle = m_gameObject->GetComponent<ParticleSystem>();
+	sp = m_gameObject->GetComponent<SoundPlayer>();
+	sp->SetSound(SoundPath("SFX_SpitterBullet_Explode"));
 }
 
 void FlakBullet::OnCollisionEnter(const Physic::Collision col) {
@@ -53,7 +55,8 @@ void FlakBullet::Explode() {
 	particle->TriggerBurstEmission();
 
 	//sound
-	
+	sp->PlaySound();
+
 	//deal damage
 	explosion->Explode();
 

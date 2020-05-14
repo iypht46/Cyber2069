@@ -82,13 +82,23 @@ void UIController::UpdateEquipmentDisplay() {
 	if (em != nullptr) {
 		for (int i = 0; i < EquipmentManager::maxPlayerWeapon; ++i) {
 			if (i < EquippedWeaponDisplay.size() && !EquippedWeaponDisplay[i].expired()) {
-				EquippedWeaponDisplay[i].lock()->GetComponent<MeshRenderer>()->SetTexture(em->weaponItemTex[em->Weapon_Buffer]);
+				if (em->Weapon_Buffer != -1) {
+					EquippedWeaponDisplay[i].lock()->GetComponent<MeshRenderer>()->SetTexture(em->weaponItemTex[em->Weapon_Buffer]);
+				}
+				else {
+					EquippedWeaponDisplay[i].lock()->GetComponent<MeshRenderer>()->SetTexture(TexturePath("BLANK"));
+				}
 			}
 		}
 
 		for (int i = 0; i < EquipmentManager::maxPlayerArtifact; ++i) {
 			if (i < EquippedArtifactDisplay.size() && !EquippedArtifactDisplay[i].expired()) {
-				EquippedArtifactDisplay[i].lock()->GetComponent<MeshRenderer>()->SetTexture(em->artifactItemTex[em->Artifact_Buffer[i]]);
+				if (em->Artifact_Buffer[i] != -1) {
+					EquippedArtifactDisplay[i].lock()->GetComponent<MeshRenderer>()->SetTexture(em->artifactItemTex[em->Artifact_Buffer[i]]);
+				}
+				else {
+					EquippedArtifactDisplay[i].lock()->GetComponent<MeshRenderer>()->SetTexture(TexturePath("BLANK"));
+				}
 			}
 		}
 	}
@@ -181,6 +191,7 @@ void UIController::updateScoreUI() {
 }
 
 void UIController::updateQueenHPUI() {
+	
 	float queenHP = QueenHP->GetHP();
 
 	if (queenHP < 0)
@@ -188,7 +199,7 @@ void UIController::updateQueenHPUI() {
 		queenHP = 0;
 	}
 
-	float currentX = (queenHP * startHPscaleX) / PlayerHP->GetMaxHP();
+	float currentX = (queenHP * startHPscaleX) / QueenHP->GetMaxHP();
 	//float hpDiff = QueenHP->GetMaxHP() - queenHP;
 	if (!QueenHPbar.expired()) {
 		QueenHPbar.lock()->m_transform->SetScale(glm::vec3(currentX, startHPscaleY, 1.0f));
@@ -197,6 +208,12 @@ void UIController::updateQueenHPUI() {
 	if (!QueenHPText.expired()) {
 		QueenHPText.lock()->GetComponent<TextRenderer>()->SetText(to_string((int)queenHP) + "/" + to_string((int)QueenHP->GetMaxHP()));
 	}
+}
+
+void UIController::SetActiveQueenUI(bool active) {
+
+	QueenHPbar.lock()->SetActive(active);
+	QueenHPText.lock()->SetActive(active);
 }
 
 void UIController::UpdateVolumeTexts() {

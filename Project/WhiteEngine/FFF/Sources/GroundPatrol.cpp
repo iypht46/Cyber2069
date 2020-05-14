@@ -37,8 +37,8 @@ bool GroundPatrol::CheckGroundPath() {
 	float posX = thisTransform->GetPosition().x;
 	float posY = thisTransform->GetPosition().y;
 
-	Ground = &(ps->Raycast(Physic::Ray(posX, posY, (posX + (glm::sign(thisTransform->GetScale().x) * m_stoppingDistance)), (posY - (thisTransform->GetScale().y / 2.0f))), ps->GetLayerFromString("Platform")));
-	GLRenderer::GetInstance()->DrawDebug_Line(posX, posY, (posX + (glm::sign(thisTransform->GetScale().x) * m_stoppingDistance)), (posY - (thisTransform->GetScale().y / 2.0f)), 1.0f, 0.0f, 0.0f);
+	Ground = &(ps->Raycast(Physic::Ray(posX, posY, (posX + (glm::sign(thisTransform->GetTrueScale().x) * m_stoppingDistance)), (posY - (thisTransform->GetTrueScale().y / 2.0f))), ps->GetLayerFromString("Platform")));
+	GLRenderer::GetInstance()->DrawDebug_Line(posX, posY, (posX + (glm::sign(thisTransform->GetTrueScale().x) * m_stoppingDistance)), (posY - (thisTransform->GetTrueScale().y / 2.0f)), 1.0f, 0.0f, 0.0f);
 
 	return Ground->hit;
 }
@@ -49,7 +49,7 @@ void GroundPatrol::Patrol(float dt) {
 	posY = thisTransform->GetPosition().y;
 	float sign = glm::sign(thisTransform->GetScale().x);
 
-	rb->SetVelocity(glm::vec3(m_speed * glm::sign(thisTransform->GetScale().x), rb->GetVelocity().y, 0));
+	rb->SetVelocity(glm::vec3(m_speed * glm::sign(thisTransform->GetTrueScale().x), rb->GetVelocity().y, 0));
 
 	if (!CheckGroundPath()) {
 		if (enemySelf != nullptr) {
