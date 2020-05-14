@@ -70,6 +70,9 @@ GameObject* EnemySpawner::SpawnEnemy(float posX,float posY)
 				case POOL_TYPE::ENEMY_FLYER:
 					enemy->GetComponent<Flyer>()->SetStats(
 						SpawnAmplifier->FlyerSpeed,
+						SpawnAmplifier->FlyerRotationSpeed,
+						SpawnAmplifier->FlyerAimTime,
+						SpawnAmplifier->FlyerDashSpeed,
 						SpawnAmplifier->FlyerHP,
 						SpawnAmplifier->FlyerDmg
 						);
@@ -262,8 +265,6 @@ glm::vec2 EnemySpawner::GetRandomPos_Platform() {
 	Transform* enem = EnemyPool->GetGameObject()->m_transform.get();
 
 	float spposY = (enem->GetTrueScale().y + pf->GetTrueScale().y) * 0.5f;
-
-	GAME_INFO("spposY = {}", spposY);
 
 	if (SpawnType != POOL_TYPE::ENEMY_COCOON)
 	{

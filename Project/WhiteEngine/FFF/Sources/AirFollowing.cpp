@@ -11,6 +11,8 @@ void AirFollowing::OnAwake() {
 	t = GetGameObject()->m_transform.get();
 	rb = GetGameObject()->GetComponent<Rigidbody>();
 	e = GetGameObject()->GetComponent<Character>();
+
+	velocityOrientation = t->GetRotation();
 }
 
 void AirFollowing::SetPlayer(Transform* player) {
@@ -21,10 +23,6 @@ void AirFollowing::SetFlySpeed(float value) {
 	m_speed = value;
 }
 
-void AirFollowing::SetRotAngle(float value) {
-	rotAngle = value;
-}
-
 void AirFollowing::SetRotRate(float value) {
 	rotRate = value;
 }
@@ -32,13 +30,20 @@ void AirFollowing::SetRotRate(float value) {
 void AirFollowing::FollowPlayer(float dt) {
 	glm::vec3 myVel = rb->GetVelocity();
 	glm::vec3 direction = glm::normalize(m_target->GetPosition() - t->GetPosition());
-	float rot = glm::cross(glm::normalize(myVel), direction).z;
-	t->SetRotation(t->GetRotation() + (rot * rotRate * dt));
+	float rotDir = glm::sign(glm::cross(glm::normalize(myVel), direction).z);
+	velocityOrientation += (rotDir * rotRate * dt);
 
-	rb->SetVelocity(glm::vec3(glm::cos(t->GetRotation() + this->rotAngle), glm::sin(t->GetRotation() + this->rotAngle), 0) * m_speed);
+	t->SetRotation(glm::degrees(glm::atan(direction.y, direction.x)));
 
-	if (direction.x > 0 != e->facingRight) {
-		e->flip();
+	float vorad = glm::radians(velocityOrientation);
+	rb->SetVelocity(glm::vec3(glm::cos(vorad), glm::sin(vorad), 0) * m_speed);
+	
+	//if (direction.x > 0 != e->facingRight) {
+	//	e->flip();
+	//}
+	float sign = 1.0f;
+	if (direction.x < 0.0f) {
+		sign = -1.0f;
 	}
-
+	m_gameObject->m_transform->SetScale(glm::vec3(m_gameObject->m_transform->GetScale().x, glm::abs(m_gameObject->m_transform->GetScale().y) * sign, m_gameObject->m_transform->GetScale().z));
 }

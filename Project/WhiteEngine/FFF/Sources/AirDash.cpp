@@ -42,7 +42,7 @@ void AirDash::Dash(float dt) {
 		timer -= dt;
 		if (timer > 0) {
 			rb->SetVelocity(glm::vec3(0, 0, 0));
-			self->SetRotation(m_angle);
+			self->SetRotation(glm::degrees(m_angle));
 		}
 		else {
 			sp->PlaySound();
@@ -50,12 +50,12 @@ void AirDash::Dash(float dt) {
 			
 		}
 	}else if (dashState) {
-		if (distance <= 10.0f) {
+		if (distance <= m_dashSpeed * dt * 2) {
 			Reset();
 		}
 		else 
 		{
-			rb->SetVelocity(glm::vec3(m_dashSpeed * glm::cos(self->GetRotation()), m_dashSpeed * glm::sin(self->GetRotation()), 0));
+			rb->SetVelocity(glm::vec3(glm::cos(m_angle), glm::sin(m_angle), 0) * m_dashSpeed);
 		}
 	}
 

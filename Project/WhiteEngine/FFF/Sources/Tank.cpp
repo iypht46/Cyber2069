@@ -19,12 +19,15 @@ void Tank::OnUpdate(float dt) {
 }
 
 void Tank::OnFixedUpdate(float dt) {
-	switch (state)
-	{
-	case Idle:
-		groundPatrol->Patrol(dt);
-		break;
-	default:
-		break;
+	
+	if (!affectedByWeapon) {
+		switch (state)
+		{
+		case Idle:
+			groundPatrol->Patrol(dt);
+			break;
+		default:
+			break;
+		}
 	}
 }
