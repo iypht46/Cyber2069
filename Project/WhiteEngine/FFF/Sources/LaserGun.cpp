@@ -58,9 +58,9 @@ void LaserGun::GameTimeBehaviour(float dt)
 {
 	laserObj->SetActive(false);
 
-	/*if (Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT)) {
+	if (Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT)) {
 		m_gameObject->GetComponent<SoundPlayer>()->PlaySound();
-	}*/
+	}
 
 	weapon_delay_count += dt;
 
@@ -72,7 +72,7 @@ void LaserGun::GameTimeBehaviour(float dt)
 
 		if (weapon_delay_count >= (1.0f / weapon_firerate)) {
 
-
+			
 			if (laser_duration_count == 0.0f)
 			{
 				m_gameObject->GetComponent<SoundPlayer>()->PlaySound();

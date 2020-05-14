@@ -261,6 +261,7 @@ private:
 	PlayerController* playerControl;
 	HPsystem* PlayerHP;
 
+	SoundPlayer* sp;
 	SoundtrackController* soundtrackCon;
 
 	glm::vec3 PlayerStartPosition;
@@ -351,6 +352,7 @@ public:
 	void AddComboValue(float value);
 
 	void SetCombo(float combo);
+	void ResetCombo();
 
 	void Restart();
 
