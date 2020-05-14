@@ -23,7 +23,14 @@
 
 #define PI 3.14159265358979323846
 
+class GameObject;
+
 class PlayerController : public Character {
+private:
+	bool playEnd = false;	//use for check stamina deplettion
+
+	GameObject* dashPtc;
+
 protected:
 	HPsystem* hpSystem = nullptr;
 	Rigidbody* rb = nullptr;
@@ -75,8 +82,10 @@ protected:
 	bool onGround = false;
 	bool Dash = false;
 	bool setDashAnim = false;
+
 	bool staminaDepleted = false;
-	bool playEnd = false;
+
+	bool setDieAnim = false;
 	
 	glm::vec2 direction;
 	glm::vec2 dashDirection;
@@ -122,6 +131,8 @@ public:
 	virtual void OnAwake();
 	virtual void OnUpdate(float dt);
 	virtual void OnFixedUpdate(float dt);
+	virtual void OnEnable();
+
 	virtual void OnCollisionEnter(const Physic::Collision) override;
 	virtual void OnCollisionStay(const Physic::Collision) override;
 	virtual void OnCollisionExit(const Physic::Collision) override;

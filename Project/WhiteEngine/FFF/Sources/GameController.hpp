@@ -42,7 +42,27 @@ enum POOL_TYPE {
 	ENEMY_QUEEN,
 	ENEMY_COCOON,
 	BULLET_FUME,
-	ITEM_DROP
+	ITEM_DROP,
+	PTCL_BLACKHOLE,//
+	PTCL_BULLET_HIT_ARMOR,//
+	PTCL_BULLET_HIT_ENEMY,//
+	PTCL_LASER_HIT,//
+	PTCL_ZAPPER_ZAP,//
+	PTCL_EXPLOSION_SHRAPNEL,
+	PTCL_EXPLOSION_GRENADE,//
+	PTCL_EXPLOSION_BOMBER,//
+	PTCL_EXPLOSION_SPITTER,//
+	PTCL_PICKUP_EQUIPMENT,//
+	PTCL_PICKUP_HEAL,//
+	PTCL_KILLED_ENEMY,//
+	PTCL_KILLED_COCOON,//
+	PTCL_KILLED_QUEEN_SMOKE,
+	PTCL_KILLED_QUEEN_FLUID,
+	PTCL_ENEMYSPAWN1,
+	PTCL_ENEMYSPAWN2,
+	PTCL_PLAYER_DASH,//
+	PTCL_PLAYER_JUMP,//
+	PTCL_PLAYER_KILLED//
 };
 
 enum GAME_STATE {
@@ -241,6 +261,7 @@ private:
 	PlayerController* playerControl;
 	HPsystem* PlayerHP;
 
+	SoundPlayer* sp;
 	SoundtrackController* soundtrackCon;
 
 	glm::vec3 PlayerStartPosition;
@@ -331,6 +352,7 @@ public:
 	void AddComboValue(float value);
 
 	void SetCombo(float combo);
+	void ResetCombo();
 
 	void Restart();
 

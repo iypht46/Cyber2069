@@ -44,6 +44,7 @@ public:
 	void Dash(float dt);
 	void TargetLock(glm::vec3 pos);
 	bool DashEnd();
+	bool DashState() { return dashState; }
 	void Reset();
 
 	virtual void OnAwake();

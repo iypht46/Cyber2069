@@ -1,5 +1,7 @@
 #include "HPsystem.hpp"
 #include "GameController.hpp"
+
+#include "Core/Particle/ParticleSystem.h"
 #include "Scripts/GameControl/CameraController.h"
 
 void HPsystem::SetMaxHP(float hp) {
@@ -14,6 +16,10 @@ void HPsystem::SetHp(float hp) {
 void HPsystem::SetInvincible(bool inv) 
 {
 	this->invincible = inv;
+}
+
+void HPsystem::SetInactiveDelay(float delay) {
+	deadDelay = delay;
 }
 
 float HPsystem::GetMaxHP() {
@@ -36,24 +42,29 @@ void HPsystem::OnEnable()
 
 void HPsystem::TakeDamage(float damage) {
 	if (!this->invincible && !dead) {
+
+		//shake camera 
+		if (m_gameObject->GetComponent<PlayerController>() != nullptr) {
+			CameraController::GetInstance()->ShakeCamera(30.0f, 10.0f, 0.2f);
+
+			GameController::GetInstance()->ResetCombo();
+
+			sp->SetSound(SoundPath("SFX_Player_TakingDamage2"));
+			
+
+		}
+		else {
+			sp->SetSound(SoundPath("SFX_Enemy_TakingDamage"));
+		}
+
+		sp->PlaySound();
+
+		if (GameController::GetInstance()->isCursedMode() && (m_gameObject->GetComponent<DeQueen>() == nullptr))
 		{
-			if (GameController::GetInstance()->isCursedMode() && (m_gameObject->GetComponent<DeQueen>() == nullptr))
-			{
-				hp = 0;
-				Dead();
-			}
-
-			//shake camera 
-			if (m_gameObject->GetComponent<PlayerController>() != nullptr) {
-				CameraController::GetInstance()->ShakeCamera(30.0f, 10.0f, 0.2f);
-
-				sp->SetSound(SoundPath("SFX_Player_TakingDamage2"));
-
-			}
-			else {
-				sp->SetSound(SoundPath("SFX_Enemy_TakingDamage"));
-			}
-
+			hp = 0;
+			Dead();
+		}
+		else {
 			this->hp -= damage;
 
 			if (!dead && hp <= 0)
@@ -61,8 +72,6 @@ void HPsystem::TakeDamage(float damage) {
 				hp = 0;
 				Dead();
 			}
-
-			sp->PlaySound();
 		}
 	}
 }
@@ -81,10 +90,12 @@ void HPsystem::Dead()
 	if (m_gameObject->GetComponent<PlayerController>() != nullptr) {
 		sp->SetSound(SoundPath("SFX_Player_Killed"));
 
+		//particle
+		GameObject* killed = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_PLAYER_KILLED)->GetGameObject();
+		killed->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+		killed->GetComponent<ParticleSystem>()->TriggerBurstEmission();
 	}
-	else {
-		sp->SetSound(SoundPath("SFX_Enemy_Killed"));
-	}
+
 	sp->PlaySound();
 }
 

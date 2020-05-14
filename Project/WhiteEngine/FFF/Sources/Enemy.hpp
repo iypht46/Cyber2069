@@ -23,12 +23,16 @@ protected:
 	HPsystem* hpSystem;
 	Animator* animator;
 	Transform* target;
+	SoundPlayer* sp;
 	bool foundTarget;
 
 	bool isDead = false;
 
 	bool affectedByWeapon = false;
 	bool GotZap = false;
+
+	bool setAnimDash = false;
+	bool setAnimDead = false;
 
 
 	EnemyState state = EnemyState::Idle;

@@ -9,8 +9,8 @@
 CameraController* CameraController::_instance = nullptr;
 
 CameraController::CameraController() {
-	LimitAreaSize = glm::vec3(6000, 4000, 1);
-	LimitAreaOffset = glm::vec3(0);
+	LimitAreaSize = glm::vec3(3000, 1000, 1);
+	LimitAreaOffset = glm::vec3(0, 500, 0);
 
 	if (_instance == nullptr) {
 		_instance = this;

@@ -9,6 +9,11 @@ void Charger::OnAwake() {
 	Enemy::OnAwake();
 }
 
+void Charger::OnEnable() {
+	Enemy::OnEnable();
+	animator->setCurrentState(0);
+}
+
 void Charger::SetStats(float Speed, float HP, float DashPauseTime, float DashSpeed, float Dmg) {
 	groundPatrol->SetSpeed(Speed);
 	hpSystem->SetMaxHP(HP);
@@ -60,6 +65,11 @@ void Charger::OnFixedUpdate(float dt) {
 		default:
 			break;
 		}
+	}
+
+	if (isDead && !setAnimDead) {
+		setAnimDead = true;
+		animator->setCurrentState(3);
 	}
 	
 }

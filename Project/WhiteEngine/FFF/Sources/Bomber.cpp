@@ -1,4 +1,7 @@
 #include "EnemyBehaviours.h"
+#include "GameController.hpp"
+#include "Core/Particle/ParticleSystem.h"
+
 #include "Core/Logger.hpp"
 #include "Graphic/GLRenderer.h"
 
@@ -18,8 +21,14 @@ void Bomber::OnAwake() {
 	Enemy::OnAwake();
 }
 
+void Bomber::OnEnable() {
+	Enemy::OnEnable();
+	animator->setCurrentState(0);
+	explode = false;
+}
+
 void Bomber::OnUpdate(float dt) {
-	if (GetGameObject()->Active()) {
+	if (GetGameObject()->Active() && !isDead) {
 		Enemy::OnUpdate(dt);
 
 		if (glm::length(target->GetPosition() - GetGameObject()->m_transform->GetPosition()) < DashTriggerRadius) {
@@ -30,6 +39,7 @@ void Bomber::OnUpdate(float dt) {
 			
 		}
 		else if (foundTarget && state != EnemyState::Active) {
+			airFollow->SetPlayer(target);
 			state = EnemyState::Chase;
 		}
 		else if (state != EnemyState::Active) {
@@ -54,12 +64,16 @@ void Bomber::OnFixedUpdate(float dt) {
 				airFollow->FollowPlayer(dt);
 				break;
 			case EnemyState::Active:
+				if (!setAnimDash)
+				{
+					setAnimDash = true;
+					animator->setCurrentState(2);
+				}
+				
 				airDash->Dash(dt);
+
 				if (airDash->DashEnd()) {
-					sp->SetSound(SoundPath("SFX_Bomber_Explode"));
-					sp->PlaySound();
-					explosion->Explode();
-					hpSystem->Dead();
+					Explode();
 
 					state = EnemyState::Idle;
 				}
@@ -69,6 +83,33 @@ void Bomber::OnFixedUpdate(float dt) {
 			}
 		}
 	}
+
+	if (isDead && !setAnimDead) {
+		setAnimDead = true;
+		
+		if (explode) {
+			animator->setCurrentState(3);
+		}
+		else {
+
+			animator->setCurrentState(4);
+		}
+	}
+}
+
+void Bomber::Explode() {
+	sp->SetSound(SoundPath("SFX_Bomber_Explode"));
+	sp->PlaySound();
+
+	GameObject* expl = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_EXPLOSION_BOMBER)->GetGameObject();
+	expl->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+	expl->GetComponent<ParticleSystem>()->TriggerBurstEmission();
+
+	explosion->Explode();
+	//hpSystem->Dead();
+	explode = true;
+
+	m_gameObject->GetComponent<Enemy>()->TakeDamage(hpSystem->GetMaxHP());
 }
 
 void Bomber::SetStats(float Speed, float HP, float Dmg, float AimTime, float DashSpeed, float ExplodeDmg, float ExplodeRadius) {

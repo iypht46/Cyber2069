@@ -80,6 +80,7 @@ class LoadoutSelectButton : public BehaviourScript
 private:
 	LoadoutUI* loadoutUI = nullptr;
 	EquipmentManager* eqManager = nullptr;
+	SoundPlayer* sp = nullptr;
 
 public:
 	int type = 0;

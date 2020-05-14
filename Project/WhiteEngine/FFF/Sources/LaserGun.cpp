@@ -9,6 +9,8 @@
 
 #include <glm/gtx/rotate_vector.hpp>
 
+#include "Core/Particle/ParticleSystem.h"
+
 LaserGun::LaserGun() 
 {
 
@@ -58,21 +60,25 @@ void LaserGun::GameTimeBehaviour(float dt)
 {
 	laserObj->SetActive(false);
 
-	/*if (Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT)) {
+	if (Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT)) {
 		m_gameObject->GetComponent<SoundPlayer>()->PlaySound();
-	}*/
+	}
 
 	weapon_delay_count += dt;
 
 	if (Input::GetMouseHold(Input::MouseKeyCode::MOUSE_LEFT) ||
 		Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT))
 	{
+		if (!initparticle) {
+			getParticles();
+		}
+
 		Physic::PhysicScene* PhySc = Physic::PhysicScene::GetInstance();
 
 
 		if (weapon_delay_count >= (1.0f / weapon_firerate)) {
 
-
+			
 			if (laser_duration_count == 0.0f)
 			{
 				m_gameObject->GetComponent<SoundPlayer>()->PlaySound();
@@ -86,18 +92,38 @@ void LaserGun::GameTimeBehaviour(float dt)
 			}
 
 			laserObj->SetActive(true);
-			laser_length = (Graphic::Window::GetWidth() / 1.75f) * Graphic::getCamera()->GetZoom();
+			laser_length = (Graphic::Window::GetWidth() / 1.5f) * Graphic::getCamera()->GetZoom();
 
 			if ((*angle > 60 && *angle < 120) || (*angle > 250) || (*angle < -60))
 			{
-				laser_length = (Graphic::Window::GetHeight() / 1.75f) * Graphic::getCamera()->GetZoom();
+				laser_length = (Graphic::Window::GetHeight() / 1.5f) * Graphic::getCamera()->GetZoom();
 			}
 
-			float gun_x = m_gameObject->m_transform->GetPosition().x + (50.0f * glm::cos(glm::radians(*angle)));
-			float gun_y = m_gameObject->m_transform->GetPosition().y + (50.0f * glm::sin(glm::radians(*angle)));
+			/*float gun_x = m_gameObject->m_transform->GetPosition().x + (50.0f * glm::cos(glm::radians(*angle)));
+			float gun_y = m_gameObject->m_transform->GetPosition().y + (50.0f * glm::sin(glm::radians(*angle)));*/
 
-			float end_x = m_gameObject->m_transform->GetPosition().x + (laser_length * glm::cos(glm::radians(*angle)));
-			float end_y = m_gameObject->m_transform->GetPosition().y + (laser_length * glm::sin(glm::radians(*angle)));
+			float gun_x = m_gameObject->m_transform->GetPosition().x;
+			float gun_y = m_gameObject->m_transform->GetPosition().y;
+				
+			Transform* player = modifyObject->m_transform.get();
+
+			if (player->GetScale().x < 0) {
+
+				float dist = glm::abs(m_gameObject->m_transform->GetPosition().x - player->GetPosition().x);
+
+				GAME_INFO("dist is {}", dist);
+
+				if (*angle > 90)
+				{
+					gun_x = m_gameObject->m_transform->GetPosition().x - (dist * 2.0f);
+				}
+				else {
+					gun_x = m_gameObject->m_transform->GetPosition().x + (dist * 2.0f);
+				}
+			}
+
+			float end_x = gun_x + (laser_length * glm::cos(glm::radians(*angle)));
+			float end_y = gun_y + (laser_length * glm::sin(glm::radians(*angle)));
 
 			Physic::RayHit platHit = PhySc->Raycast(Physic::Ray(gun_x, gun_y, end_x, end_y), PhySc->GetLayerFromString("Platform"));
 
@@ -126,16 +152,45 @@ void LaserGun::GameTimeBehaviour(float dt)
 				Hits.insert(Hits.end(), thislayerHit.begin(), thislayerHit.end());
 			}
 
+			int winWidth = Graphic::Window::GetWidth() * Graphic::getCamera()->GetZoom();
+			int winHeight = Graphic::Window::GetHeight() * Graphic::getCamera()->GetZoom();
+
+			int particleIter = 0;
 			for (Physic::RayHit h : Hits)
 			{
 				Enemy* enemy = h.collider->GetGameObject()->GetComponent<Enemy>();
 
+				Transform* enemTransform = enemy->GetGameObject()->m_transform.get();
+
+				if ((enemTransform->GetPosition().x > (Graphic::getCamera()->GetCampos().x + (winWidth / 2)))
+					|| (enemTransform->GetPosition().x < (Graphic::getCamera()->GetCampos().x - (winWidth / 2)))
+					|| (enemTransform->GetPosition().y > (Graphic::getCamera()->GetCampos().y + (winHeight / 2)))
+					|| (enemTransform->GetPosition().y < (Graphic::getCamera()->GetCampos().y - (winHeight / 2))))
+				{
+					continue;
+				}
+
+				if (!enemy->GetGameObject()->Active()) 
+				{
+					continue;
+				}
+
 				if (enemy != nullptr)
 				{
+					//particle
+					if (particleIter >= particles.size()) {
+						particles[particleIter]->SetActive(true);
+						particles[particleIter]->m_transform->SetPosition(enemTransform->GetPosition());
+						particles[particleIter]->m_transform->SetRotation(*angle);
+						++particleIter;
+					}
 					enemy->TakeDamage(weapon_damage);
 				}
 			}
 		}
+	}
+	else if (Input::GetMouseUp(Input::MouseKeyCode::MOUSE_LEFT)) {
+		stopParticles();
 	}
 }
 
@@ -188,5 +243,24 @@ void LaserGun::OnDisable()
 	if (laserObj != nullptr) {
 
 		laserObj->SetActive(false);
+	}
+}
+
+void LaserGun::getParticles() {
+	if (!initparticle) {
+		for (int i = 0; i < GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_LASER_HIT)->GetPoolSize(); ++i) {
+			GameObject* p = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_LASER_HIT)->GetGameObject();
+			p->SetActive(false);
+			p->GetComponent<ParticleSystem>()->emitter->isEnabled = true;
+			particles.push_back(p);
+		}
+
+		initparticle = true;
+	}
+}
+
+void LaserGun::stopParticles() {
+	for (GameObject* p : particles) {
+		p->SetActive(false);
 	}
 }
