@@ -1175,18 +1175,6 @@ namespace World
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(GameOverScoreText);
 			}
 
-			//HighScore UI
-			{
-				std::shared_ptr<GameObject> HighScoreText = Instantiate();
-				HighScoreText->AddComponent<TextRenderer>();
-				HighScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 20);
-				HighScoreText->GetComponent<TextRenderer>()->SetText("Highscore");
-				HighScoreText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
-				HighScoreText->m_transform->SetPosition(glm::vec3(0, 0, 1));
-
-				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(HighScoreText);
-			}
-
 			//Option UI
 			{
 				std::shared_ptr<GameObject> OptionText = Instantiate();
@@ -1502,6 +1490,18 @@ namespace World
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Credit].push_back(CreditContentText);
 			}
 
+			//HighScore UI
+			{
+				std::shared_ptr<GameObject> HighScoreText = Instantiate();
+				HighScoreText->AddComponent<TextRenderer>();
+				HighScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 20);
+				HighScoreText->GetComponent<TextRenderer>()->SetText("Highscore");
+				HighScoreText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
+				HighScoreText->m_transform->SetPosition(glm::vec3(400, 275, 1));
+
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(HighScoreText);
+			}
+
 			std::shared_ptr<GameObject> ui_highscore = Instantiate();
 			ui_highscore->AddComponent<HighScoreUI>();
 
@@ -1517,7 +1517,7 @@ namespace World
 			ScoreText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 
 			ScoreText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
-			ScoreText->m_transform->SetPosition(glm::vec3(100.0f, 50.0f, 1.0f));
+			ScoreText->m_transform->SetPosition(glm::vec3(250.0f, 190.0f, 1.0f));
 
 			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(ScoreText);
 			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(ScoreText);
@@ -1531,7 +1531,7 @@ namespace World
 			ScoreText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 
 			ScoreText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
-			ScoreText->m_transform->SetPosition(glm::vec3(-100.0f, 50.0f, 1.0f));
+			ScoreText->m_transform->SetPosition(glm::vec3(585.0f, 190.0f, 1.0f));
 
 			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(ScoreText);
 			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(ScoreText);
