@@ -7,6 +7,8 @@
 #include "EquipmentManager.hpp"
 #include "Scripts/GameControl/PlayerData.hpp"
 
+#include <vector>
+
 class HighScoreUI : public BehaviourScript {
 private:
 	TextRenderer* nametext;
@@ -18,8 +20,8 @@ private:
 
 	int maxEntryShow = 10;
 public:
-	std::shared_ptr<GameObject> NameText;
-	std::shared_ptr<GameObject> ScoreText;
+	std::vector<std::shared_ptr<GameObject>> scoreText;
+	std::vector<std::shared_ptr<GameObject>> nameText;
 
 	void UpdateScoreBoard();
 

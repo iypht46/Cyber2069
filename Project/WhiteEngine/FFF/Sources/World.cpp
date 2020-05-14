@@ -184,7 +184,7 @@ namespace World
 
 		//Runtime
 		Core::Logger::Init();
-		Graphic::Init("White", 3, Graphic::Window::WindowMode::FULLSCREEN);
+		Graphic::Init("White", 3, Graphic::Window::WindowMode::WINDOWED);
 		Graphic::Window::SetWindowIcon("Sources/Assets/Sprites/icon.png");
 		GLRenderer::GetInstance()->drawDebug = true;
 		//Input
@@ -1509,44 +1509,54 @@ namespace World
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Credit].push_back(CreditContentText);
 			}
 
+			//High Score Page
 			std::shared_ptr<GameObject> ui_highscore = Instantiate();
 			ui_highscore->AddComponent<HighScoreUI>();
 
 			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(ui_highscore);
 			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(ui_highscore);
 
-			std::shared_ptr<GameObject> ScoreText;
+			std::shared_ptr<GameObject> scoreText, nameText, gameoverScoreText, gameoverNameText;
+			gameoverNameText = Instantiate();
+			gameoverScoreText = Instantiate();
+			nameText = Instantiate();
+			scoreText = Instantiate();
+			auto highscore_name_text = nameText->AddComponent<TextRenderer>();
+			auto highscore_score_text = scoreText->AddComponent<TextRenderer>();
+			auto gameover_score_text = gameoverScoreText->AddComponent<TextRenderer>();
+			auto gameover_name_text = gameoverNameText->AddComponent<TextRenderer>();
+			//Text Renderer Setting
+			highscore_name_text->LoadFont("Sources/Assets/Fonts/Pixeled.ttf", 15);
+			highscore_score_text->LoadFont("Sources/Assets/Fonts/Pixeled.ttf", 15);
+			gameover_name_text->LoadFont("Sources/Assets/Fonts/Pixeled.ttf", 15);
+			gameover_score_text->LoadFont("Sources/Assets/Fonts/Pixeled.ttf", 15);
+			highscore_name_text->SetlineSpacing(2.0f);
+			highscore_score_text->SetlineSpacing(2.0f);
+			gameover_name_text->SetlineSpacing(2.0f);
+			gameover_score_text->SetlineSpacing(2.0f);
+			highscore_name_text->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+			highscore_score_text->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+			gameover_name_text->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+			gameover_score_text->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+			//Transform Setting
+			scoreText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
+			scoreText->m_transform->SetPosition(glm::vec3(100.0f, 50.0f, 1.0f));
+			nameText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
+			nameText->m_transform->SetPosition(glm::vec3(-100.0f, 50.0f, 1.0f));
+			gameoverScoreText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
+			gameoverScoreText->m_transform->SetPosition(glm::vec3(100.0f, 50.0f, 1.0f));
+			gameoverNameText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
+			gameoverNameText->m_transform->SetPosition(glm::vec3(-100.0f, 50.0f, 1.0f));
+			//Game Controller Setting
+			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(scoreText);
+			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(nameText);
+			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(gameoverScoreText);
+			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(gameoverNameText);
 
-			ScoreText = Instantiate();
-
-			ScoreText->AddComponent<TextRenderer>();
-			ScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 30);
-			ScoreText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-
-			ScoreText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
-			ScoreText->m_transform->SetPosition(glm::vec3(100.0f, 50.0f, 1.0f));
-
-			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(ScoreText);
-			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(ScoreText);
-
-			ui_highscore->GetComponent<HighScoreUI>()->NameText = ScoreText;
-
-			ScoreText = Instantiate();
-
-			ScoreText->AddComponent<TextRenderer>();
-			ScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 30);
-			ScoreText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-
-			ScoreText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
-			ScoreText->m_transform->SetPosition(glm::vec3(-100.0f, 50.0f, 1.0f));
-
-			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(ScoreText);
-			gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(ScoreText);
-
-			ui_highscore->GetComponent<HighScoreUI>()->ScoreText = ScoreText;
-			
-
-
+			ui_highscore->GetComponent<HighScoreUI>()->nameText.push_back(nameText);
+			ui_highscore->GetComponent<HighScoreUI>()->scoreText.push_back(scoreText);
+			ui_highscore->GetComponent<HighScoreUI>()->nameText.push_back(gameoverNameText);
+			ui_highscore->GetComponent<HighScoreUI>()->scoreText.push_back(gameoverScoreText);
 			
 			gamecontroller->GetComponent<UIController>()->ScoreText = ui_ScoreText;
 			gamecontroller->GetComponent<UIController>()->ComboText = ui_ComboText;

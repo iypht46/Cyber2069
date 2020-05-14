@@ -2,8 +2,8 @@
 
 void HighScoreUI::OnAwake()
 {
-	nametext = NameText->GetComponent<TextRenderer>();
-	scoretext = ScoreText->GetComponent<TextRenderer>();
+	/*nametext = NameText->GetComponent<TextRenderer>();
+	scoretext = ScoreText->GetComponent<TextRenderer>();*/
 }
 
 void HighScoreUI::OnEnable() 
@@ -46,6 +46,20 @@ void HighScoreUI::UpdateScoreBoard()
 		}
 	}
 
-	nametext->SetText(s_name);
-	scoretext->SetText(s_score);
+	for (auto it = scoreText.begin(); it != scoreText.end(); ++it)
+	{
+		auto text = (*it)->GetComponent<TextRenderer>();
+		if (text)
+			text->SetText(s_name);
+	}
+
+	for (auto it = nameText.begin(); it != nameText.end(); ++it)
+	{
+		auto text = (*it)->GetComponent<TextRenderer>();
+		if (text)
+			text->SetText(s_score);
+	}
+		
+	/*nametext->SetText(s_name);
+	scoretext->SetText(s_score);*/
 }
