@@ -11,6 +11,7 @@ void ItemDrop::OnStart()
 
 	eqManager = GameController::GetInstance()->GetGameObject()->GetComponent<EquipmentManager>();
 	player = GameController::GetInstance()->GetPlayer()->GetComponent<PlayerController>();
+	sp = m_gameObject->GetComponent<SoundPlayer>();
 
 	defaultTex = m_gameObject->GetComponent<MeshRenderer>()->GetTextureObj();
 }
@@ -87,13 +88,16 @@ void ItemDrop::OnTriggerEnter(const Physic::Collision col)
 			GAME_INFO("UNLOCK {}, {}", itemtype.first, itemtype.second);
 			eqManager->Unlock(itemtype.first, itemtype.second);
 		}
+		sp->SetSound(SoundPath("SFX_Game_UnlockingItem2"));
 	}
 	else if (dropType == Drop_Type::Heal) 
 	{
 		HPsystem* playerHP = player->GetGameObject()->GetComponent<HPsystem>();
 		
 		playerHP->SetHp(playerHP->GetHP() + HealValue);
+		sp->SetSound(SoundPath("SFX_Game_Heal"));
 	}
+	sp->PlaySound();
 
 	m_gameObject->SetActive(false);
 }

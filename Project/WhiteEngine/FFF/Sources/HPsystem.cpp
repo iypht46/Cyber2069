@@ -41,7 +41,10 @@ void HPsystem::TakeDamage(float damage) {
 		if (m_gameObject->GetComponent<PlayerController>() != nullptr) {
 			CameraController::GetInstance()->ShakeCamera(30.0f, 10.0f, 0.2f);
 
+			GameController::GetInstance()->ResetCombo();
+
 			sp->SetSound(SoundPath("SFX_Player_TakingDamage2"));
+			
 
 		}
 		else {
@@ -81,9 +84,6 @@ void HPsystem::Dead()
 	if (m_gameObject->GetComponent<PlayerController>() != nullptr) {
 		sp->SetSound(SoundPath("SFX_Player_Killed"));
 
-	}
-	else {
-		sp->SetSound(SoundPath("SFX_Enemy_Killed"));
 	}
 	sp->PlaySound();
 }

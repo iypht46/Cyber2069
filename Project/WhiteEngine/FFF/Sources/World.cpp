@@ -273,6 +273,7 @@ namespace World
 			ui_HPbar = Instantiate();
 			ui_StaminaBar = Instantiate();
 			
+			gamecontroller->AddComponent<SoundPlayer>();
 			gamecontroller->AddComponent<GameController>();
 			gamecontroller->GetComponent<GameController>()->SetGameState(GAME_STATE::MAINMENU);
 			gamecontroller->GetComponent<GameController>()->SetGameplayState(GAMEPLAY_STATE::NORMAL);
@@ -2331,6 +2332,7 @@ namespace World
 				Item->GetComponent<Rigidbody>()->SetGravityScale(0.25f);
 				Item->AddComponent<BoxCollider>()->ReScale(1, 1);
 
+				Item->AddComponent<SoundPlayer>();
 				Item->AddComponent<ItemDrop>();
 
 				Item->SetActive(false);

@@ -61,7 +61,8 @@ enum POOL_TYPE {
 	PTCL_ENEMYSPAWN1,
 	PTCL_ENEMYSPAWN2,
 	PTCL_PLAYER_DASH,
-	PTCL_PLAYER_JUMP
+	PTCL_PLAYER_JUMP,
+	PTCL_PLAYER_KILLED
 };
 
 enum GAME_STATE {
@@ -260,6 +261,7 @@ private:
 	PlayerController* playerControl;
 	HPsystem* PlayerHP;
 
+	SoundPlayer* sp;
 	SoundtrackController* soundtrackCon;
 
 	glm::vec3 PlayerStartPosition;
@@ -350,6 +352,7 @@ public:
 	void AddComboValue(float value);
 
 	void SetCombo(float combo);
+	void ResetCombo();
 
 	void Restart();
 
