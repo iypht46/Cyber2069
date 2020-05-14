@@ -1194,7 +1194,7 @@ namespace World
 				OptionText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 20);
 				OptionText->GetComponent<TextRenderer>()->SetText("Option");
 				OptionText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
-				OptionText->m_transform->SetPosition(glm::vec3(0, 200, 1));
+				OptionText->m_transform->SetPosition(glm::vec3(400, 275, 1));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Option].push_back(OptionText);
 
@@ -1202,7 +1202,7 @@ namespace World
 				MasterVolumeText->AddComponent<TextRenderer>();
 				MasterVolumeText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 20);
 				MasterVolumeText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
-				MasterVolumeText->m_transform->SetPosition(glm::vec3(100, 50, 1));
+				MasterVolumeText->m_transform->SetPosition(glm::vec3(535, 185, 1));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Option].push_back(MasterVolumeText);
 
@@ -1213,17 +1213,17 @@ namespace World
 				MasterText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 20);
 				MasterText->GetComponent<TextRenderer>()->SetText("Master Volume");
 				MasterText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
-				MasterText->m_transform->SetPosition(glm::vec3(-300, 50, 1));
+				MasterText->m_transform->SetPosition(glm::vec3(200, 190, 1));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Option].push_back(MasterText);
 
 				std::shared_ptr<GameObject> MasterUP = Instantiate();
 				MasterUP->AddComponent<MeshRenderer>();
-				MasterUP->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/white.jpg");
+				MasterUP->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Sprites/UIs/ArrowRight.png");
 				MasterUP->GetComponent<MeshRenderer>()->SetUI(true);
 				MasterUP->GetComponent<MeshRenderer>()->SetLayer(10);
 				MasterUP->m_transform->SetScale(glm::vec3(20, 20, 1));
-				MasterUP->m_transform->SetPosition(glm::vec3(150, 50, 1));
+				MasterUP->m_transform->SetPosition(glm::vec3(610, 190, 1));
 				MasterUP->AddComponent<SoundPlayer>();
 				MasterUP->AddComponent<Button>();
 				MasterUP->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::OPTION, OPTION::Master_Increase);
@@ -1233,11 +1233,11 @@ namespace World
 
 				std::shared_ptr<GameObject> MasterDown = Instantiate();
 				MasterDown->AddComponent<MeshRenderer>();
-				MasterDown->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/white.jpg");
+				MasterDown->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Sprites/UIs/ArrowLeft.png");
 				MasterDown->GetComponent<MeshRenderer>()->SetUI(true);
 				MasterDown->GetComponent<MeshRenderer>()->SetLayer(10);
 				MasterDown->m_transform->SetScale(glm::vec3(20, 20, 1));
-				MasterDown->m_transform->SetPosition(glm::vec3(50, 50, 1));
+				MasterDown->m_transform->SetPosition(glm::vec3(510, 190, 1));
 				MasterDown->AddComponent<SoundPlayer>();
 				MasterDown->AddComponent<Button>();
 				MasterDown->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::OPTION, OPTION::Master_Decrease);
@@ -1249,7 +1249,7 @@ namespace World
 				MusicVolumeText->AddComponent<TextRenderer>();
 				MusicVolumeText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 20);
 				MusicVolumeText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
-				MusicVolumeText->m_transform->SetPosition(glm::vec3(100, 30, 1));
+				MusicVolumeText->m_transform->SetPosition(glm::vec3(535, 165, 1));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Option].push_back(MusicVolumeText);
 
@@ -1260,17 +1260,17 @@ namespace World
 				MusicText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 20);
 				MusicText->GetComponent<TextRenderer>()->SetText("Music Volume");
 				MusicText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
-				MusicText->m_transform->SetPosition(glm::vec3(-300, 30, 1));
+				MusicText->m_transform->SetPosition(glm::vec3(200, 170, 1));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Option].push_back(MusicText);
 
 				std::shared_ptr<GameObject> MusicUP = Instantiate();
 				MusicUP->AddComponent<MeshRenderer>();
-				MusicUP->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/white.jpg");
+				MusicUP->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Sprites/UIs/ArrowRight.png");
 				MusicUP->GetComponent<MeshRenderer>()->SetUI(true);
 				MusicUP->GetComponent<MeshRenderer>()->SetLayer(10);
 				MusicUP->m_transform->SetScale(glm::vec3(20, 20, 1));
-				MusicUP->m_transform->SetPosition(glm::vec3(150, 30, 1));
+				MusicUP->m_transform->SetPosition(glm::vec3(610, 170, 1));
 				MusicUP->AddComponent<SoundPlayer>();
 				MusicUP->AddComponent<Button>();
 				MusicUP->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::OPTION, OPTION::Music_Increase);
@@ -1280,11 +1280,11 @@ namespace World
 
 				std::shared_ptr<GameObject> MusicDown = Instantiate();
 				MusicDown->AddComponent<MeshRenderer>();
-				MusicDown->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/white.jpg");
+				MusicDown->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Sprites/UIs/ArrowLeft.png");
 				MusicDown->GetComponent<MeshRenderer>()->SetUI(true);
 				MusicDown->GetComponent<MeshRenderer>()->SetLayer(10);
 				MusicDown->m_transform->SetScale(glm::vec3(20, 20, 1));
-				MusicDown->m_transform->SetPosition(glm::vec3(50, 30, 1));
+				MusicDown->m_transform->SetPosition(glm::vec3(510, 170, 1));
 				MusicDown->AddComponent<SoundPlayer>();
 				MusicDown->AddComponent<Button>();
 				MusicDown->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::OPTION, OPTION::Music_Decrease);
@@ -1297,7 +1297,7 @@ namespace World
 				SFXVolumeText->AddComponent<TextRenderer>();
 				SFXVolumeText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 20);
 				SFXVolumeText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
-				SFXVolumeText->m_transform->SetPosition(glm::vec3(100, 10, 1));
+				SFXVolumeText->m_transform->SetPosition(glm::vec3(535, 145, 1));
 
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Option].push_back(SFXVolumeText);
@@ -1309,17 +1309,17 @@ namespace World
 				SFXText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 20);
 				SFXText->GetComponent<TextRenderer>()->SetText("SFX Volume");
 				SFXText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
-				SFXText->m_transform->SetPosition(glm::vec3(-300, 10, 1));
+				SFXText->m_transform->SetPosition(glm::vec3(200, 150, 1));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Option].push_back(SFXText);
 
 				std::shared_ptr<GameObject> SFXUP = Instantiate();
 				SFXUP->AddComponent<MeshRenderer>();
-				SFXUP->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/white.jpg");
+				SFXUP->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Sprites/UIs/ArrowRight.png");
 				SFXUP->GetComponent<MeshRenderer>()->SetUI(true);
 				SFXUP->GetComponent<MeshRenderer>()->SetLayer(10);
 				SFXUP->m_transform->SetScale(glm::vec3(20, 20, 1));
-				SFXUP->m_transform->SetPosition(glm::vec3(150, 10, 1));
+				SFXUP->m_transform->SetPosition(glm::vec3(610, 150, 1));
 				SFXUP->AddComponent<SoundPlayer>();
 				SFXUP->AddComponent<Button>();
 				SFXUP->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::OPTION, OPTION::SFX_Increase);
@@ -1329,11 +1329,11 @@ namespace World
 
 				std::shared_ptr<GameObject> SFXDown = Instantiate();
 				SFXDown->AddComponent<MeshRenderer>();
-				SFXDown->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/white.jpg");
+				SFXDown->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Sprites/UIs/ArrowLeft.png");
 				SFXDown->GetComponent<MeshRenderer>()->SetUI(true);
 				SFXDown->GetComponent<MeshRenderer>()->SetLayer(10);
 				SFXDown->m_transform->SetScale(glm::vec3(20, 20, 1));
-				SFXDown->m_transform->SetPosition(glm::vec3(50, 10, 1));
+				SFXDown->m_transform->SetPosition(glm::vec3(510, 150, 1));
 				SFXDown->AddComponent<SoundPlayer>();
 				SFXDown->AddComponent<Button>();
 				SFXDown->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::OPTION, OPTION::SFX_Decrease);
@@ -1343,11 +1343,11 @@ namespace World
 
 				std::shared_ptr<GameObject> ResetProgressButton = Instantiate();
 				ResetProgressButton->AddComponent<MeshRenderer>();
-				ResetProgressButton->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/white.jpg");
+				ResetProgressButton->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Sprites/UIs/BlueButton.png");
 				ResetProgressButton->GetComponent<MeshRenderer>()->SetUI(true);
 				ResetProgressButton->GetComponent<MeshRenderer>()->SetLayer(10);
 				ResetProgressButton->m_transform->SetScale(glm::vec3(100, 50, 1));
-				ResetProgressButton->m_transform->SetPosition(glm::vec3(-200, -100, 1));
+				ResetProgressButton->m_transform->SetPosition(glm::vec3(400, -100, 1));
 				ResetProgressButton->AddComponent<SoundPlayer>();
 				ResetProgressButton->AddComponent<Button>();
 				ResetProgressButton->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::UICONTROL, UI_GROUP::ResetProgressWarn);
@@ -1361,7 +1361,7 @@ namespace World
 				ResetProgressText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 20);
 				ResetProgressText->GetComponent<TextRenderer>()->SetText("Reset Progress");
 				ResetProgressText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
-				ResetProgressText->m_transform->SetPosition(glm::vec3(-200, -100, 1));
+				ResetProgressText->m_transform->SetPosition(glm::vec3(375, -100, 1));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Option].push_back(ResetProgressText);
 			}
