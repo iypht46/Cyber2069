@@ -1,15 +1,1 @@
 #pragma once
-
-#include "Enemy.hpp"
-#include "EnemyBehaviours.h"
-#include "PlayerController.hpp"
-#include "EnemySpawner.hpp"
-#include "GameController.hpp"
-#include "Weapon.hpp"
-#include "EquipmentManager.hpp"
-#include "LoadoutUI.hpp"
-#include "HighScoreUI.hpp"
-#include "ItemDrop.hpp"
-#include "Scripts/GameControl/UIController.h"
-#include "Scripts/GameControl/SoundtrackController.h"
-#include "Scripts/GameControl/CameraController.h"

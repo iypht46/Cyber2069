@@ -85,12 +85,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)FFF\Sources;$(SolutionDir)Editor\Sources;$(SolutionDir)Editor\Vendors\imgui-filebrowser;$(SolutionDir)Editor\Vendors\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Editor\Sources;$(SolutionDir)Editor\Vendors\imgui-filebrowser;$(SolutionDir)Editor\Vendors\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)bin\Debug-Win32\FFF;$(SolutionDir)bin\Debug-Win32\WhiteEngine;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>FFF.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)bin\Debug-Win32\WhiteEngine;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>WhiteEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>NotSet</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -136,11 +136,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\FFF\FFF.vcxproj">
-      <Project>{c27c9abd-f457-4515-9a12-e60b5b1b7a78}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\EditorObject\EditorAC.hpp" />
     <ClInclude Include="Sources\EditorObject\EditorParticleObject.hpp" />
@@ -204,6 +199,11 @@
   <ItemGroup>
     <None Include="Sources\Shader\fbo_frag.shd" />
     <None Include="Sources\Shader\fbo_ver.shd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WhiteEngine\WhiteEngine.vcxproj">
+      <Project>{f777a932-80c9-4398-820f-fca0f950097d}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
