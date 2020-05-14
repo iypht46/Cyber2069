@@ -112,13 +112,14 @@ void DeQueen::SetSpawnDelay(int time) {
 void DeQueen::SpawnItem() 
 {
 	GameObject* item = ItemPool->GetGameObject();
+	GameObject* healItem = ItemPool->GetGameObject();
 
-	if (item != nullptr) {
+	if (item != nullptr && healItem != nullptr) {
+
+		healItem->GetComponent<Rigidbody>()->SetVelocity(glm::vec3(0));
+		healItem->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
 
 		item->GetComponent<Rigidbody>()->SetVelocity(glm::vec3(0));
-		item->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
-
-		item->SetActive(true);
 
 		if (!GameController::GetInstance()->GetGameObject()->GetComponent<EquipmentManager>()->isAllUnlock())
 		{
@@ -126,18 +127,30 @@ void DeQueen::SpawnItem()
 
 			if (randChance < ItemUnlockDropChance) 
 			{
+				item->SetActive(true);
 				item->GetComponent<ItemDrop>()->SetType(Drop_Type::Unlock);
+
+				item->m_transform->SetPosition(m_gameObject->m_transform->GetPosition() - glm::vec3(50.0f, 0.0f, 0.0f));
+
+
+				healItem->SetActive(true);
+				healItem->GetComponent<ItemDrop>()->SetType(Drop_Type::Heal);
+				healItem->GetComponent<ItemDrop>()->SetHealValue(HealValue);
+
+				healItem->m_transform->SetPosition(m_gameObject->m_transform->GetPosition() + glm::vec3(50.0f, 0.0f, 0.0f));
 			}
 			else 
 			{
-				item->GetComponent<ItemDrop>()->SetType(Drop_Type::Heal);
-				item->GetComponent<ItemDrop>()->SetHealValue(HealValue);
+				healItem->SetActive(true);
+				healItem->GetComponent<ItemDrop>()->SetType(Drop_Type::Heal);
+				healItem->GetComponent<ItemDrop>()->SetHealValue(HealValue);
 			}
 		}
 		else 
 		{
-			item->GetComponent<ItemDrop>()->SetType(Drop_Type::Heal);
-			item->GetComponent<ItemDrop>()->SetHealValue(HealValue);
+			healItem->SetActive(true);
+			healItem->GetComponent<ItemDrop>()->SetType(Drop_Type::Heal);
+			healItem->GetComponent<ItemDrop>()->SetHealValue(HealValue);
 		}
 		
 	}
