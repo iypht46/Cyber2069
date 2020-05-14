@@ -2312,6 +2312,7 @@ namespace World
 				Item->GetComponent<Rigidbody>()->SetGravityScale(0.25f);
 				Item->AddComponent<BoxCollider>()->ReScale(1, 1);
 
+				Item->AddComponent<SoundPlayer>();
 				Item->AddComponent<ItemDrop>();
 
 				Item->SetActive(false);

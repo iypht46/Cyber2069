@@ -297,6 +297,9 @@ void GameController::OnUpdate(float dt)
 			CameraController::GetInstance()->SetTarget((player.lock()->m_transform).get());
 			UIController::GetInstance()->ToggleUI(UI_GROUP::Gameplay);
 
+			sp->SetSound(SoundPath("SFX_Game_SessionStart"));
+			sp->PlaySound();
+
 			ScoreValue = 0;
 			playerControl->GetGameObject()->SetActive(true);
 			playerControl->GetGameObject()->m_transform->SetPosition(PlayerStartPosition);
@@ -499,6 +502,12 @@ void GameController::AddComboValue(float value) {
 
 void GameController::SetCombo(float combo) {
 	ComboValue = combo;
+}
+
+void GameController::ResetCombo() {
+	this->ComboValue = 1;
+	sp->SetSound(SoundPath("SFX_Game_LoseCombo"));
+	sp->PlaySound();
 }
 
 void GameController::Restart() {

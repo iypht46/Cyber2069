@@ -332,6 +332,7 @@ public:
 	void AddComboValue(float value);
 
 	void SetCombo(float combo);
+	void ResetCombo();
 
 	void Restart();
 
