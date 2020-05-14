@@ -35,6 +35,7 @@ public:
 	bool isInvicible();
 
 	void Dead();
+	void TurnOff();
 
 	virtual void OnAwake();
 	virtual void OnEnable();
