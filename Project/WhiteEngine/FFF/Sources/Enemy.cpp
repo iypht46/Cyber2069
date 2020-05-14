@@ -61,18 +61,20 @@ void Enemy::SetTarget(Transform* target) {
 }
 
 void Enemy::TakeDamage(float damage) {
-	hpSystem->TakeDamage(damage);
-	OnTakeDamage();
+	if (!hpSystem->isDead()) {
+		hpSystem->TakeDamage(damage);
+		OnTakeDamage();
 
-	//if dead
-	if (hpSystem->isDead()) 
-	{
-		if (!isDead) 
+		//if dead
+		if (hpSystem->isDead())
 		{
-			isDead = true;
-			affectedByWeapon = true;
+			if (!isDead)
+			{
+				isDead = true;
+				affectedByWeapon = true;
 
-			OnDead();
+				OnDead();
+			}
 		}
 	}
 }
