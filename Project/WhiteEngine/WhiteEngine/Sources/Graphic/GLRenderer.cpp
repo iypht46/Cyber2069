@@ -211,7 +211,7 @@ void GLRenderer::Render(Graphic::CameraObject* cam)
 		{
 			//If object is flag as UI then reder with projection matrix
 			if (obj->IsUI())
-				obj->Render(GetprojectionMatrix());
+				obj->Render(GetprojectionMatrix(), cam->m_aspect);
 			//Else render with projection * view matrix
 			else
 				obj->Render(cam->GetProjViewMatrix());

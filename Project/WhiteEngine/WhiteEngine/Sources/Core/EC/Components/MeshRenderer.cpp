@@ -95,9 +95,15 @@ void MeshRenderer::SetLayer(unsigned int layer)
 	this->layer = layer;
 }
 
-void MeshRenderer::SetUI(bool ui)
+void MeshRenderer::SetUI(bool ui, ANCHOR_X x, ANCHOR_Y y)
 {
 	m_isUI = ui;
+
+	if (m_isUI)
+	{
+		m_anchor_ui_x = x;
+		m_anchor_ui_y = y;
+	}
 }
 
 int MeshRenderer::GetLayer()
@@ -194,21 +200,6 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 	//vector<glm::mat4> matrixStack;
 	glm::mat4 modelMatrix = GetGameObject()->m_transform->GetModelMatrix();
 
-	/*
-	if (!isUI){
-		glm::mat4 modelMatrix = GetGameObject()->m_transform->GetModelMatrix();
-		glm::mat4 projectionMatrix = Graphic::getCamera()->GetProjectionMatrix();
-		glm::mat4 viewMatrix = Graphic::getCamera()->GetViewMatrix();
-
-		currentMatrix = projectionMatrix * glm::interpolate(viewMatrix, glm::mat4(1.0), GetGameObject()->m_transform->GetParallaxValue()) * modelMatrix;
-	}
-	else {
-		glm::mat4 modelMatrix = GetGameObject()->m_transform->GetModelMatrix();
-		glm::mat4 projectionMatrix = GLRenderer::GetInstance()->GetprojectionMatrix();
-
-		currentMatrix = projectionMatrix * modelMatrix;
-	}
-	*/
 	if (squareMesh != nullptr)
 	{
 		if (this->IsTextureLoaded())
@@ -277,6 +268,86 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 
 		squareMesh->Render();
 	}
+}
+
+void MeshRenderer::Render(glm::mat4 globalModelTransform, glm::vec2 aspect)
+{
+	if (!m_gameObject->Active())
+		return;
+
+	SquareMeshVbo* squareMesh = dynamic_cast<SquareMeshVbo*>(this->mesh);
+
+	GLuint modelMatixId = GLRenderer::GetInstance()->GetModelMatrixAttrId();
+	GLuint modeId = GLRenderer::GetInstance()->GetModeUniformId();
+	GLuint vmodeId = GLRenderer::GetInstance()->GetvModeUniformId();
+	GLuint colorId = GLRenderer::GetInstance()->GetColorUniformId();
+
+	GLuint offsetXId = GLRenderer::GetInstance()->GetOffsetXUniformId();
+	GLuint offsetYId = GLRenderer::GetInstance()->GetOffsetYUniformId();
+
+	{
+		if (modelMatixId == -1)
+		{
+			ENGINE_ERROR("Error: Can't perform transformation ");
+			return;
+		}
+		if (modeId == -1)
+		{
+			ENGINE_ERROR("Error: Can't set mode in ImageObject ");
+			return;
+		}
+		if (!squareMesh)
+		{
+			ENGINE_ERROR("ERROR: Mesh is not created.");
+			return;
+		}
+	}
+	
+	if (this->IsTextureLoaded())
+	{
+		glBindTexture(GL_TEXTURE_2D, m_texture->m_textureID);
+		//glBindTexture(GL_TEXTURE_2D, texture);
+		if (isReplaceColor)
+		{
+			glUniform1i(modeId, RENDER_MODE::REPLACE_COLOR);
+			glUniform3f(colorId, ReplaceColor.x, ReplaceColor.y, ReplaceColor.z);
+		}
+		else
+		{
+			glUniform1i(modeId, RENDER_MODE::NORM);
+		}
+	}
+	else
+	{
+		glUniform1i(modeId, RENDER_MODE::COLOR);
+	}
+
+	glUniform1f(offsetXId, meshUV.x / sr_NumFrameX);
+	glUniform1f(offsetYId, meshUV.y / sr_NumFrameY);
+
+	//Calculate matrix for ui anchoring
+	glm::vec3 anchorOrigin = glm::vec3(0.0f);
+	if (m_anchor_ui_x != ANCHOR_X::CENTER)
+	{
+		anchorOrigin.x = (aspect.x / 2);
+		if (m_anchor_ui_x == ANCHOR_X::LEFT)
+			anchorOrigin *= -1;
+	}
+
+	if (m_anchor_ui_y != ANCHOR_Y::CENTER)
+	{
+		anchorOrigin.y = (aspect.y / 2);
+		if (m_anchor_ui_y == ANCHOR_Y::DOWN)
+			anchorOrigin *= -1;
+	}
+
+	//Matrix Operation
+	glm::mat4 anchorMatrix = glm::translate(glm::mat4(1.0f), anchorOrigin);
+	glm::mat4 modelMatrix = GetGameObject()->m_transform->GetModelMatrix();
+	glm::mat4 currentMatrix = globalModelTransform * anchorMatrix * modelMatrix;
+	glUniformMatrix4fv(modelMatixId, 1, GL_FALSE, glm::value_ptr(currentMatrix));
+
+	squareMesh->Render();
 }
 
 unsigned int MeshRenderer::GetTexture()

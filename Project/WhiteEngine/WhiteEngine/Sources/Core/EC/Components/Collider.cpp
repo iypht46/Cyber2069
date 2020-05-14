@@ -55,13 +55,13 @@
 			break;
 		}
 
-
+		m_hasCollided = false;
 	}
 
 	void Collider::HandleMessage(const Core::Trigger& msg)
 	{
 		//TODO: Call all OnTriggerStart/Exit for every script
-		switch (m_collisionState)
+		switch (m_triggerState)
 		{
 		case COL_STATE::ENTER:
 			GetGameObject()->TriggerEnter(msg.m_collision);
@@ -71,13 +71,13 @@
 			break;
 		case COL_STATE::EXIT:
 			GetGameObject()->TriggerExit(msg.m_collision);
-			m_collisionState = COL_STATE::NONE;
+			m_triggerState = COL_STATE::NONE;
 			break;
 		default:
 			break;
 		}
 
-		m_hasCollided = false;
+		m_hasTriggered = false;
 	}
 
 

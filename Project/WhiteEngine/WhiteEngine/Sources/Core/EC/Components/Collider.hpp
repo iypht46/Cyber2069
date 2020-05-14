@@ -34,7 +34,9 @@
 		COLLIDER_TYPE m_colliderType;
 
 		COL_STATE m_collisionState = COL_STATE::NONE;
+		COL_STATE m_triggerState = COL_STATE::NONE;
 		bool m_hasCollided = false;
+		bool m_hasTriggered = false;
 	public:
 		//Transform* m_transform;
 		Rigidbody* m_rigidbody = nullptr;
