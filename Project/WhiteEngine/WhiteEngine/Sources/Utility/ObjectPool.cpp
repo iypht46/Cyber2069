@@ -5,6 +5,7 @@ void ObjectPool::Init() {
 		for (int i = 0; i < objectCount; ++i) {
 			GameObject* obj = SceneManagement::Instantiate(prefabObjectPath).get();
 			obj->InitComponents();
+			obj->SetActive(false);
 			AddObject(obj);
 		}
 	}
