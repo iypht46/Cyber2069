@@ -287,10 +287,11 @@ namespace World
 				uiBG->AddComponent<MeshRenderer>();
 				uiBG->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 				uiBG->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/Panel02"));
-				uiBG->GetComponent<MeshRenderer>()->SetUI(true);
+				uiBG->GetComponent<MeshRenderer>()->SetUI(true, ANCHOR_X::RIGHT);
 				uiBG->GetComponent<MeshRenderer>()->SetLayer(5);
-
-				uiBG->m_transform->SetScale(glm::vec3(800.0f, 600.0f, 1.0f));
+				glm::vec3 uiBGScale = glm::vec3(1000.0f, 800.0f, 1.0f);
+				uiBG->m_transform->SetScale(uiBGScale);
+				uiBG->m_transform->SetPosition(glm::vec3(-(uiBGScale.x/2 + 20.0f), 0.0f, 1.0f));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(uiBG);
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Credit].push_back(uiBG);
@@ -310,6 +311,10 @@ namespace World
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::MainMenu].push_back(mainmenuBG);
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Loadout].push_back(mainmenuBG);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(mainmenuBG);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Credit].push_back(mainmenuBG);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Option].push_back(mainmenuBG);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(mainmenuBG);
 
 				std::shared_ptr<GameObject> buttonpanelBG = Instantiate();
 				buttonpanelBG->AddComponent<MeshRenderer>();
@@ -324,7 +329,10 @@ namespace World
 				buttonpanelBG->m_transform->SetPosition(glm::vec3(button_panel_x, -buttonpanelScale.y / 3, 1));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::MainMenu].push_back(buttonpanelBG);
-
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(buttonpanelBG);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Credit].push_back(buttonpanelBG);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Option].push_back(buttonpanelBG);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(buttonpanelBG);
 				/*std::shared_ptr<GameObject> startbuttonpanelBG = Instantiate();
 				startbuttonpanelBG->AddComponent<MeshRenderer>();
 				startbuttonpanelBG->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
@@ -348,35 +356,43 @@ namespace World
 				logo->m_transform->SetPosition(glm::vec3(logo_pos_x, -logoScale.y / 1.5, 1));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::MainMenu].push_back(logo);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Loadout].push_back(logo);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(logo);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Credit].push_back(logo);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Option].push_back(logo);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(logo);
 
-				//---------------Back Button---------------//
-				std::shared_ptr<GameObject> BackButton = Instantiate();
-				auto buttonMesh = BackButton->AddComponent<MeshRenderer>();
-				auto button = BackButton->AddComponent<Button>();
-				BackButton->AddComponent<SoundPlayer>();
-				auto buttonTrans = BackButton->m_transform;
-				//Mesh Setting
-				buttonMesh->SetTexture(TexturePath("UIs/BlueButton"));
-				buttonMesh->SetUI(true);
-				buttonMesh->SetLayer(10);
-				//Transform Setting
-				buttonTrans->SetScale(glm::vec3(100, 50, 1));
-				buttonTrans->SetPosition(glm::vec3(-300, 200, 1));
-				//Button SEtting
-				button->SetButtonType(BUTTON_TYPE::UICONTROL, UI_GROUP::MainMenu);
-				button->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
-				//Button Text
-				std::shared_ptr<GameObject> backText = Instantiate();
-				auto button_text = backText->AddComponent<TextRenderer>();
-				std::string button_str = "Back";
-				button_text->LoadFont("Sources/Assets/Fonts/Beon.ttf", 20);
-				button_text->SetText(button_str);
-				button_text->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-				backText->m_transform->SetPosition(buttonTrans->GetPosition());
-				//Game Controller Setting
-				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(BackButton);
-				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Credit].push_back(BackButton);
-				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Option].push_back(BackButton);
+				////---------------Back Button---------------//
+				//std::shared_ptr<GameObject> BackButton = Instantiate();
+				//auto buttonMesh = BackButton->AddComponent<MeshRenderer>();
+				//auto button = BackButton->AddComponent<Button>();
+				//BackButton->AddComponent<SoundPlayer>();
+				//auto buttonTrans = BackButton->m_transform;
+				////Mesh Setting
+				//buttonMesh->SetTexture(TexturePath("UIs/BlueButton"));
+				//buttonMesh->SetUI(true);
+				//buttonMesh->SetLayer(10);
+				////Transform Setting
+				//buttonTrans->SetScale(glm::vec3(100, 50, 1));
+				//buttonTrans->SetPosition(glm::vec3(-300, 200, 1));
+				////Button SEtting
+				//button->SetButtonType(BUTTON_TYPE::UICONTROL, UI_GROUP::MainMenu);
+				//button->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
+				////Button Text
+				//std::shared_ptr<GameObject> backText = Instantiate();
+				//auto button_text = backText->AddComponent<TextRenderer>();
+				//std::string button_str = "Back";
+				//button_text->LoadFont("Sources/Assets/Fonts/Beon.ttf", 20);
+				//button_text->SetText(button_str);
+				//button_text->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+				//backText->m_transform->SetPosition(buttonTrans->GetPosition());
+				////Game Controller Setting
+				//gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(BackButton);
+				//gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Credit].push_back(BackButton);
+				//gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Option].push_back(BackButton);
+				//gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(backText);
+				//gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Credit].push_back(backText);
+				//gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Option].push_back(backText);
 
 				//Global button setting
 				OnHoverModifier menuHoverModifier;
@@ -392,9 +408,9 @@ namespace World
 				//Creating Object
 				std::shared_ptr<GameObject> playButton = Instantiate();
 				//Adding Component
-				buttonMesh = playButton->AddComponent<MeshRenderer>();
-				buttonTrans = playButton->m_transform;
-				button = playButton->AddComponent<Button>();
+				auto buttonMesh = playButton->AddComponent<MeshRenderer>();
+				auto buttonTrans = playButton->m_transform;
+				auto button = playButton->AddComponent<Button>();
 				playButton->AddComponent<SoundPlayer>();
 				//Init Mesh
 				buttonMesh->SetTexture(TexturePath("UIs/ButtonStartNEW"));
@@ -408,8 +424,8 @@ namespace World
 				button->SetModifier(menuHoverModifier);
 				//Text Setting
 				std::shared_ptr<GameObject> playButtonText = Instantiate();
-				button_text = playButtonText->AddComponent<TextRenderer>();
-				button_str = "Start";
+				auto button_text = playButtonText->AddComponent<TextRenderer>();
+				std::string button_str = "Start";
 				button_text->LoadFont("Sources/Assets/Fonts/Beon.ttf", button_font_size);
 				button_text->SetText(button_str);
 				button_text->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
@@ -417,6 +433,14 @@ namespace World
 				//Game Controller Setting
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::MainMenu].push_back(playButton);
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::MainMenu].push_back(playButtonText);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(playButton);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(playButtonText);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Option].push_back(playButton);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Option].push_back(playButtonText);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Credit].push_back(playButton);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Credit].push_back(playButtonText);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(playButton);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(playButtonText);
 
 				//---------------High Score Button---------------//
 				std::shared_ptr<GameObject> highscoreButton = Instantiate();
@@ -446,6 +470,14 @@ namespace World
 				//Game Controller Setting
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::MainMenu].push_back(highscoreButton);
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::MainMenu].push_back(highScoreButtonText);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(highscoreButton);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(highScoreButtonText);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Option].push_back(highscoreButton);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Option].push_back(highScoreButtonText);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Credit].push_back(highscoreButton);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Credit].push_back(highScoreButtonText);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(highscoreButton);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(highScoreButtonText);
 
 
 				//---------------Option Button---------------//
@@ -477,6 +509,14 @@ namespace World
 				//Game Controller Setting
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::MainMenu].push_back(optionButton);
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::MainMenu].push_back(optionButtonText);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(optionButton);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(optionButtonText);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Option].push_back(optionButton);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Option].push_back(optionButtonText);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Credit].push_back(optionButton);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Credit].push_back(optionButtonText);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(optionButton);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(optionButtonText);
 
 				//---------------Credit Button---------------//
 				std::shared_ptr<GameObject> creditButton = Instantiate();
@@ -507,6 +547,14 @@ namespace World
 				//Game Controller Setting
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::MainMenu].push_back(creditButton);
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::MainMenu].push_back(creditButtonText);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(creditButton);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(creditButtonText);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Option].push_back(creditButton);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Option].push_back(creditButtonText);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Credit].push_back(creditButton);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Credit].push_back(creditButtonText);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(creditButton);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(creditButtonText);
 
 				//---------------Quit Button---------------//
 				std::shared_ptr<GameObject> quitButton = Instantiate();
@@ -537,6 +585,14 @@ namespace World
 				//Game Controller SEtting
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::MainMenu].push_back(quitButton);
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::MainMenu].push_back(quitButtonText);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(quitButton);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(quitButtonText);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Option].push_back(quitButton);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Option].push_back(quitButtonText);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Credit].push_back(quitButton);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Credit].push_back(quitButtonText);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(quitButton);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::GameOver].push_back(quitButtonText);
 			}
 
 			//GameplayUI
@@ -573,9 +629,10 @@ namespace World
 				ui_StaminaBar->AddComponent<MeshRenderer>();
 				ui_StaminaBar->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 				ui_StaminaBar->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Blue.jpg");
-				ui_StaminaBar->GetComponent<MeshRenderer>()->SetUI(true);
+				ui_StaminaBar->GetComponent<MeshRenderer>()->SetUI(true, ANCHOR_X::LEFT, ANCHOR_Y::UP);
 				ui_StaminaBar->GetComponent<MeshRenderer>()->SetLayer(10);
 				ui_StaminaBar->m_transform->SetScale(glm::vec3(500.0f, 20.0f, 1.0f));
+				auto pos_Staminabar = glm::vec3((ui_StaminaBar->m_transform->GetScale().x / 2) + 10.0f, -(ui_StaminaBar->m_transform->GetScale().y + 10.0f), 1.0f);
 				ui_StaminaBar->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 280.0f, (Graphic::Window::GetHeight() / 2) - 80.0f, 1.0f));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_StaminaBar);
