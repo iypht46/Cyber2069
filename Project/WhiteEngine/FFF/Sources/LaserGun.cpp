@@ -86,11 +86,11 @@ void LaserGun::GameTimeBehaviour(float dt)
 			}
 
 			laserObj->SetActive(true);
-			laser_length = (Graphic::Window::GetWidth() / 2.0f) * Graphic::getCamera()->GetZoom();
+			laser_length = (Graphic::Window::GetWidth() / 1.5f) * Graphic::getCamera()->GetZoom();
 
 			if ((*angle > 60 && *angle < 120) || (*angle > 250) || (*angle < -60))
 			{
-				laser_length = (Graphic::Window::GetHeight() / 2.0f) * Graphic::getCamera()->GetZoom();
+				laser_length = (Graphic::Window::GetHeight() / 1.5f) * Graphic::getCamera()->GetZoom();
 			}
 
 			/*float gun_x = m_gameObject->m_transform->GetPosition().x + (50.0f * glm::cos(glm::radians(*angle)));

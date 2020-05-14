@@ -1552,8 +1552,21 @@ namespace World
 
 			std::shared_ptr<GameObject> laser = Instantiate();
 			laser->AddComponent<MeshRenderer>();
-			laser->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+			laser->GetComponent<MeshRenderer>()->CreateMesh(3, 1);
 			laser->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/laser_bullet_sheet"));
+
+			std::shared_ptr<AnimationController> LaserCon = std::make_shared<AnimationController>();
+
+			std::shared_ptr<Animation> laseranim = std::make_shared<Animation>();
+			laseranim->setStartPosition(0, 0);
+			laseranim->setEndPosition(2, 0);
+			laseranim->setSpeedMultiplier(1);
+
+			LaserCon->setSheetSize(glm::vec2(3, 1));
+			LaserCon->AddState(laseranim, true);
+
+			laser->AddComponent<Animator>();
+			laser->GetComponent<Animator>()->AssignController(LaserCon);
 
 			wp_LaserGun->GetComponent<LaserGun>()->AssignLaserObj(laser);
 			wp_LaserGun->AddComponent<SoundPlayer>();
