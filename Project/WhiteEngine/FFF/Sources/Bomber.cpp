@@ -17,6 +17,7 @@ void Bomber::OnAwake() {
 }
 
 void Bomber::OnEnable() {
+	Enemy::OnEnable();
 	animator->setCurrentState(0);
 	explode = false;
 }

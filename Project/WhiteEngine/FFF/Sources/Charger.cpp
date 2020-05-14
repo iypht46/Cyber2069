@@ -10,6 +10,7 @@ void Charger::OnAwake() {
 }
 
 void Charger::OnEnable() {
+	Enemy::OnEnable();
 	animator->setCurrentState(0);
 }
 

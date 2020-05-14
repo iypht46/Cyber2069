@@ -11,6 +11,7 @@ void Spitter::OnAwake() {
 
 void Spitter::OnEnable() 
 {
+	Enemy::OnEnable();
 	animator->setCurrentState(0);
 }
 

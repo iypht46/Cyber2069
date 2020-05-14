@@ -11,6 +11,7 @@ void Flyer::OnAwake() {
 
 void Flyer::OnEnable() 
 {
+	Enemy::OnEnable();
 	animator->setCurrentState(0);
 }
 

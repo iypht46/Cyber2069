@@ -43,11 +43,12 @@ void Enemy::OnEnable()
 	GotZap = false;
 	affectedByWeapon = false;
 	isDead = false;
+	foundTarget = false;
 
 	setAnimDash = false;
 	setAnimDead = false;
 
-	if (m_gameObject->GetComponent<AirFollowing>() || m_gameObject->GetComponent<AirPatrol>() || m_gameObject->GetComponent<Cocoon>())
+	if ((m_gameObject->GetComponent<AirFollowing>() != nullptr) || (m_gameObject->GetComponent<AirPatrol>() != nullptr) || (m_gameObject->GetComponent<Cocoon>() != nullptr))
 	{
 		m_gameObject->GetComponent<Rigidbody>()->SetGravityScale(0.00000001f);
 	}

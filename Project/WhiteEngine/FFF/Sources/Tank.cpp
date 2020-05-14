@@ -9,6 +9,7 @@ void Tank::OnAwake() {
 
 void Tank::OnEnable() 
 {
+	Enemy::OnEnable();
 	animator->setCurrentState(0);
 }
 

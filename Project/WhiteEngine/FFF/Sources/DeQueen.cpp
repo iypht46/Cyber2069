@@ -27,8 +27,9 @@ void DeQueen::OnAwake() {
 	Enemy::OnAwake();
 }
 
-void DeQueen::OnEnable() {
-
+void DeQueen::OnEnable() 
+{
+	Enemy::OnEnable();
 }
 
 void DeQueen::SetStats(float Speed, float HP, float SpawnDelay, float unlockchance, float healvalue) {
