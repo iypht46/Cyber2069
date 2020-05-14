@@ -1,7 +1,6 @@
 #include "Transform.hpp"
 #include "Core/Logger.hpp"
 #include "Core/EC/GameObject.hpp"
-#include "MeshRenderer.hpp"
 #include "Graphic/Texture.hpp"
 #include <iostream>
 #include <memory>

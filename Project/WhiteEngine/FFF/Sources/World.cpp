@@ -302,11 +302,11 @@ namespace World
 				mainmenuBG->AddComponent<MeshRenderer>();
 				mainmenuBG->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 				mainmenuBG->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/MenuBrickWall"));
-				mainmenuBG->GetComponent<MeshRenderer>()->SetUI(true);
+				mainmenuBG->GetComponent<MeshRenderer>()->SetUI(true, ANCHOR_X::LEFT, ANCHOR_Y::CENTER);
 				mainmenuBG->GetComponent<MeshRenderer>()->SetLayer(5);
 
 				mainmenuBG->m_transform->SetScale(glm::vec3(Graphic::Window::GetWidth() * (7.0f / 16.0f), Graphic::Window::GetHeight(), 1.0f));
-				mainmenuBG->m_transform->SetPosition(glm::vec3(-400, 0, 1));
+				mainmenuBG->m_transform->SetPosition(glm::vec3(mainmenuBG->m_transform->GetScale().x/2, 0, 1));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::MainMenu].push_back(mainmenuBG);
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Loadout].push_back(mainmenuBG);
