@@ -184,7 +184,8 @@ namespace World
 
 		//Runtime
 		Core::Logger::Init();
-		Graphic::Init();
+		Graphic::Init("White", 3, Graphic::Window::WindowMode::FULLSCREEN);
+		Graphic::Window::SetWindowIcon("Sources/Assets/Sprites/icon.png");
 		GLRenderer::GetInstance()->drawDebug = true;
 		//Input
 		//Bool for debugging
@@ -627,7 +628,7 @@ namespace World
 				ui_StaminaBar->GetComponent<MeshRenderer>()->SetUI(true, ANCHOR_X::LEFT, ANCHOR_Y::UP);
 				ui_StaminaBar->GetComponent<MeshRenderer>()->SetLayer(10);
 				ui_StaminaBar->m_transform->SetScale(glm::vec3(500.0f, 20.0f, 1.0f));
-				auto pos_Staminabar = glm::vec3((ui_StaminaBar->m_transform->GetScale().x / 2) + 10.0f, -(ui_StaminaBar->m_transform->GetScale().y + 10.0f), 1.0f);
+				auto pos_Staminabar = glm::vec3((ui_StaminaBar->m_transform->GetScale().x / 2) + 10.0f, -(ui_StaminaBar->m_transform->GetScale().y + pos_HPbar.y), 1.0f);
 				ui_StaminaBar->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 280.0f, (Graphic::Window::GetHeight() / 2) - 80.0f, 1.0f));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_StaminaBar);
