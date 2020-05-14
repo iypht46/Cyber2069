@@ -262,7 +262,7 @@ namespace World
 				
 		}
 
-		//Serialization::LoadObject(*SceneManagement::ActiveScene, ScenePath("CrossVersionTestScene"));
+		Serialization::LoadObject(*SceneManagement::ActiveScene, ScenePath("RealScene"));
 
 		//700 lines is in here
 		{
@@ -1433,7 +1433,7 @@ namespace World
 
 				std::shared_ptr<GameObject> WarnResetYesButton = Instantiate();
 				WarnResetYesButton->AddComponent<MeshRenderer>();
-				WarnResetYesButton->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/white.jpg");
+				WarnResetYesButton->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/ButtonStartNEW"));
 				WarnResetYesButton->GetComponent<MeshRenderer>()->SetUI(true);
 				WarnResetYesButton->GetComponent<MeshRenderer>()->SetLayer(10);
 				WarnResetYesButton->m_transform->SetScale(glm::vec3(100, 50, 1));
@@ -1448,7 +1448,7 @@ namespace World
 
 				std::shared_ptr<GameObject> WarnResetNoButton = Instantiate();
 				WarnResetNoButton->AddComponent<MeshRenderer>();
-				WarnResetNoButton->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/white.jpg");
+				WarnResetNoButton->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/BlueButton"));
 				WarnResetNoButton->GetComponent<MeshRenderer>()->SetUI(true);
 				WarnResetNoButton->GetComponent<MeshRenderer>()->SetLayer(10);
 				WarnResetNoButton->m_transform->SetScale(glm::vec3(100, 50, 1));
@@ -1472,7 +1472,7 @@ namespace World
 
 				std::shared_ptr<GameObject> WarnQuitYesButton = Instantiate();
 				WarnQuitYesButton->AddComponent<MeshRenderer>();
-				WarnQuitYesButton->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/white.jpg");
+				WarnQuitYesButton->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/ButtonStartNEW"));
 				WarnQuitYesButton->GetComponent<MeshRenderer>()->SetUI(true);
 				WarnQuitYesButton->GetComponent<MeshRenderer>()->SetLayer(10);
 				WarnQuitYesButton->m_transform->SetScale(glm::vec3(100, 50, 1));
@@ -1487,7 +1487,7 @@ namespace World
 
 				std::shared_ptr<GameObject> WarnQuitNoButton = Instantiate();
 				WarnQuitNoButton->AddComponent<MeshRenderer>();
-				WarnQuitNoButton->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/white.jpg");
+				WarnQuitNoButton->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/BlueButton"));
 				WarnQuitNoButton->GetComponent<MeshRenderer>()->SetUI(true);
 				WarnQuitNoButton->GetComponent<MeshRenderer>()->SetLayer(10);
 				WarnQuitNoButton->m_transform->SetScale(glm::vec3(100, 50, 1));
@@ -2538,11 +2538,11 @@ namespace World
 			Update(g_gameInfo->m_deltaTime);
 
 
-			if (Input::GetKeyDown(Input::KeyCode::KEY_ESCAPE))
+			/*if (Input::GetKeyDown(Input::KeyCode::KEY_ESCAPE))
 			{
 				g_gameInfo->GameShouldClose();
 				Graphic::Window::SetWindowShouldClose(true);
-			}
+			}*/
 
 			g_gameInfo->EndFrame();
 		}
