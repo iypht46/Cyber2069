@@ -14,6 +14,8 @@ void Button::OnAwake()
 {
 	mesh = m_gameObject->GetComponent<MeshRenderer>();
 	text = m_gameObject->GetComponent<TextRenderer>();
+	sp = m_gameObject->GetComponent<SoundPlayer>();
+	sp->SetSound(SoundPath("SFX_UI_Selection"));
 
 
 	if (mesh != nullptr) 
@@ -58,9 +60,18 @@ void Button::OnUpdate(float dt) {
 		glm::abs(diff.y) <= glm::abs((m_gameObject->m_transform->GetScale().y * 0.5f))) 
 	{
 		isOnHover = true;
+		if (isOnHover && !playEnd) {
+			sp->PlaySound();
+			playEnd = true;
+		}
+
 		if (Input::GetMouseDown(Input::MouseKeyCode::MOUSE_LEFT)) {
 			OnClick();
 		}
+	}
+
+	if (!isOnHover) {
+		playEnd = false;
 	}
 
 	ModifyOnHover();

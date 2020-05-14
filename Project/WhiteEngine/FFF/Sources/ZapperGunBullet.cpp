@@ -113,7 +113,6 @@ void ZapperGunBullet::OnTriggerEnter(const Physic::Collision col) {
 		}
 	}
 
-	//ZappingSound->PlaySound();
 }
 
 void ZapperGunBullet::OnCollisionEnter(const Physic::Collision col) {
@@ -197,6 +196,7 @@ void ZapperGunBullet::Zap(float dt) {
 
 			if (zapDurationCount > zapDuration) 
 			{
+				ZappingSound->PlaySound();
 				e->TakeDamage(bulletDmg);
 			}
 

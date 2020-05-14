@@ -259,13 +259,19 @@ glm::vec2 EnemySpawner::GetRandomPos_Platform() {
 
 	//GAME_INFO("Spawing on Platform!");
 
+	Transform* enem = EnemyPool->GetGameObject()->m_transform.get();
+
+	float spposY = (enem->GetTrueScale().y + pf->GetTrueScale().y) * 0.5f;
+
+	GAME_INFO("spposY = {}", spposY);
+
 	if (SpawnType != POOL_TYPE::ENEMY_COCOON)
 	{
-		tmp = GetRandomPos_Range(pf->GetPosition().x + (pf->GetScale().x / 2), pf->GetPosition().y + 100.0f, pf->GetPosition().x - (pf->GetScale().x / 2), pf->GetPosition().y + 100.0f);
+		tmp = GetRandomPos_Range(pf->GetPosition().x + (pf->GetTrueScale().x / 2), pf->GetPosition().y + spposY + 50.0f, pf->GetPosition().x - (pf->GetTrueScale().x / 2), pf->GetPosition().y + spposY + 50.0f);
 	}
 	else
 	{
-		tmp = GetRandomPos_Range(pf->GetPosition().x + (pf->GetScale().x / 2), pf->GetPosition().y - 60.0f, pf->GetPosition().x - (pf->GetScale().x / 2), pf->GetPosition().y - 60.0f);
+		tmp = GetRandomPos_Range(pf->GetPosition().x + (pf->GetTrueScale().x / 2), pf->GetPosition().y - spposY, pf->GetPosition().x - (pf->GetTrueScale().x / 2), pf->GetPosition().y - spposY);
 	}
 
 	return tmp;

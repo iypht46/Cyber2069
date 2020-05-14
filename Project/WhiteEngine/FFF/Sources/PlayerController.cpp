@@ -12,6 +12,7 @@ PlayerController::PlayerController() {
 void PlayerController::OnAwake() {
 	rb = m_gameObject->GetComponent<Rigidbody>();
 	hpSystem = m_gameObject->GetComponent<HPsystem>();
+	sp = m_gameObject->GetComponent<SoundPlayer>();
 
 	stamina = max_stamina;
 	hpSystem->ResetHP();
@@ -73,15 +74,15 @@ void PlayerController::OnUpdate(float dt)
 		falling = true;
 	}
 
-	if (falling)
+	//if (falling)
+	//{
+	if (checkGround())
 	{
-		if (checkGround())
-		{
-			jumping = false;
-			falling = false;
-			onGround = true;
-		}
+		jumping = false;
+		falling = false;
+		onGround = true;
 	}
+	//}
 
 	if (onGround && (stamina < max_stamina)) 
 	{
@@ -172,6 +173,19 @@ void PlayerController::move()
 		stamina = 0;
 	}
 
+	if (stamina == 0) {
+		staminaDepleted = true;
+		if (staminaDepleted && !playEnd) {
+			sp->SetSound(SoundPath("SFX_Player_StaminaDeplete"));
+			sp->PlaySound();
+			playEnd = true;
+		}
+	}
+
+	if (onGround) {
+		playEnd = false;
+	}
+
 	if (Input::GetKeyHold(Input::KeyCode::KEY_W))
 	{
 		direction.y = 1.0f;
@@ -216,8 +230,16 @@ void PlayerController::move()
 		running = false;
 		falling = false;
 		onGround = false;
+		sp->SetSound(SoundPath("SFX_Player_Jump2"));
+		sp->PlaySound();
 
 		GetGameObject()->GetComponent<Animator>()->setCurrentState(3);
+	}
+
+	if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE) && (stamina <= 0))
+	{
+		sp->SetSound(SoundPath("SFX_Player_StaminaDepletedPrompt"));
+		sp->PlaySound();
 	}
 
 	if ((!Input::GetKeyHold(Input::KeyCode::KEY_A) && !Input::GetKeyHold(Input::KeyCode::KEY_D)) && !jumping && !falling)
@@ -243,6 +265,14 @@ void PlayerController::move()
 		setDashAnim = false;
 
 		delay = 0.1f;
+		sp->SetSound(SoundPath("SFX_Player_Dash"));
+		sp->PlaySound();
+	}
+
+	if (Input::GetKeyDown(Input::KeyCode::KEY_LEFT_SHIFT) && !Dash && !checkGround() && (stamina <= 0))
+	{
+		sp->SetSound(SoundPath("SFX_Player_StaminaDepletedPrompt"));
+		sp->PlaySound();
 	}
 
 	if (!Dash)

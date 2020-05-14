@@ -53,6 +53,7 @@ protected:
 	AirFollowing* airFollow = nullptr;
 	AirDash* airDash = nullptr;
 	Explosion* explosion = nullptr;
+	SoundPlayer* sp = nullptr;
 
 public:
 	EnemyState state = EnemyState::Idle;
@@ -203,3 +204,13 @@ public:
 	}
 };
 CEREAL_REGISTER_TYPE(Spitter);
+
+class Cocoon : public Enemy {
+	//serialization
+public:
+	template <class Archive>
+	void serialize(Archive& archive) {
+		archive(cereal::base_class<Enemy>(this));
+	}
+};
+CEREAL_REGISTER_TYPE(Cocoon);

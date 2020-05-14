@@ -6,6 +6,7 @@
 #include "Physic/PhysicScene.hpp"
 #include "Input/Input.hpp"
 #include "Core/EC/GameObject.hpp"
+#include "Core/EC/Components/SoundPlayer.hpp"
 
 #include "HPsystem.hpp"
 #include "Weapon.hpp"
@@ -26,6 +27,7 @@ class PlayerController : public Character {
 protected:
 	HPsystem* hpSystem = nullptr;
 	Rigidbody* rb = nullptr;
+	SoundPlayer* sp = nullptr;
 
 	ObjectPool* MGbulletPool = nullptr;
 
@@ -38,7 +40,7 @@ protected:
 	float yLimit = -1000.0f;
 	
 	//stats===============
-	float max_stamina = 50000000.0f;
+	float max_stamina = 200.0f;
 
 	float dashStamina = 5.0f;
 	float jumpStamina = 5.0f;
@@ -73,6 +75,8 @@ protected:
 	bool onGround = false;
 	bool Dash = false;
 	bool setDashAnim = false;
+	bool staminaDepleted = false;
+	bool playEnd = false;
 	
 	glm::vec2 direction;
 	glm::vec2 dashDirection;

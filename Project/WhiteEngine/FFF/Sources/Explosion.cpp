@@ -13,7 +13,6 @@ void Explosion::OnAwake() {
 }
 
 void Explosion::Explode() {
-
 	//get all collider in target layers
 	Physic::Colliders targetColliders;
 	for (std::string target : TargetLayers) {
@@ -32,6 +31,7 @@ void Explosion::Explode() {
 			}
 		}
 	}
+	
 }
 
 void Explosion::SetDamage(float val) {
