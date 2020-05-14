@@ -4,6 +4,7 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "Component.hpp"
 #include "Graphic/MeshVbo.h"
+#include "Graphic/CameraObject.hpp"
 #include <iostream>
 
 #include "Core/EC/Components/Animator.hpp"
@@ -20,6 +21,8 @@ enum RENDER_MODE : int { NORM = 1, COLOR, REPLACE_COLOR};
 
 #define SpritePath(path) "Sources/Assets/Sprites/" path ".png"
 
+enum class ANCHOR_X { CENTER = 0, LEFT, RIGHT };
+enum class ANCHOR_Y { CENTER = 0, UP, DOWN };
 class MeshRenderer : public Component
 {
 private:
@@ -38,6 +41,9 @@ private:
 	glm::vec3 ReplaceColor;
 
 	Graphic::Texture* m_texture = nullptr;
+
+	ANCHOR_X m_anchor_ui_x;
+	ANCHOR_Y m_anchor_ui_y;
 public:
 	int layer = 0; //higher layer is infront
 
@@ -54,7 +60,8 @@ public:
 	void SetTexture(std::string path);
 	void SetTexture(Graphic::Texture tex);
 	void SetLayer(unsigned int layer); //higher layer is in front, player is on 0
-	void SetUI(bool ui);
+	void SetUI(bool ui, ANCHOR_X x = ANCHOR_X::CENTER, ANCHOR_Y y = ANCHOR_Y::CENTER);
+	void SetAnchor(ANCHOR_X x, ANCHOR_Y y);
 	void SetReplaceColor(glm::vec3 color);
 	void SetReplaceColor(std::string hexcode);
 	void SetReplaceColorBool(bool i);
@@ -74,6 +81,7 @@ public:
 	bool IsTextureLoaded();
 
 	void Render(glm::mat4 globalModelTransform);
+	void Render(glm::mat4 globalModelTransform, glm::vec2 aspect);
 //serialization
 public:
 	template<class Archive>

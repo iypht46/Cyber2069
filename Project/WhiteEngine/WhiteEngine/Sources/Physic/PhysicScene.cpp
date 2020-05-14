@@ -194,16 +194,33 @@ namespace Physic
 			m_collisionMsg.push_back(collisionA);
 			m_collisionMsg.push_back(collisionB);
 
-			//Create collision message for the pair
-			if (!col->m_objectA->m_hasCollided)
+			if (col->m_type == RESOLVE_TYPE::COLLISION)
 			{
-				collisionA.m_collider->m_hasCollided = true;
+				//Create collision message for the pair
+				if (!col->m_objectA->m_hasCollided)
+				{
+					collisionA.m_collider->m_hasCollided = true;
+				}
+
+				if (!col->m_objectB->m_hasCollided)
+				{
+					collisionB.m_collider->m_hasCollided = true;
+				}
+			}
+			else
+			{
+				//Create collision message for the pair
+				if (!col->m_objectA->m_hasTriggered)
+				{
+					collisionA.m_collider->m_hasTriggered = true;
+				}
+
+				if (!col->m_objectB->m_hasCollided)
+				{
+					collisionB.m_collider->m_hasTriggered = true;
+				}
 			}
 			
-			if (!col->m_objectB->m_hasCollided)
-			{
-				collisionB.m_collider->m_hasCollided = true;
-			}
 			
 
 			m_finalCollision.push_back(*col);
@@ -258,18 +275,37 @@ namespace Physic
 	{
 		Collider* collider = col.m_collider;
 
-		switch (collider->m_collisionState)
+		if (col.m_type == RESOLVE_TYPE::COLLISION)
 		{
-		case COL_STATE::NONE:
-			collider->m_collisionState = COL_STATE::ENTER;
-			break;
-		case COL_STATE::ENTER:
-			collider->m_collisionState = COL_STATE::STAY;
-			m_stayState.push_back(col);
-			break;
-		default:
-			break;
+			switch (collider->m_collisionState)
+			{
+			case COL_STATE::NONE:
+				collider->m_collisionState = COL_STATE::ENTER;
+				break;
+			case COL_STATE::ENTER:
+				collider->m_collisionState = COL_STATE::STAY;
+				m_stayState.push_back(col);
+				break;
+			default:
+				break;
+			}
 		}
+		else
+		{
+			switch (collider->m_triggerState)
+			{
+			case COL_STATE::NONE:
+				collider->m_triggerState = COL_STATE::ENTER;
+				break;
+			case COL_STATE::ENTER:
+				collider->m_triggerState = COL_STATE::STAY;
+				m_stayState.push_back(col);
+				break;
+			default:
+				break;
+			}
+		}
+		
 	}
 
 	void PhysicScene::SendCollisionMsg(void)
@@ -295,28 +331,45 @@ namespace Physic
 				m_stayState.begin(),
 				m_stayState.end(),
 				[](Collision col) {
-					if (true/*!col.m_collider->m_hasCollided*/)
+					bool flag = false;
+					RESOLVE_TYPE restype = col.m_type;
+					if (restype == RESOLVE_TYPE::COLLISION && col.m_collider->m_hasCollided)
 					{
-						Core::Trigger trigMsg = Core::Trigger(col);
-						Core::Collision colMsg = Core::Collision(col);
-						//Change collision state
 						col.m_collider->m_collisionState = COL_STATE::EXIT;
-						//Send Message
-						//if (col.m_collider->is)
-						switch (col.m_type)
-						{
-						case RESOLVE_TYPE::COLLISION:
-							colMsg.SendMessageTo(*col.m_collider);
-							break;
-						case RESOLVE_TYPE::TRIGGER:
-							trigMsg.SendMessageTo(*col.m_collider);
-							break;
-						default:
-							break;
-						}
-						return true;
+						Core::Collision colMsg = Core::Collision(col);
+						colMsg.SendMessageTo(*col.m_collider);
+						flag = true;
 					}
-					return false;
+					else if (restype == RESOLVE_TYPE::TRIGGER && col.m_collider->m_hasTriggered)
+					{
+						col.m_collider->m_triggerState = COL_STATE::EXIT;
+						Core::Trigger trigMsg = Core::Trigger(col);
+						trigMsg.SendMessageTo(*col.m_collider);
+						flag = true;
+					}
+					return flag;
+					//if (true/*!col.m_collider->m_hasCollided*/)
+					//{
+					//	
+					//	
+					//	//Change collision state
+					//	col.m_collider->m_collisionState = COL_STATE::EXIT;
+					//	//Send Message
+					//	//if (col.m_collider->is)
+					//	switch (col.m_type)
+					//	{
+					//	case RESOLVE_TYPE::COLLISION:
+					//		colMsg.SendMessageTo(*col.m_collider);
+					//		break;
+					//	case RESOLVE_TYPE::TRIGGER:
+					//		trigMsg.SendMessageTo(*col.m_collider);
+					//		break;
+					//	default:
+					//		break;
+					//	}
+					//	return true;
+					//}
+					//return false;
 				}
 			),
 			m_stayState.end()

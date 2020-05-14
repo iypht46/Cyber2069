@@ -3,6 +3,8 @@
 #include "Scripts/GameControl/SoundtrackController.h"
 #include "Scripts/GameControl/CameraController.h"
 
+#include "Core/GameInfo.h"
+
 #include "Input/Input.hpp"
 
 GameController* GameController::instance = nullptr;
@@ -236,6 +238,7 @@ void GameController::OnUpdate(float dt)
 
 		case MAINMENU:
 		case LOADOUT:
+		case QUIT:
 		case ENDING:
 			gameStateChangeTimer = stateChangeDelay;
 			break;
@@ -487,10 +490,19 @@ void GameController::OnUpdate(float dt)
 		//Do only once after state changed
 		if (StateChanged)
 		{
-			
-		}
+			GAME_INFO("QUIT");
 
-		GAME_INFO("QUIT");
+			SaveData();
+			SaveGameConfig();
+
+			World::GameInfo* g_gameInfo;
+			g_gameInfo = &(World::GameInfo::GetInstance());
+
+			g_gameInfo->GameShouldClose();
+			Graphic::Window::SetWindowShouldClose(true);
+
+			StateChanged = false;
+		}
 
 		break;
 	default:
