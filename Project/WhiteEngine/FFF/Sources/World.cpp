@@ -273,8 +273,6 @@ namespace World
 
 			//GameObject
 			gamecontroller = Instantiate().get();
-			ui_HPbar = Instantiate();
-			ui_StaminaBar = Instantiate();
 			
 			gamecontroller->AddComponent<SoundPlayer>();
 			gamecontroller->AddComponent<GameController>();
@@ -598,7 +596,7 @@ namespace World
 				float game_ui_border_offset = 5.0f;
 				ui_ScoreText = Instantiate();
 				ui_ScoreText->AddComponent<TextRenderer>();
-				ui_ScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 50);
+				ui_ScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Pixeled.ttf", 50);
 				ui_ScoreText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 				ui_ScoreText->m_transform->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
 				ui_ScoreText->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 50.0f, (Graphic::Window::GetHeight() / -2) + 50.0f, 1.0f));
@@ -607,32 +605,78 @@ namespace World
 
 				ui_ComboText = Instantiate();
 				ui_ComboText->AddComponent<TextRenderer>();
-				ui_ComboText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 50);
+				ui_ComboText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Pixeled.ttf", 50);
 				ui_ComboText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 				ui_ComboText->m_transform->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
 				ui_ComboText->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 50.0f, (Graphic::Window::GetHeight() / -2) + 150.0f, 1.0f));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_ComboText);
 
-				ui_HPbar->AddComponent<MeshRenderer>();
-				ui_HPbar->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-				ui_HPbar->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Red.jpg");
-				ui_HPbar->GetComponent<MeshRenderer>()->SetUI(true, ANCHOR_X::LEFT, ANCHOR_Y::UP);
-				ui_HPbar->GetComponent<MeshRenderer>()->SetLayer(10);
-				ui_HPbar->m_transform->SetScale(glm::vec3(500.0f, 40.0f, 1.0f));
-				auto pos_HPbar = glm::vec3((ui_HPbar->m_transform->GetScale().x / 2) + 5.0f, -((ui_HPbar->m_transform->GetScale().y / 2) + game_ui_border_offset), 1.0f);
-				ui_HPbar->m_transform->SetPosition(pos_HPbar);//glm::vec3((Graphic::Window::GetWidth() / -2) + 280.0f, (Graphic::Window::GetHeight() / 2) - 40.0f, 1.0f));
+				//HP bar border
+				auto ui_HPbarBorderLeft = Instantiate();
+				auto ui_HPbarBorderRight = Instantiate();
+				auto ui_HPbarBorder = Instantiate();
+				//Mesh Setting
+				auto mesh = ui_HPbarBorderLeft->AddComponent<MeshRenderer>();
+				mesh->CreateMesh(1, 1);
+				mesh->SetTexture(TexturePath("UIs/HP_left"));
+				mesh->SetUI(true, ANCHOR_X::LEFT, ANCHOR_Y::UP);
+				mesh->SetLayer(9);
+				mesh = ui_HPbarBorder->AddComponent<MeshRenderer>();
+				mesh->CreateMesh(1, 1);
+				mesh->SetTexture(TexturePath("UIs/HP_middle"));
+				mesh->SetUI(true, ANCHOR_X::LEFT, ANCHOR_Y::UP);
+				mesh->SetLayer(9);
+				mesh = ui_HPbarBorderRight->AddComponent<MeshRenderer>();
+				mesh->CreateMesh(1, 1);
+				mesh->SetTexture(TexturePath("UIs/HP_right"));
+				mesh->SetUI(true, ANCHOR_X::LEFT, ANCHOR_Y::UP);
+				mesh->SetLayer(9);
+				//Transform Setting
+				auto leftTrans = ui_HPbarBorderLeft->m_transform;
+				auto rightTrans = ui_HPbarBorderRight->m_transform;
+				auto transform = ui_HPbarBorder->m_transform;
+				leftTrans->SetScale(glm::vec3(40.0f, 40.0f, 1.0f));
+				rightTrans->SetScale(glm::vec3(40.0f, 40.0f, 1.0f));
+				transform->SetScale(glm::vec3(500.0f, 40.0f, 1.0f));
+				auto scale_HPBLeft = leftTrans->GetScale();
+				auto scale_HPBright = rightTrans->GetScale();
+				auto scale_HPbarBorder = transform->GetScale();
+				auto pos_HPBleft = glm::vec3((scale_HPBLeft.x / 2) + game_ui_border_offset, -((scale_HPBLeft.y / 2) + game_ui_border_offset + 1.0f), 1.0f);
+				auto pos_HPBright = glm::vec3(pos_HPBleft.x + scale_HPbarBorder.x + scale_HPBright.x, -((scale_HPBright.y / 2) + game_ui_border_offset + 1.0f), 1.0f);
+				auto pos_HPbarBorder = glm::vec3((scale_HPbarBorder.x / 2) + game_ui_border_offset + scale_HPBLeft.x + 1.0f, -((ui_HPbarBorder->m_transform->GetScale().y / 2) + game_ui_border_offset + 1.0f), 1.0f);
+				transform->SetPosition(pos_HPbarBorder);
+				leftTrans->SetPosition(pos_HPBleft);
+				rightTrans->SetPosition(pos_HPBright);
+				//Game Controller Setting
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_HPbarBorder);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_HPbarBorderRight);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_HPbarBorderLeft);
 
+				//HP bar
+				ui_HPbar = Instantiate();
+				mesh = ui_HPbar->AddComponent<MeshRenderer>();
+				mesh->CreateMesh(1, 1);
+				mesh->SetTexture(TexturePath("UIs/HP_healthbar"));
+				mesh->SetUI(true, ANCHOR_X::LEFT, ANCHOR_Y::UP);
+				mesh->SetLayer(10);
+				//Transform
+				ui_HPbar->m_transform->SetScale(glm::vec3(482.0f, 29.0f, 1.0f));
+				auto pos_HPbar = glm::vec3((ui_HPbar->m_transform->GetScale().x / 2) + game_ui_border_offset + 12.0f + scale_HPBLeft.x
+					, -((ui_HPbar->m_transform->GetScale().y / 2) + game_ui_border_offset + 3.0f), 1.0f);
+				ui_HPbar->m_transform->SetPosition(pos_HPbar);
+				//Game Controller Setting
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_HPbar);
 
+				ui_StaminaBar = Instantiate();
 				ui_StaminaBar->AddComponent<MeshRenderer>();
 				ui_StaminaBar->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-				ui_StaminaBar->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Blue.jpg");
+				ui_StaminaBar->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/HP_stamina"));
 				ui_StaminaBar->GetComponent<MeshRenderer>()->SetUI(true, ANCHOR_X::LEFT, ANCHOR_Y::UP);
 				ui_StaminaBar->GetComponent<MeshRenderer>()->SetLayer(10);
 				ui_StaminaBar->m_transform->SetScale(glm::vec3(500.0f, 20.0f, 1.0f));
-				auto pos_Staminabar = glm::vec3((ui_StaminaBar->m_transform->GetScale().x / 2) + game_ui_border_offset, 
-					-((ui_StaminaBar->m_transform->GetScale().y / 2) + ui_HPbar->m_transform->GetScale().y + game_ui_border_offset), 1.0f);
+				auto pos_Staminabar = glm::vec3((ui_StaminaBar->m_transform->GetScale().x / 2) + game_ui_border_offset + scale_HPBLeft.x, 
+					-((ui_StaminaBar->m_transform->GetScale().y / 2) + ui_HPbar->m_transform->GetScale().y + game_ui_border_offset + 2.5 + 6.0f), 1.0f);
 				//-(ui_StaminaBar->m_transform->GetScale().y + pos_HPbar.y + 10.0f)
 				ui_StaminaBar->m_transform->SetPosition(pos_Staminabar);
 
@@ -676,7 +720,7 @@ namespace World
 
 				ui_HPtext = Instantiate();
 				ui_HPtext->AddComponent<TextRenderer>();
-				ui_HPtext->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 10);
+				ui_HPtext->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Pixeled.ttf", 10);
 				ui_HPtext->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 				ui_HPtext->m_transform->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
 				ui_HPtext->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 280.0f, (Graphic::Window::GetHeight() / 2) - 40.0f, 1.0f));
@@ -685,7 +729,7 @@ namespace World
 
 				ui_BossHPtext = Instantiate();
 				ui_BossHPtext->AddComponent<TextRenderer>();
-				ui_BossHPtext->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 10);
+				ui_BossHPtext->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Pixeled.ttf", 10);
 				ui_BossHPtext->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 				ui_BossHPtext->m_transform->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
 				ui_BossHPtext->m_transform->SetPosition(glm::vec3(0, (Graphic::Window::GetHeight() / 2) - 100.0f, 1.0f));
@@ -1099,7 +1143,7 @@ namespace World
 				LoadoutText = Instantiate();
 
 				LoadoutText->AddComponent<TextRenderer>();
-				LoadoutText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 30);
+				LoadoutText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Beon.ttf", 30);
 				LoadoutText->GetComponent<TextRenderer>()->SetText("Back");
 				LoadoutText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 				LoadoutText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));

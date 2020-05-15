@@ -78,7 +78,7 @@ void PlayerController::OnUpdate(float dt)
 {
 	cameraZoom(dt);
 
-	if ((rb->GetVelocity().y < -5.0f) && !falling)
+	if ((rb->GetVelocity().y < -5.0f) && !falling && !hpSystem->isDead())
 	{
 		GetGameObject()->GetComponent<Animator>()->setCurrentState(4);
 		falling = true;
