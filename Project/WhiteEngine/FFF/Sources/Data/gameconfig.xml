@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cereal>
 	<object>
-		<MasterVolume>1</MasterVolume>
-		<MusicVolume>1</MusicVolume>
-		<SFXVolume>1</SFXVolume>
+		<MasterVolume>0.59999990463256836</MasterVolume>
+		<MusicVolume>0.59999990463256836</MusicVolume>
+		<SFXVolume>0.59999990463256836</SFXVolume>
 		<PlayerStat>
 			<max_stamina>200</max_stamina>
 			<dashStamina>5</dashStamina>
 			<jumpStamina>5</jumpStamina>
-			<staminaRegenRate>1</staminaRegenRate>
+			<staminaRegenRate>50</staminaRegenRate>
 			<max_move_speed>200</max_move_speed>
 			<move_speed>200</move_speed>
 			<dash_speed>750</dash_speed>

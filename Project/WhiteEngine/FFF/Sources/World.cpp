@@ -672,6 +672,47 @@ namespace World
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_HPbar);
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_HPbar);
 
+				auto ui_staminaBarBorderLeft = Instantiate();
+				auto ui_staminaBarBorderRight = Instantiate();
+				auto ui_staminaBarBorder = Instantiate();
+				mesh = ui_staminaBarBorder->AddComponent<MeshRenderer>();
+				mesh->CreateMesh(1, 1);
+				mesh->SetTexture(TexturePath("UIs/HP_middle"));
+				mesh->SetUI(true, ANCHOR_X::LEFT, ANCHOR_Y::UP);
+				mesh->SetLayer(9);
+				mesh = ui_staminaBarBorderLeft->AddComponent<MeshRenderer>();
+				mesh->CreateMesh(1, 1);
+				mesh->SetTexture(TexturePath("UIs/HP_left"));
+				mesh->SetUI(true, ANCHOR_X::LEFT, ANCHOR_Y::UP);
+				mesh->SetLayer(9);
+				mesh = ui_staminaBarBorderRight->AddComponent<MeshRenderer>();
+				mesh->CreateMesh(1, 1);
+				mesh->SetTexture(TexturePath("UIs/HP_right"));
+				mesh->SetUI(true, ANCHOR_X::LEFT, ANCHOR_Y::UP);
+				mesh->SetLayer(9);
+				auto leftTransStam = ui_staminaBarBorderLeft->m_transform;
+				auto rightTransStam = ui_staminaBarBorderRight->m_transform;
+				auto transformStam = ui_staminaBarBorder->m_transform;
+				leftTransStam->SetScale(glm::vec3(20.0f, 20.0f, 1.0f));
+				rightTransStam->SetScale(glm::vec3(20.0f, 20.0f, 1.0f));
+				transformStam->SetScale(glm::vec3(500.0f, 20.0f, 1.0f));
+				auto scale_StamBLeft = leftTrans->GetScale();
+				auto scale_StamBRight = rightTrans->GetScale();
+				auto scale_StambarBorder = transform->GetScale();
+				auto pos_StamBleft = glm::vec3((scale_StamBLeft.x / 2) + game_ui_border_offset
+					, -((scale_StamBLeft.y / 2) + game_ui_border_offset + 1.0f + (scale_HPBLeft.x / 2) + (scale_StamBLeft.x / 2)), 1.0f);
+				auto pos_StamBRight = glm::vec3(pos_StamBleft.x + scale_HPbarBorder.x + scale_StamBRight.x
+					, -((scale_StamBRight.y / 2) + game_ui_border_offset + 1.0f + (scale_HPBLeft.x / 2) + (scale_StamBLeft.x / 2)), 1.0f);
+				auto pos_StambarBorder = glm::vec3((scale_StambarBorder.x / 2) + game_ui_border_offset + scale_StamBLeft.x + 1.0f
+					, -((scale_StambarBorder.y / 2) + game_ui_border_offset + 1.0f + (scale_HPBLeft.x / 2) + (scale_StamBLeft.x / 2)), 1.0f);
+				leftTransStam->SetPosition(pos_StamBleft);
+				rightTransStam->SetPosition(pos_StamBRight);
+				transformStam->SetPosition(pos_StambarBorder);
+
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_staminaBarBorderLeft);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_staminaBarBorderRight);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_staminaBarBorder);
+
 				ui_StaminaBar = Instantiate();
 				ui_StaminaBar->AddComponent<MeshRenderer>();
 				ui_StaminaBar->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
@@ -697,32 +738,68 @@ namespace World
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_BossHP);
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_BossHP);
 
+				std::shared_ptr<GameObject> ui_WeapongpBG = Instantiate();
+
+				ui_WeapongpBG = Instantiate();
+				ui_WeapongpBG->AddComponent<MeshRenderer>()->CreateMesh(1, 1);
+				ui_WeapongpBG->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/Panel02"));
+				ui_WeapongpBG->GetComponent<MeshRenderer>()->SetUI(true);
+				ui_WeapongpBG->m_transform->SetScale(glm::vec3(180.0f, 150.0f, 1.0f));
+				ui_WeapongpBG->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / 2) - 120.0f, (Graphic::Window::GetHeight() / -2) + 80.0f, 1.0f));
+
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_WeapongpBG);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_WeapongpBG);
+
 				ui_Weapongp = Instantiate();
 				ui_Weapongp->AddComponent<MeshRenderer>()->CreateMesh(1, 1);
-				ui_Weapongp->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/white.jpg");
+				ui_Weapongp->GetComponent<MeshRenderer>()->SetTexture(TexturePath("BLANK"));
 				ui_Weapongp->GetComponent<MeshRenderer>()->SetUI(true);
-				ui_Weapongp->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
-				ui_Weapongp->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / 2) - 50.0f, (Graphic::Window::GetHeight() / -2) + 40.0f, 1.0f));
+				ui_Weapongp->m_transform->SetScale(glm::vec3(120.0f, 100.0f, 1.0f));
+				ui_Weapongp->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / 2) - 120.0f, (Graphic::Window::GetHeight() / -2) + 80.0f, 1.0f));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_Weapongp);
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_Weapongp);
 
+				std::shared_ptr<GameObject> ui_ArtifactgpBG;
+
+				ui_ArtifactgpBG = Instantiate();
+				ui_ArtifactgpBG->AddComponent<MeshRenderer>()->CreateMesh(1, 1);
+				ui_ArtifactgpBG->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/Panel02"));
+				ui_ArtifactgpBG->GetComponent<MeshRenderer>()->SetUI(true);
+				ui_ArtifactgpBG->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
+				ui_ArtifactgpBG->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / 2) - 50.0f, (Graphic::Window::GetHeight() / -2) + 200.0f, 1.0f));
+
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_ArtifactgpBG);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_ArtifactgpBG);
+
 				ui_Artifactgp1 = Instantiate();
 				ui_Artifactgp1->AddComponent<MeshRenderer>()->CreateMesh(1, 1);
-				ui_Artifactgp1->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/white.jpg");
+				ui_Artifactgp1->GetComponent<MeshRenderer>()->SetTexture(TexturePath("BLANK"));
 				ui_Artifactgp1->GetComponent<MeshRenderer>()->SetUI(true);
 				ui_Artifactgp1->m_transform->SetScale(glm::vec3(50.0f, 50.0f, 1.0f));
-				ui_Artifactgp1->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / 2) - 50.0f, (Graphic::Window::GetHeight() / -2) + 120.0f, 1.0f));
+				ui_Artifactgp1->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / 2) - 50.0f, (Graphic::Window::GetHeight() / -2) + 200.0f, 1.0f));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_Artifactgp1);
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_Artifactgp1);
 
+				std::shared_ptr<GameObject> ui_ArtifactgpBG2;
+				ui_ArtifactgpBG2 = Instantiate();
+
+				ui_ArtifactgpBG2->AddComponent<MeshRenderer>()->CreateMesh(1, 1);
+				ui_ArtifactgpBG2->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/Panel02"));
+				ui_ArtifactgpBG2->GetComponent<MeshRenderer>()->SetUI(true);
+				ui_ArtifactgpBG2->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
+				ui_ArtifactgpBG2->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / 2) - 50.0f, (Graphic::Window::GetHeight() / -2) + 290.0f, 1.0f));
+
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_ArtifactgpBG2);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_ArtifactgpBG2);
+
 				ui_Artifactgp2 = Instantiate();
 				ui_Artifactgp2->AddComponent<MeshRenderer>()->CreateMesh(1, 1);
-				ui_Artifactgp2->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/white.jpg");
+				ui_Artifactgp2->GetComponent<MeshRenderer>()->SetTexture(TexturePath("BLANK"));
 				ui_Artifactgp2->GetComponent<MeshRenderer>()->SetUI(true);
 				ui_Artifactgp2->m_transform->SetScale(glm::vec3(50.0f, 50.0f, 1.0f));
-				ui_Artifactgp2->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / 2) - 50.0f, (Graphic::Window::GetHeight() / -2) + 190.0f, 1.0f));
+				ui_Artifactgp2->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / 2) - 50.0f, (Graphic::Window::GetHeight() / -2) + 290.0f, 1.0f));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_Artifactgp2);
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_Artifactgp2);
