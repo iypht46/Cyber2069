@@ -366,7 +366,6 @@ namespace World
 				logo->m_transform->SetPosition(glm::vec3(logo_pos_x, -(logoScale.y + 15.0f), 1));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::MainMenu].push_back(logo);
-				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Loadout].push_back(logo);
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(logo);
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Credit].push_back(logo);
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Option].push_back(logo);
@@ -434,11 +433,11 @@ namespace World
 				//Text Setting
 				std::shared_ptr<GameObject> playButtonText = Instantiate();
 				auto button_text = playButtonText->AddComponent<TextRenderer>();
-				std::string button_str = "Start";
+				std::string button_str = "Play";
 				button_text->LoadFont("Sources/Assets/Fonts/Beon.ttf", button_font_size);
 				button_text->SetText(button_str);
 				button_text->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-				playButtonText->m_transform->SetPosition(glm::vec3( menu_button_pos_x - (button_str.length() * button_font_size / 4), menu_button_pos_y + 20.0f, 1.0f) );
+				playButtonText->m_transform->SetPosition(glm::vec3( menu_button_pos_x - (button_str.length() * button_font_size / 3.5), menu_button_pos_y + 20.0f, 1.0f) );
 				//Game Controller Setting
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::MainMenu].push_back(playButton);
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::MainMenu].push_back(playButtonText);

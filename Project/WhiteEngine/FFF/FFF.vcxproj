@@ -180,6 +180,7 @@
     <ClCompile Include="Sources\ZapperGunBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Sources\Artifact.hpp" />
     <ClInclude Include="Sources\Character.hpp" />
     <ClInclude Include="Sources\GroundDash.hpp" />
@@ -211,6 +212,14 @@
   <ItemGroup>
     <None Include="Sources\Shader\fragment.shd" />
     <None Include="Sources\Shader\vertext.shd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="FFF.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Sources\Assets\Sprites\icon-128.ico" />
+    <Image Include="Sources\Assets\Sprites\icon-128.png" />
+    <Image Include="Sources\Assets\Sprites\icon.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

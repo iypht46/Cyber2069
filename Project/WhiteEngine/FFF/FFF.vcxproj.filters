@@ -72,9 +72,18 @@
     <ClInclude Include="Sources\HighScoreUI.hpp" />
     <ClInclude Include="Sources\Scripts\GameControl\SoundtrackController.h" />
     <ClInclude Include="Sources\Scripts\GameControl\CameraController.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sources\Shader\fragment.shd" />
     <None Include="Sources\Shader\vertext.shd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="FFF.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Sources\Assets\Sprites\icon.png" />
+    <Image Include="Sources\Assets\Sprites\icon-128.png" />
+    <Image Include="Sources\Assets\Sprites\icon-128.ico" />
   </ItemGroup>
 </Project>
