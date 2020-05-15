@@ -97,7 +97,7 @@ void GameController::OnStart() {
 		CreatePool(PrefabPath("Queen"), POOL_TYPE::ENEMY_QUEEN, 1);
 		QueenSpawner = CreateSpawner(POOL_TYPE::ENEMY_QUEEN);
 		QueenSpawner->SetSpawnMode(SPAWN_MODE::RANGE);
-		QueenSpawner->SetSpawnRange(Graphic::Window::GetWidth() / 2, 800.0f, Graphic::Window::GetWidth() / 2, 800.0f);
+		QueenSpawner->SetSpawnRange(4500, 1500.0f, 4500, 1500.0f);
 
 		//Cocoon spawner
 		ENGINE_INFO("GameControl Creating Queen");

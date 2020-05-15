@@ -2361,7 +2361,7 @@ namespace World
 				queen = Instantiate().get();
 				queen->Layer = "Enemy";
 
-				//queen->m_transform->SetScale(glm::vec3(CHAR_SIZE * 10, CHAR_SIZE * 10, 1.0f));
+				queen->m_transform->SetScale(glm::vec3(7, 7, 1.0f));
 				queen->m_transform->SetPosition(glm::vec3(-(Graphic::Window::GetWidth()), (Graphic::Window::GetHeight() * 2 / 3) + 700.0f, 1.0f));
 
 				queen->AddComponent<MeshRenderer>();
@@ -2373,8 +2373,9 @@ namespace World
 				queen->GetComponent<Animator>()->setFramePerSec(3);
 
 				queen->AddComponent<Rigidbody>();
-				queen->GetComponent<Rigidbody>()->Init(400, 300);
 				queen->GetComponent<Rigidbody>()->SetGravityScale(0.00001);
+
+				queen->AddComponent<BoxCollider>()->ReScale(0.5, 0.5);
 
 				queen->AddComponent<HPsystem>();
 				queen->AddComponent<SoundPlayer>();

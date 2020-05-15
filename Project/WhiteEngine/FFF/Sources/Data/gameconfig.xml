@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cereal>
 	<object>
-		<MasterVolume>0.39999991655349731</MasterVolume>
-		<MusicVolume>0.39999991655349731</MusicVolume>
-		<SFXVolume>0.39999991655349731</SFXVolume>
+		<MasterVolume>0.29999992251396179</MasterVolume>
+		<MusicVolume>0.29999992251396179</MusicVolume>
+		<SFXVolume>0.29999992251396179</SFXVolume>
 		<PlayerStat>
 			<max_stamina>200</max_stamina>
 			<dashStamina>5</dashStamina>

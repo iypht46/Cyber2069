@@ -102,7 +102,7 @@ private:
 	float ItemUnlockDropChance;
 	float HealValue;
 
-	float DespawnPosX = 2000.0f;
+	float DespawnPosX = 5000.0f;
 
 	float SpawnDelayCount;
 protected:
