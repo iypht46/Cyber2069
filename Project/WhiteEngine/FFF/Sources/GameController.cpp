@@ -288,6 +288,9 @@ void GameController::OnUpdate(float dt)
 			UIController::GetInstance()->UpdateVolumeTexts();
 
 			this->GetGameObject()->GetComponent<EquipmentManager>()->ResetPlayerEquipment();
+
+			SetSpawningAllSpawner(false);
+			SetActiveAllObjectInPool(false);
 			playerControl->GetGameObject()->SetActive(false);
 
 			loadoutUI.lock()->SetActive(false);
@@ -356,6 +359,28 @@ void GameController::OnUpdate(float dt)
 		UIController::GetInstance()->updateHPUI();
 		UIController::GetInstance()->updateStaminaUI();
 		UIController::GetInstance()->updateScoreUI();
+
+		if (Input::GetKeyDown(Input::KeyCode::KEY_ESCAPE) && !pause)
+		{
+			pause = true;
+
+			UIController::GetInstance()->ToggleUI(UI_GROUP::Pause);
+
+			if (Current_Queen == nullptr)
+			{
+				UIController::GetInstance()->SetActiveQueenUI(false);
+			}
+		}
+		else if (Input::GetKeyDown(Input::KeyCode::KEY_ESCAPE) && pause) 
+		{
+			pause = false;
+			UIController::GetInstance()->ToggleUI(UI_GROUP::Gameplay);
+
+			if (Current_Queen == nullptr)
+			{
+				UIController::GetInstance()->SetActiveQueenUI(false);
+			}
+		}
 
 		switch (CurrentGameplayState)
 		{

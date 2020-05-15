@@ -184,7 +184,7 @@ namespace World
 
 		//Runtime
 		Core::Logger::Init();
-		Graphic::Init("White", 3, Graphic::Window::WindowMode::FULLSCREEN);
+		Graphic::Init("White", 3, Graphic::Window::WindowMode::WINDOWED);
 		Graphic::Window::SetWindowIcon("Sources/Assets/Sprites/icon.png");
 		//GLRenderer::GetInstance()->drawDebug = true;
 		//Input
@@ -406,7 +406,7 @@ namespace World
 				//Global button setting
 				OnHoverModifier menuHoverModifier;
 				menuHoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
-				menuHoverModifier.ReTexturePath = TexturePath("UIs/ButtonSelection");
+				//menuHoverModifier.ReTexturePath = TexturePath("UIs/ButtonSelection");
 				glm::vec3 button_scale = glm::vec3(180, 80, 1);
 				int button_num = 4;
 				float button_offset_y = (buttonpanelScale.y / button_num) - button_scale.y - 20.0f, button_font_size = 20;
@@ -605,6 +605,7 @@ namespace World
 				ui_ScoreText->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 50.0f, (Graphic::Window::GetHeight() / -2) + 50.0f, 1.0f));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_ScoreText);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_ScoreText);
 
 				ui_ComboText = Instantiate();
 				ui_ComboText->AddComponent<TextRenderer>();
@@ -614,6 +615,7 @@ namespace World
 				ui_ComboText->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 50.0f, (Graphic::Window::GetHeight() / -2) + 150.0f, 1.0f));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_ComboText);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_ComboText);
 
 				ui_HPbar->AddComponent<MeshRenderer>();
 				ui_HPbar->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
@@ -625,6 +627,7 @@ namespace World
 				ui_HPbar->m_transform->SetPosition(pos_HPbar);//glm::vec3((Graphic::Window::GetWidth() / -2) + 280.0f, (Graphic::Window::GetHeight() / 2) - 40.0f, 1.0f));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_HPbar);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_HPbar);
 
 				ui_StaminaBar->AddComponent<MeshRenderer>();
 				ui_StaminaBar->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
@@ -638,6 +641,7 @@ namespace World
 				ui_StaminaBar->m_transform->SetPosition(pos_Staminabar);
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_StaminaBar);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_StaminaBar);
 
 				ui_BossHP = Instantiate();
 				ui_BossHP->AddComponent<MeshRenderer>()->CreateMesh(1, 1);
@@ -647,6 +651,7 @@ namespace World
 				ui_BossHP->m_transform->SetPosition(glm::vec3(0, (Graphic::Window::GetHeight() / 2) - 100.0f, 1.0f));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_BossHP);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_BossHP);
 
 				ui_Weapongp = Instantiate();
 				ui_Weapongp->AddComponent<MeshRenderer>()->CreateMesh(1, 1);
@@ -656,6 +661,7 @@ namespace World
 				ui_Weapongp->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / 2) - 50.0f, (Graphic::Window::GetHeight() / -2) + 40.0f, 1.0f));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_Weapongp);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_Weapongp);
 
 				ui_Artifactgp1 = Instantiate();
 				ui_Artifactgp1->AddComponent<MeshRenderer>()->CreateMesh(1, 1);
@@ -665,6 +671,7 @@ namespace World
 				ui_Artifactgp1->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / 2) - 50.0f, (Graphic::Window::GetHeight() / -2) + 120.0f, 1.0f));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_Artifactgp1);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_Artifactgp1);
 
 				ui_Artifactgp2 = Instantiate();
 				ui_Artifactgp2->AddComponent<MeshRenderer>()->CreateMesh(1, 1);
@@ -674,6 +681,7 @@ namespace World
 				ui_Artifactgp2->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / 2) - 50.0f, (Graphic::Window::GetHeight() / -2) + 190.0f, 1.0f));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_Artifactgp2);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_Artifactgp2);
 
 				ui_HPtext = Instantiate();
 				ui_HPtext->AddComponent<TextRenderer>();
@@ -683,6 +691,7 @@ namespace World
 				ui_HPtext->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 280.0f, (Graphic::Window::GetHeight() / 2) - 40.0f, 1.0f));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_HPtext);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_HPtext);
 
 				ui_BossHPtext = Instantiate();
 				ui_BossHPtext->AddComponent<TextRenderer>();
@@ -692,6 +701,7 @@ namespace World
 				ui_BossHPtext->m_transform->SetPosition(glm::vec3(0, (Graphic::Window::GetHeight() / 2) - 100.0f, 1.0f));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_BossHPtext);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_HPtext);
 			}
 
 			//LoadoutUI
@@ -1503,6 +1513,60 @@ namespace World
 
 
 			}
+
+
+			//IngamePause?UI
+			{
+				std::shared_ptr<GameObject> WarningUiBG = Instantiate();
+				WarningUiBG->AddComponent<MeshRenderer>();
+				WarningUiBG->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+				WarningUiBG->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/Panel02"));
+				WarningUiBG->GetComponent<MeshRenderer>()->SetUI(true);
+				WarningUiBG->GetComponent<MeshRenderer>()->SetLayer(5);
+
+				WarningUiBG->m_transform->SetScale(glm::vec3(1000.0f, 800.0f, 1.0f));
+
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(WarningUiBG);
+
+				std::shared_ptr<GameObject> InputGuide = Instantiate();
+				InputGuide->AddComponent<MeshRenderer>();
+				InputGuide->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
+				InputGuide->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/InputGuide"));
+				InputGuide->GetComponent<MeshRenderer>()->SetUI(true);
+				InputGuide->GetComponent<MeshRenderer>()->SetLayer(5);
+
+				InputGuide->m_transform->SetScale(glm::vec3(403.0f * 1.5f, 259.0f * 1.5f, 1.0f));
+				InputGuide->m_transform->SetPosition(glm::vec3(0.0f, Graphic::Window::GetHeight() * (0.5f / 9.0f), 1.0f));
+
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(InputGuide);
+
+				std::shared_ptr<GameObject> MainMenuButton = Instantiate();
+				MainMenuButton->AddComponent<MeshRenderer>();
+				MainMenuButton->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/ButtonStartNEW"));
+				MainMenuButton->GetComponent<MeshRenderer>()->SetUI(true);
+				MainMenuButton->GetComponent<MeshRenderer>()->SetLayer(10);
+				MainMenuButton->m_transform->SetScale((glm::vec3(200.0f, 70.0f, 1.0f)));
+				MainMenuButton->m_transform->SetPosition(glm::vec3(0.0f, -220, 1.0f));
+				MainMenuButton->AddComponent<SoundPlayer>();
+				MainMenuButton->AddComponent<Button>();
+				MainMenuButton->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::STATECONTROL, GAME_STATE::MAINMENU);
+				MainMenuButton->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
+
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(MainMenuButton);
+
+				std::shared_ptr<GameObject> MainMenuText = Instantiate();
+				MainMenuText->AddComponent<TextRenderer>();
+				MainMenuText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Pixeled.ttf", 15);
+				MainMenuText->GetComponent<TextRenderer>()->SetText("MainMenu");
+				MainMenuText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
+				MainMenuText->m_transform->SetPosition(glm::vec3(-75.0f, -220, 1.0f));
+
+
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(MainMenuText);
+
+			}
+
+
 
 			//Credit UI
 			{

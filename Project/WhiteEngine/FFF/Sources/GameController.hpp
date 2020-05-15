@@ -321,6 +321,8 @@ private:
 	bool StateChanged = false;
 	bool StateGamplayChanged = false;
 
+	bool pause = false;
+
 	static float stateChangeDelay;
 	float gameStateChangeTimer = 0;
 	float gameplayStateChangeTimer = 0;
