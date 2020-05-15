@@ -656,6 +656,10 @@ namespace World
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_HPbarBorderRight);
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_HPbarBorderLeft);
 
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_HPbarBorder);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_HPbarBorderRight);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_HPbarBorderLeft);
+
 				//HP bar
 				ui_HPbar = Instantiate();
 				mesh = ui_HPbar->AddComponent<MeshRenderer>();
@@ -713,15 +717,18 @@ namespace World
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_staminaBarBorderRight);
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_staminaBarBorder);
 
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_staminaBarBorderLeft);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_staminaBarBorderRight);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_staminaBarBorder);
+
 				ui_StaminaBar = Instantiate();
 				ui_StaminaBar->AddComponent<MeshRenderer>();
 				ui_StaminaBar->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 				ui_StaminaBar->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/HP_stamina"));
 				ui_StaminaBar->GetComponent<MeshRenderer>()->SetUI(true, ANCHOR_X::LEFT, ANCHOR_Y::UP);
 				ui_StaminaBar->GetComponent<MeshRenderer>()->SetLayer(10);
-				ui_StaminaBar->m_transform->SetScale(glm::vec3(500.0f, 20.0f, 1.0f));
-				auto pos_Staminabar = glm::vec3((ui_StaminaBar->m_transform->GetScale().x / 2) + game_ui_border_offset + scale_HPBLeft.x, 
-					-((ui_StaminaBar->m_transform->GetScale().y / 2) + ui_HPbar->m_transform->GetScale().y + game_ui_border_offset + 2.5 + 6.0f), 1.0f);
+				ui_StaminaBar->m_transform->SetScale(glm::vec3(482.0f, 18.0f, 1.0f));
+				auto pos_Staminabar = glm::vec3(pos_HPbar.x, -((ui_StaminaBar->m_transform->GetScale().y / 2) + ui_HPbar->m_transform->GetScale().y + game_ui_border_offset + 2.5 + 15.0f + 2), 1.0f);
 				//-(ui_StaminaBar->m_transform->GetScale().y + pos_HPbar.y + 10.0f)
 				ui_StaminaBar->m_transform->SetPosition(pos_Staminabar);
 
