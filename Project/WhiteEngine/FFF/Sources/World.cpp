@@ -656,6 +656,10 @@ namespace World
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_HPbarBorderRight);
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_HPbarBorderLeft);
 
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_HPbarBorder);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_HPbarBorderRight);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_HPbarBorderLeft);
+
 				//HP bar
 				ui_HPbar = Instantiate();
 				mesh = ui_HPbar->AddComponent<MeshRenderer>();
@@ -713,15 +717,18 @@ namespace World
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_staminaBarBorderRight);
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_staminaBarBorder);
 
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_staminaBarBorderLeft);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_staminaBarBorderRight);
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Pause].push_back(ui_staminaBarBorder);
+
 				ui_StaminaBar = Instantiate();
 				ui_StaminaBar->AddComponent<MeshRenderer>();
 				ui_StaminaBar->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 				ui_StaminaBar->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/HP_stamina"));
 				ui_StaminaBar->GetComponent<MeshRenderer>()->SetUI(true, ANCHOR_X::LEFT, ANCHOR_Y::UP);
 				ui_StaminaBar->GetComponent<MeshRenderer>()->SetLayer(10);
-				ui_StaminaBar->m_transform->SetScale(glm::vec3(500.0f, 20.0f, 1.0f));
-				auto pos_Staminabar = glm::vec3((ui_StaminaBar->m_transform->GetScale().x / 2) + game_ui_border_offset + scale_HPBLeft.x, 
-					-((ui_StaminaBar->m_transform->GetScale().y / 2) + ui_HPbar->m_transform->GetScale().y + game_ui_border_offset + 2.5 + 6.0f), 1.0f);
+				ui_StaminaBar->m_transform->SetScale(glm::vec3(482.0f, 18.0f, 1.0f));
+				auto pos_Staminabar = glm::vec3(pos_HPbar.x, -((ui_StaminaBar->m_transform->GetScale().y / 2) + ui_HPbar->m_transform->GetScale().y + game_ui_border_offset + 2.5 + 15.0f + 2), 1.0f);
 				//-(ui_StaminaBar->m_transform->GetScale().y + pos_HPbar.y + 10.0f)
 				ui_StaminaBar->m_transform->SetPosition(pos_Staminabar);
 
@@ -1092,7 +1099,7 @@ namespace World
 				ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::ARTIFACT);
 				ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(ARTIFACT_TYPE::ARTF_CURSEDPENDANT);
 				ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "Curse Pendant";
-				ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "One shot kill everything, including player";
+				ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "One shot kill everything,\nincluding player";
 				ui_button->AddComponent<Button>();
 				ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 				ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -1114,7 +1121,7 @@ namespace World
 				ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::WEAPON);
 				ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(WEAPON_TYPE::WEAPON_MACHINEGUN);
 				ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "Machine Gun";
-				ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Rapidly fire hail\n of bullet on to\n the enemies.";
+				ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Rapidly fire hail\nof bullet on to\nthe enemies.";
 				ui_button->AddComponent<Button>();
 				ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 				ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -1160,7 +1167,7 @@ namespace World
 				ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::WEAPON);
 				ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(WEAPON_TYPE::WEAPON_GRENADELAUNCHER);
 				ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "Grenade Launcher";
-				ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Shoot explosive projectile that\n explodes and damage enemy in\n the radius once hit";
+				ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Shoot explosive projectile that\nexplodes and damage enemy in\nthe radius once hit";
 				ui_button->AddComponent<Button>();
 				ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 				ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -1182,7 +1189,7 @@ namespace World
 				ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::WEAPON);
 				ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(WEAPON_TYPE::WEAPON_ZAPPER);
 				ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "Zapper Gun";
-				ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Shoot out electried\n bullet that freeze\n and damage enemies.";
+				ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Shoot out electried\nbullet that freeze\nand damage enemies.";
 				ui_button->AddComponent<Button>();
 				ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 				ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -1204,7 +1211,7 @@ namespace World
 				ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::WEAPON);
 				ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(WEAPON_TYPE::WEAPON_BLACKHOLE);
 				ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "Blackhole Gun";
-				ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Shoot gravitaty bullet\n that pull and damage\n enemy in its radius.";
+				ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Shoot gravitaty bullet\nthat pull and damage\nenemy in its radius.";
 				ui_button->AddComponent<Button>();
 				ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 				ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -1230,8 +1237,9 @@ namespace World
 				LoadoutText->AddComponent<TextRenderer>();
 				LoadoutText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Pixeled.ttf", 30);
 				LoadoutText->GetComponent<TextRenderer>()->SetText("Test/n Test");
+				LoadoutText->GetComponent<TextRenderer>()->SetlineSpacing(1.5f);
 				LoadoutText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-				LoadoutText->m_transform->SetPosition(glm::vec3(0.0f, -Graphic::Window::GetHeight() * (3.0f / 9.0f) + 50.0f, 1.0f));
+				LoadoutText->m_transform->SetPosition(glm::vec3(-10.0f, -Graphic::Window::GetHeight() * (3.0f / 9.0f) + 50.0f, 1.0f));
 
 				ui_LoadOut->GetComponent<LoadoutUI>()->eqNameObj = LoadoutText;
 
@@ -1239,11 +1247,12 @@ namespace World
 
 				LoadoutText->AddComponent<TextRenderer>();
 
-				LoadoutText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Pixeled.ttf", 20);
+				LoadoutText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Pixeled.ttf", 15);
 
 				LoadoutText->GetComponent<TextRenderer>()->SetText("Test/n Test");
+				LoadoutText->GetComponent<TextRenderer>()->SetlineSpacing(1.5f);
 				LoadoutText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-				LoadoutText->m_transform->SetPosition(glm::vec3(0.0f, -Graphic::Window::GetHeight() * (3.5f / 9.0f) + 50.0f, 1.0f));
+				LoadoutText->m_transform->SetPosition(glm::vec3(-10.0f, -Graphic::Window::GetHeight() * (3.5f / 9.0f) + 50.0f, 1.0f));
 
 				ui_LoadOut->GetComponent<LoadoutUI>()->eqDescriptionObj = LoadoutText;
 

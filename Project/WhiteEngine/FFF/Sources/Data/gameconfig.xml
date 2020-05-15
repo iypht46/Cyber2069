@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cereal>
 	<object>
-		<MasterVolume>0.59999990463256836</MasterVolume>
-		<MusicVolume>0.59999990463256836</MusicVolume>
-		<SFXVolume>0.19999992847442627</SFXVolume>
+		<MasterVolume>0.29999992251396179</MasterVolume>
+		<MusicVolume>0.39999991655349731</MusicVolume>
+		<SFXVolume>0.29999992251396179</SFXVolume>
 		<PlayerStat>
 			<max_stamina>200</max_stamina>
 			<dashStamina>5</dashStamina>
@@ -33,7 +33,7 @@
 		</CameraSetting>
 		<WeaponStat>
 			<mg_bulletspeed>400</mg_bulletspeed>
-			<mg_firerate>400</mg_firerate>
+			<mg_firerate>1</mg_firerate>
 			<mg_damage>1</mg_damage>
 			<ls_firerate>1</ls_firerate>
 			<ls_damage>1</ls_damage>

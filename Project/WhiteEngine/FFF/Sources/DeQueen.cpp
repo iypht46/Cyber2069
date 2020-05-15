@@ -51,54 +51,57 @@ void DeQueen::OnUpdate(float dt) {
 	
 	//no need to detect target
 	//Enemy::OnUpdate(dt);
+	if (!isDead) {
+		airPatrol->Patrol();
+		GameObject* spawn = nullptr;
 
-	airPatrol->Patrol();
-	GameObject* spawn = nullptr;
+		if ((m_gameObject->m_transform->GetPosition().x > DespawnPosX) || (m_gameObject->m_transform->GetPosition().x < -DespawnPosX))
+		{
+			m_gameObject->SetActive(false);
+		}
 
-	if ((m_gameObject->m_transform->GetPosition().x > DespawnPosX) || (m_gameObject->m_transform->GetPosition().x < -DespawnPosX)) 
-	{
-		m_gameObject->SetActive(false);
-	}
+		SpawnDelayCount -= dt;
+		if (SpawnDelayCount <= 0)
+		{
+			SpawnDelayCount = SpawnDelay;
+			int randSpawn = rand() % 2;
+			int spawnPosX = airPatrol->queen->GetPosition().x;
+			int spawnPosY = airPatrol->queen->GetPosition().y - 100;
+			if (randSpawn == 0) {
+				//std::shared_ptr<GameObject> flyer = FlyerPool->GetInactiveObject();
+				GameObject* flyer = FlyerPool->GetInactiveObject();
+				if (flyer != nullptr)
+				{
+					flyer->SetActive(true);
 
-	SpawnDelayCount -= dt;
-	if (SpawnDelayCount <= 0)
-	{
-		SpawnDelayCount = SpawnDelay;
-		int randSpawn = rand() % 2;
-		int spawnPosX = airPatrol->queen->GetPosition().x;
-		int spawnPosY = airPatrol->queen->GetPosition().y - 100;
-		if (randSpawn == 0) {
-			//std::shared_ptr<GameObject> flyer = FlyerPool->GetInactiveObject();
-			GameObject* flyer = FlyerPool->GetInactiveObject();
-			if (flyer != nullptr)
-			{
-				flyer->SetActive(true);
+					flyer->m_transform->SetPosition(glm::vec3(spawnPosX, spawnPosY, 1.0f));
 
-				flyer->m_transform->SetPosition(glm::vec3(spawnPosX, spawnPosY, 1.0f));
+					spawn = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_ENEMYSPAWN1)->GetGameObject();
 
-				spawn = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_ENEMYSPAWN1)->GetGameObject();
+					flyer->GetComponent<Enemy>()->SetTarget(GameController::GetInstance()->GetPlayer()->m_transform.get());
+				}
+			}
+			else {
+				GameObject* bomber = BomberPool->GetInactiveObject();
+				if (bomber != nullptr)
+				{
+					bomber->SetActive(true);
 
-				flyer->GetComponent<Enemy>()->SetTarget(GameController::GetInstance()->GetPlayer()->m_transform.get());
+					bomber->m_transform->SetPosition(glm::vec3(spawnPosX, spawnPosY, 1.0f));
+
+					spawn = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_ENEMYSPAWN2)->GetGameObject();
+
+					bomber->GetComponent<Enemy>()->SetTarget(GameController::GetInstance()->GetPlayer()->m_transform.get());
+				}
+			}
+			if (spawn != nullptr) {
+				spawn->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+				spawn->GetComponent<ParticleSystem>()->TriggerBurstEmission();
 			}
 		}
-		else {
-			GameObject* bomber = BomberPool->GetInactiveObject();
-			if (bomber != nullptr)
-			{
-				bomber->SetActive(true);
-
-				bomber->m_transform->SetPosition(glm::vec3(spawnPosX, spawnPosY, 1.0f));
-
-				spawn = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_ENEMYSPAWN2)->GetGameObject();
-
-				bomber->GetComponent<Enemy>()->SetTarget(GameController::GetInstance()->GetPlayer()->m_transform.get());
-			}
-		}
-		if (spawn != nullptr) {
-			spawn->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
-			spawn->GetComponent<ParticleSystem>()->TriggerBurstEmission();
-		}
 	}
+
+	
 
 	if (isDead && !setParticle) 
 	{

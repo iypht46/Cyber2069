@@ -167,12 +167,15 @@ void LaserGun::GameTimeBehaviour(float dt)
 
 				Transform* enemTransform = enemy->GetGameObject()->m_transform.get();
 
-				if ((enemTransform->GetPosition().x > (Graphic::getCamera()->GetCampos().x + (winWidth / 2)))
-					|| (enemTransform->GetPosition().x < (Graphic::getCamera()->GetCampos().x - (winWidth / 2)))
-					|| (enemTransform->GetPosition().y > (Graphic::getCamera()->GetCampos().y + (winHeight / 2)))
-					|| (enemTransform->GetPosition().y < (Graphic::getCamera()->GetCampos().y - (winHeight / 2))))
+				if (enemy->GetGameObject()->GetComponent<DeQueen>() == nullptr) 
 				{
-					continue;
+					if ((enemTransform->GetPosition().x > (Graphic::getCamera()->GetCampos().x + (winWidth / 2)))
+						|| (enemTransform->GetPosition().x < (Graphic::getCamera()->GetCampos().x - (winWidth / 2)))
+						|| (enemTransform->GetPosition().y > (Graphic::getCamera()->GetCampos().y + (winHeight / 2)))
+						|| (enemTransform->GetPosition().y < (Graphic::getCamera()->GetCampos().y - (winHeight / 2))))
+					{
+						continue;
+					}
 				}
 
 				if (!enemy->GetGameObject()->Active()) 
