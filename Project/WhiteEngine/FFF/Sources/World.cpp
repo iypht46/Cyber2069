@@ -43,6 +43,7 @@
 #include "Scripts/GameControl/UIController.h"
 #include "Scripts/GameControl/SoundtrackController.h"
 #include "Scripts/GameControl/CameraController.h"
+#include "Scripts/Misc/TargetArrow.h"
 
 using SceneManagement::Instantiate;
 
@@ -1081,7 +1082,7 @@ namespace World
 
 				ui_LoadOut->GetComponent<LoadoutUI>()->eqDescriptionObj = LoadoutText;
 
-				gamecontroller->GetComponent<GameController>()->loadoutUI = ui_LoadOut;
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Loadout].push_back(ui_LoadOut);
 
 				std::shared_ptr<GameObject> LoadOutBackButton = Instantiate();
 				LoadOutBackButton->AddComponent<MeshRenderer>();
@@ -1690,6 +1691,21 @@ namespace World
 				Serialization::SaveObject(*Rabbit, PrefabPath("Player"));
 
 				gamecontroller->GetComponent<GameController>()->player = Rabbit;
+
+				//cocoon arrow--------------------------------------------------------------------------------
+				std::shared_ptr<GameObject> CocoonArrow = Instantiate();
+				CocoonArrow->Name = "CocoonArrow";
+				CocoonArrow->AddComponent<MeshRenderer>()->CreateMesh(1, 1);
+				CocoonArrow->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/CocoonArrow2"));
+				CocoonArrow->GetComponent<MeshRenderer>()->SetLayer(2);
+
+				CocoonArrow->AddComponent<TargetArrow>()->orbit = Rabbit->m_transform.get();
+
+				CocoonArrow->m_transform->SetScale(glm::vec3(0.75f, 0.75f, 1));
+
+				Serialization::SaveObject(*CocoonArrow, PrefabPath("Misc/CocoonArrow"));
+
+				GameController::GetInstance()->cocoonarrow = CocoonArrow->GetComponent_weak<TargetArrow>();
 			}
 
 			std::shared_ptr<GameObject> wp_MachineGun = Instantiate();

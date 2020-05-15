@@ -66,6 +66,7 @@ public:
 	bool HasParent();
 
 	Transform* GetChild(int index);
+	Transform* GetParent();
 	unsigned int GetChildCount();
 
 	void SetPosition(glm::vec3 position);

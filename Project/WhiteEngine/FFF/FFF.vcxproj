@@ -171,6 +171,7 @@
     <ClCompile Include="Sources\Scripts\GameControl\PlayerData.cpp" />
     <ClCompile Include="Sources\Scripts\GameControl\SoundtrackController.cpp" />
     <ClCompile Include="Sources\Scripts\GameControl\UIController.cpp" />
+    <ClCompile Include="Sources\Scripts\Misc\TargetArrow.cpp" />
     <ClCompile Include="Sources\Scripts\Weapons\Bullet.cpp" />
     <ClCompile Include="Sources\Scripts\Weapons\FlakBullet.cpp" />
     <ClCompile Include="Sources\Spitter.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="Sources\Scripts\GameControl\PlayerData.hpp" />
     <ClInclude Include="Sources\Scripts\GameControl\SoundtrackController.h" />
     <ClInclude Include="Sources\Scripts\GameControl\UIController.h" />
+    <ClInclude Include="Sources\Scripts\Misc\TargetArrow.h" />
     <ClInclude Include="Sources\Weapon.hpp" />
     <ClInclude Include="Sources\World.hpp" />
   </ItemGroup>
