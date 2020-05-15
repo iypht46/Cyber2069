@@ -75,7 +75,7 @@ public:
 	~Bomber() {}
 
 public:
-	void SetStats(float Speed, float HP, float Dmg, float AimTime, float DashSpeed, float ExplodeDmg, float ExplodeRadius);
+	void SetStats(float Speed, float rotateSpeed, float HP, float Dmg, float AimTime, float DashSpeed, float ExplodeDmg, float ExplodeRadius);
 
 	virtual void OnEnable();
 	virtual void OnAwake();

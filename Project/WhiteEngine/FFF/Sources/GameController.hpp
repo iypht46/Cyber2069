@@ -127,6 +127,7 @@ struct EnemyAmplifier {
 	//bomber
 	float BomberHP = 1;
 	float BomberSpeed = 200;
+	float BomberRotationSpeed = 15.0f;
 	float BomberDmg = 0;
 	float BomberAimTime = 1;
 	float BomberDashSpeed = 600;
@@ -180,6 +181,7 @@ public:
 
 			CEREAL_NVP(BomberHP),
 			CEREAL_NVP(BomberSpeed),
+			CEREAL_NVP(BomberRotationSpeed),
 			CEREAL_NVP(BomberDmg),
 			CEREAL_NVP(BomberAimTime),
 			CEREAL_NVP(BomberDashSpeed),

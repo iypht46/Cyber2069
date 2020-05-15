@@ -80,6 +80,7 @@ GameObject* EnemySpawner::SpawnEnemy(float posX,float posY)
 				case POOL_TYPE::ENEMY_BOMBER:
 					enemy->GetComponent<Bomber>()->SetStats(
 						SpawnAmplifier->BomberSpeed,
+						SpawnAmplifier->BomberRotationSpeed,
 						SpawnAmplifier->BomberHP,
 						SpawnAmplifier->BomberDmg,
 						SpawnAmplifier->BomberAimTime,

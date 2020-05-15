@@ -18,6 +18,7 @@
 						<FlyerDmg>1</FlyerDmg>
 						<BomberHP>1</BomberHP>
 						<BomberSpeed>300</BomberSpeed>
+						<BomberRotationSpeed>90</BomberRotationSpeed>
 						<BomberDmg>0</BomberDmg>
 						<BomberAimTime>0.5</BomberAimTime>
 						<BomberDashSpeed>700</BomberDashSpeed>
@@ -57,6 +58,7 @@
 						<FlyerDmg>1</FlyerDmg>
 						<BomberHP>1</BomberHP>
 						<BomberSpeed>300</BomberSpeed>
+						<BomberRotationSpeed>90</BomberRotationSpeed>
 						<BomberDmg>1</BomberDmg>
 						<BomberAimTime>0.20000000298023224</BomberAimTime>
 						<BomberDashSpeed>700</BomberDashSpeed>

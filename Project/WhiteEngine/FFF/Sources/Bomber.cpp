@@ -112,8 +112,9 @@ void Bomber::Explode() {
 	m_gameObject->GetComponent<Enemy>()->TakeDamage(hpSystem->GetMaxHP());
 }
 
-void Bomber::SetStats(float Speed, float HP, float Dmg, float AimTime, float DashSpeed, float ExplodeDmg, float ExplodeRadius) {
+void Bomber::SetStats(float Speed, float rotateSpeed, float HP, float Dmg, float AimTime, float DashSpeed, float ExplodeDmg, float ExplodeRadius) {
 	airFollow->SetFlySpeed(Speed);
+	airFollow->SetRotRate(rotateSpeed);
 	hpSystem->SetMaxHP(HP);
 
 	airDash->SetAimTime(AimTime);
