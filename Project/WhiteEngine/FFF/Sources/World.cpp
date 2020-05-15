@@ -596,6 +596,7 @@ namespace World
 
 			//GameplayUI
 			{
+				float game_ui_border_offset = 5.0f;
 				ui_ScoreText = Instantiate();
 				ui_ScoreText->AddComponent<TextRenderer>();
 				ui_ScoreText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 50);
@@ -620,7 +621,7 @@ namespace World
 				ui_HPbar->GetComponent<MeshRenderer>()->SetUI(true, ANCHOR_X::LEFT, ANCHOR_Y::UP);
 				ui_HPbar->GetComponent<MeshRenderer>()->SetLayer(10);
 				ui_HPbar->m_transform->SetScale(glm::vec3(500.0f, 40.0f, 1.0f));
-				auto pos_HPbar = glm::vec3((ui_HPbar->m_transform->GetScale().x / 2) + 10.0f, -(ui_HPbar->m_transform->GetScale().y + 10.0f), 1.0f);
+				auto pos_HPbar = glm::vec3((ui_HPbar->m_transform->GetScale().x / 2) + 5.0f, -((ui_HPbar->m_transform->GetScale().y / 2) + game_ui_border_offset), 1.0f);
 				ui_HPbar->m_transform->SetPosition(pos_HPbar);//glm::vec3((Graphic::Window::GetWidth() / -2) + 280.0f, (Graphic::Window::GetHeight() / 2) - 40.0f, 1.0f));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_HPbar);
@@ -631,7 +632,9 @@ namespace World
 				ui_StaminaBar->GetComponent<MeshRenderer>()->SetUI(true, ANCHOR_X::LEFT, ANCHOR_Y::UP);
 				ui_StaminaBar->GetComponent<MeshRenderer>()->SetLayer(10);
 				ui_StaminaBar->m_transform->SetScale(glm::vec3(500.0f, 20.0f, 1.0f));
-				auto pos_Staminabar = glm::vec3((ui_StaminaBar->m_transform->GetScale().x / 2) + 10.0f, -(ui_StaminaBar->m_transform->GetScale().y + pos_HPbar.y + 10.0f), 1.0f);
+				auto pos_Staminabar = glm::vec3((ui_StaminaBar->m_transform->GetScale().x / 2) + game_ui_border_offset, 
+					-((ui_StaminaBar->m_transform->GetScale().y / 2) + ui_HPbar->m_transform->GetScale().y + game_ui_border_offset), 1.0f);
+				//-(ui_StaminaBar->m_transform->GetScale().y + pos_HPbar.y + 10.0f)
 				ui_StaminaBar->m_transform->SetPosition(pos_Staminabar);
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_StaminaBar);
