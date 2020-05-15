@@ -1653,10 +1653,10 @@ namespace World
 
 				std::shared_ptr<GameObject> CreditContentText = Instantiate();
 				CreditContentText->AddComponent<TextRenderer>();
-				CreditContentText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Pixeled.ttf", 20);
-				CreditContentText->GetComponent<TextRenderer>()->SetText("Programmer:\n\nRatchanon Prapassornpong\n\nEiyaphat Suntiwong\n\nKanitpong Tang\n\nPuh-Zang Liu\n\n\n\nArtist:\n\nPimpaka Lertjittikun\n\nKirana Tanburana\n\nMassarin Pathompongpan");
+				CreditContentText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Pixeled.ttf", 15);
+				CreditContentText->GetComponent<TextRenderer>()->SetText("Programmer:\n\nRatchanon Prapassornpong\n\nEiyaphat Suntiwong\n\nKanitpong Tang\n\nPuh-Zang Liu\n\n\n\nArtist:\n\nPimpaka Lertjittikun\n\nKirana Tanburana\n\nMassarin Pathompongpan\n\n\n\nMusic:\n\nHYPNOSMNA\n\n\n\nCopyright:\n\n2020.Thammasat University.All rights reserved");
 				CreditContentText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f));
-				CreditContentText->m_transform->SetPosition(glm::vec3(20, 190, 1));
+				CreditContentText->m_transform->SetPosition(glm::vec3(20, 210, 1));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Credit].push_back(CreditContentText);
 			}
