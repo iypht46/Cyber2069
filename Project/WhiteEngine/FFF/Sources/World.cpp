@@ -184,9 +184,9 @@ namespace World
 
 		//Runtime
 		Core::Logger::Init();
-		Graphic::Init("White", 3, Graphic::Window::WindowMode::WINDOWED);
+		Graphic::Init("White", 3, Graphic::Window::WindowMode::FULLSCREEN);
 		Graphic::Window::SetWindowIcon("Sources/Assets/Sprites/icon.png");
-		GLRenderer::GetInstance()->drawDebug = true;
+		//GLRenderer::GetInstance()->drawDebug = true;
 		//Input
 		//Bool for debugging
 		Input::Init(false);
@@ -235,14 +235,14 @@ namespace World
 		title->SetName("Title");
 		title->AddComponent<MeshRenderer>();
 		title->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-		title->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/mockup_title.jpg");
+		title->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/MOCKUPLOADINGJPG.jpg");
 		title->GetComponent<MeshRenderer>()->SetLayer(-1);
 		//title->GetComponent<MeshRenderer>()->SetUI(true);
 		
 		auto meshSize = glm::vec3(Graphic::Window::GetWidth()/ title->GetComponent<MeshRenderer>()->GetTextureObj().m_size.x, Graphic::Window::GetHeight() / title->GetComponent<MeshRenderer>()->GetTextureObj().m_size.y, 1.0f);//glm::vec3(title->GetComponent<MeshRenderer>()->GetTextureObj().m_size,1.0f) / glm::vec3(Graphic::Window::GetWidth(), Graphic::Window::GetHeight(), 1.0f);
 		title->m_transform->SetScale(meshSize);
 		
-		bool start = false;
+		/*bool start = false;
 		while (!start)
 		{
 			Input::Update();
@@ -261,7 +261,9 @@ namespace World
 				g_gameInfo->GameShouldClose();
 			}
 				
-		}
+		}*/
+
+		Graphic::Render();
 
 		Serialization::LoadObject(*SceneManagement::ActiveScene, ScenePath("RealScene"));
 
@@ -629,8 +631,8 @@ namespace World
 				ui_StaminaBar->GetComponent<MeshRenderer>()->SetUI(true, ANCHOR_X::LEFT, ANCHOR_Y::UP);
 				ui_StaminaBar->GetComponent<MeshRenderer>()->SetLayer(10);
 				ui_StaminaBar->m_transform->SetScale(glm::vec3(500.0f, 20.0f, 1.0f));
-				auto pos_Staminabar = glm::vec3((ui_StaminaBar->m_transform->GetScale().x / 2) + 10.0f, -(ui_StaminaBar->m_transform->GetScale().y + pos_HPbar.y), 1.0f);
-				ui_StaminaBar->m_transform->SetPosition(glm::vec3((Graphic::Window::GetWidth() / -2) + 280.0f, (Graphic::Window::GetHeight() / 2) - 80.0f, 1.0f));
+				auto pos_Staminabar = glm::vec3((ui_StaminaBar->m_transform->GetScale().x / 2) + 10.0f, -(ui_StaminaBar->m_transform->GetScale().y + pos_HPbar.y + 10.0f), 1.0f);
+				ui_StaminaBar->m_transform->SetPosition(pos_Staminabar);
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Gameplay].push_back(ui_StaminaBar);
 
@@ -2468,6 +2470,8 @@ namespace World
 		}
 
 		SceneManagement::ActiveScene->Init();
+
+		title->SetActive(false);
 
 	}
 
