@@ -27,7 +27,7 @@ namespace Tools { class GameControllerScriptEC; }
 class EnemySpawner;
 class UIController;
 class SoundtrackController;
-
+class TargetArrow;
 
 enum POOL_TYPE {
 	BULLET_MG = 0,
@@ -341,7 +341,9 @@ public:
 	//std::weak_ptr<GameObject> ScoreText;
 	//std::weak_ptr<GameObject> ComboText;
 
-	std::weak_ptr<GameObject> loadoutUI;
+	//std::weak_ptr<GameObject> loadoutUI;
+
+	std::weak_ptr<TargetArrow> cocoonarrow;
 
 	GameController();
 	~GameController() {}

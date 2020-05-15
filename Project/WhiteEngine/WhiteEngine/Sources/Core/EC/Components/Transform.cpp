@@ -87,6 +87,13 @@ Transform* Transform::GetChild(int index) {
 	return (children.at(index)).lock().get();
 }
 
+Transform* Transform::GetParent() {
+	if (parent.expired())
+		return nullptr;
+
+	return parent.lock().get();
+}
+
 unsigned int Transform::GetChildCount()
 {
 	return children.size();

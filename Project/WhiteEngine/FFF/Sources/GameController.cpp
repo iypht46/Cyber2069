@@ -2,6 +2,7 @@
 #include "Scripts/GameControl/UIController.h"
 #include "Scripts/GameControl/SoundtrackController.h"
 #include "Scripts/GameControl/CameraController.h"
+#include "Scripts/Misc/TargetArrow.h"
 
 #include "Core/GameInfo.h"
 
@@ -181,7 +182,7 @@ void GameController::OnStart() {
 	SetSpawningAllSpawner(false);
 	playerControl->GetGameObject()->SetActive(false);
 
-	loadoutUI.lock()->SetActive(false);
+	//loadoutUI.lock()->SetActive(false);
 
 	PlayerStartPosition = playerControl->GetGameObject()->m_transform->GetPosition();
 
@@ -293,7 +294,7 @@ void GameController::OnUpdate(float dt)
 			SetActiveAllObjectInPool(false);
 			playerControl->GetGameObject()->SetActive(false);
 
-			loadoutUI.lock()->SetActive(false);
+			//loadoutUI.lock()->SetActive(false);
 
 			Restart();
 
@@ -325,7 +326,7 @@ void GameController::OnUpdate(float dt)
 			CameraController::GetInstance()->SetTarget(MenuCamPos);
 			UIController::GetInstance()->ToggleUI(UI_GROUP::Loadout);
 
-			loadoutUI.lock()->SetActive(true);
+			//loadoutUI.lock()->SetActive(true);
 
 			StateChanged = false;
 		}
@@ -335,22 +336,23 @@ void GameController::OnUpdate(float dt)
 		//Do only once after state changed
 		if (StateChanged) 
 		{
-			CameraController::GetInstance()->SetTarget((player.lock()->m_transform).get());
-			UIController::GetInstance()->ToggleUI(UI_GROUP::Gameplay);
+			//CameraController::GetInstance()->SetTarget((player.lock()->m_transform).get());
 
-			sp->SetSound(SoundPath("SFX_Game_SessionStart"));
-			sp->PlaySound();
+			//UIController::GetInstance()->ToggleUI(UI_GROUP::Gameplay);
 
-			ScoreValue = 0;
-			playerControl->GetGameObject()->SetActive(true);
-			playerControl->GetGameObject()->m_transform->SetPosition(PlayerStartPosition);
+			//sp->SetSound(SoundPath("SFX_Game_SessionStart"));
+			//sp->PlaySound();
 
-			loadoutUI.lock()->SetActive(false);
+			Restart();
+			//playerControl->GetGameObject()->SetActive(true);
+			//playerControl->GetGameObject()->m_transform->SetPosition(PlayerStartPosition);
+
+			//loadoutUI.lock()->SetActive(false);
 
 			StateChanged = false;
 			StateGamplayChanged = true;
 
-			this->GetGameObject()->GetComponent<EquipmentManager>()->InitPlayerEquipment();
+			//this->GetGameObject()->GetComponent<EquipmentManager>()->InitPlayerEquipment();
 		}
 
 		SetSpawningAllSpawner(true);
@@ -392,9 +394,10 @@ void GameController::OnUpdate(float dt)
 				if (CocoonSpawner != nullptr)
 				{
 					Current_Cocoon = CocoonSpawner->SpawnEnemy();
+					cocoonarrow.lock()->target = Current_Cocoon->m_transform.get();
 				}
 
-				soundtrackCon->Stop(true);
+				//soundtrackCon->Stop(true);
 				soundtrackCon->PlayState(SOUNDTRACK_STATE::GAMEPLAY_NORMAL, true);
 
 				UIController::GetInstance()->SetActiveQueenUI(false);
@@ -421,6 +424,7 @@ void GameController::OnUpdate(float dt)
 					else if (NextGameplayState != GAMEPLAY_STATE::QUEEN)
 					{
 						Current_Cocoon = CocoonSpawner->SpawnEnemy();
+						cocoonarrow.lock()->target = Current_Cocoon->m_transform.get();
 					}
 				}
 			}
@@ -429,6 +433,7 @@ void GameController::OnUpdate(float dt)
 				if (CocoonSpawner != nullptr)
 				{
 					Current_Cocoon = CocoonSpawner->SpawnEnemy();
+					cocoonarrow.lock()->target = Current_Cocoon->m_transform.get();
 				}
 			}
 
@@ -438,6 +443,8 @@ void GameController::OnUpdate(float dt)
 			if (StateGamplayChanged) 
 			{
 				Current_Queen = SpawnQueen();
+				cocoonarrow.lock()->target = Current_Queen->m_transform.get();
+
 				UIController::GetInstance()->QueenHP = Current_Queen->GetComponent<HPsystem>();
 				UIController::GetInstance()->SetActiveQueenUI(true);
 
@@ -697,6 +704,22 @@ void GameController::SetGameState(int state) {
 			break;
 		case GAMEPLAY:
 			gameStateChangeTimer = 0;
+
+			CameraController::GetInstance()->SetTarget((player.lock()->m_transform).get());
+			UIController::GetInstance()->ToggleUI(UI_GROUP::Gameplay);
+			UIController::GetInstance()->SetActiveQueenUI(false);
+
+			sp->SetSound(SoundPath("SFX_Game_SessionStart"));
+			sp->PlaySound();
+
+			soundtrackCon->Stop(true);
+
+			ScoreValue = 0;
+			playerControl->GetGameObject()->SetActive(true);
+			playerControl->GetGameObject()->m_transform->SetPosition(PlayerStartPosition);
+
+			this->GetGameObject()->GetComponent<EquipmentManager>()->InitPlayerEquipment();
+
 			break;
 		case ENDING:
 			gameStateChangeTimer = stateChangeDelay;
