@@ -105,7 +105,7 @@ void DeQueen::OnUpdate(float dt) {
 		setParticle = true;
 		queenDeadFluidPtcl = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_KILLED_QUEEN_FLUID)->GetGameObject();
 		queenDeadFluidPtcl->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
-		queenDeadFluidPtcl->SetActive(true);
+		queenDeadFluidPtcl->GetComponent<ParticleSystem>()->TriggerBurstEmission();
 
 		queenDeadSmokePtcl = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_KILLED_QUEEN_SMOKE)->GetGameObject();
 		queenDeadSmokePtcl->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
@@ -113,7 +113,7 @@ void DeQueen::OnUpdate(float dt) {
 	}
 	else if (isDead) 
 	{
-		queenDeadFluidPtcl->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+		//queenDeadFluidPtcl->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
 		queenDeadSmokePtcl->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
 	}
 

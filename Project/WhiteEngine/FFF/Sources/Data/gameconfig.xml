@@ -3,7 +3,7 @@
 	<object>
 		<MasterVolume>0.59999990463256836</MasterVolume>
 		<MusicVolume>0.59999990463256836</MusicVolume>
-		<SFXVolume>0.59999990463256836</SFXVolume>
+		<SFXVolume>0.19999992847442627</SFXVolume>
 		<PlayerStat>
 			<max_stamina>200</max_stamina>
 			<dashStamina>5</dashStamina>
