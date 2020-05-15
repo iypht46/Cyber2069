@@ -224,6 +224,9 @@ struct GameConfig {
 	PlayerStats PlayerStat;
 	CameraSetting CameraSetting;
 
+	WeaponStats WeaponStat;
+	ArtifactStats ArtifactStat;
+
 	//vector<float> scoreCheckpoint;
 	vector<std::shared_ptr<EnemyAmplifier>> Amplifiers;
 	vector<std::shared_ptr<EnemyPreset>> Presets;
@@ -238,6 +241,8 @@ public:
 			CEREAL_NVP(SFXVolume),
 			CEREAL_NVP(PlayerStat),
 			CEREAL_NVP(CameraSetting),
+			CEREAL_NVP(WeaponStat),
+			CEREAL_NVP(ArtifactStat),
 			CEREAL_NVP(Amplifiers),
 			CEREAL_NVP(Presets)
 			);

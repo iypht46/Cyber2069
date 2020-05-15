@@ -36,6 +36,13 @@ private:
 	int weaponCount = 0;		//number of equipped weapon
 	int artifactCount = 0;		//number of equipped artifacts
 public:
+
+	WeaponStats wp_stat;
+	void SetWeaponStats(WeaponStats stat);
+
+	ArtifactStats atf_stat;
+	void SetArtifactStats(ArtifactStats stat);
+
 	static EquipmentManager* GetInstance();
 
 	static int totalWeapon;

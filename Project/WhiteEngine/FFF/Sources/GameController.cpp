@@ -788,6 +788,7 @@ void GameController::ResetPlayerProgress()
 }
 
 void GameController::LoadGameConfig() {
+	EquipmentManager* equipmentManager = m_gameObject->GetComponent<EquipmentManager>();
 	std::unique_ptr<GameConfig> config = std::make_unique<GameConfig>();
 	Serialization::LoadObjectXML(*config, XMLConfigPath("gameconfig"));
 
@@ -797,12 +798,16 @@ void GameController::LoadGameConfig() {
 	playerControl->SetStats(config->PlayerStat);
 	CameraController::GetInstance()->SetCameraSetting(config->CameraSetting);
 
+	equipmentManager->SetWeaponStats(config->WeaponStat);
+	equipmentManager->SetArtifactStats(config->ArtifactStat);
+
 	SoundPlayer::SetMasterVolume(config->MasterVolume);
 	SoundPlayer::SetMusicVolume(config->MusicVolume);
 	SoundPlayer::SetSFXVolume(config->SFXVolume);
 }
 
 void GameController::SaveGameConfig() {
+	EquipmentManager* equipmentManager = m_gameObject->GetComponent<EquipmentManager>();
 	std::unique_ptr<GameConfig> config = std::make_unique<GameConfig>();
 
 	config->Amplifiers = Amplifiers;
@@ -810,6 +815,9 @@ void GameController::SaveGameConfig() {
 
 	config->PlayerStat = playerControl->GetPlayerStats();
 	config->CameraSetting = CameraController::GetInstance()->GetCameraSetting();
+
+	config->WeaponStat = equipmentManager->wp_stat;
+	config->ArtifactStat = equipmentManager->atf_stat;
 
 	config->MasterVolume = SoundPlayer::GetMasterVolume();
 	config->MusicVolume = SoundPlayer::GetMusicVolume();
