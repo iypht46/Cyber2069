@@ -3,12 +3,12 @@
 #include "Graphic/Camera.hpp"
 #include "Graphic/Window.hpp"
 #include "Core/Logger.hpp"
+#include "Core/Particle/ParticleSystem.h"
 
 #include "ItemDrop.hpp"
 
 void DeQueen::OnAwake() {
 	airPatrol = GetGameObject()->GetComponent<AirPatrol>();
-	QueenSound = GetGameObject()->GetComponent<SoundPlayer>();
 	
 	SpawnDelay = 0.2f;
 	SpawnDelayCount = SpawnDelay;
@@ -17,14 +17,26 @@ void DeQueen::OnAwake() {
 	BomberPool = GameController::GetInstance()->GetPool(POOL_TYPE::ENEMY_BOMBER);
 	ItemPool = GameController::GetInstance()->GetPool(POOL_TYPE::ITEM_DROP);
 
-	QueenSound = GetGameObject()->GetComponent<SoundPlayer>();
-
-	SoundCounter = 0.30f;
-
-	QueenSound->SetSound(SoundPath("SFX_Queen_SpawningEnemy"));
-	QueenSound->SetLoop(false);
-
 	Enemy::OnAwake();
+}
+
+void DeQueen::OnEnable() 
+{
+	setParticle = false;
+	Enemy::OnEnable();
+}
+
+void DeQueen::OnDisable() 
+{
+	if (queenDeadFluidPtcl != nullptr) 
+	{
+		queenDeadFluidPtcl->SetActive(false);
+	}
+
+	if (queenDeadSmokePtcl != nullptr) {
+
+		queenDeadSmokePtcl->SetActive(false);
+	}
 }
 
 void DeQueen::SetStats(float Speed, float HP, float SpawnDelay, float unlockchance, float healvalue) {
@@ -41,6 +53,7 @@ void DeQueen::OnUpdate(float dt) {
 	//Enemy::OnUpdate(dt);
 
 	airPatrol->Patrol();
+	GameObject* spawn = nullptr;
 
 	if ((m_gameObject->m_transform->GetPosition().x > DespawnPosX) || (m_gameObject->m_transform->GetPosition().x < -DespawnPosX)) 
 	{
@@ -63,6 +76,8 @@ void DeQueen::OnUpdate(float dt) {
 
 				flyer->m_transform->SetPosition(glm::vec3(spawnPosX, spawnPosY, 1.0f));
 
+				spawn = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_ENEMYSPAWN1)->GetGameObject();
+
 				flyer->GetComponent<Enemy>()->SetTarget(GameController::GetInstance()->GetPlayer()->m_transform.get());
 			}
 		}
@@ -74,16 +89,32 @@ void DeQueen::OnUpdate(float dt) {
 
 				bomber->m_transform->SetPosition(glm::vec3(spawnPosX, spawnPosY, 1.0f));
 
+				spawn = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_ENEMYSPAWN2)->GetGameObject();
+
 				bomber->GetComponent<Enemy>()->SetTarget(GameController::GetInstance()->GetPlayer()->m_transform.get());
 			}
 		}
-
-		SoundCounter -= dt;
-		if (SoundCounter <= 0.0f) {
-			QueenSound->PlaySound();
-			SoundCounter = 0.30f;
+		if (spawn != nullptr) {
+			spawn->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+			spawn->GetComponent<ParticleSystem>()->TriggerBurstEmission();
 		}
-		
+	}
+
+	if (isDead && !setParticle) 
+	{
+		setParticle = true;
+		queenDeadFluidPtcl = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_KILLED_QUEEN_FLUID)->GetGameObject();
+		queenDeadFluidPtcl->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+		queenDeadFluidPtcl->SetActive(true);
+
+		queenDeadSmokePtcl = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_KILLED_QUEEN_SMOKE)->GetGameObject();
+		queenDeadSmokePtcl->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+		queenDeadSmokePtcl->SetActive(true);
+	}
+	else if (isDead) 
+	{
+		queenDeadFluidPtcl->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+		queenDeadSmokePtcl->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
 	}
 
 }
@@ -107,13 +138,14 @@ void DeQueen::SetSpawnDelay(int time) {
 void DeQueen::SpawnItem() 
 {
 	GameObject* item = ItemPool->GetGameObject();
+	GameObject* healItem = ItemPool->GetGameObject();
 
-	if (item != nullptr) {
+	if (item != nullptr && healItem != nullptr) {
+
+		healItem->GetComponent<Rigidbody>()->SetVelocity(glm::vec3(0));
+		healItem->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
 
 		item->GetComponent<Rigidbody>()->SetVelocity(glm::vec3(0));
-		item->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
-
-		item->SetActive(true);
 
 		if (!GameController::GetInstance()->GetGameObject()->GetComponent<EquipmentManager>()->isAllUnlock())
 		{
@@ -121,18 +153,30 @@ void DeQueen::SpawnItem()
 
 			if (randChance < ItemUnlockDropChance) 
 			{
+				item->SetActive(true);
 				item->GetComponent<ItemDrop>()->SetType(Drop_Type::Unlock);
+
+				item->m_transform->SetPosition(m_gameObject->m_transform->GetPosition() - glm::vec3(50.0f, 0.0f, 0.0f));
+
+
+				healItem->SetActive(true);
+				healItem->GetComponent<ItemDrop>()->SetType(Drop_Type::Heal);
+				healItem->GetComponent<ItemDrop>()->SetHealValue(HealValue);
+
+				healItem->m_transform->SetPosition(m_gameObject->m_transform->GetPosition() + glm::vec3(50.0f, 0.0f, 0.0f));
 			}
 			else 
 			{
-				item->GetComponent<ItemDrop>()->SetType(Drop_Type::Heal);
-				item->GetComponent<ItemDrop>()->SetHealValue(HealValue);
+				healItem->SetActive(true);
+				healItem->GetComponent<ItemDrop>()->SetType(Drop_Type::Heal);
+				healItem->GetComponent<ItemDrop>()->SetHealValue(HealValue);
 			}
 		}
 		else 
 		{
-			item->GetComponent<ItemDrop>()->SetType(Drop_Type::Heal);
-			item->GetComponent<ItemDrop>()->SetHealValue(HealValue);
+			healItem->SetActive(true);
+			healItem->GetComponent<ItemDrop>()->SetType(Drop_Type::Heal);
+			healItem->GetComponent<ItemDrop>()->SetHealValue(HealValue);
 		}
 		
 	}

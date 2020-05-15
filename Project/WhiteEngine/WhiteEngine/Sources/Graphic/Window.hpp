@@ -15,7 +15,8 @@ namespace Graphic
 		enum class WindowMode { WINDOWED = 0, FULLSCREEN };
 
 		////////////System Function////////////
-		void Init(const char* title, WindowMode mode);
+		void Init(const char* title, WindowMode mode, int width, int height);
+		void Init(const char* title, WindowMode mode, int size_preset);
 
 		void Terminate(void);
 
@@ -35,6 +36,8 @@ namespace Graphic
 		int GetMouseInput(int);
 
 		int GetKeyboardInput(int);
+
+		void SetWindowIcon(const char* path);
 
 	}
 }

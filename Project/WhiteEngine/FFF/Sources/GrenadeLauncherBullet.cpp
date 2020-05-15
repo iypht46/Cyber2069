@@ -4,8 +4,10 @@
 #include "Physic/PhysicScene.hpp"
 #include "Graphic/GLRenderer.h"
 
+#include "GameController.hpp"
 #include "Enemy.hpp"
 #include "PlayerController.hpp"
+#include "Core/Particle/ParticleSystem.h"
 
 void GrenadeLauncherBullet::OnUpdate(float dt)
 {
@@ -90,6 +92,9 @@ void GrenadeLauncherBullet::Explode() {
 			}
 		}
 	}
+	GameObject* explode = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_EXPLOSION_GRENADE)->GetGameObject();
+	explode->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+	explode->GetComponent<ParticleSystem>()->TriggerBurstEmission();
 
 	ExplodeSound->PlaySound();
 

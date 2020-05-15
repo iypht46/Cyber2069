@@ -1,4 +1,6 @@
 #include "ItemDrop.hpp"
+#include "GameController.hpp"
+#include "Core/Particle/ParticleSystem.h"
 
 void ItemDrop::OnAwake() {
 	rb = GetGameObject()->GetComponent<Rigidbody>();
@@ -88,13 +90,22 @@ void ItemDrop::OnTriggerEnter(const Physic::Collision col)
 			GAME_INFO("UNLOCK {}, {}", itemtype.first, itemtype.second);
 			eqManager->Unlock(itemtype.first, itemtype.second);
 		}
+
+		GameObject* unlockPtcl = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_PICKUP_EQUIPMENT)->GetGameObject();
+		unlockPtcl->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+		unlockPtcl->GetComponent<ParticleSystem>()->TriggerBurstEmission();
+
 		sp->SetSound(SoundPath("SFX_Game_UnlockingItem2"));
 	}
 	else if (dropType == Drop_Type::Heal) 
 	{
 		HPsystem* playerHP = player->GetGameObject()->GetComponent<HPsystem>();
-		
+
 		playerHP->SetHp(playerHP->GetHP() + HealValue);
+
+		GameObject* healPtcl = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_PICKUP_HEAL)->GetGameObject();
+		healPtcl->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+		healPtcl->GetComponent<ParticleSystem>()->TriggerBurstEmission();
 		sp->SetSound(SoundPath("SFX_Game_Heal"));
 	}
 	sp->PlaySound();

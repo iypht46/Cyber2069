@@ -1,8 +1,11 @@
 #include "Weapon.hpp"
+
+#include "Enemy.hpp"
+#include "GameController.hpp"
+
 #include "Graphic/Camera.hpp"
 #include "Core/Logger.hpp"
 
-#include "Enemy.hpp"
 #include "Core/Particle/ParticleSystem.h"
 
 void MachineGunBullet::OnUpdate(float dt)
@@ -40,17 +43,21 @@ void MachineGunBullet::OnTriggerEnter(const Physic::Collision col) {
 		}
 	}
 
-	GetGameObject()->SetActive(false);
-
 	//particle
-	m_gameObject->GetComponent<ParticleSystem>()->TriggerBurstEmission();
+	GameObject* hit = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_BULLET_HIT_ENEMY)->GetGameObject();
+	hit->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+	hit->GetComponent<ParticleSystem>()->TriggerBurstEmission();
+
+	GetGameObject()->SetActive(false);
 }
 
 void MachineGunBullet::OnCollisionEnter(const Physic::Collision col) {
 	//ENGINE_INFO("Wall Hit: {}",m_gameObject->GetID());
 
-	GetGameObject()->SetActive(false);
-
 	//particle
-	m_gameObject->GetComponent<ParticleSystem>()->TriggerBurstEmission();
+	GameObject* hit = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_BULLET_HIT_ARMOR)->GetGameObject();
+	hit->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+	hit->GetComponent<ParticleSystem>()->TriggerBurstEmission();
+
+	GetGameObject()->SetActive(false);
 }

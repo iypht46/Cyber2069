@@ -31,6 +31,9 @@ protected:
 	bool affectedByWeapon = false;
 	bool GotZap = false;
 
+	bool setAnimDash = false;
+	bool setAnimDead = false;
+
 
 	EnemyState state = EnemyState::Idle;
 

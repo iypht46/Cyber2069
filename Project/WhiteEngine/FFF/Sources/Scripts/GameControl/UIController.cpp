@@ -78,7 +78,8 @@ void UIController::AdjustSFXVolume(float diff) {
 }
 
 void UIController::UpdateEquipmentDisplay() {
-	EquipmentManager* em = EquipmentManager::GetInstance();
+	EquipmentManager* em = nullptr;
+	em = EquipmentManager::GetInstance();
 	if (em != nullptr) {
 		for (int i = 0; i < EquipmentManager::maxPlayerWeapon; ++i) {
 			if (i < EquippedWeaponDisplay.size() && !EquippedWeaponDisplay[i].expired()) {

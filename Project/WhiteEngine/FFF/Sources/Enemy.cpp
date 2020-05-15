@@ -1,5 +1,7 @@
 #include "Enemy.hpp"
+#include "EnemyBehaviours.h"
 #include "GameController.hpp"
+#include "Core/Particle/ParticleSystem.h"
 
 void Enemy::OnAwake() {
 	hpSystem = GetGameObject()->GetComponent<HPsystem>();
@@ -17,14 +19,40 @@ void Enemy::OnDead() {
 	GameController::GetInstance()->AddScoreValue(baseScore);
 	GameController::GetInstance()->AddComboValue(1.0);
 
-	m_gameObject->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
+	if (m_gameObject->GetComponent<Bomber>() == nullptr) {
+
+		m_gameObject->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
+	}
+	else
+	{
+		if (!m_gameObject->GetComponent<Bomber>()->explode) {
+
+			m_gameObject->GetComponent<Rigidbody>()->SetGravityScale(1.0f);
+		}
+	}
+
 	m_gameObject->GetComponent<Rigidbody>()->SetVelocity(glm::vec3(0.0f));
 
 	if (m_gameObject->GetComponent<Cocoon>() != nullptr) {
-	sp->SetSound(SoundPath("SFX_Game_Cocoon_Killed"));
+		sp->SetSound(SoundPath("SFX_Game_Cocoon_Killed"));
+
+		//particle
+		GameObject* killed = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_KILLED_COCOON)->GetGameObject();
+		killed->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+		killed->GetComponent<ParticleSystem>()->TriggerBurstEmission();
+	}
+	else if (m_gameObject->GetComponent<DeQueen>() != nullptr) {
+		sp->SetSound(SoundPath("SFX_Enemy_Killed"));
+
+		//particle
 	}
 	else {
-	sp->SetSound(SoundPath("SFX_Enemy_Killed"));
+		sp->SetSound(SoundPath("SFX_Enemy_Killed"));
+
+		//particle
+		GameObject* killed = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_KILLED_ENEMY)->GetGameObject();
+		killed->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+		killed->GetComponent<ParticleSystem>()->TriggerBurstEmission();
 	}
 
 	sp->PlaySound();
@@ -32,6 +60,7 @@ void Enemy::OnDead() {
 	DeQueen* queen = m_gameObject->GetComponent<DeQueen>();
 
 	if (queen != nullptr) {
+
 		queen->SpawnItem();
 	}
 }
@@ -42,8 +71,12 @@ void Enemy::OnEnable()
 	GotZap = false;
 	affectedByWeapon = false;
 	isDead = false;
+	foundTarget = false;
 
-	if (m_gameObject->GetComponent<AirFollowing>() || m_gameObject->GetComponent<AirPatrol>() || m_gameObject->GetComponent<Cocoon>())
+	setAnimDash = false;
+	setAnimDead = false;
+
+	if ((m_gameObject->GetComponent<AirFollowing>() != nullptr) || (m_gameObject->GetComponent<AirPatrol>() != nullptr) || (m_gameObject->GetComponent<Cocoon>() != nullptr))
 	{
 		m_gameObject->GetComponent<Rigidbody>()->SetGravityScale(0.00000001f);
 	}

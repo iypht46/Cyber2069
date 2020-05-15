@@ -5,6 +5,9 @@
 #include "Graphic/GLRenderer.h"
 
 #include "Enemy.hpp"
+#include "GameController.hpp"
+#include "Core/Particle/ParticleSystem.h"
+
 
 void ZapperGunBullet::OnUpdate(float dt)
 {
@@ -119,6 +122,11 @@ void ZapperGunBullet::OnCollisionEnter(const Physic::Collision col) {
 	//ENGINE_INFO("Wall Hit: {}",m_gameObject->GetID());
 
 	m_gameObject->SetActive(false);
+
+	//particle
+	GameObject* hit = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_BULLET_HIT_ARMOR)->GetGameObject();
+	hit->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+	hit->GetComponent<ParticleSystem>()->TriggerBurstEmission();
 }
 
 Enemy* ZapperGunBullet::FindTarget(Enemy* e)
@@ -194,11 +202,16 @@ void ZapperGunBullet::Zap(float dt) {
 
 			rb->SetVelocity(glm::vec3(0.0f));
 
-			if (zapDurationCount > zapDuration) 
+			if (zapDurationCount >= zapDuration) 
 			{
 				ZappingSound->PlaySound();
 				e->TakeDamage(bulletDmg);
 			}
+
+			//particle
+			GameObject* zap = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_ZAPPER_ZAP)->GetGameObject();
+			zap->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+			zap->GetComponent<ParticleSystem>()->TriggerBurstEmission();
 
 			//e->GetGameObject()->m_transform->SetPosition(TargetTranform.at(i)->GetPosition());
 
@@ -222,9 +235,11 @@ void ZapperGunBullet::enemRelease()
 	for (int i = 0; i < Targets.size(); i++) {
 
 		if (Targets.at(i) != nullptr) {
-
-			Targets.at(i)->SetAffectedByWeapon(false);
-			Targets.at(i)->SetGotZap(false);
+			if (!Targets.at(i)->GetGameObject()->GetComponent<HPsystem>()->isDead()) 
+			{
+				Targets.at(i)->SetAffectedByWeapon(false);
+				Targets.at(i)->SetGotZap(false);
+			}
 			Targets.at(i)->SetState(EnemyState::Idle);
 		}
 	}

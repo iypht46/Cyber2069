@@ -1,10 +1,10 @@
 #include <glm/glm.hpp>
 
 #include "Graphic/Window.hpp"
-
 #include "Core/Logger.hpp"
 #include "Core/GameInfo.h" //TODO: Remove this after message system is done
-
+#include <SDL_surface.h>
+#include <SDL_image.h>
 using namespace glm;
 
 namespace Graphic
@@ -79,6 +79,32 @@ namespace Graphic
 			return glfwGetKey(glfwWindow, key);
 		}
 
+		void SetWindowIcon(const char* path)
+		{
+			if (!glfwWindow)
+			{
+				ENGINE_ERROR("Initialize window before setting icon.");
+				return;
+			}
+				
+
+			SDL_Surface* icon = IMG_Load(path);
+
+			if (icon == NULL)
+			{
+				ENGINE_ERROR("ERROR: Load window icon failed.");
+				return;
+			}
+
+			GLFWimage* icon_image = new GLFWimage();
+			icon_image->width = icon->w;
+			icon_image->height = icon->h;
+			icon_image->pixels = static_cast<unsigned char*>(icon->pixels);
+			glfwSetWindowIcon(glfwWindow, 1, icon_image);
+
+			SDL_FreeSurface(icon);
+		}
+
 		void SwapBuffer()
 		{
 			//Flip Buffers and Draw
@@ -98,9 +124,10 @@ namespace Graphic
 			SetWindowShouldClose(true);
 		}
 
-		void Init(const char* title, WindowMode mode)
+		void Init(const char* title, WindowMode mode, int width, int height)
 		{
-			windowRes = windowResArr[3];
+			windowRes.x = width;
+			windowRes.y = height;
 
 			//Init and Configure GLFW:
 			glfwInit();
@@ -139,6 +166,61 @@ namespace Graphic
 			glfwSetWindowCloseCallback(glfwWindow, window_close_callback);
 			glfwSwapInterval(1);
 			
+			ENGINE_WARN("Window System Initialized");
+		}
+
+		void Init(const char* title, WindowMode mode, int size_preset)
+		{
+			if (size_preset > 3)
+			{
+				windowRes = windowResArr[3];
+			}
+			else if (size_preset < 0)
+			{
+				windowRes = windowResArr[0];
+			}
+			else
+			{
+				windowRes = windowResArr[size_preset];
+			}
+			
+			//Init and Configure GLFW:
+			glfwInit();
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+			glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+
+			//Create new full screen window
+			glfwWindow = glfwCreateWindow(windowRes.x, windowRes.y, title, NULL, NULL);
+
+			if (glfwWindow == NULL)
+			{
+				//Print out error
+				ENGINE_ERROR("Failed Creating GLFW Window");
+				//Terminate GLFW
+				Terminate();
+				return;
+			}
+
+			glfwMakeContextCurrent(glfwWindow);
+
+
+
+			if (glewInit() != GLEW_OK)
+			{
+				//Print Error
+				ENGINE_ERROR("Failed Initializing GLEW");
+				return;
+			}
+
+			//Set Primary Monitor
+			glfwMonitor = glfwGetPrimaryMonitor();
+			SetWindowMode(mode);
+			glfwSetWindowAspectRatio(glfwWindow, windowRes.x, windowRes.y);
+			glfwSetWindowCloseCallback(glfwWindow, window_close_callback);
+			glfwSwapInterval(1);
+
 			ENGINE_WARN("Window System Initialized");
 		}
 
