@@ -29,7 +29,7 @@ class PlayerController : public Character {
 private:
 	bool playEnd = false;	//use for check stamina deplettion
 
-	GameObject* dashPtc;
+	GameObject* dashPtc = nullptr;
 
 protected:
 	HPsystem* hpSystem = nullptr;

@@ -133,6 +133,11 @@ void LaserGun::GameTimeBehaviour(float dt)
 				end_y = platHit.position.y;
 			}
 
+			//particle
+			particles[0]->SetActive(true);
+			particles[0]->m_transform->SetPosition(glm::vec3(platHit.position, 0));
+			particles[0]->m_transform->SetRotation(*angle);
+
 			gunPos = glm::vec2(gun_x, gun_y);
 			endPos = glm::vec2(end_x, end_y);
 
@@ -155,7 +160,7 @@ void LaserGun::GameTimeBehaviour(float dt)
 			int winWidth = Graphic::Window::GetWidth() * Graphic::getCamera()->GetZoom();
 			int winHeight = Graphic::Window::GetHeight() * Graphic::getCamera()->GetZoom();
 
-			int particleIter = 0;
+			int particleIter = 1;
 			for (Physic::RayHit h : Hits)
 			{
 				Enemy* enemy = h.collider->GetGameObject()->GetComponent<Enemy>();
@@ -178,7 +183,7 @@ void LaserGun::GameTimeBehaviour(float dt)
 				if (enemy != nullptr)
 				{
 					//particle
-					if (particleIter >= particles.size()) {
+					if (particleIter > 0 && particleIter < particles.size() - 1) {
 						particles[particleIter]->SetActive(true);
 						particles[particleIter]->m_transform->SetPosition(enemTransform->GetPosition());
 						particles[particleIter]->m_transform->SetRotation(*angle);
