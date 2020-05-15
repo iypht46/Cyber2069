@@ -38,11 +38,11 @@ void LaserGun::OnAwake() {
 	m_gameObject->GetComponent<SoundPlayer>()->SetSound(SoundPath("SFX_Laser_Shoot"));
 	m_gameObject->GetComponent<SoundPlayer>()->SetLoop(false);
 
-	weapon_damage = 10.0f;
-	//weapon_firerate = 1.0f;
+	/*weapon_damage = 10.0f;
+	laser_duration = 1.0f;
+	weapon_firerate = 1.0f;*/
 
 	laser_size = 10.0f;
-	laser_duration = 1.0f;
 
 	m_gameObject->SetActive(false);
 	//laser->SetActive(false);

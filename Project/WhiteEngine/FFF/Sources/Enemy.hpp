@@ -45,7 +45,7 @@ protected:
 public:
 	float baseScore = 1.0f;
 	float CollideDamage = 0.0f;
-	float targetDetectionRange = 2000.0f;
+	float targetDetectionRange = 10000.0f;
 
 	virtual void OnAwake() override;
 	virtual void OnEnable() override;

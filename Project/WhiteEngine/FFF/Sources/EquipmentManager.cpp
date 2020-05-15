@@ -517,3 +517,78 @@ void EquipmentManager::ResetPlayerEquipment()
 	artifactCount = 0;
 	weaponCount = 0;
 }
+
+void EquipmentManager::SetWeaponStats(WeaponStats stat) 
+{
+	wp_stat = stat;
+
+	MachineGun* mg = m_weaponObjs[WEAPON_MACHINEGUN]->GetComponent<MachineGun>();
+
+	mg->bullet_speed = stat.mg_bulletspeed;
+	mg->weapon_firerate = stat.mg_firerate;
+	mg->weapon_damage = stat.mg_damage;
+
+	LaserGun* ls = m_weaponObjs[WEAPON_LASER]->GetComponent<LaserGun>();
+
+	ls->weapon_firerate = stat.ls_firerate;
+	ls->laser_duration = stat.ls_duration;
+	ls->weapon_damage = stat.ls_damage;
+
+	GrenadeLauncher* gl = m_weaponObjs[WEAPON_GRENADELAUNCHER]->GetComponent<GrenadeLauncher>();
+
+	gl->bullet_speed = stat.gl_bulletspeed;
+	gl->weapon_firerate = stat.gl_firerate;
+	gl->weapon_damage = stat.gl_damage;
+	gl->grenade_radius = stat.gl_radius;
+
+	ZapperGun* zp = m_weaponObjs[WEAPON_ZAPPER]->GetComponent<ZapperGun>();
+
+	zp->bullet_speed = stat.zp_bulletspeed;
+	zp->weapon_firerate = stat.zp_firerate;
+	zp->weapon_damage = stat.zp_damage;
+	zp->zapDuration = stat.zp_duration;
+	zp->chainNumber = stat.zp_chainNumber;
+	zp->zapDistance = stat.zp_chainDistance;
+
+	BlackholeGun* bh = m_weaponObjs[WEAPON_BLACKHOLE]->GetComponent<BlackholeGun>();
+
+	bh->bullet_speed = stat.bh_bulletspeed;
+	bh->weapon_firerate = stat.bh_firerate;
+	bh->weapon_damage = stat.bh_damage;
+	bh->bullet_Duration = stat.bh_duration;
+	bh->bullet_Radius = stat.bh_radius;
+	bh->bullet_ToCenterSpeed = stat.bh_toCenterSpeed;
+
+}
+
+void EquipmentManager::SetArtifactStats(ArtifactStats stat) 
+{
+	atf_stat = stat;
+
+	BulletAmplifier* ba = dynamic_cast<BulletAmplifier*>(m_artifacts[ARTF_BULLETAMP].get());
+
+	ba->multiplier_weapon = stat.bulletamp_mult;
+	ba->multiplier_speedDecrease = stat.bulletamp_speedDecrease;
+	ba->multiplier_amplifier = stat.bulletamp_amp;
+
+	FireRateUP* fu = dynamic_cast<FireRateUP*>(m_artifacts[ARTF_FIRERATEUP].get());
+
+	fu->multiplier_firerate = stat.firerateup_mult;
+	fu->multiplier_amplifier = stat.firerateup_amp;
+
+	AttackUP* au = dynamic_cast<AttackUP*>(m_artifacts[ARTF_ATKUP].get());
+
+	au->multiplier_attack = stat.atkup_mult;
+	au->multiplier_amplifier = stat.atkup_amp;
+
+	LowGravity* lg = dynamic_cast<LowGravity*>(m_artifacts[ARTF_LOWGRAV].get());
+
+	lg->multiplier_GravityScale = stat.lowG_mult;
+	lg->multiplier_amplifier = stat.lowG_amp;
+
+	SpeedRunner* sp = dynamic_cast<SpeedRunner*>(m_artifacts[ARTF_SPEEDRUNNER].get());
+
+	sp->multiplier_moveSpeed = stat.speedR_mult;
+	sp->multiplier_amplifier = stat.speedR_amp;
+
+}

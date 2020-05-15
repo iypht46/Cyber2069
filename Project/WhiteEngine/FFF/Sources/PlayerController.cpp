@@ -71,6 +71,7 @@ void PlayerController::OnTriggerExit(const Physic::Collision col)
 void PlayerController::OnEnable() 
 {
 	setDieAnim = false;
+	stamina = max_stamina;
 }
 
 void PlayerController::OnUpdate(float dt)
@@ -96,11 +97,6 @@ void PlayerController::OnUpdate(float dt)
 		onGround = true;
 	}
 	//}
-
-	if (onGround && (stamina < max_stamina)) 
-	{
-		stamina += staminaRegenRate;
-	}
 	
 	if (!hpSystem->isDead()) 
 	{
@@ -147,7 +143,10 @@ void PlayerController::OnUpdate(float dt)
 
 void PlayerController::OnFixedUpdate(float dt)
 {
-
+	if (onGround && (stamina < max_stamina))
+	{
+		stamina += staminaRegenRate * dt;
+	}
 }
 
 void PlayerController::updateDirection() {
@@ -590,4 +589,27 @@ void PlayerController::MultiplyMoveSpeed(float value)
 {
 	this->move_speed = this->move_speed * value; 
 	this->max_move_speed = this->max_move_speed * value; 
+}
+
+void PlayerController::SetStats(PlayerStats stat) 
+{
+	playerstat = stat;
+
+	this->max_stamina = stat.max_stamina;
+
+	this->dashStamina = stat.dashStamina;
+	this->jumpStamina = stat.jumpStamina;
+	this->staminaRegenRate = stat.staminaRegenRate;
+	
+	this->max_move_speed = stat.max_move_speed;
+	this->move_speed = stat.move_speed;
+	this->dash_speed = stat.dash_speed;
+	this->jump_speed = stat.jump_speed;
+	this->dashTime = stat.dashTime;
+	
+	this->camZoomInSpeed = stat.camZoomInSpeed;
+	this->camZoomOutSpeed = stat.camZoomOutSpeed;
+	this->camZoomInDelay = stat.camZoomInDelay;
+	this->camSmall = stat.camSmall;
+	this->camLarge = stat.camLarge;
 }

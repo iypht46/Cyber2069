@@ -97,7 +97,7 @@ void GameController::OnStart() {
 		CreatePool(PrefabPath("Queen"), POOL_TYPE::ENEMY_QUEEN, 1);
 		QueenSpawner = CreateSpawner(POOL_TYPE::ENEMY_QUEEN);
 		QueenSpawner->SetSpawnMode(SPAWN_MODE::RANGE);
-		QueenSpawner->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() * 2, Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() * 2);
+		QueenSpawner->SetSpawnRange(4500, 1500.0f, 4500, 1500.0f);
 
 		//Cocoon spawner
 		ENGINE_INFO("GameControl Creating Queen");
@@ -289,6 +289,9 @@ void GameController::OnUpdate(float dt)
 			UIController::GetInstance()->UpdateVolumeTexts();
 
 			this->GetGameObject()->GetComponent<EquipmentManager>()->ResetPlayerEquipment();
+
+			SetSpawningAllSpawner(false);
+			SetActiveAllObjectInPool(false);
 			playerControl->GetGameObject()->SetActive(false);
 
 			//loadoutUI.lock()->SetActive(false);
@@ -358,6 +361,28 @@ void GameController::OnUpdate(float dt)
 		UIController::GetInstance()->updateHPUI();
 		UIController::GetInstance()->updateStaminaUI();
 		UIController::GetInstance()->updateScoreUI();
+
+		if (Input::GetKeyDown(Input::KeyCode::KEY_ESCAPE) && !pause)
+		{
+			pause = true;
+
+			UIController::GetInstance()->ToggleUI(UI_GROUP::Pause);
+
+			if (Current_Queen == nullptr)
+			{
+				UIController::GetInstance()->SetActiveQueenUI(false);
+			}
+		}
+		else if (Input::GetKeyDown(Input::KeyCode::KEY_ESCAPE) && pause) 
+		{
+			pause = false;
+			UIController::GetInstance()->ToggleUI(UI_GROUP::Gameplay);
+
+			if (Current_Queen == nullptr)
+			{
+				UIController::GetInstance()->SetActiveQueenUI(false);
+			}
+		}
 
 		switch (CurrentGameplayState)
 		{
@@ -763,11 +788,18 @@ void GameController::ResetPlayerProgress()
 }
 
 void GameController::LoadGameConfig() {
+	EquipmentManager* equipmentManager = m_gameObject->GetComponent<EquipmentManager>();
 	std::unique_ptr<GameConfig> config = std::make_unique<GameConfig>();
 	Serialization::LoadObjectXML(*config, XMLConfigPath("gameconfig"));
 
 	Amplifiers = config->Amplifiers;
 	Presets = config->Presets;
+
+	playerControl->SetStats(config->PlayerStat);
+	CameraController::GetInstance()->SetCameraSetting(config->CameraSetting);
+
+	equipmentManager->SetWeaponStats(config->WeaponStat);
+	equipmentManager->SetArtifactStats(config->ArtifactStat);
 
 	SoundPlayer::SetMasterVolume(config->MasterVolume);
 	SoundPlayer::SetMusicVolume(config->MusicVolume);
@@ -775,10 +807,17 @@ void GameController::LoadGameConfig() {
 }
 
 void GameController::SaveGameConfig() {
+	EquipmentManager* equipmentManager = m_gameObject->GetComponent<EquipmentManager>();
 	std::unique_ptr<GameConfig> config = std::make_unique<GameConfig>();
 
 	config->Amplifiers = Amplifiers;
 	config->Presets = Presets;
+
+	config->PlayerStat = playerControl->GetPlayerStats();
+	config->CameraSetting = CameraController::GetInstance()->GetCameraSetting();
+
+	config->WeaponStat = equipmentManager->wp_stat;
+	config->ArtifactStat = equipmentManager->atf_stat;
 
 	config->MasterVolume = SoundPlayer::GetMasterVolume();
 	config->MusicVolume = SoundPlayer::GetMusicVolume();

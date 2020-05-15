@@ -43,7 +43,6 @@
     <ClCompile Include="Sources\Scripts\GameControl\SoundtrackController.cpp" />
     <ClCompile Include="Sources\Scripts\GameControl\CameraController.cpp" />
     <ClCompile Include="Sources\Cocoon.cpp" />
-    <ClCompile Include="Sources\Scripts\Misc\TargetArrow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Artifact.hpp" />
@@ -73,7 +72,11 @@
     <ClInclude Include="Sources\HighScoreUI.hpp" />
     <ClInclude Include="Sources\Scripts\GameControl\SoundtrackController.h" />
     <ClInclude Include="Sources\Scripts\GameControl\CameraController.h" />
+<<<<<<< HEAD
     <ClInclude Include="Sources\Scripts\Misc\TargetArrow.h" />
+=======
+    <ClInclude Include="resource.h" />
+>>>>>>> efc788a98c0a9649f641dd3cbf8998b6637a82c9
   </ItemGroup>
   <ItemGroup>
     <None Include="Sources\Shader\fragment.shd" />

@@ -8,6 +8,7 @@
 #include "PlayerController.hpp"
 #include "Scripts/GameControl/PlayerData.hpp"
 #include "EquipmentManager.hpp"
+#include "Scripts/GameControl/CameraController.h"
 #include "Core/Logger.hpp"
 
 #include <memory>
@@ -220,10 +221,15 @@ struct GameConfig {
 	float MusicVolume;
 	float SFXVolume;
 
+	PlayerStats PlayerStat;
+	CameraSetting CameraSetting;
+
+	WeaponStats WeaponStat;
+	ArtifactStats ArtifactStat;
+
 	//vector<float> scoreCheckpoint;
 	vector<std::shared_ptr<EnemyAmplifier>> Amplifiers;
 	vector<std::shared_ptr<EnemyPreset>> Presets;
-
 
 //serialization
 public:
@@ -233,6 +239,10 @@ public:
 			CEREAL_NVP(MasterVolume),
 			CEREAL_NVP(MusicVolume),
 			CEREAL_NVP(SFXVolume),
+			CEREAL_NVP(PlayerStat),
+			CEREAL_NVP(CameraSetting),
+			CEREAL_NVP(WeaponStat),
+			CEREAL_NVP(ArtifactStat),
 			CEREAL_NVP(Amplifiers),
 			CEREAL_NVP(Presets)
 			);
@@ -320,6 +330,8 @@ private:
 
 	bool StateChanged = false;
 	bool StateGamplayChanged = false;
+
+	bool pause = false;
 
 	static float stateChangeDelay;
 	float gameStateChangeTimer = 0;

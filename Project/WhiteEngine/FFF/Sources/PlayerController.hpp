@@ -25,6 +25,49 @@
 
 class GameObject;
 
+struct PlayerStats
+{
+	//stats===============
+	float max_stamina = 200.0f;
+
+	float dashStamina = 5.0f;
+	float jumpStamina = 5.0f;
+	float staminaRegenRate = 1.0f;
+
+	float max_move_speed = 200.0f;
+	float move_speed = 200.0f;
+	float dash_speed = 750.0f;
+	float jump_speed = 300.0f;
+	float dashTime = 0.35f;
+
+
+	float camZoomInSpeed = 0.01f;
+	float camZoomOutSpeed = 0.005f;
+	float camZoomInDelay = 0.0f;
+	float camSmall = 1.5f;
+	float camLarge = 0.65f;
+
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			CEREAL_NVP(max_stamina),
+			CEREAL_NVP(dashStamina),
+			CEREAL_NVP(jumpStamina),
+			CEREAL_NVP(staminaRegenRate),
+			CEREAL_NVP(max_move_speed),
+			CEREAL_NVP(move_speed),
+			CEREAL_NVP(dash_speed),
+			CEREAL_NVP(jump_speed),
+			CEREAL_NVP(dashTime),
+			CEREAL_NVP(camZoomInSpeed),
+			CEREAL_NVP(camZoomInDelay),
+			CEREAL_NVP(camSmall),
+			CEREAL_NVP(camLarge)
+		);
+	}
+};
+
 class PlayerController : public Character {
 private:
 	bool playEnd = false;	//use for check stamina deplettion
@@ -43,6 +86,8 @@ protected:
 
 	Weapon* weapon = nullptr;
 	Transform* weaponTranform = nullptr;
+
+	PlayerStats playerstat;
 
 	float yLimit = -1000.0f;
 	
@@ -125,8 +170,12 @@ public:
 
 	void MultiplyMoveSpeed(float value);
 
+	void SetStats(PlayerStats stat);
+
 	vector<Weapon*> GetWeapons() { return Weapons; }
 	vector<Equipment*> GetEquipments() { return Equipments; }
+
+	PlayerStats GetPlayerStats() { return this->playerstat; }
 
 	virtual void OnAwake();
 	virtual void OnUpdate(float dt);

@@ -14,6 +14,42 @@ enum ARTIFACT_TYPE {
 	ARTF_CURSEDPENDANT
 };
 
+struct ArtifactStats {
+	float bulletamp_mult = 2.0f;
+	float bulletamp_speedDecrease = 0.75f;
+	float bulletamp_amp = 2.0f;
+
+	float firerateup_mult = 2.0f;
+	float firerateup_amp = 2.0f;
+
+	float atkup_mult = 2.0f;
+	float atkup_amp = 2.0f;
+
+	float lowG_mult = 2.0f;
+	float lowG_amp = 2.0f;
+
+	float speedR_mult = 2.0f;
+	float speedR_amp = 2.0f;
+
+public:
+	template <class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			CEREAL_NVP(bulletamp_mult),
+			CEREAL_NVP(bulletamp_speedDecrease),
+			CEREAL_NVP(bulletamp_amp),
+			CEREAL_NVP(firerateup_mult),
+			CEREAL_NVP(firerateup_amp),
+			CEREAL_NVP(atkup_mult),
+			CEREAL_NVP(atkup_amp),
+			CEREAL_NVP(lowG_mult),
+			CEREAL_NVP(lowG_amp),
+			CEREAL_NVP(speedR_mult),
+			CEREAL_NVP(speedR_amp)
+		);
+	}
+};
+
 class Artifact : public Equipment 
 {
 public:
@@ -37,12 +73,12 @@ CEREAL_REGISTER_TYPE(Artifact);
 
 class BulletAmplifier : public Artifact 
 {
-private:
+public:
 	float multiplier_weapon = 2.0f;
 	float multiplier_speedDecrease = 0.75f;
 
 	float multiplier_amplifier = 2.0f;
-public:
+
 	BulletAmplifier() { type = ARTIFACT_TYPE::ARTF_BULLETAMP; }
 
 	void Modify();
@@ -66,10 +102,10 @@ CEREAL_REGISTER_TYPE(BulletAmplifier);
 
 class FireRateUP : public Artifact 
 {
-private:
+public:
 	float multiplier_firerate = 2.0f;
 	float multiplier_amplifier = 2.0f;
-public:
+
 	FireRateUP() { type = ARTIFACT_TYPE::ARTF_FIRERATEUP; }
 
 	void Modify();
@@ -92,10 +128,10 @@ CEREAL_REGISTER_TYPE(FireRateUP);
 
 class AttackUP : public Artifact 
 {
-private:
+public:
 	float multiplier_attack = 2.0f;
 	float multiplier_amplifier = 2.0f;
-public:
+
 	AttackUP() { type = ARTIFACT_TYPE::ARTF_ATKUP; }
 
 	void Modify();
@@ -118,10 +154,10 @@ CEREAL_REGISTER_TYPE(AttackUP);
 
 class LowGravity : public Artifact 
 {
-private:
+public:
 	float multiplier_GravityScale = 2.0f;
 	float multiplier_amplifier = 2.0f;
-public:
+
 	LowGravity() { type = ARTIFACT_TYPE::ARTF_LOWGRAV; }
 
 	void Modify();
@@ -143,10 +179,10 @@ CEREAL_REGISTER_TYPE(LowGravity);
 
 
 class SpeedRunner : public Artifact {
-private:
+public:
 	float multiplier_moveSpeed = 2.0f;
 	float multiplier_amplifier = 2.0f;
-public:
+
 	SpeedRunner() { type = ARTIFACT_TYPE::ARTF_SPEEDRUNNER; }
 
 	void Modify();

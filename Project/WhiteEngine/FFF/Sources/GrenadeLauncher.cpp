@@ -24,11 +24,11 @@ void GrenadeLauncher::OnAwake() {
 	m_gameObject->GetComponent<SoundPlayer>()->SetSound(SoundPath("SFX_GrenadeLauncher_Shoot"));
 	m_gameObject->GetComponent<SoundPlayer>()->SetLoop(false);
 
-	weapon_damage = 1.0f;
-	//weapon_firerate = 0.3f;
+	/*weapon_damage = 1.0f;
+	weapon_firerate = 0.3f;
 	bullet_speed = 300.0f;
 
-	grenade_radius = 100.0f;
+	grenade_radius = 100.0f;*/
 
 	m_gameObject->SetActive(false);
 

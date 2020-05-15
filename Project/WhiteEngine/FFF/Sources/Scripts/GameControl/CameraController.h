@@ -8,6 +8,22 @@
 #include <cereal/types/base_class.hpp>
 #include <cereal/types/polymorphic.hpp>
 
+#include "Serialization/glmCereal.h"
+
+struct CameraSetting {
+	glm::vec3 LimitAreaSize = glm::vec3(5000, 1500, 1);
+	glm::vec3 LimitAreaOffset = glm::vec3(0, 750, 0);
+
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			CEREAL_NVP(LimitAreaSize),
+			CEREAL_NVP(LimitAreaOffset)
+		);
+	}
+};
+
 class Transform;
 
 class CameraController : public BehaviourScript {
@@ -33,6 +49,7 @@ private:
 public:
 	static CameraController* GetInstance();
 
+	CameraSetting setting;
 
 	float MaxFollowSpeed = 2500.0f;
 	float NormalFollowingSpeed = 500.0f;
@@ -49,6 +66,9 @@ public:
 	void SetTarget(Transform* target);
 	void SetTarget(glm::vec3);
 	void StopFollowing();
+
+	void SetCameraSetting(CameraSetting setting);
+	CameraSetting GetCameraSetting() { return this->setting; }
 
 	virtual void OnAwake() override;
 	virtual void OnFixedUpdate(float) override;

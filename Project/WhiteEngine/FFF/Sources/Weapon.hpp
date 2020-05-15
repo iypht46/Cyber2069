@@ -34,13 +34,68 @@ enum WEAPON_TYPE {
 class Explosion;
 class ParticleSystem;
 
+struct WeaponStats 
+{
+	float mg_bulletspeed = 400.0f;
+	float mg_firerate = 400.0f;
+	float mg_damage = 1.0f;
+
+	float ls_firerate = 1.0f;
+	float ls_damage = 1.0f;
+	float ls_duration = 1.0f;
+
+	float gl_bulletspeed = 300.0f;
+	float gl_firerate = 1.0f;
+	float gl_damage = 1.0f;
+	float gl_radius = 100.0f;
+
+	float zp_bulletspeed = 300.0f;
+	float zp_firerate = 1.0f;
+	float zp_damage = 1.0f;
+	float zp_duration = 0.5f;
+	float zp_chainNumber = 3.0f;
+	float zp_chainDistance = 300.0f;
+
+	float bh_bulletspeed = 300.0f;
+	float bh_firerate = 1.0f;
+	float bh_damage = 1.0f;
+	float bh_duration = 2.0f;
+	float bh_radius = 100.0f;
+	float bh_toCenterSpeed = 100.0f;
+
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			CEREAL_NVP(mg_bulletspeed),
+			CEREAL_NVP(mg_firerate),
+			CEREAL_NVP(mg_damage),
+			CEREAL_NVP(ls_firerate),
+			CEREAL_NVP(ls_damage),
+			CEREAL_NVP(ls_duration),
+			CEREAL_NVP(gl_bulletspeed),
+			CEREAL_NVP(gl_firerate),
+			CEREAL_NVP(gl_damage),
+			CEREAL_NVP(gl_radius),
+			CEREAL_NVP(zp_bulletspeed),
+			CEREAL_NVP(zp_firerate),
+			CEREAL_NVP(zp_damage),
+			CEREAL_NVP(zp_duration),
+			CEREAL_NVP(zp_chainNumber),
+			CEREAL_NVP(zp_chainDistance),
+			CEREAL_NVP(bh_bulletspeed),
+			CEREAL_NVP(bh_firerate),
+			CEREAL_NVP(bh_damage),
+			CEREAL_NVP(bh_duration),
+			CEREAL_NVP(bh_radius),
+			CEREAL_NVP(bh_toCenterSpeed)
+		);
+	}
+};
+
 class Weapon : public Equipment , public BehaviourScript
 {
 protected:
-	float bullet_speed;
-	float weapon_firerate;
-	float weapon_damage;
-
 	GameObject* weaponObj = nullptr;
 	ObjectPool* BulletPool = nullptr;
 	
@@ -54,8 +109,11 @@ protected:
 
 	float weapon_delay_count = 0.0f;
 
-
 public:
+	float bullet_speed;
+	float weapon_firerate;
+	float weapon_damage;
+
 	std::set<std::string> TargetLayers;
 
 	virtual void Modify() = 0;
@@ -171,9 +229,6 @@ CEREAL_REGISTER_TYPE(MachineGunBullet);
 class LaserGun : public Weapon {
 private:
 	std::shared_ptr <GameObject> laserObj = nullptr;
-	float laser_length;
-	float laser_size;
-	float laser_duration;
 	float laser_duration_count = 0.0f;
 
 	bool initparticle = false;
@@ -192,6 +247,10 @@ private:
 	float SoundTimer;
 
 public:
+	float laser_length;
+	float laser_size;
+	float laser_duration;
+
 	LaserGun();
 	void Modify();
 	void GameTimeBehaviour(float dt);
@@ -220,9 +279,9 @@ CEREAL_REGISTER_TYPE(LaserGun);
 
 //Grenade Launcher ======================================================================================
 class GrenadeLauncher : public Weapon {
-private:
-	float grenade_radius;
 public:
+	float grenade_radius;
+
 	GrenadeLauncher();
 	void Modify();
 	void GameTimeBehaviour(float dt);
@@ -282,12 +341,12 @@ CEREAL_REGISTER_TYPE(GrenadeLauncherBullet);
 
 //Zapper Gun ============================================================================================
 class ZapperGun : public Weapon {
-private:
+public:
 	int chainNumber;
 	float zapDistance;
 	float zapDuration;
 	float zapRate;
-public:
+
 	ZapperGun();
 	void Modify();
 	void GameTimeBehaviour(float dt);
@@ -370,11 +429,11 @@ CEREAL_REGISTER_TYPE(ZapperGunBullet);
 
 //Blackhole Gun =========================================================================================
 class BlackholeGun : public Weapon {
-private:
+public:
 	float bullet_Duration;
 	float bullet_Radius;
 	float bullet_ToCenterSpeed;
-public:
+
 	BlackholeGun();
 	void Modify();
 	void GameTimeBehaviour(float dt);

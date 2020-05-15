@@ -1,9 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cereal>
 	<object>
-		<MasterVolume>0.5</MasterVolume>
-		<MusicVolume>1</MusicVolume>
-		<SFXVolume>0</SFXVolume>
+		<MasterVolume>0.59999990463256836</MasterVolume>
+		<MusicVolume>0.59999990463256836</MusicVolume>
+		<SFXVolume>0.59999990463256836</SFXVolume>
+		<PlayerStat>
+			<max_stamina>200</max_stamina>
+			<dashStamina>5</dashStamina>
+			<jumpStamina>5</jumpStamina>
+			<staminaRegenRate>50</staminaRegenRate>
+			<max_move_speed>200</max_move_speed>
+			<move_speed>200</move_speed>
+			<dash_speed>750</dash_speed>
+			<jump_speed>300</jump_speed>
+			<dashTime>0.34999999403953552</dashTime>
+			<camZoomInSpeed>0.0099999997764825821</camZoomInSpeed>
+			<camZoomInDelay>0</camZoomInDelay>
+			<camSmall>1.5</camSmall>
+			<camLarge>0.64999997615814209</camLarge>
+		</PlayerStat>
+		<CameraSetting>
+			<LimitAreaSize>
+				<value0>5000</value0>
+				<value1>1500</value1>
+				<value2>1</value2>
+			</LimitAreaSize>
+			<LimitAreaOffset>
+				<value0>0</value0>
+				<value1>750</value1>
+				<value2>0</value2>
+			</LimitAreaOffset>
+		</CameraSetting>
+		<WeaponStat>
+			<mg_bulletspeed>400</mg_bulletspeed>
+			<mg_firerate>400</mg_firerate>
+			<mg_damage>1</mg_damage>
+			<ls_firerate>1</ls_firerate>
+			<ls_damage>1</ls_damage>
+			<ls_duration>1</ls_duration>
+			<gl_bulletspeed>300</gl_bulletspeed>
+			<gl_firerate>1</gl_firerate>
+			<gl_damage>1</gl_damage>
+			<gl_radius>100</gl_radius>
+			<zp_bulletspeed>300</zp_bulletspeed>
+			<zp_firerate>1</zp_firerate>
+			<zp_damage>1</zp_damage>
+			<zp_duration>0.5</zp_duration>
+			<zp_chainNumber>3</zp_chainNumber>
+			<zp_chainDistance>300</zp_chainDistance>
+			<bh_bulletspeed>300</bh_bulletspeed>
+			<bh_firerate>1</bh_firerate>
+			<bh_damage>1</bh_damage>
+			<bh_duration>2</bh_duration>
+			<bh_radius>100</bh_radius>
+			<bh_toCenterSpeed>100</bh_toCenterSpeed>
+		</WeaponStat>
+		<ArtifactStat>
+			<bulletamp_mult>2</bulletamp_mult>
+			<bulletamp_speedDecrease>0.75</bulletamp_speedDecrease>
+			<bulletamp_amp>2</bulletamp_amp>
+			<firerateup_mult>2</firerateup_mult>
+			<firerateup_amp>2</firerateup_amp>
+			<atkup_mult>2</atkup_mult>
+			<atkup_amp>2</atkup_amp>
+			<lowG_mult>2</lowG_mult>
+			<lowG_amp>2</lowG_amp>
+			<speedR_mult>2</speedR_mult>
+			<speedR_amp>2</speedR_amp>
+		</ArtifactStat>
 		<Amplifiers size="dynamic">
 			<value0>
 				<ptr_wrapper>
@@ -59,7 +123,7 @@
 						<BomberHP>1</BomberHP>
 						<BomberSpeed>300</BomberSpeed>
 						<BomberRotationSpeed>90</BomberRotationSpeed>
-						<BomberDmg>1</BomberDmg>
+						<BomberDmg>0</BomberDmg>
 						<BomberAimTime>0.20000000298023224</BomberAimTime>
 						<BomberDashSpeed>700</BomberDashSpeed>
 						<BomberExplodeDMG>15</BomberExplodeDMG>

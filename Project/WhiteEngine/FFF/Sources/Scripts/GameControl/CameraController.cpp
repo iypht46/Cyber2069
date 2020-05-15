@@ -9,8 +9,8 @@
 CameraController* CameraController::_instance = nullptr;
 
 CameraController::CameraController() {
-	LimitAreaSize = glm::vec3(3000, 1000, 1);
-	LimitAreaOffset = glm::vec3(0, 500, 0);
+	LimitAreaSize = glm::vec3(5000, 1500, 1);
+	LimitAreaOffset = glm::vec3(0, 750, 0);
 
 	if (_instance == nullptr) {
 		_instance = this;
@@ -124,4 +124,12 @@ void CameraController::OnFixedUpdate(float dt) {
 	}
 
 	cam->SetPos(campos + ShakeOffset);
+}
+
+void CameraController::SetCameraSetting(CameraSetting setting)
+{
+	this->setting = setting;
+
+	LimitAreaSize = setting.LimitAreaSize;
+	LimitAreaOffset = setting.LimitAreaOffset;
 }
