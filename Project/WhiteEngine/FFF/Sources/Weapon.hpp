@@ -37,7 +37,7 @@ class ParticleSystem;
 struct WeaponStats 
 {
 	float mg_bulletspeed = 400.0f;
-	float mg_firerate = 400.0f;
+	float mg_firerate = 1.0f;
 	float mg_damage = 1.0f;
 
 	float ls_firerate = 1.0f;
