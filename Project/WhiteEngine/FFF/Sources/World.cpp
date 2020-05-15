@@ -1003,7 +1003,7 @@ namespace World
 				ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::WEAPON);
 				ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(WEAPON_TYPE::WEAPON_MACHINEGUN);
 				ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "Machine Gun";
-				ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Shoot bullet";
+				ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Rapidly fire hail\n of bullet on to\n the enemies.";
 				ui_button->AddComponent<Button>();
 				ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 				ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -1025,7 +1025,7 @@ namespace World
 				ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::WEAPON);
 				ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(WEAPON_TYPE::WEAPON_LASER);
 				ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "Laser Gun";
-				ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Shoot laser";
+				ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Shoot a narrow beam\nof blazing light that\npenetrates and damage enemies.";
 				ui_button->AddComponent<Button>();
 				ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 				ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -1046,8 +1046,8 @@ namespace World
 				ui_button->AddComponent<LoadoutSelectButton>();
 				ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::WEAPON);
 				ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(WEAPON_TYPE::WEAPON_GRENADELAUNCHER);
-				ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "GrenadeLauncher";
-				ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Shoot Grenade";
+				ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "Grenade Launcher";
+				ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Shoot explosive projectile that\n explodes and damage enemy in\n the radius once hit";
 				ui_button->AddComponent<Button>();
 				ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 				ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -1068,8 +1068,8 @@ namespace World
 				ui_button->AddComponent<LoadoutSelectButton>();
 				ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::WEAPON);
 				ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(WEAPON_TYPE::WEAPON_ZAPPER);
-				ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "ZapperGun";
-				ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Shoot ZapBullet";
+				ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "Zapper Gun";
+				ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Shoot out electried\n bullet that freeze\n and damage enemies.";
 				ui_button->AddComponent<Button>();
 				ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 				ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -1091,7 +1091,7 @@ namespace World
 				ui_button->GetComponent<LoadoutSelectButton>()->SetType(ITEM_TYPE::WEAPON);
 				ui_button->GetComponent<LoadoutSelectButton>()->SetEquipmentType(WEAPON_TYPE::WEAPON_BLACKHOLE);
 				ui_button->GetComponent<LoadoutSelectButton>()->eq_name = "Blackhole Gun";
-				ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Shoot blackhole";
+				ui_button->GetComponent<LoadoutSelectButton>()->eq_description = "Shoot gravitaty bullet\n that pull and damage\n enemy in its radius.";
 				ui_button->AddComponent<Button>();
 				ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 				ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
@@ -1116,7 +1116,7 @@ namespace World
 				LoadoutText = Instantiate();
 
 				LoadoutText->AddComponent<TextRenderer>();
-				LoadoutText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 30);
+				LoadoutText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 20);
 				LoadoutText->GetComponent<TextRenderer>()->SetText("Test/n Test");
 				LoadoutText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 				LoadoutText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
