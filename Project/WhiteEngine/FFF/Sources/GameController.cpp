@@ -97,7 +97,7 @@ void GameController::OnStart() {
 		CreatePool(PrefabPath("Queen"), POOL_TYPE::ENEMY_QUEEN, 1);
 		QueenSpawner = CreateSpawner(POOL_TYPE::ENEMY_QUEEN);
 		QueenSpawner->SetSpawnMode(SPAWN_MODE::RANGE);
-		QueenSpawner->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() * 2, Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() * 2);
+		QueenSpawner->SetSpawnRange(Graphic::Window::GetWidth() / 2, 800.0f, Graphic::Window::GetWidth() / 2, 800.0f);
 
 		//Cocoon spawner
 		ENGINE_INFO("GameControl Creating Queen");
@@ -794,6 +794,9 @@ void GameController::LoadGameConfig() {
 	Amplifiers = config->Amplifiers;
 	Presets = config->Presets;
 
+	playerControl->SetStats(config->PlayerStat);
+	CameraController::GetInstance()->SetCameraSetting(config->CameraSetting);
+
 	SoundPlayer::SetMasterVolume(config->MasterVolume);
 	SoundPlayer::SetMusicVolume(config->MusicVolume);
 	SoundPlayer::SetSFXVolume(config->SFXVolume);
@@ -804,6 +807,9 @@ void GameController::SaveGameConfig() {
 
 	config->Amplifiers = Amplifiers;
 	config->Presets = Presets;
+
+	config->PlayerStat = playerControl->GetPlayerStats();
+	config->CameraSetting = CameraController::GetInstance()->GetCameraSetting();
 
 	config->MasterVolume = SoundPlayer::GetMasterVolume();
 	config->MusicVolume = SoundPlayer::GetMusicVolume();

@@ -1,9 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cereal>
 	<object>
-		<MasterVolume>0.5</MasterVolume>
-		<MusicVolume>0.5</MusicVolume>
-		<SFXVolume>0.5</SFXVolume>
+		<MasterVolume>0.39999991655349731</MasterVolume>
+		<MusicVolume>0.39999991655349731</MusicVolume>
+		<SFXVolume>0.39999991655349731</SFXVolume>
+		<PlayerStat>
+			<max_stamina>200</max_stamina>
+			<dashStamina>5</dashStamina>
+			<jumpStamina>5</jumpStamina>
+			<staminaRegenRate>50</staminaRegenRate>
+			<max_move_speed>200</max_move_speed>
+			<move_speed>200</move_speed>
+			<dash_speed>750</dash_speed>
+			<jump_speed>300</jump_speed>
+			<dashTime>0.34999999403953552</dashTime>
+			<camZoomInSpeed>0.0099999997764825821</camZoomInSpeed>
+			<camZoomInDelay>0</camZoomInDelay>
+			<camSmall>1.5</camSmall>
+			<camLarge>0.64999997615814209</camLarge>
+		</PlayerStat>
+		<CameraSetting>
+			<LimitAreaSize>
+				<value0>5000</value0>
+				<value1>1500</value1>
+				<value2>1</value2>
+			</LimitAreaSize>
+			<LimitAreaOffset>
+				<value0>0</value0>
+				<value1>750</value1>
+				<value2>0</value2>
+			</LimitAreaOffset>
+		</CameraSetting>
 		<Amplifiers size="dynamic">
 			<value0>
 				<ptr_wrapper>

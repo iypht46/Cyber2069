@@ -206,7 +206,7 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 		{
 			glBindTexture(GL_TEXTURE_2D, m_texture->m_textureID);
 			//glBindTexture(GL_TEXTURE_2D, texture);
-			if (isReplaceColor)
+			if (true)
 			{
 				glUniform1i(modeId, RENDER_MODE::REPLACE_COLOR);
 				glUniform3f(colorId, ReplaceColor.x, ReplaceColor.y, ReplaceColor.z);
