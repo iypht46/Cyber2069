@@ -184,20 +184,12 @@ namespace World
 
 		//Runtime
 		Core::Logger::Init();
-		Graphic::Init("White", 3, Graphic::Window::WindowMode::WINDOWED);
+		Graphic::Init("White", 3, Graphic::Window::WindowMode::FULLSCREEN);
 		Graphic::Window::SetWindowIcon("Sources/Assets/Sprites/icon.png");
 		//GLRenderer::GetInstance()->drawDebug = true;
 		//Input
 		//Bool for debugging
 		Input::Init(false);
-
-		mouseCursor = std::make_unique<GameObject>();
-		mouseCursor->m_transform->SetScale(glm::vec3(32.0f, 32.0f, 1.0f));
-		mouseCursor->AddComponent<MeshRenderer>();
-		mouseCursor->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/Cursor"));
-		mouseCursor->GetComponent<MeshRenderer>()->SetLayer(9999);
-		mouseCursor->GetComponent<MeshRenderer>()->SetUI(true);
-		mouseCursor->GetComponent<MeshRenderer>()->Init();
 
 		//Physics
 		g_physicScene = new Physic::PhysicScene();
@@ -264,6 +256,14 @@ namespace World
 		}*/
 
 		Graphic::Render();
+
+		mouseCursor = std::make_unique<GameObject>();
+		mouseCursor->m_transform->SetScale(glm::vec3(32.0f, 32.0f, 1.0f));
+		mouseCursor->AddComponent<MeshRenderer>();
+		mouseCursor->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/Cursor"));
+		mouseCursor->GetComponent<MeshRenderer>()->SetLayer(9999);
+		mouseCursor->GetComponent<MeshRenderer>()->SetUI(true);
+		mouseCursor->GetComponent<MeshRenderer>()->Init();
 
 		Serialization::LoadObject(*SceneManagement::ActiveScene, ScenePath("RealScene"));
 
@@ -360,10 +360,10 @@ namespace World
 				logo->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/WhiteLogo"));
 				logo->GetComponent<MeshRenderer>()->SetUI(true, ANCHOR_X::LEFT, ANCHOR_Y::UP);
 				logo->GetComponent<MeshRenderer>()->SetLayer(10);
-				logo->m_transform->SetScale(glm::vec3(68 * 3, 55 * 3, 1));
+				logo->m_transform->SetScale(glm::vec3(68 * 5, 55 * 5, 1));
 				auto logoScale = logo->m_transform->GetScale();
 				float logo_pos_x = mainmenuBG->m_transform->GetPosition().x;//(logoScale.x / 2) + (mainmenuBG->m_transform->GetScale().x / 2);
-				logo->m_transform->SetPosition(glm::vec3(logo_pos_x, -(logoScale.y + 15.0f), 1));
+				logo->m_transform->SetPosition(glm::vec3(logo_pos_x, -(logoScale.y / 2) - 15.0f, 1));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::MainMenu].push_back(logo);
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Highscore].push_back(logo);
@@ -717,11 +717,10 @@ namespace World
 				ButtonMesh->SetUI(true);
 				ButtonMesh->SetLayer(10);
 
-				buttonTrans ->SetScale(glm::vec3(200, 50, 1));
+				buttonTrans ->SetScale(glm::vec3(200, 150, 1));
 				buttonTrans->SetPosition(glm::vec3(xLeftCenter, -Graphic::Window::GetHeight() * (3.5f / 9.0f), 1.0f));
 
 				button->SetButtonType(BUTTON_TYPE::STATECONTROL, GAME_STATE::GAMEPLAY);
-				button->hoverModifier.ReTexturePath = TexturePath("UIs/ButtonSelection");
 				button->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
 				startButton->SetActive(false);
@@ -730,10 +729,10 @@ namespace World
 				std::shared_ptr<GameObject> startButtonText = Instantiate();
 
 				auto button_text = startButtonText->AddComponent<TextRenderer>();
-				button_text->LoadFont("Sources/Assets/Fonts/Beon.ttf", 20);
+				button_text->LoadFont("Sources/Assets/Fonts/Beon.ttf", 30);
 				button_text->SetText("Start");
 				button_text->SetColor(glm::vec3(1.0f));
-				startButtonText->m_transform->SetPosition(glm::vec3(xLeftCenter, -Graphic::Window::GetHeight() * (3.5f / 9.0f), 1));
+				startButtonText->m_transform->SetPosition(glm::vec3(xLeftCenter - 45.0f, -Graphic::Window::GetHeight() * (3.5f / 9.0f), 1));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Loadout].push_back(startButtonText);
 
@@ -747,13 +746,37 @@ namespace World
 				ui_LoadOut->GetComponent<MeshRenderer>()->SetUI(true);
 				ui_LoadOut->GetComponent<MeshRenderer>()->SetLayer(5);
 
-				ui_LoadOut->m_transform->SetScale(glm::vec3(1000.0f, 800.0f, 1.0f));
-				ui_LoadOut->m_transform->SetPosition(glm::vec3(440.0, 0.0f, 1.0f));
+				ui_LoadOut->m_transform->SetScale(glm::vec3(1000.0f, 700.0f, 1.0f));
+				ui_LoadOut->m_transform->SetPosition(glm::vec3(440.0, Graphic::Window::GetHeight()* (1.25f / 9.0f), 1.0f));
+
+				std::shared_ptr<GameObject> WeaponText;
+				
+				WeaponText = Instantiate();
+
+				WeaponText->AddComponent<TextRenderer>();
+				WeaponText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Pixeled.ttf", 35);
+				WeaponText->GetComponent<TextRenderer>()->SetText("Weapons");
+				WeaponText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+				WeaponText->m_transform->SetPosition(glm::vec3(0.0f, Graphic::Window::GetHeight()* (3.5f / 9.0f) - 50.0f, 1.0f));
+
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Loadout].push_back(WeaponText);
+				
+				std::shared_ptr<GameObject> ArtifactText;
+
+				ArtifactText = Instantiate();
+
+				ArtifactText->AddComponent<TextRenderer>();
+				ArtifactText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Pixeled.ttf", 35);
+				ArtifactText->GetComponent<TextRenderer>()->SetText("Artifacts");
+				ArtifactText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+				ArtifactText->m_transform->SetPosition(glm::vec3(0.0f, Graphic::Window::GetHeight() * (1.5f / 9.0f) - 50.0f, 1.0f));
+
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Loadout].push_back(ArtifactText);
 
 
 				ui_button->AddComponent<MeshRenderer>();
 				ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-				ui_button->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/White.jpg");
+				ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("BLANK"));
 				ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 				ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
 				ui_button->AddComponent<SoundPlayer>();
@@ -762,8 +785,8 @@ namespace World
 				ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 				ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
-				ui_button->m_transform->SetScale(glm::vec3(100.0f, 100.0f, 1.0f));
-				ui_button->m_transform->SetPosition(glm::vec3(xLeftCenter - 200.0f, -Graphic::Window::GetHeight() * (2.0f / 9.0f), 1.0f));
+				ui_button->m_transform->SetScale(glm::vec3(120.0f, 120.0f, 1.0f));
+				ui_button->m_transform->SetPosition(glm::vec3(xLeftCenter - 200.0f, -Graphic::Window::GetHeight() * (2.0f / 9.0f) + 100.0f, 1.0f));
 
 				ui_LoadOut->GetComponent<LoadoutUI>()->AssignArtifactDisplaySlot(ui_button);
 
@@ -771,7 +794,7 @@ namespace World
 
 				ui_button->AddComponent<MeshRenderer>();
 				ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-				ui_button->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/White.jpg");
+				ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("BLANK"));
 				ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 				ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
 				ui_button->AddComponent<SoundPlayer>();
@@ -780,8 +803,8 @@ namespace World
 				ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 				ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
-				ui_button->m_transform->SetScale(glm::vec3(100.0f, 100.0f, 1.0f));
-				ui_button->m_transform->SetPosition(glm::vec3(xLeftCenter, -Graphic::Window::GetHeight() * (2.0f / 9.0f), 1.0f));
+				ui_button->m_transform->SetScale(glm::vec3(120.0f, 120.0f, 1.0f));
+				ui_button->m_transform->SetPosition(glm::vec3(xLeftCenter, -Graphic::Window::GetHeight() * (2.0f / 9.0f) + 100.0f, 1.0f));
 
 				ui_LoadOut->GetComponent<LoadoutUI>()->AssignArtifactDisplaySlot(ui_button);
 
@@ -789,7 +812,7 @@ namespace World
 
 				ui_button->AddComponent<MeshRenderer>();
 				ui_button->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-				ui_button->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/White.jpg");
+				ui_button->GetComponent<MeshRenderer>()->SetTexture(TexturePath("BLANK"));
 				ui_button->GetComponent<MeshRenderer>()->SetUI(true);
 				ui_button->GetComponent<MeshRenderer>()->SetLayer(6);
 				ui_button->AddComponent<SoundPlayer>();
@@ -798,7 +821,7 @@ namespace World
 				ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 				ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
-				ui_button->m_transform->SetScale(glm::vec3(29 * 5, 24 * 5, 1.0f));
+				ui_button->m_transform->SetScale(glm::vec3(29 * 5.5, 24 * 5.5, 1.0f));
 				ui_button->m_transform->SetPosition(glm::vec3(xLeftCenter - (80), Graphic::Window::GetHeight() * (2.0f / 9.0f), 1.0f));
 
 				ui_LoadOut->GetComponent<LoadoutUI>()->AssignWeaponDisplaySlot(ui_button);
@@ -820,8 +843,8 @@ namespace World
 				ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 				ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
-				ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
-				ui_button->m_transform->SetPosition(glm::vec3(80.0f, 20.0f, 1.0f));
+				ui_button->m_transform->SetScale(glm::vec3(120.0f, 120.0f, 1.0f));
+				ui_button->m_transform->SetPosition(glm::vec3(440.0 - 360.0f, Graphic::Window::GetHeight()* (1.25f / 9.0f) - 117, 1.0f));
 
 				ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
 
@@ -842,8 +865,8 @@ namespace World
 				ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 				ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
-				ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
-				ui_button->m_transform->SetPosition(glm::vec3(180.0f, 20.0f, 1.0f));
+				ui_button->m_transform->SetScale(glm::vec3(120.0f, 120.0f, 1.0f));
+				ui_button->m_transform->SetPosition(glm::vec3(440.0 - 240.0f, Graphic::Window::GetHeight()* (1.25f / 9.0f) - 117, 1.0f));
 
 				ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
 
@@ -864,8 +887,8 @@ namespace World
 				ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 				ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
-				ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
-				ui_button->m_transform->SetPosition(glm::vec3(280.0f, 20.0f, 1.0f));
+				ui_button->m_transform->SetScale(glm::vec3(120.0f, 120.0f, 1.0f));
+				ui_button->m_transform->SetPosition(glm::vec3(440.0 - 120.0f, Graphic::Window::GetHeight()* (1.25f / 9.0f) - 117, 1.0f));
 
 				ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
 
@@ -886,8 +909,8 @@ namespace World
 				ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 				ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
-				ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
-				ui_button->m_transform->SetPosition(glm::vec3(380.0f, 20.0f, 1.0f));
+				ui_button->m_transform->SetScale(glm::vec3(120.0f, 120.0f, 1.0f));
+				ui_button->m_transform->SetPosition(glm::vec3(440.0, Graphic::Window::GetHeight()* (1.25f / 9.0f) - 117, 1.0f));
 
 				ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
 
@@ -908,8 +931,8 @@ namespace World
 				ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 				ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
-				ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
-				ui_button->m_transform->SetPosition(glm::vec3(80.0f, -50.0f, 1.0f));
+				ui_button->m_transform->SetScale(glm::vec3(120.0f, 120.0f, 1.0f));
+				ui_button->m_transform->SetPosition(glm::vec3(440 + 120, Graphic::Window::GetHeight()* (1.25f / 9.0f) - 117, 1.0f));
 
 				ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
 
@@ -930,8 +953,8 @@ namespace World
 				ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 				ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
-				ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
-				ui_button->m_transform->SetPosition(glm::vec3(180.0f, -50.0f, 1.0f));
+				ui_button->m_transform->SetScale(glm::vec3(120.0f, 120.0f, 1.0f));
+				ui_button->m_transform->SetPosition(glm::vec3(440 + 240, Graphic::Window::GetHeight()* (1.25f / 9.0f) - 117, 1.0f));
 
 				ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
 
@@ -952,8 +975,8 @@ namespace World
 				ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 				ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
-				ui_button->m_transform->SetScale(glm::vec3(70.0f, 70.0f, 1.0f));
-				ui_button->m_transform->SetPosition(glm::vec3(280.0f, -50.0f, 1.0f));
+				ui_button->m_transform->SetScale(glm::vec3(150.0f, 150.0f, 1.0f));
+				ui_button->m_transform->SetPosition(glm::vec3(440 + 360, Graphic::Window::GetHeight()* (1.25f / 9.0f) - 117, 1.0f));
 
 				ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
 
@@ -974,8 +997,10 @@ namespace World
 				ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 				ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
-				ui_button->m_transform->SetScale(glm::vec3(29 * 3, 24 * 3, 1.0f));
-				ui_button->m_transform->SetPosition(glm::vec3(100.0f, 100.0f, 1.0f));
+				ui_button->m_transform->SetScale(glm::vec3(150.0f, 125.0f, 1.0f));
+				ui_button->m_transform->SetPosition(glm::vec3(440.0 - 320.0f, Graphic::Window::GetHeight()* (1.25f / 9.0f) + 117, 1.0f));
+
+				glm::vec3 prevButtonPos = ui_button->m_transform->GetPosition();
 
 				ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
 
@@ -996,8 +1021,8 @@ namespace World
 				ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 				ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
-				ui_button->m_transform->SetScale(glm::vec3(29 * 3, 24 * 3, 1.0f));
-				ui_button->m_transform->SetPosition(glm::vec3(200.0f, 100.0f, 1.0f));
+				ui_button->m_transform->SetScale(glm::vec3(150.0f, 125.0f, 1.0f));
+				ui_button->m_transform->SetPosition(glm::vec3(440.0 - 160.0f, Graphic::Window::GetHeight()* (1.25f / 9.0f) + 117, 1.0f));
 
 				ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
 
@@ -1018,8 +1043,8 @@ namespace World
 				ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 				ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
-				ui_button->m_transform->SetScale(glm::vec3(29 * 3, 24 * 3, 1.0f));
-				ui_button->m_transform->SetPosition(glm::vec3(300.0f, 100.0f, 1.0f));
+				ui_button->m_transform->SetScale(glm::vec3(150.0f, 125.0f, 1.0f));
+				ui_button->m_transform->SetPosition(glm::vec3(440.0, Graphic::Window::GetHeight()* (1.25f / 9.0f) + 117, 1.0f));
 
 				ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
 
@@ -1040,8 +1065,8 @@ namespace World
 				ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 				ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
-				ui_button->m_transform->SetScale(glm::vec3(29 * 3, 24 * 3, 1.0f));
-				ui_button->m_transform->SetPosition(glm::vec3(400.0f, 100.0f, 1.0f));
+				ui_button->m_transform->SetScale(glm::vec3(150.0f, 125.0f, 1.0f));
+				ui_button->m_transform->SetPosition(glm::vec3(440.0 + 160.0f, Graphic::Window::GetHeight()* (1.25f / 9.0f) + 117, 1.0f));
 
 				ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
 
@@ -1062,42 +1087,61 @@ namespace World
 				ui_button->GetComponent<Button>()->buttonType = BUTTON_TYPE::LOADOUTSELECT;
 				ui_button->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
 
-				ui_button->m_transform->SetScale(glm::vec3(29 * 3, 24 * 3, 1.0f));
-				ui_button->m_transform->SetPosition(glm::vec3(500.0f, 100.0f, 1.0f));
+				ui_button->m_transform->SetScale(glm::vec3(150.0f, 125.0f, 1.0f));
+				ui_button->m_transform->SetPosition(glm::vec3(440.0 + 320.0f, Graphic::Window::GetHeight()* (1.25f / 9.0f) + 117, 1.0f));
 
 				ui_LoadOut->GetComponent<LoadoutUI>()->AssignSelectButton(ui_button);
+
+				std::shared_ptr<GameObject> LoadoutTextBox = Instantiate();
+				LoadoutTextBox->AddComponent<MeshRenderer>();
+				LoadoutTextBox->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/Panel03"));
+				LoadoutTextBox->GetComponent<MeshRenderer>()->SetUI(true);
+				LoadoutTextBox->GetComponent<MeshRenderer>()->SetLayer(10);
+				LoadoutTextBox->m_transform->SetScale(glm::vec3(600.0f, 300.0f, 1));
+				LoadoutTextBox->m_transform->SetPosition(glm::vec3(440.0 - 250.0f + 50.0f, -Graphic::Window::GetHeight() * (3.0f / 9.0f), 1));
+
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Loadout].push_back(LoadoutTextBox);
 
 				std::shared_ptr<GameObject> LoadoutText;
 				LoadoutText = Instantiate();
 
 				LoadoutText->AddComponent<TextRenderer>();
-				LoadoutText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 50);
+				LoadoutText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Pixeled.ttf", 30);
 				LoadoutText->GetComponent<TextRenderer>()->SetText("Test/n Test");
 				LoadoutText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-				LoadoutText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
-				LoadoutText->m_transform->SetPosition(glm::vec3(150.0f, -Graphic::Window::GetHeight() * (3.0f / 9.0f), 1.0f));
+				LoadoutText->m_transform->SetPosition(glm::vec3(0.0f, -Graphic::Window::GetHeight() * (3.0f / 9.0f) + 50.0f, 1.0f));
 
 				ui_LoadOut->GetComponent<LoadoutUI>()->eqNameObj = LoadoutText;
 
 				LoadoutText = Instantiate();
 
 				LoadoutText->AddComponent<TextRenderer>();
-				LoadoutText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Orbitron-Regular.ttf", 30);
+				LoadoutText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Pixeled.ttf", 20);
 				LoadoutText->GetComponent<TextRenderer>()->SetText("Test/n Test");
 				LoadoutText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-				LoadoutText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
-				LoadoutText->m_transform->SetPosition(glm::vec3(150.0f, -Graphic::Window::GetHeight() * (3.5f / 9.0f), 1.0f));
+				LoadoutText->m_transform->SetPosition(glm::vec3(0.0f, -Graphic::Window::GetHeight() * (3.5f / 9.0f) + 50.0f, 1.0f));
 
 				ui_LoadOut->GetComponent<LoadoutUI>()->eqDescriptionObj = LoadoutText;
 
 				gamecontroller->GetComponent<GameController>()->loadoutUI = ui_LoadOut;
+
+
+				std::shared_ptr<GameObject> InputGuide = Instantiate();
+				InputGuide->AddComponent<MeshRenderer>();
+				InputGuide->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/InputGuide"));
+				InputGuide->GetComponent<MeshRenderer>()->SetUI(true);
+				InputGuide->GetComponent<MeshRenderer>()->SetLayer(10);
+				InputGuide->m_transform->SetScale(glm::vec3(200.0f * 2, 125.0f * 2, 1));
+				InputGuide->m_transform->SetPosition(glm::vec3(440.0 + 250.0f + 50.0f, -Graphic::Window::GetHeight() * (3.0f / 9.0f), 1));
+
+				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Loadout].push_back(InputGuide);
 
 				std::shared_ptr<GameObject> LoadOutBackButton = Instantiate();
 				LoadOutBackButton->AddComponent<MeshRenderer>();
 				LoadOutBackButton->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/BlueButton"));
 				LoadOutBackButton->GetComponent<MeshRenderer>()->SetUI(true);
 				LoadOutBackButton->GetComponent<MeshRenderer>()->SetLayer(10);
-				LoadOutBackButton->m_transform->SetScale(glm::vec3(100, 50, 1));
+				LoadOutBackButton->m_transform->SetScale(glm::vec3(150, 100, 1));
 				LoadOutBackButton->m_transform->SetPosition(glm::vec3(xLeftCenter - 200.0f, - Graphic::Window::GetHeight() * (3.5f / 9.0f), 1));
 				LoadOutBackButton->AddComponent<SoundPlayer>();
 				LoadOutBackButton->AddComponent<Button>();
@@ -1109,24 +1153,13 @@ namespace World
 				LoadoutText = Instantiate();
 
 				LoadoutText->AddComponent<TextRenderer>();
-				LoadoutText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Orbitron-Regular.ttf", 30);
+				LoadoutText->GetComponent<TextRenderer>()->LoadFont("Sources/Assets/Fonts/Beon.ttf", 30);
 				LoadoutText->GetComponent<TextRenderer>()->SetText("Back");
 				LoadoutText->GetComponent<TextRenderer>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 				LoadoutText->m_transform->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
-				LoadoutText->m_transform->SetPosition(glm::vec3(xLeftCenter - 200.0f, -Graphic::Window::GetHeight() * (3.5f / 9.0f), 1.0f));
+				LoadoutText->m_transform->SetPosition(glm::vec3(xLeftCenter - 200.0f - 25.0f, -Graphic::Window::GetHeight() * (3.5f / 9.0f), 1.0f));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Loadout].push_back(LoadoutText);
-
-
-				std::shared_ptr<GameObject> LoadoutTextBox = Instantiate();
-				LoadoutTextBox->AddComponent<MeshRenderer>();
-				LoadoutTextBox->GetComponent<MeshRenderer>()->SetTexture(TexturePath("UIs/Panel03"));
-				LoadoutTextBox->GetComponent<MeshRenderer>()->SetUI(true);
-				LoadoutTextBox->GetComponent<MeshRenderer>()->SetLayer(10);
-				LoadoutTextBox->m_transform->SetScale(glm::vec3(700.0f, 200.0f, 1));
-				LoadoutTextBox->m_transform->SetPosition(glm::vec3(440 , - Graphic::Window::GetHeight() * (3.0f / 9.0f), 1));
-
-				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Loadout].push_back(LoadoutTextBox);
 
 				std::shared_ptr<GameObject> LoadoutWeaponSign = Instantiate();
 				LoadoutWeaponSign->AddComponent<MeshRenderer>();
@@ -1164,7 +1197,7 @@ namespace World
 				LoadoutArtifactShelf->GetComponent<MeshRenderer>()->SetUI(true);
 				LoadoutArtifactShelf->GetComponent<MeshRenderer>()->SetLayer(10);
 				LoadoutArtifactShelf->m_transform->SetScale(glm::vec3(92 * 5, 27 * 5, 1));
-				LoadoutArtifactShelf->m_transform->SetPosition(glm::vec3(xLeftCenter - 50.0f, -Graphic::Window::GetHeight()* (3.0f / 9.0f), 1));
+				LoadoutArtifactShelf->m_transform->SetPosition(glm::vec3(xLeftCenter - 50.0f, -Graphic::Window::GetHeight()* (3.0f / 9.0f) + 100.0f, 1));
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Loadout].push_back(LoadoutArtifactShelf);
 
@@ -1384,7 +1417,6 @@ namespace World
 				ResetProgressButton->AddComponent<Button>();
 				ResetProgressButton->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::UICONTROL, UI_GROUP::ResetProgressWarn);
 				ResetProgressButton->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
-				ResetProgressButton->GetComponent<Button>()->hoverModifier.ReTexturePath = TexturePath("UIs/ButtonSelection");
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::Option].push_back(ResetProgressButton);
 
@@ -1452,7 +1484,6 @@ namespace World
 				WarnResetYesButton->AddComponent<Button>();
 				WarnResetYesButton->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::OPTION, OPTION::RESET_Progress);
 				WarnResetYesButton->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
-				WarnResetYesButton->GetComponent<Button>()->hoverModifier.ReTexturePath = TexturePath("UIs/ButtonSelection");
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::ResetProgressWarn].push_back(WarnResetYesButton);
 
@@ -1467,7 +1498,6 @@ namespace World
 				WarnResetNoButton->AddComponent<Button>();
 				WarnResetNoButton->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::UICONTROL, UI_GROUP::Option);
 				WarnResetNoButton->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
-				WarnResetNoButton->GetComponent<Button>()->hoverModifier.ReTexturePath = TexturePath("UIs/ButtonSelection");
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::ResetProgressWarn].push_back(WarnResetNoButton);
 
@@ -1491,7 +1521,6 @@ namespace World
 				WarnQuitYesButton->AddComponent<Button>();
 				WarnQuitYesButton->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::STATECONTROL, GAME_STATE::QUIT);
 				WarnQuitYesButton->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
-				WarnQuitYesButton->GetComponent<Button>()->hoverModifier.ReTexturePath = TexturePath("UIs/ButtonSelection");
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::QuitGameWarn].push_back(WarnQuitYesButton);
 
@@ -1506,7 +1535,6 @@ namespace World
 				WarnQuitNoButton->AddComponent<Button>();
 				WarnQuitNoButton->GetComponent<Button>()->SetButtonType(BUTTON_TYPE::UICONTROL, UI_GROUP::MainMenu);
 				WarnQuitNoButton->GetComponent<Button>()->hoverModifier.ReColor = glm::vec3(173.0f / 255.0f, 173.0f / 255.0f, 173.0f / 255.0f);
-				WarnQuitNoButton->GetComponent<Button>()->hoverModifier.ReTexturePath = TexturePath("UIs/ButtonSelection");
 
 				gamecontroller->GetComponent<UIController>()->UIGroups[UI_GROUP::QuitGameWarn].push_back(WarnQuitNoButton);
 
@@ -1783,6 +1811,7 @@ namespace World
 			laser->AddComponent<MeshRenderer>();
 			laser->GetComponent<MeshRenderer>()->CreateMesh(3, 1);
 			laser->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/laser_bullet_sheet"));
+			laser->GetComponent<MeshRenderer>()->SetLayer(-6);
 
 			std::shared_ptr<AnimationController> LaserCon = std::make_shared<AnimationController>();
 
@@ -2379,7 +2408,7 @@ namespace World
 				Bullet->Layer = "Bullet";
 				Bullet->AddComponent<MeshRenderer>();
 				Bullet->GetComponent<MeshRenderer>()->SetLayer(2);
-				Bullet->GetComponent<MeshRenderer>()->CreateMesh(4, 1);
+				Bullet->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 				Bullet->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/machinegun_bullet"));
 
 				Bullet->AddComponent<Rigidbody>();
@@ -2405,7 +2434,7 @@ namespace World
 				GameObject* Bullet = Instantiate().get();
 				Bullet->Layer = "Bullet";
 				Bullet->AddComponent<MeshRenderer>();
-				Bullet->GetComponent<MeshRenderer>()->CreateMesh(2, 1);
+				Bullet->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 				Bullet->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/grenadeLaucher_bullet"));
 
 				Bullet->AddComponent<Rigidbody>();
@@ -2512,7 +2541,7 @@ namespace World
 
 				Item->AddComponent<MeshRenderer>();
 				Item->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
-				Item->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/white_square.png");
+				Item->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/HP"));
 
 				//Item->m_transform->SetScale(glm::vec3(0.1f, 0.1f, 1.0f));
 
