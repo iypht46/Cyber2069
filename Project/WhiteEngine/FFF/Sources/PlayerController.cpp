@@ -24,7 +24,6 @@ void PlayerController::OnAwake() {
 	direction.x = 1;
 	direction.y = 1;
 
-
 	/*AddEquipment(new MachineGun());
 	AddEquipment(new LaserGun());
 	AddEquipment(new GrenadeLauncher());
@@ -76,6 +75,10 @@ void PlayerController::OnEnable()
 
 void PlayerController::OnUpdate(float dt)
 {
+	if (dashPtc == nullptr) {
+		dashPtc = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_PLAYER_DASH)->GetGameObject();
+	}
+
 	cameraZoom(dt);
 
 	if ((rb->GetVelocity().y < -5.0f) && !falling)
@@ -295,7 +298,6 @@ void PlayerController::move()
 		sp->PlaySound();
 
 		//particle
-		dashPtc = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_PLAYER_DASH)->GetGameObject();
 		dashPtc->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
 		dashPtc->SetActive(true);
 		dashPtc->GetComponent<ParticleSystem>()->emitter->isEnabled = true;
@@ -316,6 +318,10 @@ void PlayerController::move()
 		//rb->SetVelocity(glm::vec3(velocity.x, velocity.y, rb->GetVelocity().z));
 	}
 
+	//if walk slowly turn off dash particle
+	if (dashPtc != nullptr && abs(rb->GetVelocity().x) < 300) {
+		dashPtc->SetActive(false);
+	}
 }
 
 void PlayerController::dash(float dt)
@@ -326,10 +332,6 @@ void PlayerController::dash(float dt)
 		running = false;
 		GetGameObject()->GetComponent<Animator>()->setCurrentState(4);
 		Dash = false;
-
-		//particle
-		dashPtc->SetActive(false);
-		dashPtc->GetComponent<ParticleSystem>()->emitter->isEnabled = false;
 	}
 	else
 	{

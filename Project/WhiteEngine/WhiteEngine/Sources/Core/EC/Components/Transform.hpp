@@ -60,6 +60,7 @@ public:
 	glm::vec3 Right();
 
 	float GetParallaxValue();
+	glm::mat4 GetModifiedModelMatrix(glm::vec3 scale, glm::vec3 translate);
 	glm::mat4 GetModelMatrix();
 
 	void SetParent(std::weak_ptr<Transform> newParent);

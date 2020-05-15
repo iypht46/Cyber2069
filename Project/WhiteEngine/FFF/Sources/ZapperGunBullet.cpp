@@ -210,7 +210,7 @@ void ZapperGunBullet::Zap(float dt) {
 
 			//particle
 			GameObject* zap = GameController::GetInstance()->GetPool(POOL_TYPE::PTCL_ZAPPER_ZAP)->GetGameObject();
-			zap->m_transform->SetPosition(m_gameObject->m_transform->GetPosition());
+			zap->m_transform->SetPosition(e->GetGameObject()->m_transform->GetPosition());
 			zap->GetComponent<ParticleSystem>()->TriggerBurstEmission();
 
 			//e->GetGameObject()->m_transform->SetPosition(TargetTranform.at(i)->GetPosition());

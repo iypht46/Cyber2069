@@ -61,6 +61,20 @@ float Transform::GetParallaxValue() {
 	return glm::clamp(m_position.z / maxParallaxDistance, 0.0f, 1.0f);
 }
 
+glm::mat4 Transform::GetModifiedModelMatrix(glm::vec3 scale, glm::vec3 translate) {
+	glm::mat4 rMat = glm::rotate(glm::mat4(1.0f), radians(m_localRotation), glm::vec3(0.0f, 0.0f, 1.0f));
+	glm::mat4 sMat = glm::scale(glm::mat4(1.0f), m_localScale);
+	glm::mat4 sMat2 = glm::scale(glm::mat4(1.0f), scale);
+	glm::mat4 tMat = glm::translate(glm::mat4(1.0f), glm::vec3(m_localPosition.x, m_localPosition.y, 0));
+	glm::mat4 tMat2 = glm::translate(glm::mat4(1.0f), glm::vec3(translate.x, translate.y, 0));
+	glm::mat4 transformMat = tMat2 * tMat * rMat * sMat2 * sMat;
+	if (!parent.expired()) {
+		transformMat = parent.lock()->GetModelMatrix() * transformMat;
+	}
+
+	return transformMat;
+}
+
 glm::mat4 Transform::GetModelMatrix() {
 	glm::mat4 rMat = glm::rotate(glm::mat4(1.0f), radians(m_localRotation), glm::vec3(0.0f, 0.0f, 1.0f));
 	glm::mat4 sMat = glm::scale(glm::mat4(1.0f), m_localScale);

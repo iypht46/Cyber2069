@@ -248,10 +248,11 @@ void MeshRenderer::Render(glm::mat4 globalModelTransform)
 		//ENGINE_INFO("Texture Scale : {}, {}", textureScale.x, textureScale.y);
 		if (IsTextureLoaded() && !m_isUI)
 		{
-			auto meshMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(textureScale, 1.0f));
+			//auto meshMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(textureScale, 1.0f));
 			
-			modelMatrix *= glm::interpolate(glm::mat4(1.0f), glm::translate(glm::mat4(1.0f), glm::vec3(Graphic::getCamera()->GetCampos().x, Graphic::getCamera()->GetCampos().y, 0)), GetGameObject()->m_transform->GetParallaxValue()) * meshMatrix;
-			
+			//modelMatrix = meshMatrix * glm::interpolate(glm::mat4(1.0f), glm::translate(glm::mat4(1.0f), glm::vec3(Graphic::getCamera()->GetCampos().x, Graphic::getCamera()->GetCampos().y, 0)), GetGameObject()->m_transform->GetParallaxValue()) * modelMatrix;
+			glm::vec3 parallaxoffset = ((1.0f - GetGameObject()->m_transform->GetParallaxValue()) * glm::vec3(0)) + GetGameObject()->m_transform->GetParallaxValue() * Graphic::getCamera()->GetCampos();
+			modelMatrix = GetGameObject()->m_transform->GetModifiedModelMatrix(glm::vec3(textureScale, 1.0f), parallaxoffset);
 		}
 			
 		//std::cout << glm::to_string(globalModelTransform) << std::endl << std::endl;
