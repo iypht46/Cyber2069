@@ -739,6 +739,7 @@ namespace World
 				ui_BossHP->AddComponent<MeshRenderer>()->CreateMesh(1, 1);
 				ui_BossHP->GetComponent<MeshRenderer>()->SetTexture("Sources/Assets/Red.jpg");
 				ui_BossHP->GetComponent<MeshRenderer>()->SetUI(true);
+				ui_BossHP->GetComponent<MeshRenderer>()->SetLayer(10);
 				ui_BossHP->m_transform->SetScale(glm::vec3(100.0f, 20.0f, 1.0f));
 				ui_BossHP->m_transform->SetPosition(glm::vec3(0, (Graphic::Window::GetHeight() / 2) - 100.0f, 1.0f));
 
@@ -2691,6 +2692,7 @@ namespace World
 				Item->AddComponent<MeshRenderer>();
 				Item->GetComponent<MeshRenderer>()->CreateMesh(1, 1);
 				Item->GetComponent<MeshRenderer>()->SetTexture(TexturePath("Equipments/HP"));
+				Item->GetComponent<MeshRenderer>()->SetLayer(3);
 
 				//Item->m_transform->SetScale(glm::vec3(0.1f, 0.1f, 1.0f));
 

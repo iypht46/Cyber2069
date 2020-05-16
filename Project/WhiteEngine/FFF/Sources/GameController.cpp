@@ -46,17 +46,17 @@ void GameController::OnStart() {
 	ENGINE_INFO("GameControl Creating Bullets");
 	ENGINE_INFO("======================================================================");
 	{
-		CreatePool(PrefabPath("Bullet_MG"), POOL_TYPE::BULLET_MG, 30);
-		CreatePool(PrefabPath("Bullet_GL"), POOL_TYPE::BULLET_GL, 30);
-		CreatePool(PrefabPath("Bullet_ZP"), POOL_TYPE::BULLET_ZP, 40);
-		CreatePool(PrefabPath("Bullet_BH"), POOL_TYPE::BULLET_BH, 50);
-		CreatePool(PrefabPath("Bullet_Fume"), POOL_TYPE::BULLET_FUME, 20);
+		CreatePool(PrefabPath("Bullet_MG"), POOL_TYPE::BULLET_MG, 50);
+		CreatePool(PrefabPath("Bullet_GL"), POOL_TYPE::BULLET_GL, 40);
+		CreatePool(PrefabPath("Bullet_ZP"), POOL_TYPE::BULLET_ZP, 50);
+		CreatePool(PrefabPath("Bullet_BH"), POOL_TYPE::BULLET_BH, 60);
+		CreatePool(PrefabPath("Bullet_Fume"), POOL_TYPE::BULLET_FUME, 30);
 	}
 	
 	ENGINE_INFO("GameControl Creating Items");
 	ENGINE_INFO("======================================================================");
 	{
-		CreatePool(PrefabPath("ItemDrop"), POOL_TYPE::ITEM_DROP, 2);
+		CreatePool(PrefabPath("ItemDrop"), POOL_TYPE::ITEM_DROP, 5);
 	}
 
 	ENGINE_INFO("GameControl Creating Enemies");
@@ -64,19 +64,19 @@ void GameController::OnStart() {
 	{
 		//flyer spawner
 		ENGINE_INFO("GameControl Creating Flyer");
-		CreatePool(PrefabPath("Flyer"), POOL_TYPE::ENEMY_FLYER, 50);
+		CreatePool(PrefabPath("Flyer"), POOL_TYPE::ENEMY_FLYER, 60);
 		//CreateSpawner(POOL_TYPE::ENEMY_FLYER)->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() / -2);
 		CreateSpawner(POOL_TYPE::ENEMY_FLYER)->SetSpawnMode(SPAWN_MODE::EDGE);
 
 		//bomber spawner
 		ENGINE_INFO("GameControl Creating Bomber");
-		CreatePool(PrefabPath("Bomber"), POOL_TYPE::ENEMY_BOMBER, 50);
+		CreatePool(PrefabPath("Bomber"), POOL_TYPE::ENEMY_BOMBER, 40);
 		//CreateSpawner(POOL_TYPE::ENEMY_BOMBER)->SetSpawnRange(Graphic::Window::GetWidth() / 2, Graphic::Window::GetHeight() / 2, Graphic::Window::GetWidth() / -2, Graphic::Window::GetHeight() / -2);
 		CreateSpawner(POOL_TYPE::ENEMY_BOMBER)->SetSpawnMode(SPAWN_MODE::EDGE);
 
 		//Tank
 		ENGINE_INFO("GameControl Creating Tank");
-		CreatePool(PrefabPath("Tank"), POOL_TYPE::ENEMY_TANK, 10);
+		CreatePool(PrefabPath("Tank"), POOL_TYPE::ENEMY_TANK, 15);
 		//CreateSpawner(POOL_TYPE::ENEMY_TANK)->SetSpawnRange(0, 100, 0, 100);
 		CreateSpawner(POOL_TYPE::ENEMY_TANK)->SetSpawnMode(SPAWN_MODE::PLATFORM);
 
@@ -101,7 +101,7 @@ void GameController::OnStart() {
 
 		//Cocoon spawner
 		ENGINE_INFO("GameControl Creating Queen");
-		CreatePool(PrefabPath("Cocoon"), POOL_TYPE::ENEMY_COCOON, 1);
+		CreatePool(PrefabPath("Cocoon"), POOL_TYPE::ENEMY_COCOON, 2);
 		CocoonSpawner = CreateSpawner(POOL_TYPE::ENEMY_COCOON);
 		CocoonSpawner->SetSpawnMode(SPAWN_MODE::PLATFORM);
 	}
@@ -115,7 +115,7 @@ void GameController::OnStart() {
 		CreatePool(ParticlePrefabPath("PTCL_Player_Killed"), POOL_TYPE::PTCL_PLAYER_KILLED, 1);
 
 		//weapon
-		CreatePool(ParticlePrefabPath("PTCL_Blackhole"), POOL_TYPE::PTCL_BLACKHOLE, 5);
+		CreatePool(ParticlePrefabPath("PTCL_Blackhole"), POOL_TYPE::PTCL_BLACKHOLE, 10);
 		CreatePool(ParticlePrefabPath("PTCL_Bullet_Hit_Armor"), POOL_TYPE::PTCL_BULLET_HIT_ARMOR, 15);
 		CreatePool(ParticlePrefabPath("PTCL_Bullet_Hit_SoftBody"), POOL_TYPE::PTCL_BULLET_HIT_ENEMY, 15);
 		CreatePool(ParticlePrefabPath("PTCL_Zapper_Zap"), POOL_TYPE::PTCL_ZAPPER_ZAP, 6);

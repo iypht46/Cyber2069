@@ -223,6 +223,9 @@
     <Image Include="Sources\Assets\Sprites\icon-128.png" />
     <Image Include="Sources\Assets\Sprites\icon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\..\..\..\..\..\Program Files (x86)\WHITE_FFF\Sources\Data\gameconfig.xml" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
