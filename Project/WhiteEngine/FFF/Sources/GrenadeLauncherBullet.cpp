@@ -57,6 +57,10 @@ void GrenadeLauncherBullet::OnTriggerEnter(const Physic::Collision col) {
 
 	m_gameObject->SetActive(false);
 	
+	if (col.m_collider->GetGameObject()->GetComponent<DeQueen>() != nullptr) {
+		col.m_collider->GetGameObject()->GetComponent<DeQueen>()->TakeDamage(bulletDmg);
+	}
+
 	Explode();
 }
 

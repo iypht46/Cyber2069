@@ -79,7 +79,7 @@ void LaserGun::GameTimeBehaviour(float dt)
 		if (weapon_delay_count >= (1.0f / weapon_firerate)) {
 
 			
-			if (laser_duration_count == 0.0f)
+			if (laser_duration_count <= 0.0f)
 			{
 				m_gameObject->GetComponent<SoundPlayer>()->PlaySound();
 			}

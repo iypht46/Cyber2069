@@ -2468,7 +2468,7 @@ namespace World
 				queen->AddComponent<HPsystem>();
 				queen->AddComponent<SoundPlayer>();
 				queen->AddComponent<AirPatrol>();
-				queen->GetComponent<AirPatrol>()->SetPoint(-(Graphic::Window::GetWidth() * 2), Graphic::Window::GetWidth() * 2);
+				queen->GetComponent<AirPatrol>()->SetPoint(-100000, 100000);
 				queen->AddComponent<DeQueen>();
 
 				queen->SetActive(false);

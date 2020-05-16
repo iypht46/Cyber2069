@@ -131,9 +131,12 @@ void BlackholeGunBullet::DragEnemy(float dt)
 					enemRb->SetVelocity(glm::vec3(ToCenterSpeed * cos(angle), ToCenterSpeed * sin(angle), 0.0f));
 				}
 
-				if (distance < 10)
+
+				if (distance < Radius)
 				{
-					enemRb->SetVelocity(glm::vec3(0.0f));
+					if (distance <= 10.0f) {
+						enemRb->SetVelocity(glm::vec3(0.0f));
+					}
 
 					if (Dot_count >= 1.0f)
 					{

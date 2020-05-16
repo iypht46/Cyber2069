@@ -2,6 +2,8 @@
 #include "Core/EC/GameObject.hpp"
 #include "Core/Logger.hpp"
 
+#include "Utility/WhiteMath.h"
+
 AirFollowing::AirFollowing()
 {
 
@@ -20,11 +22,11 @@ void AirFollowing::SetPlayer(Transform* player) {
 }
 
 void AirFollowing::SetFlySpeed(float value) {
-	m_speed = value;
+	m_speed = WhiteMath::Rand(value - 10, value + 10);
 }
 
 void AirFollowing::SetRotRate(float value) {
-	rotRate = value;
+	rotRate = WhiteMath::Rand(value - 10, value + 10);
 }
 
 void AirFollowing::FollowPlayer(float dt) {

@@ -100,7 +100,7 @@ void PlayerController::OnUpdate(float dt)
 	
 	if (!hpSystem->isDead()) 
 	{
-		DebugInput();
+		//DebugInput();
 		move();
 
 		if (Dash) {

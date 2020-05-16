@@ -46,10 +46,10 @@ void GameController::OnStart() {
 	ENGINE_INFO("GameControl Creating Bullets");
 	ENGINE_INFO("======================================================================");
 	{
-		CreatePool(PrefabPath("Bullet_MG"), POOL_TYPE::BULLET_MG, 20);
-		CreatePool(PrefabPath("Bullet_GL"), POOL_TYPE::BULLET_GL, 20);
-		CreatePool(PrefabPath("Bullet_ZP"), POOL_TYPE::BULLET_ZP, 20);
-		CreatePool(PrefabPath("Bullet_BH"), POOL_TYPE::BULLET_BH, 20);
+		CreatePool(PrefabPath("Bullet_MG"), POOL_TYPE::BULLET_MG, 30);
+		CreatePool(PrefabPath("Bullet_GL"), POOL_TYPE::BULLET_GL, 30);
+		CreatePool(PrefabPath("Bullet_ZP"), POOL_TYPE::BULLET_ZP, 40);
+		CreatePool(PrefabPath("Bullet_BH"), POOL_TYPE::BULLET_BH, 50);
 		CreatePool(PrefabPath("Bullet_Fume"), POOL_TYPE::BULLET_FUME, 20);
 	}
 	
@@ -186,19 +186,19 @@ void GameController::OnStart() {
 
 	PlayerStartPosition = playerControl->GetGameObject()->m_transform->GetPosition();
 
-	m_gameObject->GetComponent<EquipmentManager>()->Unlock_WEAPON(WEAPON_TYPE::WEAPON_MACHINEGUN);
-	m_gameObject->GetComponent<EquipmentManager>()->Unlock_WEAPON(WEAPON_TYPE::WEAPON_LASER);
-	m_gameObject->GetComponent<EquipmentManager>()->Unlock_WEAPON(WEAPON_TYPE::WEAPON_GRENADELAUNCHER);
-	m_gameObject->GetComponent<EquipmentManager>()->Unlock_WEAPON(WEAPON_TYPE::WEAPON_ZAPPER);
-	m_gameObject->GetComponent<EquipmentManager>()->Unlock_WEAPON(WEAPON_TYPE::WEAPON_BLACKHOLE);
+	//m_gameObject->GetComponent<EquipmentManager>()->Unlock_WEAPON(WEAPON_TYPE::WEAPON_MACHINEGUN);
+	//m_gameObject->GetComponent<EquipmentManager>()->Unlock_WEAPON(WEAPON_TYPE::WEAPON_LASER);
+	//m_gameObject->GetComponent<EquipmentManager>()->Unlock_WEAPON(WEAPON_TYPE::WEAPON_GRENADELAUNCHER);
+	//m_gameObject->GetComponent<EquipmentManager>()->Unlock_WEAPON(WEAPON_TYPE::WEAPON_ZAPPER);
+	//m_gameObject->GetComponent<EquipmentManager>()->Unlock_WEAPON(WEAPON_TYPE::WEAPON_BLACKHOLE);
 
-	m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_BULLETAMP);
-	m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_FIRERATEUP);
-	m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_SPEEDRUNNER);
-	m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_ATKUP);
-	m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_LOWGRAV);
-	m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_ARTIFACTAMP);
-	m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_CURSEDPENDANT);
+	//m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_BULLETAMP);
+	//m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_FIRERATEUP);
+	//m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_SPEEDRUNNER);
+	//m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_ATKUP);
+	//m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_LOWGRAV);
+	//m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_ARTIFACTAMP);
+	//m_gameObject->GetComponent<EquipmentManager>()->Unlock_ARTIFACT(ARTIFACT_TYPE::ARTF_CURSEDPENDANT);
 
 	StateChanged = true;
 
@@ -303,20 +303,20 @@ void GameController::OnUpdate(float dt)
 			StateChanged = false;
 		}
 
-		if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE)) 
-		{
-			SetGameState(GAME_STATE::LOADOUT);
-		}
+		//if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE)) 
+		//{
+		//	SetGameState(GAME_STATE::LOADOUT);
+		//}
 
-		if (Input::GetKeyDown(Input::KeyCode::KEY_S))
-		{
-			SaveData();
-		}
+		//if (Input::GetKeyDown(Input::KeyCode::KEY_S))
+		//{
+		//	SaveData();
+		//}
 
-		if (Input::GetKeyDown(Input::KeyCode::KEY_L))
-		{
-			Data->PrintLeaderboard();
-		}
+		//if (Input::GetKeyDown(Input::KeyCode::KEY_L))
+		//{
+		//	Data->PrintLeaderboard();
+		//}
 
 		break;
 	case GAME_STATE::LOADOUT:
@@ -402,6 +402,7 @@ void GameController::OnUpdate(float dt)
 
 				UIController::GetInstance()->SetActiveQueenUI(false);
 
+
 				StateGamplayChanged = false;
 			}
 			
@@ -461,6 +462,8 @@ void GameController::OnUpdate(float dt)
 				if (!Current_Queen->Active()) 
 				{
 					soundtrackCon->Stop(true);
+					updateEnemyPreset();
+					updateSpawner();
 					SetGameplayState(GAMEPLAY_STATE::NORMAL);
 				}
 			}
@@ -512,10 +515,10 @@ void GameController::OnUpdate(float dt)
 
 		}
 
-		if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE))
-		{
-			SetGameState(GAME_STATE::MAINMENU);
-		}
+		//if (Input::GetKeyDown(Input::KeyCode::KEY_SPACE))
+		//{
+		//	SetGameState(GAME_STATE::MAINMENU);
+		//}
 
 		break;
 	case GAME_STATE::QUIT:
@@ -574,6 +577,7 @@ void GameController::AddScoreValue(float baseScore) {
 	this->ScoreValue += baseScore * ComboValue;
 
 	updateDifficulty();
+	updateSpawner();
 }
 
 void GameController::AddComboValue(float value) {
@@ -617,16 +621,18 @@ void GameController::updateDifficulty()
 {
 	CurrAmplifier = Amplifiers[0].get();
 
+	int ampi = 0;
 	for (std::shared_ptr<EnemyAmplifier> amp : Amplifiers) {
 		if (ScoreValue >= amp->RequiredScore) {
 			CurrAmplifier = amp.get();
+			ampi++;
 		}
 		else {
 			break;
 		}
 	}
 
-	ENGINE_INFO("update difficulty");
+	//ENGINE_INFO("Difficulty {}/{}", ampi + 1, Amplifiers.size());
 }
 
 void GameController::updateEnemyPreset()
@@ -637,7 +643,7 @@ void GameController::updateEnemyPreset()
 
 	CurrPreset = Presets[randPreset].get();
 
-	ENGINE_INFO("update preset");
+	//ENGINE_INFO("Preset {}/{}", randPreset + 1, Presets.size());
 }
 
 void GameController::SpawnEnemies() {
