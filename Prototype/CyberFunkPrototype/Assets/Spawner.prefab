@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6966705202333048021
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6966705202333048011}
+  - component: {fileID: 6966705202333048010}
+  m_Layer: 0
+  m_Name: Spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6966705202333048011
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6966705202333048021}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6966705202333048010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6966705202333048021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58d2b2bccccc7994b8af1b3049b5b785, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_objectsToSpawn:
+  - m_tag: Enemy
+    m_prefab: {fileID: 5600271438979974155, guid: 3fc0d91cdd76aab49a9628951b689aa5,
+      type: 3}
+    size: 200
+  - m_tag: Beacon
+    m_prefab: {fileID: 5519021994061207838, guid: d81849af5494cd247814b65cc7e5996e,
+      type: 3}
+    size: 1
+  - m_tag: Effect
+    m_prefab: {fileID: 7574240313909797053, guid: 01ee0dc48f375dc42a0c3cb71a0b4d90,
+      type: 3}
+    size: 100
+  - m_tag: Bullet
+    m_prefab: {fileID: 6786943548930979478, guid: 1c2b981eb84abc94386a8d3a5d9b70d6,
+      type: 3}
+    size: 100
+  - m_tag: BeaconEffect
+    m_prefab: {fileID: 2480421846259473254, guid: 19135018ca3134c4e9079d194299515a,
+      type: 3}
+    size: 2
+  - m_tag: Explosion
+    m_prefab: {fileID: 7805347043214831650, guid: b525e2e86ada49c4f9d71e5bd1918e91,
+      type: 3}
+    size: 30
+  - m_tag: Grenade
+    m_prefab: {fileID: 8599772576882252370, guid: 62b7e1ddc9ad7e941a8cf8f437fe9291,
+      type: 3}
+    size: 30
+  - m_tag: SuicideBomber
+    m_prefab: {fileID: 691697636809350516, guid: b5ed7bd353727b443991131b9eee54c1,
+      type: 3}
+    size: 20
+  m_mapWidth: 180
+  m_mapHeight: 90
+  CurrentBeacon: {fileID: 0}
