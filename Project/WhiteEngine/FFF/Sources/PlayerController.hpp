@@ -1,0 +1,215 @@
+#pragma once
+#include "Core/EC/Components/BehaviourScript.h"
+#include "Core/EC/Components/Transform.hpp"
+#include "Core/EC/Components/Rigidbody.hpp"
+#include "Core/EC/Components/Animator.hpp"
+#include "Physic/PhysicScene.hpp"
+#include "Input/Input.hpp"
+#include "Core/EC/GameObject.hpp"
+#include "Core/EC/Components/SoundPlayer.hpp"
+
+#include "HPsystem.hpp"
+#include "Weapon.hpp"
+#include "Artifact.hpp"
+
+#include "Enemy.hpp"
+#include "Character.hpp"
+
+
+#include "Utility/ObjectPool.h"
+
+#include <cereal/types/base_class.hpp>
+#include <cereal/types/polymorphic.hpp>
+
+#define PI 3.14159265358979323846
+
+class GameObject;
+
+struct PlayerStats
+{
+	//stats===============
+	float max_stamina = 200.0f;
+
+	float dashStamina = 5.0f;
+	float jumpStamina = 5.0f;
+	float staminaRegenRate = 1.0f;
+
+	float max_move_speed = 200.0f;
+	float move_speed = 200.0f;
+	float dash_speed = 750.0f;
+	float jump_speed = 300.0f;
+	float dashTime = 0.35f;
+
+
+	float camZoomInSpeed = 0.01f;
+	float camZoomOutSpeed = 0.005f;
+	float camZoomInDelay = 0.0f;
+	float camSmall = 1.5f;
+	float camLarge = 0.65f;
+
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			CEREAL_NVP(max_stamina),
+			CEREAL_NVP(dashStamina),
+			CEREAL_NVP(jumpStamina),
+			CEREAL_NVP(staminaRegenRate),
+			CEREAL_NVP(max_move_speed),
+			CEREAL_NVP(move_speed),
+			CEREAL_NVP(dash_speed),
+			CEREAL_NVP(jump_speed),
+			CEREAL_NVP(dashTime),
+			CEREAL_NVP(camZoomInSpeed),
+			CEREAL_NVP(camZoomInDelay),
+			CEREAL_NVP(camSmall),
+			CEREAL_NVP(camLarge)
+		);
+	}
+};
+
+class PlayerController : public Character {
+private:
+	bool playEnd = false;	//use for check stamina deplettion
+
+	GameObject* dashPtc = nullptr;
+
+protected:
+	HPsystem* hpSystem = nullptr;
+	Rigidbody* rb = nullptr;
+	SoundPlayer* sp = nullptr;
+
+	ObjectPool* MGbulletPool = nullptr;
+
+	vector<Equipment*> Equipments;
+	vector<Weapon*> Weapons;
+
+	Weapon* weapon = nullptr;
+	Transform* weaponTranform = nullptr;
+
+	PlayerStats playerstat;
+
+	float yLimit = -1000.0f;
+	
+	//stats===============
+	float max_stamina = 200.0f;
+
+	float dashStamina = 5.0f;
+	float jumpStamina = 5.0f;
+	float staminaRegenRate = 1.0f;
+
+	float max_move_speed = 200.0f;
+	float move_speed = 200.0f;
+	float dash_speed = 750.0f;
+	float jump_speed = 300.0f;
+	float dashTime = 0.35f;
+
+
+	float camZoomInSpeed = 0.01f;
+	float camZoomOutSpeed = 0.005f;
+	float camZoomInDelay = 0.0f;
+	float camSmall = 1.5f;
+	float camLarge = 0.65f;
+
+	float GunDistance = 50.0f;//0.45f;
+	//======================
+
+	//runtime var===========
+	float stamina;
+	float dashRemainingTime;
+	float camDelay_count;
+	float delay;
+
+	bool inverseGun = false;
+	bool running = false;
+	bool jumping = false;
+	bool falling = false;
+	bool onGround = false;
+	bool Dash = false;
+	bool setDashAnim = false;
+
+	bool staminaDepleted = false;
+
+	bool setDieAnim = false;
+	
+	glm::vec2 direction;
+	glm::vec2 dashDirection;
+	glm::vec3 velo;
+
+	float angle_deg, angle_rad;
+
+public:
+	PlayerController();
+	~PlayerController() {}
+
+	void DebugInput();
+
+	void mouseAim();
+
+	void updateDirection();
+	void move();
+	void dash(float dt);
+	bool checkGround();
+
+	float GetStamina() { return this->stamina; }
+	float GetMaxStamina() { return this->max_stamina; }
+	
+	void cameraZoom(float dt);
+
+	void assignPool(ObjectPool* pool);
+	void assignWeapon();
+	void assignWeapon(Weapon* wp);
+
+	void AddEquipment(Equipment* e);
+	void AddEquipment(GameObject* obj);
+	void RemoveWeapon(int index);
+	void RemoveEquipment(int index);
+
+	void ModifyFromEquipment();
+	void RevertEquipment();
+
+	void MultiplyMoveSpeed(float value);
+
+	void SetStats(PlayerStats stat);
+
+	vector<Weapon*> GetWeapons() { return Weapons; }
+	vector<Equipment*> GetEquipments() { return Equipments; }
+
+	PlayerStats GetPlayerStats() { return this->playerstat; }
+
+	virtual void OnAwake();
+	virtual void OnUpdate(float dt);
+	virtual void OnFixedUpdate(float dt);
+	virtual void OnEnable();
+
+	virtual void OnCollisionEnter(const Physic::Collision) override;
+	virtual void OnCollisionStay(const Physic::Collision) override;
+	virtual void OnCollisionExit(const Physic::Collision) override;
+	virtual void OnTriggerEnter(const Physic::Collision) override;
+	virtual void OnTriggerStay(const Physic::Collision) override;
+	virtual void OnTriggerExit(const Physic::Collision) override;
+
+	//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Character>(this),
+			max_stamina,
+			dashStamina,
+			jumpStamina,
+			max_move_speed,
+			dash_speed,
+			jump_speed,
+			dashTime,
+			camZoomInSpeed,
+			camZoomOutSpeed,
+			camZoomInDelay,
+			camSmall,
+			camLarge,
+			GunDistance
+			);
+	}
+};
+
+CEREAL_REGISTER_TYPE(PlayerController);

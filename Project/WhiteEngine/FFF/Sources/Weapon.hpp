@@ -1,0 +1,539 @@
+#pragma once
+#include "Equipment.hpp"
+#include <memory>
+#include <set>
+#include <vector>
+#include <string>
+
+#include "Core/EC/Components/BehaviourScript.h"
+#include "Core/EC/Components/Transform.hpp"
+#include "Core/EC/Components/Rigidbody.hpp"
+#include "Core/EC/GameObject.hpp"
+#include "Utility/ObjectPool.h"
+
+#include "Physic/PhysicScene.hpp"
+
+#include "Graphic/Camera.hpp"
+#include "Graphic/Window.hpp"
+#include "Enemy.hpp"
+#include "Core/EC/Components/SoundPlayer.hpp"
+
+#include <cereal/types/string.hpp>
+#include <cereal/types/set.hpp>
+#include <cereal/types/base_class.hpp>
+#include <cereal/types/polymorphic.hpp>
+
+enum WEAPON_TYPE {
+	WEAPON_MACHINEGUN = 0,
+	WEAPON_LASER,
+	WEAPON_GRENADELAUNCHER,
+	WEAPON_ZAPPER,
+	WEAPON_BLACKHOLE,
+};
+
+class Explosion;
+class ParticleSystem;
+
+struct WeaponStats 
+{
+	float mg_bulletspeed = 400.0f;
+	float mg_firerate = 1.0f;
+	float mg_damage = 1.0f;
+
+	float ls_firerate = 1.0f;
+	float ls_damage = 1.0f;
+	float ls_duration = 1.0f;
+
+	float gl_bulletspeed = 300.0f;
+	float gl_firerate = 1.0f;
+	float gl_damage = 1.0f;
+	float gl_radius = 100.0f;
+
+	float zp_bulletspeed = 300.0f;
+	float zp_firerate = 1.0f;
+	float zp_damage = 1.0f;
+	float zp_duration = 0.5f;
+	float zp_chainNumber = 3.0f;
+	float zp_chainDistance = 300.0f;
+
+	float bh_bulletspeed = 300.0f;
+	float bh_firerate = 1.0f;
+	float bh_damage = 1.0f;
+	float bh_duration = 2.0f;
+	float bh_radius = 100.0f;
+	float bh_toCenterSpeed = 100.0f;
+
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			CEREAL_NVP(mg_bulletspeed),
+			CEREAL_NVP(mg_firerate),
+			CEREAL_NVP(mg_damage),
+			CEREAL_NVP(ls_firerate),
+			CEREAL_NVP(ls_damage),
+			CEREAL_NVP(ls_duration),
+			CEREAL_NVP(gl_bulletspeed),
+			CEREAL_NVP(gl_firerate),
+			CEREAL_NVP(gl_damage),
+			CEREAL_NVP(gl_radius),
+			CEREAL_NVP(zp_bulletspeed),
+			CEREAL_NVP(zp_firerate),
+			CEREAL_NVP(zp_damage),
+			CEREAL_NVP(zp_duration),
+			CEREAL_NVP(zp_chainNumber),
+			CEREAL_NVP(zp_chainDistance),
+			CEREAL_NVP(bh_bulletspeed),
+			CEREAL_NVP(bh_firerate),
+			CEREAL_NVP(bh_damage),
+			CEREAL_NVP(bh_duration),
+			CEREAL_NVP(bh_radius),
+			CEREAL_NVP(bh_toCenterSpeed)
+		);
+	}
+};
+
+class Weapon : public Equipment , public BehaviourScript
+{
+protected:
+	GameObject* weaponObj = nullptr;
+	ObjectPool* BulletPool = nullptr;
+	
+	float* angle;
+
+	float angle_deg;
+	float angle_rad;
+
+	glm::vec2 weapon_scale;
+	glm::vec2 bullet_scale;
+
+	float weapon_delay_count = 0.0f;
+
+public:
+	float bullet_speed;
+	float weapon_firerate;
+	float weapon_damage;
+
+	std::set<std::string> TargetLayers;
+
+	virtual void Modify() = 0;
+	virtual void GameTimeBehaviour(float dt) = 0;
+
+	GameObject* GetWeapon() { return this->m_gameObject; }
+	
+	void SetBulletSpeed(float value) { this->bullet_speed = value; }
+	void SetWeaponFireRate(float value) { this->weapon_firerate = value; }
+	void SetWeaponDamage(float value) { this->weapon_damage = value; }
+
+	void MultiplyweaponBulletSpeed(float value) { this->bullet_speed = this->bullet_speed * value; }
+	void MultiplyWeaponFireRate(float value) { this->weapon_firerate = this->weapon_firerate * value; }
+	void MultiplyWeaponDamage(float value) { this->weapon_damage = this->weapon_damage * value; }
+	virtual void MultiplyWeaponAmplifier(float value) = 0;
+
+	glm::vec2 GetWeaponScale() { return weapon_scale; }
+
+	void AssignAngle(float* angle) { this->angle = angle; }
+	void AssignPool(ObjectPool* ObjPool) { this->BulletPool = ObjPool; }
+
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Equipment>(this),
+			cereal::base_class<BehaviourScript>(this),
+			TargetLayers,
+			bullet_speed,
+			weapon_firerate,
+			weapon_damage
+		);	
+	}
+};
+CEREAL_REGISTER_TYPE(Weapon);
+
+class Bullet :public BehaviourScript {
+public:
+	std::set<std::string> TargetLayers;
+	float bulletDamage;
+
+	bool isTarget(Physic::Layer);
+	bool isTarget(std::string);
+
+	Bullet();
+	~Bullet();
+
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<BehaviourScript>(this),
+			TargetLayers
+			);
+	}
+};
+CEREAL_REGISTER_TYPE(Bullet);
+
+//Machine Gun ===========================================================================================
+class MachineGun : public Weapon {
+protected:
+	float SoundCounter;
+	float SoundTimer;
+public:
+	MachineGun();
+	void Modify();
+	void GameTimeBehaviour(float dt);
+	void MultiplyWeaponAmplifier(float value);
+
+	virtual void OnAwake();
+
+//serialization
+public:
+	template <class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Weapon>(this)
+			);
+	}
+};
+CEREAL_REGISTER_TYPE(MachineGun);
+
+class MachineGunBullet : public Bullet {
+protected:
+	Graphic::CameraObject* cam;
+
+	Rigidbody* rb;
+	float bulletDmg = 1.0f;
+
+public:
+	void SetDamage(float dmg) { this->bulletDmg = dmg; }
+
+	virtual void OnAwake();
+	virtual void OnUpdate(float dt);
+	virtual void OnTriggerEnter(const Physic::Collision col) override;
+	virtual void OnCollisionEnter(const Physic::Collision col) override;
+
+//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Bullet>(this),
+			bulletDmg
+			);
+	}
+};
+
+CEREAL_REGISTER_TYPE(MachineGunBullet);
+//-------------------------------------------------------------------------------------------------------
+
+//Laser Gun =============================================================================================
+class LaserGun : public Weapon {
+private:
+	std::shared_ptr <GameObject> laserObj = nullptr;
+	float laser_duration_count = 0.0f;
+
+	bool initparticle = false;
+	std::vector<GameObject*> particles;
+
+	void getParticles();
+	void stopParticles();
+
+	glm::vec2 Lstart;
+	glm::vec2 Lend;
+
+	glm::vec2 gunPos;
+	glm::vec2 endPos;
+
+	float SoundCounter;
+	float SoundTimer;
+
+public:
+	float laser_length;
+	float laser_size;
+	float laser_duration;
+
+	LaserGun();
+	void Modify();
+	void GameTimeBehaviour(float dt);
+	void AssignLaserObj(std::shared_ptr <GameObject> obj) { this->laserObj = obj; }
+	void MultiplyWeaponAmplifier(float value);
+
+	/*void DamageEnemyInRange();
+	bool isInRange(Collider* col);*/
+	
+	virtual void OnAwake();
+	virtual void OnDisable();
+
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Weapon>(this),
+			laserObj,
+			laser_size
+		);
+	}
+};
+CEREAL_REGISTER_TYPE(LaserGun);
+//-------------------------------------------------------------------------------------------------------
+
+
+//Grenade Launcher ======================================================================================
+class GrenadeLauncher : public Weapon {
+public:
+	float grenade_radius;
+
+	GrenadeLauncher();
+	void Modify();
+	void GameTimeBehaviour(float dt);
+	void MultiplyWeaponAmplifier(float value);
+
+	virtual void OnAwake();
+
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Weapon>(this),
+			grenade_radius
+			);
+	}
+};
+CEREAL_REGISTER_TYPE(GrenadeLauncher);
+
+class GrenadeLauncherBullet : public Bullet {
+protected:
+	Graphic::CameraObject* cam;
+
+	Rigidbody* rb;
+	float bulletDmg = 1;
+
+	float radius = 1000.0f;
+	float scaleX = 1.0f;
+
+	SoundPlayer* ExplodeSound;
+
+public:
+	void SetDamage(float dmg) { this->bulletDmg = dmg; }
+	void SerRadius(float radius) { this->radius = radius; }
+
+	void Explode();
+
+	virtual void OnAwake();
+	virtual void OnUpdate(float dt);
+	virtual void OnTriggerEnter(const Physic::Collision col) override;
+	virtual void OnCollisionEnter(const Physic::Collision col) override;
+
+//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Bullet>(this),
+			bulletDmg,
+			radius,
+			scaleX
+			);
+	}
+};
+
+CEREAL_REGISTER_TYPE(GrenadeLauncherBullet);
+//-------------------------------------------------------------------------------------------------------
+
+//Zapper Gun ============================================================================================
+class ZapperGun : public Weapon {
+public:
+	int chainNumber;
+	float zapDistance;
+	float zapDuration;
+	float zapRate;
+
+	ZapperGun();
+	void Modify();
+	void GameTimeBehaviour(float dt);
+	void MultiplyWeaponAmplifier(float value);
+	
+	virtual void OnAwake();
+
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Weapon>(this),
+			chainNumber,
+			zapDistance,
+			zapDuration,
+			zapRate
+		);
+	}
+};
+
+CEREAL_REGISTER_TYPE(ZapperGun);
+
+class ZapperGunBullet : public Bullet {
+protected:
+	Graphic::CameraObject* cam;
+
+	Rigidbody* rb;
+	float bulletDmg = 1;
+	int chainNumber = 3;
+	float zapDistance = 150;
+	float zapDuration = 0.5f;
+	float zapRate = 1;
+
+	float zapDurationCount = 0.0f;
+	float zapRateCount = 0.0f;
+
+	bool isTriggerEnemy = false;
+
+	Enemy* target;
+
+	vector <Enemy*> Targets;
+	vector <Transform*> TargetTranform;
+	Physic::Colliders colliders;
+
+	SoundPlayer* ZappingSound;
+
+public:
+	void SetDamage(float dmg) { this->bulletDmg = dmg; }
+	void SetChainNumber(float n) { this->chainNumber = n; }
+	void SetZapDistance(float d) { this->zapDistance = d; }
+	void SetZapDuration(float d) { this->zapDuration = d; }
+	void SetZapRate(float r) { this->zapRate = r; }
+
+	Enemy* FindTarget(Enemy* e);
+	void Zap(float dt);
+	void enemRelease();
+
+	virtual void OnAwake();
+	virtual void OnUpdate(float dt);
+	virtual void OnTriggerEnter(const Physic::Collision col) override;
+	virtual void OnCollisionEnter(const Physic::Collision col) override;
+
+//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Bullet>(this),
+			bulletDmg,
+			chainNumber,
+			zapDistance,
+			zapDuration,
+			zapRate
+			);
+	}
+};
+
+CEREAL_REGISTER_TYPE(ZapperGunBullet);
+//-------------------------------------------------------------------------------------------------------
+
+//Blackhole Gun =========================================================================================
+class BlackholeGun : public Weapon {
+public:
+	float bullet_Duration;
+	float bullet_Radius;
+	float bullet_ToCenterSpeed;
+
+	BlackholeGun();
+	void Modify();
+	void GameTimeBehaviour(float dt);
+	void MultiplyWeaponAmplifier(float value);
+
+	virtual void OnAwake();
+
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Weapon>(this),
+			bullet_Duration,
+			bullet_Radius,
+			bullet_ToCenterSpeed
+		);
+	}
+};
+
+CEREAL_REGISTER_TYPE(BlackholeGun);
+
+class BlackholeGunBullet : public Bullet {
+private:
+	GameObject* particle;
+
+protected:
+	Graphic::CameraObject* cam;
+
+	Rigidbody* rb;
+	SoundPlayer* BhSound;
+	float bulletDmg = 1.0f;
+	float Duration = 2.0f;
+	float Radius = 200.0f;
+	float ToCenterSpeed = 10.0f;
+
+	float Dot_count = 0.0f;
+
+	bool isTriggerEnemy = false;
+	float DurationCount = 0;
+
+public:
+	void SetDamage(float dmg) { this->bulletDmg = dmg; }
+	void SetDuration(float duration) { this->Duration = duration; }
+	void SetRadius(float radius) { this->Radius = radius; }
+	void SetToCenterSpeed(float spd) { this->ToCenterSpeed = spd; }
+
+	void DragEnemy(float dt);
+	void ReleaseEnemy();
+
+	virtual void OnAwake();
+	virtual void OnUpdate(float dt);
+	virtual void OnEnable();
+	virtual void OnTriggerEnter(const Physic::Collision col) override;
+	virtual void OnCollisionEnter(const Physic::Collision col) override;
+
+//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Bullet>(this),
+			bulletDmg,
+			Duration,
+			Radius,
+			ToCenterSpeed
+			);
+	}
+};
+CEREAL_REGISTER_TYPE(BlackholeGunBullet);
+//-------------------------------------------------------------------------------------------------------
+
+//Flak Bullet ===========================================================================================
+//explode on destination
+class FlakBullet : public Bullet {
+protected:
+	Graphic::CameraObject* cam;
+	Rigidbody* rb;
+	Explosion* explosion;
+	SoundPlayer* sp;
+
+	void Explode();
+
+public:
+	float destinationMargin = 10.0f;
+	//tmp
+	glm::vec2 Destination;
+
+	virtual void OnAwake();
+	virtual void OnUpdate(float dt);
+	virtual void OnCollisionEnter(const Physic::Collision col) override;
+
+	//serialization
+public:
+	template<class Archive>
+	void serialize(Archive& archive) {
+		archive(
+			cereal::base_class<Bullet>(this),
+			destinationMargin
+			);
+	}
+};
+CEREAL_REGISTER_TYPE(FlakBullet);
+//-------------------------------------------------------------------------------------------------------

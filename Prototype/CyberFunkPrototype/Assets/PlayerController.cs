@@ -1,89 +1,331 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
-    //Movement 
+    enum WeaponType
+    {
+        Laser,
+        MachineGun,
+        GrenadeLauncher
+    }
+
+    enum DashControlMode
+    {
+        Cursor,
+        Key,
+        LROnly
+    }
+
+    enum PlayerControlMode
+    {
+        V1,
+        V2,
+        V3
+    }
+
+    [SerializeField] private WeaponType Weapon = WeaponType.MachineGun;
+    [SerializeField] private DashControlMode DashMode = DashControlMode.Key;
+    [SerializeField] private PlayerControlMode ControlMode = PlayerControlMode.V1;
+    private Vector2 inputDirection = Vector2.zero;
+    private Vector2 tempDashDirection = Vector2.zero;
+
+    [Header("Machine Gun Setting")]
+    [SerializeField] private float mg_firerate = 10;
+    [SerializeField] private float mg_bulletSpeed = 10;
+    private float mg_timer = 0;
+
+    [Header("Grenade Launcher Setting")]
+    [SerializeField] private float gl_firerate = 10;
+    [SerializeField] private float gl_bulletSpeed = 10;
+    private float gl_timer = 0;
+
+    [Header("Movement Setting")]
     [SerializeField] private float move_speed;
     [SerializeField] private float jump_speed;
     [SerializeField] private float dash_speed;
+    [SerializeField] private int maxJump;
     [SerializeField] private int maxDash;
+    [SerializeField] private int maxDashJump;
     [SerializeField] private float DashTime;
+    [SerializeField] private Color OutofDashColor = Color.cyan;
 
+    [SerializeField] public bool GodMode;
+
+    public bool MomemtumOn;
+
+    int remainingJump;
     int remainingDash;
+    int remainingDashJump;
     float remainingDashTime;
     float moveVelocity;
     float startGravityScale;
 
     float angle;
 
-    //Grounded Vars
-    [SerializeField] bool grounded = true;
-    [SerializeField] bool jump = false;
-    [SerializeField] bool dash = false;
+    public bool grounded = true;
+    bool jump = false;
+    bool dash = false;
 
+    bool AD_input = false;
+
+    private HP hp;
     private Rigidbody2D rb;
+    private Collider2D cl;
     private mouseCursor mc;
+    [SerializeField] private GameObject Laser;
+    private SpawnSystem spawner;
+    private TrailRenderer trail;
 
     private void Start()
     {
+        hp = GetComponent<HP>();
         rb = GetComponent<Rigidbody2D>();
+        cl = this.GetComponent<Collider2D>();
         mc = GameObject.Find("dot").GetComponent<mouseCursor>();
+        spawner = GameObject.Find("Spawner").GetComponent<SpawnSystem>();
+        trail = GetComponent<TrailRenderer>();
+        //trail.emitting = false;
+
         startGravityScale = rb.gravityScale;
     }
 
-    void Update()
+    private void Update()
     {
-        //Jumping
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            if (grounded && !jump)
-            {
-                rb.velocity = new Vector2(rb.velocity.x, jump_speed);
-                jump = true;
-            }
-            else if (remainingDash > 0 && !grounded && !dash)
-            {
-                jump = false;
-                remainingDashTime = DashTime;
-
-                angle = Mathf.Atan2(mc.cursorPos.y - transform.position.y, mc.cursorPos.x - transform.position.x);
-                Debug.Log(angle);
-                dash = true;
-                rb.gravityScale = 0;
-            }
+            Dead();
         }
 
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            Weapon = WeaponType.MachineGun;
+            Laser.SetActive(false);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            Weapon = WeaponType.Laser;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            Weapon = WeaponType.GrenadeLauncher;
+        }
+
+        moveVelocity = 0;
+
+        switch (Weapon)
+        {
+            case WeaponType.Laser:
+                if (Input.GetMouseButton(0))
+                {
+                    Laser.SetActive(true);
+                }
+                else
+                {
+                    Laser.SetActive(false);
+                }
+                break;
+            case WeaponType.MachineGun:
+                if (Input.GetMouseButton(0))
+                {
+                    if (mg_timer <= 0)
+                    {
+                        GameObject Bullet = spawner.GetObjectFromPool("Bullet");
+                        Vector2 cursorPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                        Bullet.transform.position = this.transform.position;
+                        Bullet.GetComponent<Rigidbody2D>().velocity = (cursorPos - (Vector2)this.transform.position).normalized * mg_bulletSpeed;
+                        mg_timer = 1 / mg_firerate;
+                    }
+                }
+                mg_timer -= Time.deltaTime;
+                break;
+            case WeaponType.GrenadeLauncher:
+                if (Input.GetMouseButton(0))
+                {
+                    if (gl_timer <= 0)
+                    {
+                        GameObject Bullet = spawner.GetObjectFromPool("Grenade");
+                        Vector2 cursorPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                        Bullet.transform.position = this.transform.position;
+                        Bullet.GetComponent<Rigidbody2D>().velocity = (cursorPos - (Vector2)this.transform.position).normalized * gl_bulletSpeed;
+                        gl_timer = 1 / gl_firerate;
+                    }
+                }
+                gl_timer -= Time.deltaTime;
+                break;
+            default:
+                break;
+        }
+
+        //Left Right Movement
+        float x = 0;
+        float y = 0;
+        if (Input.GetKey(KeyCode.A))
+        {
+            moveVelocity = -move_speed;
+            x -= 1;
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            moveVelocity = move_speed;
+            x += 1;
+        }
+
+        if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+        {
+            AD_input = true;
+        }
+        else
+        {
+            AD_input = false;
+        }
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            y += 1;
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            y -= 1;
+        }
+        inputDirection = new Vector2(x, y);
+
+        //through platform
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            cl.isTrigger = true;
+        }
+        else if (Input.GetKeyUp(KeyCode.S)) {
+            cl.isTrigger = false;
+        }
+        
+        if (ControlMode == PlayerControlMode.V1)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                if (grounded && !jump)
+                {
+                    rb.velocity = new Vector2(rb.velocity.x, jump_speed);
+                    jump = true;
+                }
+                else if (remainingDash > 0 && !grounded && !dash)
+                {
+                    jump = false;
+
+                    remainingDash--;
+                    remainingDashTime = DashTime;
+
+                    angle = Mathf.Atan2(mc.cursorPos.y - transform.position.y, mc.cursorPos.x - transform.position.x);
+                    //if (inputDirection.x == 0)
+                    //{
+                    //    inputDirection.y = 1;
+                    //}
+                    tempDashDirection = inputDirection;
+                    hp.invincible = true;
+                    dash = true;
+                    //trail.emitting = true;
+                    rb.gravityScale = 0;
+                }
+            }
+        }
+        else if (ControlMode == PlayerControlMode.V2)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                if (remainingDashJump > 0)
+                {
+                    remainingDashJump--;
+                    rb.velocity = new Vector2(rb.velocity.x, jump_speed);
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                if (remainingDashJump > 0 && !grounded && !dash)
+                {
+
+                    remainingDashJump--;
+                    remainingDashTime = DashTime;
+
+                    angle = Mathf.Atan2(mc.cursorPos.y - transform.position.y, mc.cursorPos.x - transform.position.x);
+                    //if (inputDirection.x == 0)
+                    //{
+                    //    inputDirection.y = 1;
+                    //}
+                    tempDashDirection = inputDirection;
+                    hp.invincible = true;
+                    dash = true;
+                    //trail.emitting = true;
+                    rb.gravityScale = 0;
+                }
+
+            }
+        }else if (ControlMode == PlayerControlMode.V3)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                if (remainingJump > 0)
+                {
+                    remainingJump--;
+                    rb.velocity = new Vector2(rb.velocity.x, jump_speed);
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                if (remainingDash > 0 && !grounded && !dash)
+                {
+
+                    remainingDash--;
+                    remainingDashTime = DashTime;
+
+                    angle = Mathf.Atan2(mc.cursorPos.y - transform.position.y, mc.cursorPos.x - transform.position.x);
+                    //if (inputDirection.x == 0)
+                    //{
+                    //    inputDirection.y = 1;
+                    //}
+                    tempDashDirection = inputDirection;
+                    hp.invincible = true;
+                    dash = true;
+                    //trail.emitting = true;
+                    rb.gravityScale = 0;
+                }
+
+            }
+        }
+    }
+
+    void FixedUpdate()
+    {
         if (dash)
         {
             Dash();
         }
 
-        if(remainingDash == 0)
+        if(remainingDash == 0 || remainingJump == 0 || remainingDashJump == 0)
         {
-            GetComponent<SpriteRenderer>().color = Color.cyan;
+            GetComponent<SpriteRenderer>().color = OutofDashColor;
         }
         else
         {
             GetComponent<SpriteRenderer>().color = Color.white;
         }
 
-        moveVelocity = 0;
-
-        //Left Right Movement
-        if (Input.GetKey(KeyCode.A))
+        if (MomemtumOn)
         {
-            moveVelocity = -move_speed;
+            if (grounded || jump || (!dash && AD_input))
+            {
+                rb.velocity = new Vector2(moveVelocity, rb.velocity.y);
+            }
         }
-        if (Input.GetKey(KeyCode.D))
+        else
         {
-            moveVelocity = move_speed;
-        }
-
-        if ((grounded || jump || ((rb.velocity.y == 0) && remainingDash == 0)) && !dash)
-        {
-            rb.velocity = new Vector2(moveVelocity, rb.velocity.y);
+            if (grounded || jump || !dash)
+            {
+                rb.velocity = new Vector2(moveVelocity, rb.velocity.y);
+            }
         }
 
     }
@@ -93,6 +335,8 @@ public class PlayerController : MonoBehaviour
         grounded = true;
         jump = false;
         remainingDash = maxDash;
+        remainingJump = maxJump;
+        remainingDashJump = maxDashJump;
 
     }
     void OnCollisionExit2D()
@@ -102,23 +346,50 @@ public class PlayerController : MonoBehaviour
 
     void Dash()
     {
-        if(remainingDashTime <= 0)
+
+        if (remainingDashTime <= 0)
         {
+            hp.invincible = false;
+            //trail.emitting = false;
             dash = false;
-            remainingDash--;
             rb.gravityScale = startGravityScale;
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y/2);
         }
         else
         {
             remainingDashTime -= Time.deltaTime;
 
-            float newX = dash_speed * Mathf.Cos(angle);
-            float newY = dash_speed * Mathf.Sin(angle);
-            Debug.Log(newX);
-            Debug.Log(newY);
+            switch (DashMode)
+            {
+                case DashControlMode.Cursor:
+                    float newX = dash_speed * Mathf.Cos(angle);
+                    float newY = dash_speed * Mathf.Sin(angle);
+                    //Debug.Log(newX);
+                    //Debug.Log(newY);
 
-            rb.velocity = new Vector2(newX * 1.5f, newY);
+                    rb.velocity = new Vector2(newX * 1.5f, newY);
+                    break;
+                case DashControlMode.Key:
+                    if (tempDashDirection != Vector2.zero)
+                    {
+                        rb.velocity = tempDashDirection.normalized * dash_speed;
+                    }
+                    break;
+                case DashControlMode.LROnly:
+                    if (tempDashDirection != Vector2.zero)
+                    {
+                        tempDashDirection.y = 0;
+                        rb.velocity = tempDashDirection.normalized * dash_speed;
+                    }
+                    break;
+            }
+
         }
+    }
+
+    public void Dead()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
 }
